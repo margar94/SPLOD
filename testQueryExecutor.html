@@ -2,17 +2,21 @@
     <head>
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
         <script src="queryExecutor.js"></script>
-</head>
+		<div id="event">Ciao</div>
+	</head>
     <script type="text/javascript">
-        var queryExecutor = new QueryExecutor(); 
-        queryExecutor.getAllEntities(this);   
+		var queryExecutor = new QueryExecutor(); 
+        var results = queryExecutor.getAllEntities(this);  
+		console.log(results);
         //queryExecutor.getAllSelectedEntityDirectPredicates(this, "dbo:Band");
-        queryExecutor.getAllSelectedEntityInversePredicates(this, "dbo:Band");
+        //queryExecutor.getAllSelectedEntityInversePredicates(this, "dbo:Band");
         //queryExecutor.getAllSelectedEntityDirectPredicates(this, "dbo:Band");
 
-        function notify(answer){
+        /*function notify(answer){
             console.log(answer);
-        }
+        }*/
+		
+		
 
     </script>
     <body></body>

@@ -1,3 +1,8 @@
+/*
+	Synchronous notification : caller have to implement NOTIFY method and send its reference at asynchronous method incovation.
+*/
+
+
 var url;
 var graph;
 var query; 
@@ -22,8 +27,8 @@ var QueryExecutor = function (endpoint, selectedGraph) {
 /*
 	Get all top level classes. According to http://mappings.dbpedia.org/server/ontology/classes/ all top level classes are Thing's subclasses. 
 */
-QueryExecutor.prototype.getAllEntities = function(callback) {
-	query = " prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
+QueryExecutor.prototype.getAllEntities = function(caller) {
+	 query = " prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
 				" prefix owl: <http://www.w3.org/2002/07/owl#> " +
 				" SELECT ?url ?label " +
 				" WHERE { " + 
@@ -38,7 +43,7 @@ QueryExecutor.prototype.getAllEntities = function(callback) {
     $.ajax({
         url: queryUrl,
         success: function( data ) {
-			callback(handleResponseUrlAndLabel(data));
+			handleResponseUrlAndLabel(caller, data);
         }
     });	
 }
@@ -53,10 +58,6 @@ QueryExecutor.prototype.getAllEntities = function(callback) {
 
 /*
 	TODO : get entity that has a word in url or in label
-*/
-
-/*
-	TODO : Filter entities by label.
 */
 
 /*
@@ -80,7 +81,7 @@ QueryExecutor.prototype.getAllEntities = function(callback) {
 			FILTER (lang(?label) = 'en') }  }
 */
 
-QueryExecutor.prototype.getAllPredicates = function(limit, callback) {
+QueryExecutor.prototype.getAllPredicates = function(caller, limit) {
 	// Option 1
 	/*
 		query = " prefix owl: <http://www.w3.org/2002/07/owl#> " +
@@ -113,7 +114,7 @@ QueryExecutor.prototype.getAllPredicates = function(limit, callback) {
     $.ajax({
         url: queryUrl,
         success: function( data ) {
-			callback(handleResponseUrlAndLabel(data));
+			handleResponseUrlAndLabel(caller, data);
         }
     });	
 	
@@ -126,7 +127,7 @@ QueryExecutor.prototype.getAllPredicates = function(limit, callback) {
 	This function get all entity's predicates.
 */
 
-QueryExecutor.prototype.getAllSelectedEntityPredicates = function(entity, limit, callback) {
+QueryExecutor.prototype.getAllSelectedEntityPredicates = function(caller, entity, limit) {
 	query = " prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
 				" prefix owl: <http://www.w3.org/2002/07/owl#> " +
 				" SELECT DISTINCT ?url ?label " +
@@ -145,7 +146,7 @@ QueryExecutor.prototype.getAllSelectedEntityPredicates = function(entity, limit,
     $.ajax({
         url: queryUrl,
         success: function( data ) {
-			callback(handleResponseUrlAndLabel(data));
+			handleResponseUrlAndLabel(caller, data);
         }
     });	
 }
@@ -154,7 +155,7 @@ QueryExecutor.prototype.getAllSelectedEntityPredicates = function(entity, limit,
 	This function get all entity's direct predicates.
 */
 
-QueryExecutor.prototype.getAllSelectedEntityDirectPredicates = function(entity, limit, callback) {
+QueryExecutor.prototype.getAllSelectedEntityDirectPredicates = function(caller, entity, limit) {
 	query = " prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
 				" prefix owl: <http://www.w3.org/2002/07/owl#> " +
 				" SELECT DISTINCT ?url ?label " +
@@ -173,7 +174,7 @@ QueryExecutor.prototype.getAllSelectedEntityDirectPredicates = function(entity, 
     $.ajax({
         url: queryUrl,
         success: function( data ) {
-			callback(handleResponseUrlAndLabel(data));
+			handleResponseUrlAndLabel(caller, data);
         }
     });	
 }
@@ -182,7 +183,7 @@ QueryExecutor.prototype.getAllSelectedEntityDirectPredicates = function(entity, 
 	This function get all entity's inverse predicates.
 */
 
-QueryExecutor.prototype.getAllSelectedEntityInversePredicates = function(entity, limit, callback) {
+QueryExecutor.prototype.getAllSelectedEntityInversePredicates = function(caller, entity, limit) {
 	query = " prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
 				" prefix owl: <http://www.w3.org/2002/07/owl#> " +
 				" SELECT DISTINCT ?url ?label " +
@@ -201,16 +202,15 @@ QueryExecutor.prototype.getAllSelectedEntityInversePredicates = function(entity,
     $.ajax({
         url: queryUrl,
         success: function( data ) {
-			callback(handleResponseUrlAndLabel(data));        
-		}
+			handleResponseUrlAndLabel(caller, data);
+        }
     });	
 }
 
 /*
 	Handle response of GetAllEntitis function: it creates an array with entities' url and label.
 */
-function handleResponseUrlAndLabel(data) {
-	
+function handleResponseUrlAndLabel(caller, data) {
 	var arrayData = data.results.bindings;
 	var results = new Array();
 
@@ -219,5 +219,5 @@ function handleResponseUrlAndLabel(data) {
 	}
 	
 	//console.log(results);
-	return results;
+	caller.notify(results);
 }
