@@ -2,6 +2,7 @@
 	 <head>
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
         <script src="queryExecutor.js"></script>
+		<script src="boxFiller.js"></script>
 	</head>
 	
 	
@@ -13,30 +14,25 @@
 
 	
 	<script>
-			var boxFiller = new BoxFiller();
+	
+		//var boxFiller = new BoxFiller();
+		var executor = new QueryExecutor();
+		executor.getAllEntities(function fillConceptsBox(concepts){
+			console.log(concepts);
+			var conceptsList = $("#conceptsList");
+			$.each(concepts, function(index){
+			element = concepts[index];
 			
-			function fillConceptsBox(){
-				var concepts = boxFiller.retrieveConcepts();
-				var conceptsList = $("#conceptsList");
-				$.each(concepts, function(arr){
-					var li = $("<li/>")
-						.attr('title', arr.url.value)
-						.attr('value', arr.label.value)
-						appendTo(conceptsList);
-					
-					
-				});
-			}
-			
-			
-			function fillPredicatesBox(){
-			}
-			
-			
-			/*
-			function fill(boxID){
-				
-			}*/
+				var li = $("<li/>")
+					.attr('title', element.url)
+					.text(element.label)
+					.appendTo(conceptsList);
+			});
+		});
+		
+		function fillPredicatesBox(){
+		}
+		
 	</script>
 	
 </HTML>

@@ -1,8 +1,13 @@
+
+var executor;
+
 var BoxFiller= function () {
-	var executor = new QueryExecutor(); 
+	executor = new QueryExecutor(); 
 	
 };
 
 BoxFiller.prototype.retrieveConcepts = function(caller) {
-	return executor.getAllEntities();
+	executor.getAllEntities(this);
 }
+
+
