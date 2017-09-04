@@ -5,7 +5,15 @@
 </head>
     <script type="text/javascript">
         var queryExecutor = new QueryExecutor(); 
-        queryExecutor.getAllEntities();   
+        queryExecutor.getAllEntities(this);   
+        //queryExecutor.getAllSelectedEntityDirectPredicates(this, "dbo:Band");
+        queryExecutor.getAllSelectedEntityInversePredicates(this, "dbo:Band");
+        //queryExecutor.getAllSelectedEntityDirectPredicates(this, "dbo:Band");
+
+        function notify(answer){
+            console.log(answer);
+        }
+
     </script>
     <body></body>
 
