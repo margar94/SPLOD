@@ -12,27 +12,50 @@
 
 	</div>
 
+	<div id="predicati" >
+		<h1>Predicati</h1>
+		<ul id="predicatesList"></ul>
+
+	</div>
 	
-	<script>
-	
-		//var boxFiller = new BoxFiller();
-		var executor = new QueryExecutor();
-		executor.getAllEntities(function fillConceptsBox(concepts){
-			console.log(concepts);
-			var conceptsList = $("#conceptsList");
-			$.each(concepts, function(index){
-			element = concepts[index];
-			
-				var li = $("<li/>")
-					.attr('title', element.url)
-					.text(element.label)
-					.appendTo(conceptsList);
+	<script>	
+
+		var boxFiller;
+		$(document).ready(function(){
+			boxFiller = new BoxFiller();
+			fillConcepts();
+			fillPredicates();
+		});	
+		//var executor = new QueryExecutor();
+		function fillConcepts(){
+			boxFiller.retrieveConcepts(function fillConceptsBox(concepts){
+				console.log(concepts);
+				var conceptsList = $("#conceptsList");
+				$.each(concepts, function(index){
+					element = concepts[index];
+					var li = $("<li/>")
+						.attr('title', element.url)
+						.text(element.label)
+						.appendTo(conceptsList);
+				});
 			});
-		});
-		
-		function fillPredicatesBox(){
 		}
 		
+		
+		function fillPredicates(){
+			boxFiller.retrievePredicates(function fillPredicatesBox(predicates){
+				console.log(predicates);
+				var predicatesList = $("#predicatesList");
+				$.each(predicates, function(index){
+					element = predicates[index];
+					var li = $("<li/>")
+						.attr('title', element.url)
+						.text(element.label)
+						.appendTo(predicatesList);
+				});
+			});
+		}
+
 	</script>
 	
 </HTML>

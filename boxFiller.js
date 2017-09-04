@@ -6,8 +6,14 @@ var BoxFiller= function () {
 	
 };
 
-BoxFiller.prototype.retrieveConcepts = function(caller) {
-	executor.getAllEntities(this);
+BoxFiller.prototype.retrieveConcepts = function(callback) {
+	executor.getAllEntities(function(data){
+		callback(data);
+	});
 }
 
-
+BoxFiller.prototype.retrievePredicates = function(callback) {
+	executor.getAllPredicates(false, function(data){
+		callback(data);
+	});
+}
