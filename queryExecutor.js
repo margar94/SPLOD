@@ -20,7 +20,6 @@ var QueryExecutor = function (selectedEndpoint, selectedGraph) {
 
 	query = "";
 	queryUrl = "";
-	console.log('instance created for ' + url);
 };
 
 /*
@@ -232,14 +231,45 @@ QueryExecutor.prototype.getAllReversePredicates = function(limit, callback) {
 	This function get all entity's predicates.
 */
 
-QueryExecutor.prototype.getSelectedEntityPredicates = function(entity, limit, callback) {
+QueryExecutor.prototype.getSelectedEntityDirectPredicates = function(entity, limit, callback) {
 	query = " prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
 				" prefix owl: <http://www.w3.org/2002/07/owl#> " +
 				" SELECT DISTINCT ?url ?label " +
 				" WHERE { " + 
 					" GRAPH " + graph + " { " +
-						" ?s a " + entity + " . " +
-						" {?s1 ?url ?s} UNION {?s ?url ?s2} " +
+						" ?s a <" + entity + "> . " +
+						" ?s ?url ?s2. " +
+						" ?url rdfs:label ?label. " +
+						" FILTER (lang(?label) = 'en') " +
+					" } " +
+				" } ";
+	if(limit)
+		query += "LIMIT " + limit;  
+	
+   	queryUrl = endpoint+"?query="+ encodeURIComponent(query) +"&format=json";
+    $.ajax({
+        url: queryUrl,
+        success: function( data ) {
+			callback(handleResponseUrlAndLabel(data));
+        }
+    });	
+}
+
+/*
+	Tested query to get all Band's predicates.
+	SELECT DISTINCT ?p WHERE  { ?s a dbo:Band. {?s1 ?p ?s} UNION {?s ?p ?s2} }
+
+	This function get all entity's predicates.
+*/
+
+QueryExecutor.prototype.getSelectedEntityReversePredicates = function(entity, limit, callback) {
+	query = " prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
+				" prefix owl: <http://www.w3.org/2002/07/owl#> " +
+				" SELECT DISTINCT ?url ?label " +
+				" WHERE { " + 
+					" GRAPH " + graph + " { " +
+						" ?s a <" + entity + "> . " +
+						" ?s1 ?url ?s. " +
 						" ?url rdfs:label ?label. " +
 						" FILTER (lang(?label) = 'en') " +
 					" } " +
