@@ -120,6 +120,88 @@ QueryExecutor.prototype.getAllPredicates = function(limit, callback) {
 }
 
 /*
+	Tested query : 
+		prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+		prefix owl: <http://www.w3.org/2002/07/owl#> 
+		SELECT DISTINCT ?url ?label 
+		WHERE { 
+		GRAPH <http://dbpedia.org> { 
+		?s a owl:Thing.
+		?s ?url ?s2.
+		?url rdfs:label ?label. 
+		FILTER (lang(?label) = 'en') }  }
+		LIMIT 100
+*/
+
+QueryExecutor.prototype.getAllDirectPredicates = function(limit, callback) {
+	
+	query = " prefix owl: <http://www.w3.org/2002/07/owl#> " +
+			" SELECT DISTINCT ?url ?label " +
+			" WHERE { " + 
+				" GRAPH " + graph + " { " +
+					" ?s a owl:Thing. " +
+					" ?s ?url ?s2. " +
+					" ?url rdfs:label ?label. " +
+					" FILTER (lang(?label) = 'en') " +
+				" } " +
+			" } ";
+				
+				
+	if(limit)
+		query += "LIMIT " + limit;  
+	
+   	queryUrl = url+"?query="+ encodeURIComponent(query) +"&format=json";
+    $.ajax({
+        url: queryUrl,
+        success: function( data ) {
+			callback(handleResponseUrlAndLabel(data));
+        }
+    });	
+	
+}
+
+/*
+	Tested query : 
+		prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+		prefix owl: <http://www.w3.org/2002/07/owl#> 
+		SELECT DISTINCT ?url ?label 
+		WHERE { 
+		GRAPH <http://dbpedia.org> { 
+		?s a owl:Thing.
+		?s2 ?url ?s.
+		?url rdfs:label ?label. 
+		FILTER (lang(?label) = 'en') }  }
+		LIMIT 100
+*/
+
+QueryExecutor.prototype.getAllReversePredicates = function(limit, callback) {
+	
+	query = " prefix owl: <http://www.w3.org/2002/07/owl#> " +
+			" SELECT DISTINCT ?url ?label " +
+			" WHERE { " + 
+				" GRAPH " + graph + " { " +
+					" ?s a owl:Thing. " +
+					" ?s2 ?url ?s. " +
+					" ?url rdfs:label ?label. " +
+					" FILTER (lang(?label) = 'en') " +
+				" } " +
+			" } ";
+				
+				
+	if(limit)
+		query += "LIMIT " + limit;  
+	
+   	queryUrl = url+"?query="+ encodeURIComponent(query) +"&format=json";
+    $.ajax({
+        url: queryUrl,
+        success: function( data ) {
+			callback(handleResponseUrlAndLabel(data));
+        }
+    });	
+	
+}
+
+/*
 	Tested query to get all Band's predicates.
 	SELECT DISTINCT ?p WHERE  { ?s a dbo:Band. {?s1 ?p ?s} UNION {?s ?p ?s2} }
 
@@ -179,10 +261,10 @@ QueryExecutor.prototype.getAllSelectedEntityDirectPredicates = function(entity, 
 }
 
 /*
-	This function get all entity's inverse predicates.
+	This function get all entity's reverse predicates.
 */
 
-QueryExecutor.prototype.getAllSelectedEntityInversePredicates = function(entity, limit, callback) {
+QueryExecutor.prototype.getAllSelectedEntityReversePredicates = function(entity, limit, callback) {
 	query = " prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
 				" prefix owl: <http://www.w3.org/2002/07/owl#> " +
 				" SELECT DISTINCT ?url ?label " +
