@@ -26,33 +26,86 @@
 			fillConcepts();
 			fillPredicates();
 		});	
-		//var executor = new QueryExecutor();
+
 		function fillConcepts(){
 			boxFiller.retrieveConcepts(function fillConceptsBox(concepts){
-				console.log(concepts);
-				var conceptsList = $("#conceptsList");
-				$.each(concepts, function(index){
-					element = concepts[index];
-					var li = $("<li/>")
-						.attr('title', element.url)
-						.text(element.label)
-						.appendTo(conceptsList);
-				});
+				renderConcepts(concepts);
 			});
 		}
 		
-		
 		function fillPredicates(){
 			boxFiller.retrievePredicates(function fillPredicatesBox(predicates){
-				console.log(predicates);
-				var predicatesList = $("#predicatesList");
-				$.each(predicates, function(index){
-					element = predicates[index];
-					var li = $("<li/>")
-						.attr('title', element.url)
-						.text(element.label)
-						.appendTo(predicatesList);
-				});
+				renderPredicates(predicates);
+			});
+		}
+
+		function renderConcepts(concepts){
+			var conceptsList = $("#conceptsList");
+
+			$.each(concepts, function(index){
+				element = concepts[index];
+				var li = $("<li/>")
+					.attr('title', element.url)
+					.attr('meta-url', element.url)
+					.attr('meta-label', element.label)
+					.text(element.label)
+					.appendTo(conceptsList)
+					.on('click', function(){
+						boxFiller.updateConcepts($(this).meta-url, $(this).meta-label, renderConcepts());
+						boxFiller.updatePredicates(true, $(this).meta-url, $(this).meta-label, renderPredicates());
+					});
+			});
+		}
+
+		function renderPredicates(predicates){
+			var predicatesList = $("#predicatesList");
+
+			var directArray = predicates.directArray;
+			var reverseArray = predicates.reverseArray;
+			var attributesArray = predicates.attributesArray;
+			
+			//renderdirect
+			//renderrev
+			//render attr
+			$.each(attributesArray, function(index){
+				element = predicates[index];
+				article = "";
+				if("aeiouAEIOU".indexOf(element.label.charAt(0)) != -1)
+					article = "an";
+				else article = "a";
+
+				var li = $("<li/>")
+					.attr('title', element.url)
+					.attr('meta-url', element.url)
+					.attr('meta-label', element.label)
+					.text(element.label)
+					.appendTo(predicatesList)
+					.on('click', function(){
+						//disabilita i concetti
+						boxFiller.updatePredicates(false, $(this).meta-url, $(this).meta-label, $(this).meta-verb, $(this).meta-article, renderPredicates);
+					});
+			});
+
+			mergedPredicates = $.merge(directArray, reverseArray);
+			$.each(mergedPredicates, function(index){
+				element = predicates[index];
+				article = "";
+				if("aeiouAEIOU".indexOf(element.label.charAt(0)) != -1)
+					article = "an";
+				else article = "a";
+
+				var li = $("<li/>")
+					.attr('title', element.url)
+					.attr('meta-url', element.url)
+					.attr('meta-label', element.label)
+					.attr('meta-verb', element.verb)
+					.attr('meta-article', element.article)
+					.text(element.verb +" "+ article +" "+ element.label)
+					.appendTo(predicatesList)
+					.on('click', function(){
+						//disabilita i concetti
+						boxFiller.updatePredicates(false, $(this).meta-url, $(this).meta-label, $(this).meta-verb, $(this).meta-article, renderPredicates);
+					});
 			});
 		}
 
