@@ -20,8 +20,7 @@ BoxFiller.prototype.updateConcepts = function(entityUrl, entityLabel, callback){
 	queryVerbalizator.selectedConcept(entityUrl, entityLabel);
 }
 
-
-BoxFiller.prototype.updatePredicates = function(selectedConcept, predUrl, entityLabel, predVerb, predArticle, callback){
+BoxFiller.prototype.updatePredicates = function(selectedConcept, predUrl, entityLabel, predicateDirection, callback){
 	
 	var limit = false;
 	executor.getSelectedEntityPredicates(predUrl, limit, function(data){
@@ -29,12 +28,9 @@ BoxFiller.prototype.updatePredicates = function(selectedConcept, predUrl, entity
 	});
 
 	if(!selectedConcept)
-		queryVerbalizator.selectedPredicate(predUrl, predLabel, predVerb, predArticle);
+		queryVerbalizator.selectedPredicate(predUrl, predLabel, predicateDirection);
 }
 
-/*
-	aggiungere operatori
-*/
 BoxFiller.prototype.retrievePredicates = function(callback) {
 	var directData;
 	var reverseData;
@@ -70,3 +66,8 @@ BoxFiller.prototype.retrievePredicates = function(callback) {
 		callback(resultObj);
 	});
 }
+
+
+/*
+	aggiungere operatori
+*/
