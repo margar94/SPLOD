@@ -2,18 +2,18 @@
 	To show QueryExecutor interface : QueryExecutor.prototype
 */
 
-var url;
+var endpoint;
 var graph;
 var query; 
 var queryUrl;
 
-var QueryExecutor = function (endpoint, selectedGraph) {
+var QueryExecutor = function (selectedEndpoint, selectedGraph) {
 	if(!endpoint && !graph){
-		url = "http://dbpedia.org/sparql";
+		endpoint = "http://dbpedia.org/sparql";
 		graph = "<http://dbpedia.org>";
 	}
 	else{
-		url = endpoint;
+		endpoint = selectedEndpoint;
 		graph = selectedGraph;
 	}
 
@@ -38,7 +38,7 @@ QueryExecutor.prototype.getAllEntities = function(callback) {
 					" } " +
 				" } ";
 	
-   	queryUrl = url+"?query="+ encodeURIComponent(query) +"&format=json";
+   	queryUrl = endpoint+"?query="+ encodeURIComponent(query) +"&format=json";
     $.ajax({
         url: queryUrl,
         success: function( data ) {
@@ -63,7 +63,7 @@ QueryExecutor.prototype.getEntitySubclasses = function(url, callback) {
 					" } " +
 				" } ";
 	
-   	queryUrl = url+"?query="+ encodeURIComponent(query) +"&format=json";
+   	queryUrl = endpoint+"?query="+ encodeURIComponent(query) +"&format=json";
     $.ajax({
         url: queryUrl,
         success: function( data ) {
@@ -133,7 +133,7 @@ QueryExecutor.prototype.getAllPredicates = function(limit, callback) {
 	if(limit)
 		query += "LIMIT " + limit;  
 	
-   	queryUrl = url+"?query="+ encodeURIComponent(query) +"&format=json";
+   	queryUrl = endpoint+"?query="+ encodeURIComponent(query) +"&format=json";
     $.ajax({
         url: queryUrl,
         success: function( data ) {
@@ -174,7 +174,7 @@ QueryExecutor.prototype.getAllDirectPredicates = function(limit, callback) {
 	if(limit)
 		query += "LIMIT " + limit;  
 	
-   	queryUrl = url+"?query="+ encodeURIComponent(query) +"&format=json";
+   	queryUrl = endpoint+"?query="+ encodeURIComponent(query) +"&format=json";
     $.ajax({
         url: queryUrl,
         success: function( data ) {
@@ -215,7 +215,7 @@ QueryExecutor.prototype.getAllReversePredicates = function(limit, callback) {
 	if(limit)
 		query += "LIMIT " + limit;  
 	
-   	queryUrl = url+"?query="+ encodeURIComponent(query) +"&format=json";
+   	queryUrl = endpoint+"?query="+ encodeURIComponent(query) +"&format=json";
     $.ajax({
         url: queryUrl,
         success: function( data ) {
@@ -247,7 +247,7 @@ QueryExecutor.prototype.getSelectedEntityPredicates = function(entity, limit, ca
 	if(limit)
 		query += "LIMIT " + limit;  
 	
-   	queryUrl = url+"?query="+ encodeURIComponent(query) +"&format=json";
+   	queryUrl = endpoint+"?query="+ encodeURIComponent(query) +"&format=json";
     $.ajax({
         url: queryUrl,
         success: function( data ) {
@@ -275,7 +275,7 @@ QueryExecutor.prototype.getAllSelectedEntityDirectPredicates = function(entity, 
 	if(limit)
 		query += "LIMIT " + limit;  
 	
-   	queryUrl = url+"?query="+ encodeURIComponent(query) +"&format=json";
+   	queryUrl = endpoint+"?query="+ encodeURIComponent(query) +"&format=json";
     $.ajax({
         url: queryUrl,
         success: function( data ) {
@@ -303,13 +303,18 @@ QueryExecutor.prototype.getAllSelectedEntityReversePredicates = function(entity,
 	if(limit)
 		query += "LIMIT " + limit;  
 	
-   	queryUrl = url+"?query="+ encodeURIComponent(query) +"&format=json";
+   	queryUrl = endpoint+"?query="+ encodeURIComponent(query) +"&format=json";
     $.ajax({
         url: queryUrl,
         success: function( data ) {
 			callback(handleResponseUrlAndLabel(data));        
 		}
     });	
+}
+
+QueryExecutor.prototype.changeEndpoint = function (selectedEndpoint, selectedGraph) {
+	endpoint = selectedEndpoint;
+	graph = selectedGraph;
 }
 
 /*
