@@ -7,7 +7,7 @@ var concepts;
 
 var QueryVerbalizator = function () {
 	query = ""; 
-	concepts
+	concepts = "";
 };
 
 /*

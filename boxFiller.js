@@ -20,7 +20,7 @@ BoxFiller.prototype.updateConcepts = function(entityUrl, entityLabel, callback){
 	queryVerbalizator.selectedConcept(entityUrl, entityLabel);
 }
 
-BoxFiller.prototype.updatePredicates = function(selectedConcept, predUrl, entityLabel, predicateDirection, callback){
+BoxFiller.prototype.updatePredicates = function(selectedConcept, predUrl, predLabel, predicateDirection, callback){
 	
 	var limit = false;
 	executor.getSelectedEntityPredicates(predUrl, limit, function(data){
@@ -47,9 +47,9 @@ BoxFiller.prototype.retrievePredicates = function(callback) {
 	$.when(d1, d2).done(function(){
 
 		var resultObj = {
-			directArray,
-			reverseArray,
-			attributesArray = directData
+			directArray: [],
+			reverseArray: [],
+			attributesArray: directData
 		};
 
 		$.each(directData, function(index){
