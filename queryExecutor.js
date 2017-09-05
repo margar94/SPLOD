@@ -1,3 +1,7 @@
+/*
+	To show QueryExecutor interface : QueryExecutor.prototype
+*/
+
 var url;
 var graph;
 var query; 
@@ -44,9 +48,29 @@ QueryExecutor.prototype.getAllEntities = function(callback) {
 }
 
 /*
-	TODO : getSubclasses
+	Get entity subclasses.
+	@url : url of superclass  
 */
-
+QueryExecutor.prototype.getEntitySubclasses = function(url, callback) {
+	query = " prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
+				" prefix owl: <http://www.w3.org/2002/07/owl#> " +
+				" SELECT ?url ?label " +
+				" WHERE { " + 
+					" GRAPH " + graph + " { " +
+						" ?url rdfs:subClassOf <" + url +"> . " +
+						" ?url rdfs:label ?label. " +
+						" FILTER (lang(?label) = 'en') " +
+					" } " +
+				" } ";
+	
+   	queryUrl = url+"?query="+ encodeURIComponent(query) +"&format=json";
+    $.ajax({
+        url: queryUrl,
+        success: function( data ) {
+			callback(handleResponseUrlAndLabel(data));
+        }
+    });	
+}
 /*
 	TODO : entity that has subclasses
 */
@@ -208,7 +232,7 @@ QueryExecutor.prototype.getAllReversePredicates = function(limit, callback) {
 	This function get all entity's predicates.
 */
 
-QueryExecutor.prototype.getAllSelectedEntityPredicates = function(entity, limit, callback) {
+QueryExecutor.prototype.getSelectedEntityPredicates = function(entity, limit, callback) {
 	query = " prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
 				" prefix owl: <http://www.w3.org/2002/07/owl#> " +
 				" SELECT DISTINCT ?url ?label " +
@@ -303,3 +327,5 @@ function handleResponseUrlAndLabel(data) {
 	//console.log(results);
 	return results;
 }
+
+
