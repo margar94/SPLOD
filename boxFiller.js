@@ -65,6 +65,13 @@ BoxFiller.prototype.updatePredicates = function(selectedConcept, predUrl, predLa
 		queryVerbalizator.selectedPredicate(predUrl, predLabel, predicateDirection);
 }
 
+BoxFiller.prototype.updateConceptsFromReversePredicate = function(predUrl, predLabel, callback){
+	var limit = false;
+	queryVerbalizator.getPredicateObject(predUrl, limit, function(data){
+		callback(data);
+	})
+}
+
 BoxFiller.prototype.selectedAttribute(attributeUrl, attributeLabel){
 	queryVerbalizator.selectedPredicate(attributeUrl, attributeLabel, 'none');
 }

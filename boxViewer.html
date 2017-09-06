@@ -118,7 +118,7 @@
 					.text(element.verb +" "+ article +" "+ element.label)
 					.appendTo(predicatesList)
 					.on('click', function(){
-						//disabilita i concetti
+						boxFiller.updateConceptsFromReversePredicate($(this).attr('meta-url'), $(this).attr('meta-label'), renderConcepts);
 						boxFiller.updatePredicates(false, $(this).attr('meta-url'), $(this).attr('meta-label'), $(this).attr('meta-predicateDirection'), renderPredicates);
 					});
 			});
