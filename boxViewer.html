@@ -4,6 +4,7 @@
         <script src="queryExecutor.js"></script>
 		<script src="boxFiller.js"></script>
 		<script src="queryVerbalizator.js"></script>
+		<script src="languageManager.js"></script>
 	</head>
 	
 	
@@ -23,9 +24,11 @@
 
 		var boxFiller;
 		var queryVerbalizer;
+		var languageManager;
 		$(document).ready(function(){
 			boxFiller = new BoxFiller();
 			queryVerbalizator = new QueryVerbalizator();
+			languageManager = new LanguageManager();
 			fillConcepts();
 			fillPredicates();
 		});	
@@ -78,11 +81,8 @@
 		function renderDirectPredicates(directArray){
 			$.each(directArray, function(index){
 				element = directArray[index];
-				article = "";
-				if("aeiouAEIOU".indexOf(element.label.charAt(0)) != -1)
-					article = "an";
-				else article = "a";
-
+				article = languageManager.getArticle(element.label);
+				
 				var li = $("<li/>")
 					.attr('title', element.url)
 					.attr('meta-url', element.url)
@@ -103,10 +103,7 @@
 		function renderReversePredicates(reverseArray){
 			$.each(reverseArray, function(index){
 				element = reverseArray[index];
-				article = "";
-				if("aeiouAEIOU".indexOf(element.label.charAt(0)) != -1)
-					article = "an";
-				else article = "a";
+				article = languageManager.getArticle(element.label);
 
 				var li = $("<li/>")
 					.attr('title', element.url)
@@ -129,9 +126,7 @@
 			$.each(attributesArray, function(index){
 				element = attributesArray[index];
 				article = "";
-				if("aeiouAEIOU".indexOf(element.label.charAt(0)) != -1)
-					article = "an";
-				else article = "a";
+				article = languageManager.getArticle(element.label);
 
 				var li = $("<li/>")
 					.attr('title', element.url)

@@ -9,6 +9,8 @@ var queryNaturalLanguage;
 var elementsList; 
 var elementOnFocus;
 
+var languageManager;
+
 var QueryVerbalizator = function () {
 	querySparqlStructure = {
 		select : [], //select's field
@@ -18,11 +20,16 @@ var QueryVerbalizator = function () {
 		//langauge, default en
 	}; 
 	anonymousIndexVariable = 1;
+
 	queryLogicMap = {};
 	indexUrlList = [];
+
 	queryNaturalLanguage = "Give me everything...";
+
 	elementsList = [];
 	elementOnFocus = null;
+
+	languageManager = new LanguageManager();
 };
 
 /*
@@ -38,31 +45,43 @@ QueryVerbalizator.prototype.selectedConcept = function(selectedUrl, selectedLabe
 
 	var newLogicElement = {url: selectedUrl, label: selectedLabel, type:'concept', direction: false, cachedQuery: queryNaturalLanguage};
 	if(indexUrlList.length==0){ // selectedConcept is the query's subject 
+		
 		newLogicElement.myVerbalization = "every " + selectedLabel;
 		queryNaturalLanguage = "Give me " + newLogicElement.myVerbalization;
+
 		queryLogicMap[selectedUrl] = newLogicElement;
 		indexUrlList.push(selectedUrl);
+
 		triple = {s:'?s'+anonymousIndexVariable, p:'a', o:"<"+selectedUrl+">"};
 		anonymousIndexVariable++;
 		querySparqlStructure.where.push(triple);
+
 	}else if(queryLogicMap[elementOnFocus].type=='something'){ // selectedConcept completes reverse relation (replace placeholder something)
+		
 		newLogicElement.myVerbalization = selectedLabel;
 		queryNaturalLanguage = queryLogicMap[elementOnFocus].cachedQuery + newLogicElement.myVerbalization;
+		
 		queryLogicMap.removeAttr(elementOnFocus);
 		queryLogicMap[selectedUrl] = newLogicElement;
 		indexUrlList.push(selectedUrl);
+		
 		triple = querySparqlStructure.where.pop();
 		triple.o = "<"+selectedUrl+">";
 		querySparqlStructure.where.push(triple);
+
 	}else if(queryLogicMap[elementOnFocus].type=='concept'){ // before there is a concept, selected concecpt id a specialization of previous concept
-		//gestione articolo
-		newLogicElement.myVerbalization = "  that is ???" + selectedLabel;
-		queryNaturalLanguage += " " + newLogicElement.myVerbalization;
+		
+		var article = languageManager.getArticle(selectedLabel);		
+		newLogicElement.myVerbalization = " that is " + article + " " + selectedLabel;
+		queryNaturalLanguage += newLogicElement.myVerbalization;
+
 		queryLogicMap[selectedUrl] = newLogicElement;
 		indexUrlList.push(selectedUrl);
+
 		triple = querySparqlStructure.where.pop();
 		triple.o = "<"+selectedUrl+">";
 		querySparqlStructure.where.push(triple);
+
 	}else if(queryLogicMap[elementOnFocus].type=='predicate'){
 		//is it permitted??
 	}else if(queryLogicMap[elementOnFocus].type=='operator'){
