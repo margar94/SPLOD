@@ -31,19 +31,20 @@
 		});	
 
 		function fillConcepts(){
-			boxFiller.retrieveConcepts(function fillConceptsBox(concepts){
+			boxFiller.retrieveConcepts(function (concepts){
 				renderConcepts(concepts);
 			});
 		}
 		
 		function fillPredicates(){
-			boxFiller.retrievePredicates(function fillPredicatesBox(predicates){
+			boxFiller.retrievePredicates(function (predicates){
 				renderPredicates(predicates);
 			});
 		}
 
 		function renderConcepts(concepts){
 			var conceptsList = $("#conceptsList");
+			conceptsList.empty();
 
 			$.each(concepts, function(index){
 				element = concepts[index];
@@ -54,14 +55,15 @@
 					.text(element.label)
 					.appendTo(conceptsList)
 					.on('click', function(){
-						boxFiller.updateConcepts($(this).meta-url, $(this).meta-label, renderConcepts());
-						boxFiller.updatePredicates(true, $(this).meta-url, $(this).meta-label, false, renderPredicates());
+						boxFiller.updateConcepts($(this).attr('meta-url'), $(this).attr('meta-label'), renderConcepts);
+						boxFiller.updatePredicates(true, $(this).attr('meta-url'), $(this).attr('meta-label'), false, renderPredicates);
 					});
 			});
 		}
 
 		function renderPredicates(predicates){
 			var predicatesList = $("#predicatesList");
+			predicatesList.empty();
 
 			var directArray = predicates.directArray;
 			var reverseArray = predicates.reverseArray;
@@ -92,6 +94,7 @@
 					.appendTo(predicatesList)
 					.on('click', function(){
 						//disabilita i concetti
+
 						boxFiller.updatePredicates(false, $(this).attr('meta-url'), $(this).attr('meta-label'), $(this).attr('meta-predicateDirection'), renderPredicates);
 					});
 			});
@@ -122,6 +125,7 @@
 		}
 
 		function renderAttributes(attributesArray){
+
 			$.each(attributesArray, function(index){
 				element = attributesArray[index];
 				article = "";
@@ -138,7 +142,8 @@
 					.appendTo(predicatesList)
 					.on('click', function(){
 						//disabilita i concetti
-						boxFiller.updatePredicates(false, $(this).attr('meta-url'), $(this).attr('meta-label'), $(this).attr('meta-predicateDirection'), renderPredicates);
+						console.log($(this).attr('meta-url'));
+						boxFiller.selectedAttribute($(this).attr('meta-url'), $(this).attr('meta-label'));
 					});
 			});
 		}

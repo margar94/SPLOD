@@ -12,7 +12,7 @@ BoxFiller.prototype.retrieveConcepts = function(callback) {
 }
 
 BoxFiller.prototype.updateConcepts = function(entityUrl, entityLabel, callback){
-	
+	console.log(entityUrl);
 	executor.getEntitySubclasses(entityUrl, function(data){
 		callback(data);
 	});
@@ -22,13 +22,14 @@ BoxFiller.prototype.updateConcepts = function(entityUrl, entityLabel, callback){
 
 BoxFiller.prototype.updatePredicates = function(selectedConcept, predUrl, predLabel, predicateDirection, callback){
 	
-	var limit = false;
+	var limit = 20;
 	
 	var directData;
 	var reverseData;
 
 	var d1 = $.Deferred(executor.getSelectedEntityDirectPredicates(predUrl, limit, function(data){
 		directData = data;
+		console.log(data);
 		d1.resolve();
 	}));
 	var d2 = $.Deferred(executor.getSelectedEntityReversePredicates(predUrl, limit, function(data){
@@ -54,13 +55,18 @@ BoxFiller.prototype.updatePredicates = function(selectedConcept, predUrl, predLa
 			reverseData[index].verb = "that is";
 		});
 		resultObj.reverseArray = reverseData;
-
+		console.log(resultObj);
 		callback(resultObj);
 	});
 
 
+
 	if(!selectedConcept)
 		queryVerbalizator.selectedPredicate(predUrl, predLabel, predicateDirection);
+}
+
+BoxFiller.prototype.selectedAttribute(attributeUrl, attributeLabel){
+	queryVerbalizator.selectedPredicate(attributeUrl, attributeLabel, 'none');
 }
 
 BoxFiller.prototype.retrievePredicates = function(callback) {
