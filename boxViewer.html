@@ -56,7 +56,7 @@
 					.appendTo(conceptsList)
 					.on('click', function(){
 						boxFiller.updateConcepts($(this).attr('meta-url'), $(this).attr('meta-label'), renderConcepts);
-						boxFiller.updatePredicates(true, $(this).attr('meta-url'), $(this).attr('meta-label'), false, renderPredicates);
+						boxFiller.updatePredicatesFromConcept($(this).attr('meta-url'), $(this).attr('meta-label'), false, renderPredicates);
 					});
 			});
 		}
@@ -95,7 +95,7 @@
 					.on('click', function(){
 						//disabilita i concetti
 
-						boxFiller.updatePredicates(false, $(this).attr('meta-url'), $(this).attr('meta-label'), $(this).attr('meta-predicateDirection'), renderPredicates);
+						boxFiller.updatePredicatesFromPredicate($(this).attr('meta-url'), $(this).attr('meta-label'), $(this).attr('meta-predicateDirection'), renderPredicates);
 					});
 			});
 		}
@@ -119,7 +119,7 @@
 					.appendTo(predicatesList)
 					.on('click', function(){
 						boxFiller.updateConceptsFromReversePredicate($(this).attr('meta-url'), $(this).attr('meta-label'), renderConcepts);
-						boxFiller.updatePredicates(false, $(this).attr('meta-url'), $(this).attr('meta-label'), $(this).attr('meta-predicateDirection'), renderPredicates);
+						boxFiller.updatePredicatesFromPredicate($(this).attr('meta-url'), $(this).attr('meta-label'), $(this).attr('meta-predicateDirection'), renderPredicates);
 					});
 			});
 		}
