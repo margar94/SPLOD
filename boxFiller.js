@@ -69,10 +69,10 @@ BoxFiller.prototype.updateConceptsFromReversePredicate = function(predUrl, predL
 	var limit = false;
 	queryVerbalizator.getPredicateObject(predUrl, limit, function(data){
 		callback(data);
-	})
+	});
 }
 
-BoxFiller.prototype.selectedAttribute(attributeUrl, attributeLabel){
+BoxFiller.prototype.selectedAttribute = function(attributeUrl, attributeLabel){
 	queryVerbalizator.selectedPredicate(attributeUrl, attributeLabel, 'none');
 }
 

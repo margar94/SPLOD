@@ -321,6 +321,33 @@ QueryExecutor.prototype.getAllSelectedEntityDirectPredicates = function(entity, 
 }
 
 /*
+	This function get all object of the selected predicate.
+*/
+
+QueryExecutor.prototype.getPredicateObject = function(predicate, limit, callback) {
+	query = " prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
+				" prefix owl: <http://www.w3.org/2002/07/owl#> " +
+				" SELECT DISTINCT ?url ?label " +
+				" WHERE { " + 
+					" GRAPH " + graph + " { " +
+						" ?s <"+predicate+"> ?url. " +
+						" ?url rdfs:label ?label. " +
+						" FILTER (lang(?label) = 'en') " +
+					" } " +
+				" } ";
+	if(limit)
+		query += "LIMIT " + limit;  
+	
+   	queryUrl = endpoint+"?query="+ encodeURIComponent(query) +"&format=json";
+    $.ajax({
+        url: queryUrl,
+        success: function( data ) {
+			callback(handleResponseUrlAndLabel(data));
+        }
+    });	
+}
+
+/*
 	This function get all entity's reverse predicates.
 */
 
