@@ -198,7 +198,6 @@ QueryExecutor.prototype.getAllDirectPredicates = function(limit, callback) {
 */
 
 QueryExecutor.prototype.getAllReversePredicates = function(limit, callback) {
-	
 	query = " prefix owl: <http://www.w3.org/2002/07/owl#> " +
 			" SELECT DISTINCT ?url ?label " +
 			" WHERE { " + 
@@ -225,10 +224,20 @@ QueryExecutor.prototype.getAllReversePredicates = function(limit, callback) {
 }
 
 /*
-	Tested query to get all Band's predicates.
-	SELECT DISTINCT ?p WHERE  { ?s a dbo:Band. {?s1 ?p ?s} UNION {?s ?p ?s2} }
+	Tested query 
+		prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
+		prefix owl: <http://www.w3.org/2002/07/owl#> 
+		SELECT DISTINCT ?url ?label
+		WHERE { 
+		GRAPH <http://dbpedia.org> { 
+		?s <http://dbpedia.org/property/author> ?o  .
+		?o ?url ?s2.
+		?url rdfs:label ?label. 
+		FILTER (lang(?label) = 'en') 
+				
+		}}LIMIT 100
 
-	This function get all entity's predicates.
+	This function get all direct entity's predicates.
 */
 
 QueryExecutor.prototype.getSelectedEntityDirectPredicates = function(entity, limit, callback) {
@@ -237,8 +246,8 @@ QueryExecutor.prototype.getSelectedEntityDirectPredicates = function(entity, lim
 				" SELECT DISTINCT ?url ?label " +
 				" WHERE { " + 
 					" GRAPH " + graph + " { " +
-						" ?s a <" + entity + "> . " +
-						" ?s ?url ?s2. " +
+						" ?s <"+entity+"> ?o. " +
+						" ?o ?url ?s2. " +
 						" ?url rdfs:label ?label. " +
 						" FILTER (lang(?label) = 'en') " +
 					" } " +
@@ -256,10 +265,7 @@ QueryExecutor.prototype.getSelectedEntityDirectPredicates = function(entity, lim
 }
 
 /*
-	Tested query to get all Band's predicates.
-	SELECT DISTINCT ?p WHERE  { ?s a dbo:Band. {?s1 ?p ?s} UNION {?s ?p ?s2} }
-
-	This function get all entity's predicates.
+	This function get all reverse entity's predicates.
 */
 
 QueryExecutor.prototype.getSelectedEntityReversePredicates = function(entity, limit, callback) {
@@ -268,8 +274,8 @@ QueryExecutor.prototype.getSelectedEntityReversePredicates = function(entity, li
 				" SELECT DISTINCT ?url ?label " +
 				" WHERE { " + 
 					" GRAPH " + graph + " { " +
-						" ?s a <" + entity + "> . " +
-						" ?s1 ?url ?s. " +
+						" ?s <"+entity+"> ?o. " +
+						" ?s2 ?url ?o. " +
 						" ?url rdfs:label ?label. " +
 						" FILTER (lang(?label) = 'en') " +
 					" } " +
