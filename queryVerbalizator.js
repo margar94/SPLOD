@@ -55,10 +55,11 @@ QueryVerbalizator.prototype.selectedConcept = function(selectedUrl, selectedLabe
 	var newLogicElement = {url: selectedUrl, label: selectedLabel, type:'concept', 
 							direction: false, cachedQuery: queryNaturalLanguage};
 	queryLogicMap[selectedUrl] = newLogicElement;
-	//change this push
-	indexUrlList.push(selectedUrl);
 
 	if(elementOnFocus==null){ // selectedConcept is the query's subject 
+
+		//change this push (navigare l'albero per aggiungere cose????)
+		indexUrlList.push({url:selectedUrl, nomeDaCambiare:[]});
 		
 		newLogicElement.myVerbalization = "every " + selectedLabel;
 		queryNaturalLanguage = "Give me " + newLogicElement.myVerbalization;
