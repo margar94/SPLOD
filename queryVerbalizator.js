@@ -10,6 +10,8 @@ var somethingIndex;
 var elementsList; 
 var elementOnFocus;
 
+var predicatesCounter;
+
 var languageManager;
 
 var QueryVerbalizator = function () {
@@ -31,6 +33,8 @@ var QueryVerbalizator = function () {
 	elementsList = [];
 	elementOnFocus = null;
 
+	resetPredicatesCounter();
+
 	languageManager = new LanguageManager();
 };
 
@@ -40,6 +44,9 @@ var QueryVerbalizator = function () {
 	label : concept's label
 */
 QueryVerbalizator.prototype.selectedConcept = function(selectedUrl, selectedLabel) {
+
+	resetPredicatesCounter();
+
 	var newElement = {url: selectedUrl, label: selectedLabel, type: 'concept', direction: false};
 	elementsList.push(newElement);
 
@@ -90,10 +97,10 @@ QueryVerbalizator.prototype.selectedConcept = function(selectedUrl, selectedLabe
 
 	//notification to queryviewer
 
-	console.log(queryLogicMap);
-	console.log(querySparqlStructure);
+	//console.log(queryLogicMap);
+	//console.log(querySparqlStructure);
 	console.log(queryNaturalLanguage);
-	console.log(elementsList);
+	//console.log(elementsList);
 
 }
 
@@ -106,6 +113,9 @@ QueryVerbalizator.prototype.selectedConcept = function(selectedUrl, selectedLabe
 						 'reverse' if the selected predicate is a reverse relation.
 */
 QueryVerbalizator.prototype.selectedPredicate = function(selectedUrl, selectedLabel, predicateDirection) {
+	
+	predicatesCounter++;
+
 	var newElement = {url: selectedUrl, label: selectedLabel, type: 'predicate', direction: predicateDirection};
 	elementsList.push(newElement);
 
@@ -113,18 +123,24 @@ QueryVerbalizator.prototype.selectedPredicate = function(selectedUrl, selectedLa
 
 	var newLogicElement = {url: selectedUrl, label: selectedLabel, 
 							type:'predicate', direction: predicateDirection,
-							cachedQuery: queryNaturalLanguage};
+							cachedQuery: queryNaturalLanguage,
+							even: predicatesCounter%2};
 	queryLogicMap[selectedUrl] = newLogicElement;
 	//change this push
 	indexUrlList.push(selectedUrl);
 
 	var article = languageManager.getArticle(selectedLabel);
 	if(predicateDirection == 'direct'){
-		newLogicElement.myVerbalization = "that has " + article + " " + selectedLabel;
+
+		newLogicElement.myVerbalization = " that has " + article + " " + selectedLabel;
 		newLogicElement.myModifiedVerbalization = " whose " + selectedLabel;
+		newLogicElement.myTruncatedVerbalization = " has " + article + " " + selectedLabel;
+
 	}else if(predicateDirection == 'reverse'){
-		newLogicElement.myVerbalization = "that is " + article + " " + selectedLabel + " of ";
+
+		newLogicElement.myVerbalization = " that is " + article + " " + selectedLabel + " of ";
 		newLogicElement.myModifiedVerbalization = article + " " + selectedLabel + " of ";
+		newLogicElement.myTruncatedVerbalization = " is " + article + " " + selectedLabel + " of ";
 
 		var something = {label: 'thing'+somethingIndex, type:'something', direction:false};
 		elementsList.push(something);
@@ -133,11 +149,14 @@ QueryVerbalizator.prototype.selectedPredicate = function(selectedUrl, selectedLa
 								type:'something', direction:false,
 								cachedQuery:queryNaturalLanguage,
 								myVerbalization:'something'};
-		queryLogicMap[selectedUrl] = somethingLogic;
+		queryLogicMap['something'+somethingIndex] = somethingLogic;
 		//change this push
-		indexUrlList.push('something');
+		indexUrlList.push(something);
 
 		somethingIndex++;
+
+		resetPredicatesCounter();
+
 	}
 
 
@@ -148,41 +167,43 @@ QueryVerbalizator.prototype.selectedPredicate = function(selectedUrl, selectedLa
 			queryNaturalLanguage = "Give me " + article + selectedLabel + " of something "; 	
 		}
 
-		newLogicElement.even=0;
 	}else{
 		var precLogicElement = queryLogicMap[elementOnFocus];
+		console.log(precLogicElement);
 
-		if(precLogicElement.direction=='direct'){
+		if(queryLogicMap[elementOnFocus].type=='concept'){
 
-			newLogicElement.even=((precLogicElement.even+1)%2);
-			if(newLogicElement.even==1){
-				//gestione verbalizzaione troncata??
-				queryNaturalLanguage = precLogicElement.cachedQuery + precLogicElement.myModifiedVerbalization + "has " + article + " " + selectedLabel;
-			}else{
-				queryNaturalLanguage = newLogicElement.cachedQuery + newLogicElement.myVerbalization;
-			}
-		
-		}else if(queryLogicMap[elementOnFocus].type=='concept'){
-
-			queryNaturalLanguage = newLogicElement.cachedQuery + newLogicElement.myVerbalization;
+			queryNaturalLanguage = newLogicElement.cachedQuery + newLogicElement.myVerbalization + " ";
 
 		}else if(queryLogicMap[elementOnFocus].type=='something'){
 
 			if(predicateDirection == 'direct'){
-				queryNaturalLanguage = newLogicElement.cachedQuery + newLogicElement.myVerbalization;				
+				queryNaturalLanguage = newLogicElement.cachedQuery + newLogicElement.myVerbalization + " ";				
 			}
 			else{
 				//shift smg
-				queryNaturalLanguage = newLogicElement.cachedQuery + newLogicElement.myModifiedVerbalization;
+				queryNaturalLanguage = newLogicElement.cachedQuery + newLogicElement.myModifiedVerbalization + " ";
 			}
 
+		}else if(precLogicElement.direction=='direct'){
+			
+			if(newLogicElement.even==1){
+				queryNaturalLanguage = precLogicElement.cachedQuery + precLogicElement.myModifiedVerbalization + newLogicElement.myTruncatedVerbalization + " ";
+			}else{
+				queryNaturalLanguage = newLogicElement.cachedQuery + newLogicElement.myVerbalization + " ";
+			}
+		
 		}else{
 			console.log("Pozzo in selectedPredicate - queryVerbalizator");
 		}
 
 	} 
 
+	if(predicateDirection == 'reverse')
+		queryNaturalLanguage += " something ";
+
 	console.log(queryNaturalLanguage);
+	console.log(queryLogicMap);
 
 	//update query
 
@@ -191,4 +212,9 @@ QueryVerbalizator.prototype.selectedPredicate = function(selectedUrl, selectedLa
 	}else{
 		elementOnFocus = 'something'+(somethingIndex-1);
 	}
+
+}
+
+function resetPredicatesCounter(){
+	predicatesCounter = -1;
 }

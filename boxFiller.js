@@ -12,7 +12,7 @@ BoxFiller.prototype.retrieveConcepts = function(callback) {
 }
 
 BoxFiller.prototype.updateConcepts = function(entityUrl, entityLabel, callback){
-	console.log(entityUrl);
+	//console.log(entityUrl);
 	executor.getEntitySubclasses(entityUrl, function(data){
 		callback(data);
 	});
@@ -55,7 +55,7 @@ BoxFiller.prototype.updatePredicatesFromConcept = function(predUrl, predLabel, p
 			reverseData[index].verb = "that is";
 		});
 		resultObj.reverseArray = reverseData;
-		console.log(resultObj);
+		//console.log(resultObj);
 		callback(resultObj);
 	});
 
@@ -70,7 +70,7 @@ BoxFiller.prototype.updatePredicatesFromPredicate = function(predUrl, predLabel,
 
 	var d1 = $.Deferred(executor.getDirectPredicatesFromPredicate(predUrl, limit, function(data){
 		directData = data;
-		console.log(data);
+		//console.log(data);
 		d1.resolve();
 	}));
 	var d2 = $.Deferred(executor.getReversePredicatesFromPredicate(predUrl, limit, function(data){
@@ -96,7 +96,7 @@ BoxFiller.prototype.updatePredicatesFromPredicate = function(predUrl, predLabel,
 			reverseData[index].verb = "that is";
 		});
 		resultObj.reverseArray = reverseData;
-		console.log(resultObj);
+		//console.log(resultObj);
 		callback(resultObj);
 	});
 
