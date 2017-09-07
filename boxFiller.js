@@ -29,7 +29,7 @@ BoxFiller.prototype.updatePredicatesFromConcept = function(predUrl, predLabel, p
 
 	var d1 = $.Deferred(executor.getDirectPredicatesFromConcept(predUrl, limit, function(data){
 		directData = data;
-		console.log(data);
+		//console.log(data);
 		d1.resolve();
 	}));
 	var d2 = $.Deferred(executor.getReversePredicatesFromConcept(predUrl, limit, function(data){
