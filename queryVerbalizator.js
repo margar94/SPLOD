@@ -1,39 +1,21 @@
-// Object that keep info to build SPARQL query
-var querySparqlStructure;
-var anonymousIndexVariable;
-// Query in natural language and related info
+// Map that contains all the information to build query in natural language and in SPARQL
 var queryLogicMap;
-var indexUrlList;
-var queryNaturalLanguage;
 var somethingIndex;
+var rootQueryLogicMap;
 // List of elements in focus box
 var elementsList; 
 var elementOnFocus;
 
-var predicatesCounter;
-
 var languageManager;
 
 var QueryVerbalizator = function () {
-	querySparqlStructure = {
-		select : [], //select's field
-		where : [], 
-		limit : false,
-		//distinct
-		//langauge, default en
-	}; 
-	anonymousIndexVariable = 1;
-
 	queryLogicMap = {};
-	indexUrlList = [];
+	rootQueryLogicMap = null;
 
-	queryNaturalLanguage = "Give me everything...";
 	somethingIndex=1;
 
 	elementsList = [];
 	elementOnFocus = null;
-
-	resetPredicatesCounter();
 
 	languageManager = new LanguageManager();
 };
@@ -45,65 +27,56 @@ var QueryVerbalizator = function () {
 */
 QueryVerbalizator.prototype.selectedConcept = function(selectedUrl, selectedLabel) {
 
-	resetPredicatesCounter();
+	var verbalization = languageManager.verbalizeConcept(selectedLabel);
 
+	// new element in concept box
 	var newElement = {url: selectedUrl, label: selectedLabel, type: 'concept', direction: false};
 	elementsList.push(newElement);
 
-	var triple = {};
-
-	var newLogicElement = {url: selectedUrl, label: selectedLabel, type:'concept', 
-							direction: false, cachedQuery: queryNaturalLanguage};
+	// new element in logic map
+	var newLogicElement = {url: selectedUrl, label: selectedLabel, 
+						   type:'concept', direction: false, 
+						   verbalization: varbalization, 
+						   parent:null, children: []};
 	queryLogicMap[selectedUrl] = newLogicElement;
 
-	if(elementOnFocus==null){ // selectedConcept is the query's subject 
-
-		//change this push (navigare l'albero per aggiungere cose????)
-		indexUrlList.push({url:selectedUrl, nomeDaCambiare:[]});
+	if(rootQueryLogicMap == null){ // selectedConcept is the query's subject 
 		
-		newLogicElement.myVerbalization = "every " + selectedLabel;
-		queryNaturalLanguage = "Give me " + newLogicElement.myVerbalization;
+		rootQueryLogicMap = selectedUrl;
+		newLogicElement.verbalization.current = newLogicElement.verbalization.first;
 
-		triple = {s:'?s'+anonymousIndexVariable, p:'a', o:"<"+selectedUrl+">"};
-		anonymousIndexVariable++;
-		querySparqlStructure.where.push(triple);
+	}else{
 
-	}else if(queryLogicMap[elementOnFocus].type=='something'){ // selectedConcept completes reverse relation (replace placeholder something)
+		if(queryLogicMap[elementOnFocus].type=='something'){ // replace something
+			
+			var somethingLogicElement = queryLogicMap[elementOnFocus];
+			
+			//update newLogicElement
+			newLogicElement.children = somethingLogicElement.children;
+			newLogicElement.parent = somethingLogicElement.parent;
+
+			//update map
+			var indexSomething = $.inArray(somethingLogicElement.url, queryLogicMap[somethingLogicElement.parent].children);
+			queryLogicMap[somethingLogicElement.parent].children[indexSomething] = newLogicElement.url;
+			queryLogicMap.removeAttr(somethingLogicElement.url);
+
+		}else if(queryLogicMap[elementOnFocus].type=='concept'){ // concept refining
+
+			newLogicElement.verbalization.current = newLogicElement.verbalization.modified;
+
+		}else if(queryLogicMap[elementOnFocus].type=='predicate'){
+			//is it permitted??
+		}else if(queryLogicMap[elementOnFocus].type=='operator'){
+			//TODO
+		}
+
+	} 
 		
-		newLogicElement.myVerbalization = selectedLabel;
-		
-		queryNaturalLanguage = precLogicElement.cachedQuery + newLogicElement.myVerbalization;
-		somethingIndex--;
-console.log(queryNaturalLanguage);
-		queryLogicMap.removeAttr(elementOnFocus);
-		
-		triple = querySparqlStructure.where.pop();
-		triple.o = "<"+selectedUrl+">";
-		querySparqlStructure.where.push(triple);
-
-	}else if(queryLogicMap[elementOnFocus].type=='concept'){ // before there is a concept, selected concecpt id a specialization of previous concept
-		
-		var article = languageManager.getArticle(selectedLabel);		
-		newLogicElement.myVerbalization = " that is " + article + " " + selectedLabel;
-		queryNaturalLanguage += newLogicElement.myVerbalization;
-
-		triple = querySparqlStructure.where.pop();
-		triple.o = "<"+selectedUrl+">";
-		querySparqlStructure.where.push(triple);
-
-	}else if(queryLogicMap[elementOnFocus].type=='predicate'){
-		//is it permitted??
-	}else if(queryLogicMap[elementOnFocus].type=='operator'){
-		//TODO
-	}
-
 	elementOnFocus = selectedUrl;
 
 	//notification to queryviewer
 
-	//console.log(queryLogicMap);
-	//console.log(querySparqlStructure);
-	console.log(queryNaturalLanguage);
+	console.log(queryLogicMap);
 	//console.log(elementsList);
 
 }
@@ -112,121 +85,103 @@ console.log(queryNaturalLanguage);
 	Notify to the queryVerbalizator the selected predicate.
 	url : predicate's url
 	label : predicate's label
-	predicateDirection : 'none' if the selected predicate is a attribute,	
-						 'direct' if the selected predicate is a direct relation,
+	predicateDirection : 'direct' if the selected predicate is a direct relation,
 						 'reverse' if the selected predicate is a reverse relation.
 */
 QueryVerbalizator.prototype.selectedPredicate = function(selectedUrl, selectedLabel, predicateDirection) {
 	
-	predicatesCounter++;
+	var verbalization = languageManager.verbalizePredicate(selectedLabel, predicateDirection);
 
-	var newElement = {url: selectedUrl, label: selectedLabel, type: 'predicate', 
-						direction: predicateDirection};
+	// new element in concept box
+	var newElement = {url: selectedUrl, label: selectedLabel, type: 'predicate', direction: predicateDirection};
 	elementsList.push(newElement);
 
-	var triple = {};
-
+	// new element in logic map
 	var newLogicElement = {url: selectedUrl, label: selectedLabel, 
-							type:'predicate', direction: predicateDirection,
-							cachedQuery: queryNaturalLanguage,
-							even: predicatesCounter%2};
+						   type:'predicate', direction: predicateDirection, 
+						   verbalization: varbalization, 
+						   parent:null, children: []};
 	queryLogicMap[selectedUrl] = newLogicElement;
-	//change this push
-	indexUrlList.push(selectedUrl);
 
-	//standard operation, no matter of prec 
-	var article = languageManager.getArticle(selectedLabel);
-	if(predicateDirection == 'direct'){
+	var addSomething = false;
+	if(predicateDirection=='reverse')
+		addSomething = true;
 
-		newLogicElement.myVerbalization = " that has " + article + " " + selectedLabel;
-		newLogicElement.myModifiedVerbalization = " whose " + selectedLabel;
-		newLogicElement.myTruncatedVerbalization = " has " + article + " " + selectedLabel;
+	if(rootQueryLogicMap == null){ // first element selected
 
-	}else if(predicateDirection == 'reverse'){
-
-		newLogicElement.myVerbalization = " that is " + article + " " + selectedLabel + " of ";
-		newLogicElement.myModifiedVerbalization = article + " " + selectedLabel + " of ";
-		newLogicElement.myTruncatedVerbalization = " is " + article + " " + selectedLabel + " of ";
-
-		resetPredicatesCounter();
-
-	}
-
-	if(elementOnFocus==null){ //first element selected
-		if(predicateDirection=='direct'){
-			queryNaturalLanguage = "Give me everything " + newLogicElement.myVerbalization;
-		}else{
-			//insert something in map
-			queryNaturalLanguage = "Give me " + article + " " + selectedLabel + " of something "; 	
-		}
+		rootQueryLogicMap = selectedUrl;
+		newLogicElement.verbalization.current = newLogicElement.verbalization.first;
 
 	}else{ //there's a prec 
+
 		var precLogicElement = queryLogicMap[elementOnFocus];
-console.log(precLogicElement);
 
 		if(precLogicElement.type=='concept'){
 
-			queryNaturalLanguage = newLogicElement.cachedQuery + newLogicElement.myVerbalization + " ";
+			precLogicElement.children.push(selectedUrl);
 
 		}else if(precLogicElement.type=='something'){
 
 			if(predicateDirection == 'direct'){
-				queryNaturalLanguage = newLogicElement.cachedQuery + newLogicElement.myVerbalization + " ";				
+
+				precLogicElement.children.push(selectedUrl);
+
 			}
 			else{
-				//shift smg
-				queryNaturalLanguage = precLogicElement.cachedQuery + newLogicElement.myModifiedVerbalization;
-			}
 
+				newLogicElement.verbalization.current = newLogicElement.verbalization.modified;
+
+				//update map, shift something
+				var index = $.inArray(precLogicElement.url, precLogicElement.parent.children);
+				precLogicElement.parent.children.splice(index, 0, newLogicElement.url);
+				addSomething=false;
+
+			}
 		}else if(precLogicElement.direction=='direct'){
 			
-			if(newLogicElement.even==1){
-				queryNaturalLanguage = precLogicElement.cachedQuery + precLogicElement.myModifiedVerbalization + newLogicElement.myTruncatedVerbalization + " ";
-			}else{
-				queryNaturalLanguage = newLogicElement.cachedQuery + newLogicElement.myVerbalization + " ";
+			precLogicElement.children.push(newLogicElement);
+			var index = $.inArray(newLogicElement.url, precLogicElement.children);
+			if((index%2)==0){
+
+				precLogicElement.verbalization.current = precLogicElement.verbalization.modified;
+				newLogicElement.verbalization.current = newLogicElement.verbalization.truncated;
+
 			}
 		
 		}else{
 			console.log("Pozzo in selectedPredicate - queryVerbalizator");
 		}
 
-		if(predicateDirection == 'reverse'){
-			if(precLogicElement.type != 'something'){
-				var something = {label: 'thing'+somethingIndex, type:'something', direction:false};
-				elementsList.push(something);
-
-				var somethingLogic = {url:'something'+somethingIndex, label:'thing'+somethingIndex, 
-										type:'something', direction:false,
-										cachedQuery:queryNaturalLanguage,
-										myVerbalization:'something'};
-				queryLogicMap['something'+somethingIndex] = somethingLogic;
-				//change this push
-				indexUrlList.push(something);
-
-				somethingIndex++;
-			}
-
-		queryNaturalLanguage += "something ";
-		elementOnFocus = 'something' + (somethingIndex-1);
 	}
+		
+	if(addSomething){
 
-} 
+		var verbalization = languageManager.verbalizeSomething();
 
+		// new element in concept box
+		var something = {url:'something'+somethingIndex, label: 'thing'+somethingIndex, type:'something', direction:false};
+		elementsList.push(something);
 
+		// new element in logic map
+		var somethingLogic = {url:'something'+somethingIndex, label:'thing'+somethingIndex, 
+							  type:'something', direction:false,
+							  verbalization:verbalization,
+							  parent:null, children:[]};
+		queryLogicMap['something'+somethingIndex] = somethingLogic;
 
-console.log(queryNaturalLanguage);
-console.log(queryLogicMap);
+		queryLogicMap[selectedUrl].parent.children.push('something'+somethingIndex);	
 
-	//update query
+		elementOnFocus = 'something'+somethingIndex;
+		somethingIndex++;
+
+	}
 
 	if(predicateDirection == 'direct'){
 		elementOnFocus = selectedUrl;
-	}else{
-		elementOnFocus = 'something'+(somethingIndex-1);
-	}
+	} 
 
-}
+	//update query SPQRQL
+	//notify viewer
+	console.log(queryLogicMap);
 
-function resetPredicatesCounter(){
-	predicatesCounter = -1;
 }
