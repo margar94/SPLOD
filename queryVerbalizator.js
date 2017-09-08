@@ -31,6 +31,8 @@ var QueryVerbalizator = function () {
 */
 QueryVerbalizator.prototype.selectedConcept = function(selectedUrl, selectedLabel) {
 
+	console.log(selectedUrl + " - CONCEPT selected");
+
 	var verbalization = languageManager.verbalizeConcept(selectedLabel);
 	console.log(verbalization);
 
@@ -98,6 +100,8 @@ QueryVerbalizator.prototype.selectedConcept = function(selectedUrl, selectedLabe
 						 'reverse' if the selected predicate is a reverse relation.
 */
 QueryVerbalizator.prototype.selectedPredicate = function(selectedUrl, selectedLabel, predicateDirection) {
+
+	console.log(selectedUrl + " - PREDICATE selected - " + predicateDirection);
 	
 	var verbalization = languageManager.verbalizePredicate(selectedLabel, predicateDirection);
 
