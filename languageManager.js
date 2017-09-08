@@ -64,6 +64,7 @@ LanguageManager.prototype.verbalizePredicate = function(predicateLabel, predicat
 		verbalization.standard.push(predicateLabel + ' ');
 		verbalization.standard.push('of ');
 
+		verbalization.modified.push('');
 		verbalization.modified.push('the ' + predicateLabel + ' ');
 		verbalization.modified.push('of ');
 

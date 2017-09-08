@@ -2,6 +2,7 @@
 	var queryLogicStructure;
 	var queryLogicStructureRoot;
 	var visitStack;
+	var queryString;
 
 	function initQueryViewer(){
 		/*boxFiller = new BoxFiller();
@@ -14,25 +15,44 @@
 		if(queryLogicStructureRoot == null){
 			$('#queryNaturalLanguage').innerHTML = 'Give me...';
 		}else{
+			visitStack.push({type: 'endSpan', verbalization:{current: ['</span>']}, children:[] });
 			visitStack.push(queryLogicStructure[queryLogicStructureRoot]);
+			visitStack.push({type: 'startSpan', verbalization:{current: ['<span>']}, children:[] });
+
 			while(visitStack.length != 0){
 				var currentNode = visitStack.pop();
+				console.log(currentNode);
 				visit(currentNode);
 
 				for(var i = currentNode.children.length-1; i>=0; i--){
 					visitStack.push(queryLogicStructure[currentNode.children[i]]);
-					if(i != 0)
-						visitStack.push({type: 'newLine', verbalization:{current: ['<br>&emsp;']}, children:[] });
+					if(i != 0){
+						visitStack.push({type: 'newLine', verbalization:{current: ['<br>']}, children:[] });
+						//visitStack.push({type: 'newList', verbalization:{current: ['<ul>']}, children:[] });
+					}
 				}
 
 			}
-			//$.isEmptyObject(queryLogicStructure[queryLogicStructureRoot].children)
+
+			$('#queryNaturalLanguage')[0].innerHTML = queryString;
 		}
 	}
 
 	function visit(node){
-		//return current node
-		$('#queryNaturalLanguage')[0].innerHTML += node.verbalization.current.join('');
+		
+		if(node.type == 'something'){
+			queryString += '<span>' + node.verbalization.current[0] + '</span>';
+		}else if(node.type == 'concept'){
+			queryString += node.verbalization.current[0];
+			queryString += '<span class="conceptURI">' + node.verbalization.current[1] + '</span>';
+		}else if(node.type == 'predicate'){
+			queryString += node.verbalization.current[0];
+			queryString += '<span class="predicateURI">' + node.verbalization.current[1] + '</span>';
+			if(node.direction == 'reverse')
+				queryString += node.verbalization.current[2];
+		}else{
+			queryString += node.verbalization.current.join('');
+		}		
 
 	}
 
@@ -46,7 +66,7 @@
 		visitStack = [];
 		queryLogicStructureRoot = queryRoot;
 		queryLogicStructure = queryMap;
-		$('#queryNaturalLanguage')[0].innerHTML = 'Give me ';
+		queryString = 'Give me ';
 		renderQuery();
 	}
 	
