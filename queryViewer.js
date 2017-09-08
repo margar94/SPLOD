@@ -12,7 +12,7 @@
 	function renderQuery(){
 		//visit query implicit tree 
 		if(queryLogicStructureRoot == null){
-			$('queryNaturalLanguage').innerHtml = 'Give me...';
+			$('#queryNaturalLanguage').innerHTML = 'Give me...';
 		}else{
 			visitStack.push(queryLogicStructure[queryLogicStructureRoot]);
 			while(visitStack.length != 0){
@@ -21,7 +21,8 @@
 
 				for(var i = currentNode.children.length-1; i>=0; i--){
 					visitStack.push(queryLogicStructure[currentNode.children[i]]);
-					visitStack.push({type: 'newLine', verbalization:{current: ['\n']}, children:[] });
+					if(i != 0)
+						visitStack.push({type: 'newLine', verbalization:{current: ['<br>&emsp;']}, children:[] });
 				}
 
 			}
@@ -31,7 +32,7 @@
 
 	function visit(node){
 		//return current node
-		$('#queryNaturalLanguage').text($('#queryNaturalLanguage').text() + node.verbalization.current.join(''));
+		$('#queryNaturalLanguage')[0].innerHTML += node.verbalization.current.join('');
 
 	}
 
@@ -45,7 +46,7 @@
 		visitStack = [];
 		queryLogicStructureRoot = queryRoot;
 		queryLogicStructure = queryMap;
-		$('#queryNaturalLanguage').text('Give me ');
+		$('#queryNaturalLanguage')[0].innerHTML = 'Give me ';
 		renderQuery();
 	}
 	
