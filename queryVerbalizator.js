@@ -10,6 +10,8 @@ var languageManager;
 
 var queryViewer;
 
+var predicatesCounter;
+
 var QueryVerbalizator = function () {
 	queryLogicMap = {};
 	rootQueryLogicMap = null;
@@ -22,6 +24,8 @@ var QueryVerbalizator = function () {
 	languageManager = new LanguageManager();
 
 	queryViewer = new QueryViewer();
+
+	resetPredicatesCounter();
 };
 
 /*
@@ -32,6 +36,8 @@ var QueryVerbalizator = function () {
 QueryVerbalizator.prototype.selectedConcept = function(selectedUrl, selectedLabel) {
 
 	console.log(selectedUrl + " - CONCEPT selected");
+
+	resetPredicatesCounter();
 
 	var verbalization = languageManager.verbalizeConcept(selectedLabel);
 	console.log(verbalization);
@@ -87,7 +93,7 @@ QueryVerbalizator.prototype.selectedConcept = function(selectedUrl, selectedLabe
 
 	//notification to queryviewer
 
-	console.log(queryLogicMap);
+	//console.log(queryLogicMap);
 	//console.log(elementsList);
 
 }
@@ -102,6 +108,8 @@ QueryVerbalizator.prototype.selectedConcept = function(selectedUrl, selectedLabe
 QueryVerbalizator.prototype.selectedPredicate = function(selectedUrl, selectedLabel, predicateDirection) {
 
 	console.log(selectedUrl + " - PREDICATE selected - " + predicateDirection);
+
+	predicatesCounter++;
 	
 	var verbalization = languageManager.verbalizePredicate(selectedLabel, predicateDirection);
 
@@ -111,9 +119,9 @@ QueryVerbalizator.prototype.selectedPredicate = function(selectedUrl, selectedLa
 
 	// new element in logic map
 	var newLogicElement = {url: selectedUrl, label: selectedLabel, 
-						   type:'predicate', direction: predicateDirection, 
+						   type:'predicate', direction: predicateDirection, odd: (predicatesCounter%2),
 						   verbalization: verbalization, 
-						   parent:null, children: []};
+						   parent:null, children: [],};
 	queryLogicMap[selectedUrl] = newLogicElement;
 
 	var addSomething = false;
@@ -146,8 +154,6 @@ QueryVerbalizator.prototype.selectedPredicate = function(selectedUrl, selectedLa
 
 				newLogicElement.verbalization.current = newLogicElement.verbalization.modified;
 
-console.log(queryLogicMap[precLogicElement.parent]);
-console.log(queryLogicMap[precLogicElement.parent].children);
 				//update map, shift something
 				var index = $.inArray(precLogicElement.url, queryLogicMap[precLogicElement.parent].children);
 				queryLogicMap[precLogicElement.parent].children.splice(index, 0, newLogicElement.url);
@@ -160,8 +166,7 @@ console.log(queryLogicMap[precLogicElement.parent].children);
 			precLogicElement.children.push(selectedUrl);
 			newLogicElement.parent = precLogicElement.url;
 
-			var index = $.inArray(newLogicElement.url, precLogicElement.children);
-			if((index%2)==0){
+			if(newLogicElement.odd==0){
 
 				precLogicElement.verbalization.current = precLogicElement.verbalization.modified;
 				newLogicElement.verbalization.current = newLogicElement.verbalization.truncated;
@@ -198,6 +203,8 @@ console.log(queryLogicMap[precLogicElement.parent].children);
 		elementOnFocus = 'something'+somethingIndex;
 		somethingIndex++;
 
+		resetPredicatesCounter();
+
 	}
 
 	if(predicateDirection == 'direct'){
@@ -210,4 +217,8 @@ console.log(queryLogicMap[precLogicElement.parent].children);
 	//notify viewer
 	console.log(queryLogicMap);
 
+}
+
+function resetPredicatesCounter(){
+	predicatesCounter = 0;
 }

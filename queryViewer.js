@@ -11,8 +11,6 @@
 
 	function renderQuery(){
 		//visit query implicit tree 
-		console.log(queryLogicStructure);
-		console.log(queryLogicStructureRoot);
 		if(queryLogicStructureRoot == null){
 			$('queryNaturalLanguage').innerHtml = 'Give me...';
 		}else{
@@ -23,7 +21,7 @@
 
 				for(var i = currentNode.children.length-1; i>=0; i--){
 					visitStack.push(queryLogicStructure[currentNode.children[i]]);
-					visitStack.push({type: 'newLine', verbalization:{current: '\n'} });
+					visitStack.push({type: 'newLine', verbalization:{current: ['\n']}, children:[] });
 				}
 
 			}
@@ -47,6 +45,7 @@
 		visitStack = [];
 		queryLogicStructureRoot = queryRoot;
 		queryLogicStructure = queryMap;
+		$('#queryNaturalLanguage').text('Give me ');
 		renderQuery();
 	}
 	
