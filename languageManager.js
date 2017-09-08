@@ -16,7 +16,7 @@ LanguageManager.prototype.verbalizeConcept = function(conceptLabel){
 		modified: [],
 		truncated: [],
 		first: [],
-		current: "standard"};
+		current: []};
 
 	verbalization.standard.push(getArticle(conceptLabel) + ' ');
 	verbalization.standard.push(conceptLabel + ' ');
@@ -28,6 +28,8 @@ LanguageManager.prototype.verbalizeConcept = function(conceptLabel){
 	verbalization.first.push('every ');
 	verbalization.first.push(conceptLabel + ' ');
 
+	verbalization.current = verbalization.standard;
+
 }
 
 LanguageManager.prototype.verbalizePredicate = function(predicateLabel, predicateDirection){
@@ -36,7 +38,7 @@ LanguageManager.prototype.verbalizePredicate = function(predicateLabel, predicat
 		modified: [],
 		truncated: [],
 		first: [],
-		current: "standard"};
+		current: []};
 
 
 	if(predicateDirection == 'direct'){
@@ -71,5 +73,8 @@ LanguageManager.prototype.verbalizePredicate = function(predicateLabel, predicat
 		verbalization.first.push('of ');
 	}
 	
+	verbalization.current = verbalization.standard;
+	
+	return verbalization;
 
 }
