@@ -21,7 +21,8 @@ LanguageManager.prototype.verbalizeConcept = function(conceptLabel){
 	verbalization.standard.push(getArticle(conceptLabel) + ' ');
 	verbalization.standard.push(conceptLabel + ' ');
 
-	//verbalization.modiefied.push();
+	verbalization.modiefied.push('that is ' + getArticle(conceptLabel) + ' ');
+	verbalization.modiefied.push(conceptLabel + ' ');
 
 	//verbalization.truncated.push();
 
@@ -61,8 +62,8 @@ LanguageManager.prototype.verbalizePredicate = function(predicateLabel, predicat
 		verbalization.standard.push(predicateLabel + ' ');
 		verbalization.standard.push('of ');
 
+		verbalization.modiefied.push('the ' + predicateLabel + ' ');
 		verbalization.modiefied.push('of ');
-		verbalization.modiefied.push(predicateLabel + ' ');
 
 		verbalization.truncated.push('is the ');
 		verbalization.truncated.push(predicateLabel + ' ');
@@ -74,7 +75,20 @@ LanguageManager.prototype.verbalizePredicate = function(predicateLabel, predicat
 	}
 	
 	verbalization.current = verbalization.standard;
-	
+
+	return verbalization;
+
+}
+
+LanguageManager.prototype.verbalizeSomething = function(){
+
+	verbalization = {
+		standard: ['something'],
+		modified: [],
+		truncated: [],
+		first: [],
+		current: standard};
+
 	return verbalization;
 
 }
