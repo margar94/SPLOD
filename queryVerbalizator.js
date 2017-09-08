@@ -28,6 +28,7 @@ var QueryVerbalizator = function () {
 QueryVerbalizator.prototype.selectedConcept = function(selectedUrl, selectedLabel) {
 
 	var verbalization = languageManager.verbalizeConcept(selectedLabel);
+	console.log(verbalization);
 
 	// new element in concept box
 	var newElement = {url: selectedUrl, label: selectedLabel, type: 'concept', direction: false};
@@ -36,7 +37,7 @@ QueryVerbalizator.prototype.selectedConcept = function(selectedUrl, selectedLabe
 	// new element in logic map
 	var newLogicElement = {url: selectedUrl, label: selectedLabel, 
 						   type:'concept', direction: false, 
-						   verbalization: varbalization, 
+						   verbalization: verbalization, 
 						   parent:null, children: []};
 	queryLogicMap[selectedUrl] = newLogicElement;
 
@@ -47,22 +48,24 @@ QueryVerbalizator.prototype.selectedConcept = function(selectedUrl, selectedLabe
 
 	}else{
 
-		if(queryLogicMap[elementOnFocus].type=='something'){ // replace something
-			
-			var somethingLogicElement = queryLogicMap[elementOnFocus];
+		var precLogicElement = queryLogicMap[elementOnFocus];
+
+		if(precLogicElement.type=='something'){ // replace something
 			
 			//update newLogicElement
-			newLogicElement.children = somethingLogicElement.children;
-			newLogicElement.parent = somethingLogicElement.parent;
+			newLogicElement.children = precLogicElement.children;
+			newLogicElement.parent = precLogicElement.parent;
 
 			//update map
-			var indexSomething = $.inArray(somethingLogicElement.url, queryLogicMap[somethingLogicElement.parent].children);
-			queryLogicMap[somethingLogicElement.parent].children[indexSomething] = newLogicElement.url;
-			queryLogicMap.removeAttr(somethingLogicElement.url);
+			var indexSomething = $.inArray(precLogicElement.url, queryLogicMap[precLogicElement.parent].children);
+			queryLogicMap[precLogicElement.parent].children[indexSomething] = newLogicElement.url;
+			queryLogicMap.removeAttr(precLogicElement.url);
 
-		}else if(queryLogicMap[elementOnFocus].type=='concept'){ // concept refining
+		}else if(precLogicElement.type=='concept'){ // concept refining
 
 			newLogicElement.verbalization.current = newLogicElement.verbalization.modified;
+			newLogicElement.parent = precLogicElement.url;
+			precLogicElement.children.push(newLogicElement);
 
 		}else if(queryLogicMap[elementOnFocus].type=='predicate'){
 			//is it permitted??
@@ -99,7 +102,7 @@ QueryVerbalizator.prototype.selectedPredicate = function(selectedUrl, selectedLa
 	// new element in logic map
 	var newLogicElement = {url: selectedUrl, label: selectedLabel, 
 						   type:'predicate', direction: predicateDirection, 
-						   verbalization: varbalization, 
+						   verbalization: verbalization, 
 						   parent:null, children: []};
 	queryLogicMap[selectedUrl] = newLogicElement;
 
@@ -119,12 +122,14 @@ QueryVerbalizator.prototype.selectedPredicate = function(selectedUrl, selectedLa
 		if(precLogicElement.type=='concept'){
 
 			precLogicElement.children.push(selectedUrl);
+			newLogicElement.parent = precLogicElement.url;
 
 		}else if(precLogicElement.type=='something'){
 
 			if(predicateDirection == 'direct'){
 
 				precLogicElement.children.push(selectedUrl);
+				newLogicElement.parent = precLogicElement.url;
 
 			}
 			else{
@@ -134,12 +139,15 @@ QueryVerbalizator.prototype.selectedPredicate = function(selectedUrl, selectedLa
 				//update map, shift something
 				var index = $.inArray(precLogicElement.url, precLogicElement.parent.children);
 				precLogicElement.parent.children.splice(index, 0, newLogicElement.url);
+				newLogicElement.parent = precLogicElement.parent;
 				addSomething=false;
 
 			}
 		}else if(precLogicElement.direction=='direct'){
 			
 			precLogicElement.children.push(newLogicElement);
+			newLogicElement.parent = precLogicElement.url;
+
 			var index = $.inArray(newLogicElement.url, precLogicElement.children);
 			if((index%2)==0){
 

@@ -18,11 +18,11 @@ LanguageManager.prototype.verbalizeConcept = function(conceptLabel){
 		first: [],
 		current: []};
 
-	verbalization.standard.push(getArticle(conceptLabel) + ' ');
+	verbalization.standard.push(LanguageManager.prototype.getArticle(conceptLabel) + ' ');
 	verbalization.standard.push(conceptLabel + ' ');
 
-	verbalization.modiefied.push('that is ' + getArticle(conceptLabel) + ' ');
-	verbalization.modiefied.push(conceptLabel + ' ');
+	verbalization.modified.push('that is ' + LanguageManager.prototype.getArticle(conceptLabel) + ' ');
+	verbalization.modified.push(conceptLabel + ' ');
 
 	//verbalization.truncated.push();
 
@@ -30,6 +30,8 @@ LanguageManager.prototype.verbalizeConcept = function(conceptLabel){
 	verbalization.first.push(conceptLabel + ' ');
 
 	verbalization.current = verbalization.standard;
+
+	return verbalization;
 
 }
 
@@ -44,17 +46,17 @@ LanguageManager.prototype.verbalizePredicate = function(predicateLabel, predicat
 
 	if(predicateDirection == 'direct'){
 
-		verbalization.standard.push('that has ' + getArticle(predicateLabel) + ' ');
+		verbalization.standard.push('that has ' + LanguageManager.prototype.getArticle(predicateLabel) + ' ');
 		verbalization.standard.push(predicateLabel + ' ');
 
-		verbalization.modiefied.push('whose ');
-		verbalization.modiefied.push(predicateLabel + ' ');
+		verbalization.modified.push('whose ');
+		verbalization.modified.push(predicateLabel + ' ');
 
-		verbalization.truncated.push('has ' + getArticle(predicateLabel) + ' ');
+		verbalization.truncated.push('has ' + LanguageManager.prototype.getArticle(predicateLabel) + ' ');
 		verbalization.truncated.push(predicateLabel + ' ');
 
 		verbalization.first.push('everything that has ');
-		verbalization.first.push(conceptLabel + ' ');
+		verbalization.first.push(predicateLabel + ' ');
 
 	}else if(predicateDirection == 'reverse'){
 
@@ -62,15 +64,15 @@ LanguageManager.prototype.verbalizePredicate = function(predicateLabel, predicat
 		verbalization.standard.push(predicateLabel + ' ');
 		verbalization.standard.push('of ');
 
-		verbalization.modiefied.push('the ' + predicateLabel + ' ');
-		verbalization.modiefied.push('of ');
+		verbalization.modified.push('the ' + predicateLabel + ' ');
+		verbalization.modified.push('of ');
 
 		verbalization.truncated.push('is the ');
 		verbalization.truncated.push(predicateLabel + ' ');
 		verbalization.truncated.push('of ');
 
 		verbalization.first.push('the ');
-		verbalization.first.push(conceptLabel + ' ');
+		verbalization.first.push(predicateLabel + ' ');
 		verbalization.first.push('of ');
 	}
 	
@@ -87,7 +89,7 @@ LanguageManager.prototype.verbalizeSomething = function(){
 		modified: [],
 		truncated: [],
 		first: [],
-		current: standard};
+		current: ['something']};
 
 	return verbalization;
 
