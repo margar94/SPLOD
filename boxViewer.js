@@ -55,6 +55,12 @@
 	}
 
 	function renderDirectPredicates(directArray){
+
+		var li = $("<li/>")
+			.css('backgroundColor', 'yellow')
+			.text('Direct predicates')
+			.appendTo(predicatesList);
+
 		$.each(directArray, function(index){
 			element = directArray[index];
 			article = languageManager.getArticle(element.label);
@@ -77,6 +83,12 @@
 	}
 
 	function renderReversePredicates(reverseArray){
+
+		var li = $("<li/>")
+			.css('backgroundColor', 'yellow')
+			.text('Reverse predicates')
+			.appendTo(predicatesList);
+
 		$.each(reverseArray, function(index){
 			element = reverseArray[index];
 			article = languageManager.getArticle(element.label);
@@ -98,6 +110,11 @@
 	}
 
 	function renderAttributes(attributesArray){
+
+		var li = $("<li/>")
+			.css('backgroundColor', 'yellow')
+			.text('Attributes')
+			.appendTo(predicatesList);
 
 		$.each(attributesArray, function(index){
 			element = attributesArray[index];
