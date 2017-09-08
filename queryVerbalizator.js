@@ -40,7 +40,6 @@ QueryVerbalizator.prototype.selectedConcept = function(selectedUrl, selectedLabe
 	resetPredicatesCounter();
 
 	var verbalization = languageManager.verbalizeConcept(selectedLabel);
-	console.log(verbalization);
 
 	// new element in concept box
 	var newElement = {url: selectedUrl, label: selectedLabel, type: 'concept', direction: false};
@@ -71,7 +70,8 @@ QueryVerbalizator.prototype.selectedConcept = function(selectedUrl, selectedLabe
 			//update map
 			var indexSomething = $.inArray(precLogicElement.url, queryLogicMap[precLogicElement.parent].children);
 			queryLogicMap[precLogicElement.parent].children[indexSomething] = newLogicElement.url;
-			queryLogicMap.removeAttr(precLogicElement.url);
+			delete queryLogicMap[precLogicElement.url];
+			
 
 		}else if(precLogicElement.type=='concept'){ // concept refining
 
@@ -194,11 +194,8 @@ QueryVerbalizator.prototype.selectedPredicate = function(selectedUrl, selectedLa
 							  parent:null, children:[]};
 		queryLogicMap['something'+somethingIndex] = somethingLogic;
 
-		console.log(queryLogicMap[selectedUrl]);
-		console.log(queryLogicMap[selectedUrl].parent);
-		console.log(queryLogicMap[queryLogicMap[selectedUrl].parent].children);
-		queryLogicMap[queryLogicMap[selectedUrl].parent].children.push('something'+somethingIndex);	
-		somethingLogic.parent = selectedUrl;
+		queryLogicMap[selectedUrl].children.push(somethingLogic.url);	
+		queryLogicMap[somethingLogic.url].parent = selectedUrl;
 
 		elementOnFocus = 'something'+somethingIndex;
 		somethingIndex++;
@@ -215,7 +212,7 @@ QueryVerbalizator.prototype.selectedPredicate = function(selectedUrl, selectedLa
 
 	//update query SPQRQL
 	//notify viewer
-	console.log(queryLogicMap);
+	//console.log(queryLogicMap);
 
 }
 
