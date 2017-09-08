@@ -1,1 +1,67 @@
-console.log("FIRST TRY");
+<HTML>
+	 <head>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+        <script src="queryExecutor.js"></script>
+		<script src="boxFiller.js"></script>
+		<script src="queryVerbalizator.js"></script>
+		<script src="languageManager.js"></script>
+
+		<script src="boxViewer.js"></script>
+		<script src="queryViewer.js"></script>
+		<script src="resultViewer.js"></script>
+
+		<style>
+			div#queryNaturalLanguage {
+				margin: 5px;
+			    border: 2px solid blue;
+			    border-radius: 5px;
+			}
+
+			div#concepts {
+				margin: 5px;
+			    border: 2px solid green;
+			    border-radius: 5px;
+			}
+
+			div#predicates {
+				margin: 5px;
+			    border: 2px solid yellow;
+			    border-radius: 5px;
+			}
+		</style>
+
+	</head>
+	<body>
+			
+		<div id="queryNaturalLanguage">
+			<span id="span1">Give me </span>
+		</div>
+		
+		<div id="concepts">
+			<h1>Concetti</h1>
+			<ul id="conceptsList"></ul>
+
+		</div>
+
+		<div id="predicates">
+			<h1>Predicati</h1>
+			<ul id="predicatesList"></ul>
+
+		</div>
+
+	</body>
+
+	<script>
+		
+		$(document).ready(function(){
+			initBoxViewer();
+			initQueryViewer();
+			initResultViewer();
+
+			fillConcepts();
+			//fillPredicates();
+		});
+
+	</script>
+
+</HTML>
