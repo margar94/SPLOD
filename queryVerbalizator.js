@@ -8,6 +8,8 @@ var elementOnFocus;
 
 var languageManager;
 
+var queryViewer;
+
 var QueryVerbalizator = function () {
 	queryLogicMap = {};
 	rootQueryLogicMap = null;
@@ -18,6 +20,8 @@ var QueryVerbalizator = function () {
 	elementOnFocus = null;
 
 	languageManager = new LanguageManager();
+
+	queryViewer = new QueryViewer();
 };
 
 /*
@@ -65,7 +69,7 @@ QueryVerbalizator.prototype.selectedConcept = function(selectedUrl, selectedLabe
 
 			newLogicElement.verbalization.current = newLogicElement.verbalization.modified;
 			newLogicElement.parent = precLogicElement.url;
-			precLogicElement.children.push(newLogicElement);
+			precLogicElement.children.push(selectedUrl);
 
 		}else if(queryLogicMap[elementOnFocus].type=='predicate'){
 			//is it permitted??
@@ -76,6 +80,8 @@ QueryVerbalizator.prototype.selectedConcept = function(selectedUrl, selectedLabe
 	} 
 		
 	elementOnFocus = selectedUrl;
+
+	queryViewer.updateQuery(rootQueryLogicMap, queryLogicMap);
 
 	//notification to queryviewer
 
@@ -136,16 +142,18 @@ QueryVerbalizator.prototype.selectedPredicate = function(selectedUrl, selectedLa
 
 				newLogicElement.verbalization.current = newLogicElement.verbalization.modified;
 
+console.log(queryLogicMap[precLogicElement.parent]);
+console.log(queryLogicMap[precLogicElement.parent].children);
 				//update map, shift something
-				var index = $.inArray(precLogicElement.url, precLogicElement.parent.children);
-				precLogicElement.parent.children.splice(index, 0, newLogicElement.url);
+				var index = $.inArray(precLogicElement.url, queryLogicMap[precLogicElement.parent].children);
+				queryLogicMap[precLogicElement.parent].children.splice(index, 0, newLogicElement.url);
 				newLogicElement.parent = precLogicElement.parent;
 				addSomething=false;
 
 			}
 		}else if(precLogicElement.direction=='direct'){
 			
-			precLogicElement.children.push(newLogicElement);
+			precLogicElement.children.push(selectedUrl);
 			newLogicElement.parent = precLogicElement.url;
 
 			var index = $.inArray(newLogicElement.url, precLogicElement.children);
@@ -177,7 +185,11 @@ QueryVerbalizator.prototype.selectedPredicate = function(selectedUrl, selectedLa
 							  parent:null, children:[]};
 		queryLogicMap['something'+somethingIndex] = somethingLogic;
 
-		queryLogicMap[selectedUrl].parent.children.push('something'+somethingIndex);	
+		console.log(queryLogicMap[selectedUrl]);
+		console.log(queryLogicMap[selectedUrl].parent);
+		console.log(queryLogicMap[queryLogicMap[selectedUrl].parent].children);
+		queryLogicMap[queryLogicMap[selectedUrl].parent].children.push('something'+somethingIndex);	
+		somethingLogic.parent = selectedUrl;
 
 		elementOnFocus = 'something'+somethingIndex;
 		somethingIndex++;
@@ -187,6 +199,8 @@ QueryVerbalizator.prototype.selectedPredicate = function(selectedUrl, selectedLa
 	if(predicateDirection == 'direct'){
 		elementOnFocus = selectedUrl;
 	} 
+
+	queryViewer.updateQuery(rootQueryLogicMap, queryLogicMap);
 
 	//update query SPQRQL
 	//notify viewer
