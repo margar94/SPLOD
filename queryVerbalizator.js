@@ -72,7 +72,7 @@ QueryVerbalizator.prototype.selectedConcept = function(selectedUrl, selectedLabe
 		
 		newLogicElement.myVerbalization = selectedLabel;
 		
-		queryNaturalLanguage = newLogicElement.cachedQuery.substring(0, newLogicElement.cachedQuery.length-10) + newLogicElement.myVerbalization;
+		queryNaturalLanguage = precLogicElement.cachedQuery + newLogicElement.myVerbalization;
 		somethingIndex--;
 console.log(queryNaturalLanguage);
 		queryLogicMap.removeAttr(elementOnFocus);
@@ -156,7 +156,8 @@ QueryVerbalizator.prototype.selectedPredicate = function(selectedUrl, selectedLa
 		if(predicateDirection=='direct'){
 			queryNaturalLanguage = "Give me everything " + newLogicElement.myVerbalization;
 		}else{
-			queryNaturalLanguage = "Give me " + article + selectedLabel + " of something "; 	
+			//insert something in map
+			queryNaturalLanguage = "Give me " + article + " " + selectedLabel + " of something "; 	
 		}
 
 	}else{ //there's a prec 
@@ -174,7 +175,7 @@ console.log(precLogicElement);
 			}
 			else{
 				//shift smg
-				queryNaturalLanguage = newLogicElement.cachedQuery.substring(0, newLogicElement.cachedQuery.length-10) + newLogicElement.myModifiedVerbalization;
+				queryNaturalLanguage = precLogicElement.cachedQuery + newLogicElement.myModifiedVerbalization;
 			}
 
 		}else if(precLogicElement.direction=='direct'){
