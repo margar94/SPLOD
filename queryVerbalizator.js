@@ -93,7 +93,7 @@ QueryVerbalizator.prototype.selectedConcept = function(selectedUrl, selectedLabe
 
 	//notification to queryviewer
 
-	//console.log(queryLogicMap);
+	console.log(queryLogicMap);
 	//console.log(elementsList);
 
 }
