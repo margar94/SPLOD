@@ -155,9 +155,12 @@ QueryVerbalizator.prototype.selectedPredicate = function(selectedUrl, selectedLa
 				newLogicElement.verbalization.current = newLogicElement.verbalization.modified;
 
 				//update map, shift something
-				var index = $.inArray(precLogicElement.url, queryLogicMap[precLogicElement.parent].children);
-				queryLogicMap[precLogicElement.parent].children.splice(index, 0, newLogicElement.url);
 				newLogicElement.parent = precLogicElement.parent;
+				precLogicElement.parent = newLogicElement.url;
+				newLogicElement.children.push(precLogicElement.url);
+				var index = $.inArray(precLogicElement.url, queryLogicMap[newLogicElement.parent].children);
+				queryLogicMap[newLogicElement.parent].children[index] = newLogicElement.url;
+				
 				addSomething=false;
 
 			}
