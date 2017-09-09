@@ -9,11 +9,11 @@ var QueryBuilder = function () {
 	counter=1;
 }
 
-QueryBuilder.prototype.updateQuery = function(queryLogicMap, queryLogicRoot){
+QueryBuilder.prototype.updateQuery = function(queryLogicRoot, queryLogicMap){
 	queryLogicStructure = queryLogicMap;
 	queryLogicStructureRoot = queryLogicRoot;
 	visitStack = [];
-	querySPARQL={select:'', where:''}; //add other field
+	querySPARQL = {select:'', where:''}; //add other field
 	buildQuery();
 }
 
@@ -22,19 +22,18 @@ function buildQuery(){
 	//visit query implicit tree 
 	if(queryLogicStructureRoot != null){
 		
-		queryLogicStructure[queryLogicStructureRoot].variable = "?"+queryLogicStructure[queryLogicStructureRoot].Label + "_" + counter++;
+		queryLogicStructure[queryLogicStructureRoot].variable = "?"+queryLogicStructure[queryLogicStructureRoot].label.replace( /\s/g, "") + "_" + counter++;
 		visitStack.push(queryLogicStructure[queryLogicStructureRoot]);
 
 		while(visitStack.length != 0){
 			var currentNode = visitStack.pop();
-			console.log(currentNode);
-			visit(currentNode);
+			visitSPARQL(currentNode);
 
 			for(var i = currentNode.children.length-1; i>=0; i--){
 				if(queryLogicStructure[currentNode.children[i]].type=='concept')
 					queryLogicStructure[currentNode.children[i]].variable = "?"+currentNode.variable;
 				else
-					queryLogicStructure[currentNode.children[i]].variable = "?"+queryLogicStructure[currentNode.children[i]].label + "_" + counter++;
+					queryLogicStructure[currentNode.children[i]].variable = "?"+queryLogicStructure[currentNode.children[i]].label.replace( /\s/g, "") + "_" + counter++;
 
 				visitStack.push(queryLogicStructure[currentNode.children[i]]);
 			}
@@ -44,8 +43,7 @@ function buildQuery(){
 	console.log(querySPARQL);
 }
 
-function visit(node){
-	
+function visitSPARQL(node){
 	if(node.type == 'something'){
 		// ...
 	}else if(node.type == 'concept'){

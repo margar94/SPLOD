@@ -21,8 +21,7 @@
 
 			while(visitStack.length != 0){
 				var currentNode = visitStack.pop();
-				console.log(currentNode);
-				visit(currentNode);
+				visitRenderer(currentNode);
 
 				for(var i = currentNode.children.length-1; i>=0; i--){
 					visitStack.push(queryLogicStructure[currentNode.children[i]]);
@@ -38,7 +37,7 @@
 		}
 	}
 
-	function visit(node){
+	function visitRenderer(node){
 		
 		if(node.type == 'something'){
 			queryString += '<span>' + node.verbalization.current[0] + '</span>';

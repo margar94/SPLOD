@@ -12,6 +12,8 @@ var queryViewer;
 
 var predicatesCounter;
 
+var queryBuilder;
+
 var QueryVerbalizator = function () {
 	queryLogicMap = {};
 	rootQueryLogicMap = null;
@@ -24,6 +26,8 @@ var QueryVerbalizator = function () {
 	languageManager = new LanguageManager();
 
 	queryViewer = new QueryViewer();
+
+	queryBuilder = new QueryBuilder();
 
 	resetPredicatesCounter();
 };
@@ -90,10 +94,10 @@ QueryVerbalizator.prototype.selectedConcept = function(selectedUrl, selectedLabe
 	elementOnFocus = selectedUrl;
 
 	queryViewer.updateQuery(rootQueryLogicMap, queryLogicMap);
-
+	queryBuilder.updateQuery(rootQueryLogicMap, queryLogicMap);
 	//notification to queryviewer
 
-	console.log(queryLogicMap);
+	//console.log(queryLogicMap);
 	//console.log(elementsList);
 
 }
@@ -212,6 +216,7 @@ QueryVerbalizator.prototype.selectedPredicate = function(selectedUrl, selectedLa
 	} 
 
 	queryViewer.updateQuery(rootQueryLogicMap, queryLogicMap);
+	queryBuilder.updateQuery(rootQueryLogicMap, queryLogicMap);
 
 	//update query SPQRQL
 	//notify viewer
