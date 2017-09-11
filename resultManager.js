@@ -8,7 +8,18 @@ var ResultManager = function () {
 
 ResultManager.prototype.queryResult = function(results){
 
-	console.log(results);
-	renderResult(results);
+	/*var aggregatedResults = {};
+	$.each(results, function(index){
+		var element = results[index];
 
+		for(field in element) {
+			if(!aggregatedResults.hasOwnProperty(field))
+				aggregatedResults[field] = [];
+			aggregatedResults[field].push(element[field].value);
+		}
+	});
+
+	renderResult(aggregatedResults);
+*/
+	renderResult(results);
 }

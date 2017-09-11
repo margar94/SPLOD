@@ -47,6 +47,14 @@
 			    display: inline-block;
 			}
 
+			div#resultsTableBox {
+				margin-top: 550px;
+				border: 2px solid red;
+			    border-radius: 5px;
+			    height: 500px;
+			    overflow: scroll;
+			}
+
 		</style>
 
 	</head>
@@ -67,17 +75,23 @@
 			</span>-->
 
 		</div>
-		
-		<div id="concepts">
-			<h1>Concetti</h1>
-			<ul id="conceptsList"></ul>
+		<div>
+			<div id="concepts">
+				<h1>Concetti</h1>
+				<ul id="conceptsList"></ul>
 
+			</div>
+
+			<div id="predicates">
+				<h1>Predicati</h1>
+				<ul id="predicatesList"></ul>
+
+			</div>
 		</div>
 
-		<div id="predicates">
-			<h1>Predicati</h1>
-			<ul id="predicatesList"></ul>
-
+		<div id="resultsTableBox">
+			<table id="resultsTable">
+			</table>
 		</div>
 
 	</body>
