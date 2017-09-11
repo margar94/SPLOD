@@ -5,8 +5,11 @@ var visitStack;
 var querySPARQL;
 var counter;
 
+var executor;
+
 var QueryBuilder = function () {
-	counter=1;
+	counter = 1;
+	executor = new QueryExecutor();
 }
 
 QueryBuilder.prototype.updateQuery = function(queryLogicRoot, queryLogicMap){
@@ -38,6 +41,8 @@ function buildQuery(){
 				visitStack.push(queryLogicStructure[currentNode.children[i]]);
 			}
 		}
+
+		executor.executeUserQuery(querySPARQL);
 	}
 
 	console.log(querySPARQL);

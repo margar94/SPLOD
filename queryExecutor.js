@@ -427,6 +427,14 @@ QueryExecutor.prototype.getAllSelectedEntityReversePredicates = function(entity,
     });	
 }
 
+//querySPARQL = {select:' ', where: ' '}
+QueryExecute.prototype.executeUserQuery(querySPARQL){
+	// execute query
+
+	var result = {};
+	resultManager.queryResult(result);
+}
+
 QueryExecutor.prototype.changeEndpoint = function (selectedEndpoint, selectedGraph) {
 	endpoint = selectedEndpoint;
 	graph = selectedGraph;
@@ -438,14 +446,14 @@ QueryExecutor.prototype.changeEndpoint = function (selectedEndpoint, selectedGra
 function handleResponseUrlAndLabel(data) {
 	
 	var arrayData = data.results.bindings;
-	var results = new Array();
+	var result = new Array();
 
 	for(i=0; i<arrayData.length; i++){
-		results.push({url:arrayData[i].url.value, label:arrayData[i].label.value});
+		result.push({url:arrayData[i].url.value, label:arrayData[i].label.value});
 	}
 	
-	//console.log(results);
-	return results;
+	//console.log(result);
+	return result;
 }
 
 

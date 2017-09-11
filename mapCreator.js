@@ -10,6 +10,9 @@ var languageManager;
 var queryBuilder;
 var queryVerbalizator;
 
+var elementOnFocus;
+var queryViewer;
+
 var MapCreator = function () {
 	queryLogicMap = {};
 	rootQueryLogicMap = null;
@@ -20,6 +23,9 @@ var MapCreator = function () {
 
 	queryBuilder = new QueryBuilder();
 	queryVerbalizator = new QueryVerbalizator();
+
+	elementOnFocus = null;
+	queryViewer = new QueryViewer();
 };
 
 /*
@@ -84,10 +90,10 @@ MapCreator.prototype.selectedConcept = function(selectedUrl, selectedLabel) {
 	} 
 		
 	elementOnFocus = key;
+	queryViewer.changeFocus(elementOnFocus);
 
 	queryVerbalizator.updateQuery(rootQueryLogicMap, queryLogicMap);
 	queryBuilder.updateQuery(rootQueryLogicMap, queryLogicMap);
-	//updateFocus
 
 	//console.log(queryLogicMap);
 	//console.log(elementsList);
@@ -168,10 +174,15 @@ MapCreator.prototype.selectedPredicate = function(selectedUrl, selectedLabel, pr
 
 	} 
 
+	queryViewer.changeFocus(elementOnFocus);
+
 	queryVerbalizator.updateQuery(rootQueryLogicMap, queryLogicMap);
 	queryBuilder.updateQuery(rootQueryLogicMap, queryLogicMap);
-	//update focus
 
 	//console.log(queryLogicMap);
 
+}
+
+MapCreator.prototype.changeFocus = function(keyElementOnFocus){
+	elementOnFocus = keyElementOnFocus;
 }
