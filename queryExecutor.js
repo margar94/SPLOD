@@ -447,8 +447,8 @@ QueryExecutor.prototype.executeUserQuery = function(querySPARQL){
 						querySPARQL.where +
 					" } " +
 				" } ";
-	if(limit)
-		query += "LIMIT " + limit;  
+	if(querySPARQL.limit)
+		query += "LIMIT " + querySPARQL.limit;  
 	
    	queryUrl = endpoint+"?query="+ encodeURIComponent(query) +"&format=json";
     $.ajax({
