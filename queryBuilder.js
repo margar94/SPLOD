@@ -60,14 +60,14 @@ function visitSPARQL(node){
 	}else if(node.type == 'concept'){
 
 		querySPARQL.select += node.variable + " ";
-		querySPARQL.where += node.variable + " a " + node.url + ".\n";
+		querySPARQL.where += node.variable + " a <" + node.url + ">.\n";
 
 	}else if(node.type == 'predicate'){
 		if(node.direction == 'direct'){
-			querySPARQL.where += queryLogicStructure[node.parent].variable + " " + node.url + " " + node.variable + ".\n";
+			querySPARQL.where += queryLogicStructure[node.parent].variable + " <" + node.url + "> " + node.variable + ".\n";
 		}
 		else{
-			querySPARQL.where += node.variable + " " + node.url + " " + queryLogicStructure[node.parent].variable + ".\n";
+			querySPARQL.where += node.variable + " <" + node.url + "> " + queryLogicStructure[node.parent].variable + ".\n";
 		}
 	}else{
 		// other node
