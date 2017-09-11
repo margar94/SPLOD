@@ -4,6 +4,8 @@
 	var visitStack;
 	var queryString;
 
+	var mapCreator;
+
 	function initQueryViewer(){
 		/*boxFiller = new BoxFiller();
 		queryVerbalizator = new QueryVerbalizator();
@@ -38,6 +40,9 @@
 	}
 
 	function visitRenderer(node){
+
+		//span on click -> mapCreator.changeFocus(key)
+		//render focus
 		
 		if(node.type == 'something'){
 
@@ -65,6 +70,7 @@
 
 
 	var QueryViewer= function () {
+		mapCreator = new MapCreator();
 		queryLogicStructure = {}; 
 		visitStack = [];
 	};
@@ -80,7 +86,7 @@
 	QueryViewer.prototype.changeFocus = function(elementKey){
 
 		//focus updated from mapCreator
-		
+		console.log("Focus on: " + elementKey);
 
 	}
 	

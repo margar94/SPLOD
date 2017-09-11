@@ -1,11 +1,11 @@
-var 
 
 var ResultManager = function () {
 	
 }
 
-ResultManager.prototype.updateQuery = function(){
+ResultManager.prototype.queryResult = function(results){
 
-	
+	console.log(results);
+	renderResult(results);
 
 }

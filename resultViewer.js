@@ -5,3 +5,8 @@
 		languageManager = new LanguageManager();*/
 	}
 	
+	function renderResult(results){
+
+		//fill result box & result table
+
+	}
