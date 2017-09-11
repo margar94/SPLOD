@@ -40,17 +40,25 @@
 	function visitRenderer(node){
 		
 		if(node.type == 'something'){
+
 			queryString += '<span>' + node.verbalization.current[0] + '</span>';
+
 		}else if(node.type == 'concept'){
+
 			queryString += node.verbalization.current[0];
 			queryString += '<span class="conceptURI">' + node.verbalization.current[1] + '</span>';
+
 		}else if(node.type == 'predicate'){
+
 			queryString += node.verbalization.current[0];
 			queryString += '<span class="predicateURI">' + node.verbalization.current[1] + '</span>';
 			if(node.direction == 'reverse')
 				queryString += node.verbalization.current[2];
+
 		}else{
+
 			queryString += node.verbalization.current.join('');
+			
 		}		
 
 	}
