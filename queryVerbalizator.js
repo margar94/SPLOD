@@ -1,228 +1,67 @@
-// Map that contains all the information to build query in natural language and in SPARQL
-var queryLogicMap;
-var somethingIndex;
-var rootQueryLogicMap;
-// List of elements in focus box
-var elementsList; 
-var elementOnFocus;
-
-var languageManager;
+var queryLogicStructure;
+var queryLogicStructureRoot;
+var visitStack;
 
 var queryViewer;
 
 var predicatesCounter;
 
-var queryBuilder;
-
 var QueryVerbalizator = function () {
-	queryLogicMap = {};
-	rootQueryLogicMap = null;
-
-	somethingIndex=1;
-
-	elementsList = [];
-	elementOnFocus = null;
-
-	languageManager = new LanguageManager();
-
 	queryViewer = new QueryViewer();
-
-	queryBuilder = new QueryBuilder();
-
 	resetPredicatesCounter();
 };
 
-/*
-	Notify to the queryVerbalizator the selected concept.
-	url : concept's url
-	label : concept's label
-*/
-QueryVerbalizator.prototype.selectedConcept = function(selectedUrl, selectedLabel) {
-
-	console.log(selectedUrl + " - CONCEPT selected");
-
-	resetPredicatesCounter();
-
-	var verbalization = languageManager.verbalizeConcept(selectedLabel);
-
-	// new element in concept box
-	var newElement = {url: selectedUrl, label: selectedLabel, type: 'concept', direction: false};
-	elementsList.push(newElement);
-
-	// new element in logic map
-	var newLogicElement = {url: selectedUrl, label: selectedLabel, 
-						   type:'concept', direction: false, 
-						   verbalization: verbalization, 
-						   parent:null, children: []};
-	queryLogicMap[selectedUrl] = newLogicElement;
-
-	if(rootQueryLogicMap == null){ // selectedConcept is the query's subject 
-		
-		rootQueryLogicMap = selectedUrl;
-		newLogicElement.verbalization.current = newLogicElement.verbalization.first;
-
-	}else{
-
-		var precLogicElement = queryLogicMap[elementOnFocus];
-
-		if(precLogicElement.type=='something'){ // replace something
-			
-			//update newLogicElement
-			newLogicElement.children = precLogicElement.children;
-			newLogicElement.parent = precLogicElement.parent;
-
-			//update map
-			var indexSomething = $.inArray(precLogicElement.url, queryLogicMap[precLogicElement.parent].children);
-			queryLogicMap[precLogicElement.parent].children[indexSomething] = newLogicElement.url;
-			delete queryLogicMap[precLogicElement.url];
-			
-
-		}else if(precLogicElement.type=='concept'){ // concept refining
-
-			newLogicElement.verbalization.current = newLogicElement.verbalization.modified;
-			newLogicElement.parent = precLogicElement.url;
-			precLogicElement.children.push(selectedUrl);
-
-		}else if(queryLogicMap[elementOnFocus].type=='predicate'){
-			//is it permitted??
-		}else if(queryLogicMap[elementOnFocus].type=='operator'){
-			//TODO
-		}
-
-	} 
-		
-	elementOnFocus = selectedUrl;
-
-	queryViewer.updateQuery(rootQueryLogicMap, queryLogicMap);
-	queryBuilder.updateQuery(rootQueryLogicMap, queryLogicMap);
-	//notification to queryviewer
-
-	//console.log(queryLogicMap);
-	//console.log(elementsList);
-
+QueryVerbalizator.prototype.updateQuery = function(queryRoot, queryMap){
+	visitStack = [];
+	queryLogicStructureRoot = queryRoot;
+	queryLogicStructure = queryMap;
+	verbalizeQuery();
 }
 
-/*
-	Notify to the queryVerbalizator the selected predicate.
-	url : predicate's url
-	label : predicate's label
-	predicateDirection : 'direct' if the selected predicate is a direct relation,
-						 'reverse' if the selected predicate is a reverse relation.
-*/
-QueryVerbalizator.prototype.selectedPredicate = function(selectedUrl, selectedLabel, predicateDirection) {
+function verbalizeQuery(){
+	//visit query implicit tree 
+	if(queryLogicStructureRoot != null){
 
-	console.log(selectedUrl + " - PREDICATE selected - " + predicateDirection);
+		if(queryLogicStructureRoot.type=='concept')
+			queryLogicStructure[queryLogicStructureRoot].predicatesCounter = 0;
+		else
+			queryLogicStructure[queryLogicStructureRoot].predicatesCounter = 1;
+		visitStack.push(queryLogicStructure[queryLogicStructureRoot]);
 
-	predicatesCounter++;
-	
-	var verbalization = languageManager.verbalizePredicate(selectedLabel, predicateDirection);
+		while(visitStack.length != 0){
+			var currentNode = visitStack.pop();
+			visitVerbalizator(currentNode);
 
-	// new element in concept box
-	var newElement = {url: selectedUrl, label: selectedLabel, type: 'predicate', direction: predicateDirection};
-	elementsList.push(newElement);
-
-	// new element in logic map
-	var newLogicElement = {url: selectedUrl, label: selectedLabel, 
-						   type:'predicate', direction: predicateDirection, odd: (predicatesCounter%2),
-						   verbalization: verbalization, 
-						   parent:null, children: [],};
-	queryLogicMap[selectedUrl] = newLogicElement;
-
-	var addSomething = false;
-	if(predicateDirection=='reverse')
-		addSomething = true;
-
-	if(rootQueryLogicMap == null){ // first element selected
-
-		rootQueryLogicMap = selectedUrl;
-		newLogicElement.verbalization.current = newLogicElement.verbalization.first;
-
-	}else{ //there's a prec 
-
-		var precLogicElement = queryLogicMap[elementOnFocus];
-
-		if(precLogicElement.type=='concept'){
-
-			precLogicElement.children.push(selectedUrl);
-			newLogicElement.parent = precLogicElement.url;
-
-		}else if(precLogicElement.type=='something'){
-
-			if(predicateDirection == 'direct'){
-
-				precLogicElement.children.push(selectedUrl);
-				newLogicElement.parent = precLogicElement.url;
-
+			for(var i = currentNode.children.length-1; i>=0; i--){
+				if(queryLogicStructure[currentNode.children[i]].type=='concept' || queryLogicStructure[currentNode.children[i]].type=='something')
+					queryLogicStructure[currentNode.children[i]].predicatesCounter = 0;
+				else
+					queryLogicStructure[currentNode.children[i]].predicatesCounter = queryLogicStructure[currentNode].predicatesCounter+1;
+				visitStack.push(queryLogicStructure[currentNode.children[i]]);
 			}
-			else{
 
-				newLogicElement.verbalization.current = newLogicElement.verbalization.modified;
-
-				//update map, shift something
-				newLogicElement.parent = precLogicElement.parent;
-				precLogicElement.parent = newLogicElement.url;
-				newLogicElement.children.push(precLogicElement.url);
-				var index = $.inArray(precLogicElement.url, queryLogicMap[newLogicElement.parent].children);
-				queryLogicMap[newLogicElement.parent].children[index] = newLogicElement.url;
-				
-				addSomething=false;
-
-			}
-		}else if(precLogicElement.direction=='direct'){
-			
-			precLogicElement.children.push(selectedUrl);
-			newLogicElement.parent = precLogicElement.url;
-
-			if(newLogicElement.odd==0){
-
-				precLogicElement.verbalization.current = precLogicElement.verbalization.modified;
-				newLogicElement.verbalization.current = newLogicElement.verbalization.truncated;
-
-			}
-		
-		}else{
-			console.log("Pozzo in selectedPredicate - queryVerbalizator");
 		}
 
+		queryViewer.updateQuery(queryLogicStructureRoot, queryLogicStructure);
 	}
-		
-	if(addSomething){
-
-		var verbalization = languageManager.verbalizeSomething();
-
-		// new element in concept box
-		var something = {url:'something'+somethingIndex, label: 'thing'+somethingIndex, type:'something', direction:false};
-		elementsList.push(something);
-
-		// new element in logic map
-		var somethingLogic = {url:'something'+somethingIndex, label:'thing'+somethingIndex, 
-							  type:'something', direction:false,
-							  verbalization:verbalization,
-							  parent:null, children:[]};
-		queryLogicMap['something'+somethingIndex] = somethingLogic;
-
-		queryLogicMap[selectedUrl].children.push(somethingLogic.url);	
-		queryLogicMap[somethingLogic.url].parent = selectedUrl;
-
-		elementOnFocus = 'something'+somethingIndex;
-		somethingIndex++;
-
-		resetPredicatesCounter();
-
-	}
-
-	if(predicateDirection == 'direct'){
-		elementOnFocus = selectedUrl;
-	} 
-
-	queryViewer.updateQuery(rootQueryLogicMap, queryLogicMap);
-	queryBuilder.updateQuery(rootQueryLogicMap, queryLogicMap);
-
-	//update query SPQRQL
-	//notify viewer
-	//console.log(queryLogicMap);
-
 }
+
+function visitVerbalizator(node){
+	if(node.parent == null) // root
+		node.verbalization.current = node.verbalization.first;
+	else if(node.type == 'concept'){
+		if(queryLogicMap[node.parent].type == 'concept')
+			node.verbalization.current = node.verbalization.modified;
+	}
+	else if(node.type == 'predicate'){
+		if(queryLogicMap[node.parent].type == 'predicate' && queryLogicMap[node.parent].direction == 'direct'){
+			if(node.predicatesCounter%2 == 0){
+				queryLogicMap[node.parent].verbalization.current = queryLogicMap[node.parent].verbalization.modified;
+				node.verbalization.current = node.verbalization.truncated;
+			}
+		}
+	}
+}		
 
 function resetPredicatesCounter(){
 	predicatesCounter = 0;
