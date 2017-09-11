@@ -1,4 +1,5 @@
-var LanguageManager = function (selectedEndpoint, selectedGraph) {
+//var LanguageManager = function (selectedEndpoint, selectedGraph) {
+var LanguageManager = function () {
 	
 };
 

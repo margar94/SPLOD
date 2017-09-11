@@ -7,7 +7,15 @@ var graph;
 var query; 
 var queryUrl;
 
+var resultManager;
+
+
+
 var QueryExecutor = function (selectedEndpoint, selectedGraph) {
+	if(QueryExecutor.prototype._singletonInstance){
+		return QueryExecutor.prototype._singletonInstance;
+	}
+
 	if(!endpoint && !graph){
 		endpoint = "http://dbpedia.org/sparql";
 		graph = "<http://dbpedia.org>";
@@ -17,9 +25,13 @@ var QueryExecutor = function (selectedEndpoint, selectedGraph) {
 		graph = selectedGraph;
 	}
 
-
 	query = "";
 	queryUrl = "";
+
+	resultManager = new ResultManager();
+
+	QueryExecutor.prototype._singletonInstance = this;
+	
 };
 
 /*
@@ -428,7 +440,7 @@ QueryExecutor.prototype.getAllSelectedEntityReversePredicates = function(entity,
 }
 
 //querySPARQL = {select:' ', where: ' '}
-QueryExecute.prototype.executeUserQuery(querySPARQL){
+QueryExecutor.prototype.executeUserQuery = function(querySPARQL){
 	// execute query
 
 	var result = {};

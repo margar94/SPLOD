@@ -7,26 +7,27 @@ var indexMap;
 
 var languageManager;
 
-var queryBuilder;
-var queryVerbalizator;
+var queryBuilder = null;
+var queryVerbalizator = null;
 
 var elementOnFocus;
-var queryViewer;
+var queryViewer = null;
 
 var MapCreator = function () {
+	if(MapCreator.prototype._singletonInstance){
+		return MapCreator.prototype._singletonInstance;
+	}
 	queryLogicMap = {};
-	rootQueryLogicMap = null;
+ 	rootQueryLogicMap = null;
 
 	indexMap = {};
 
-	languageManager = new LanguageManager();
-
-	queryBuilder = new QueryBuilder();
-	queryVerbalizator = new QueryVerbalizator();
-
 	elementOnFocus = null;
-	queryViewer = new QueryViewer();
-};
+
+ 	languageManager = new LanguageManager();
+
+	MapCreator.prototype._singletonInstance = this;
+ };
 
 /*
 	Notify to the queryVerbalizator the selected concept.
@@ -90,9 +91,16 @@ MapCreator.prototype.selectedConcept = function(selectedUrl, selectedLabel) {
 	} 
 		
 	elementOnFocus = key;
+	if(queryViewer == null)
+		queryViewer = new QueryViewer;
 	queryViewer.changeFocus(elementOnFocus);
 
+	if(queryVerbalizator == null)
+		queryVerbalizator = new QueryVerbalizator;
 	queryVerbalizator.updateQuery(rootQueryLogicMap, queryLogicMap);
+
+	if(queryBuilder == null)
+		queryBuilder = new QueryBuilder;
 	queryBuilder.updateQuery(rootQueryLogicMap, queryLogicMap);
 
 	//console.log(queryLogicMap);
@@ -174,9 +182,16 @@ MapCreator.prototype.selectedPredicate = function(selectedUrl, selectedLabel, pr
 
 	} 
 
+	if(queryViewer == null)
+		queryViewer = new QueryViewer;
 	queryViewer.changeFocus(elementOnFocus);
 
+	if(queryVerbalizator == null)
+		queryVerbalizator = new QueryVerbalizator;
 	queryVerbalizator.updateQuery(rootQueryLogicMap, queryLogicMap);
+
+	if(queryBuilder == null)
+		queryBuilder = new QueryBuilder;
 	queryBuilder.updateQuery(rootQueryLogicMap, queryLogicMap);
 
 	//console.log(queryLogicMap);
