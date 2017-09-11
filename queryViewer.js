@@ -58,7 +58,7 @@
 		}else{
 
 			queryString += node.verbalization.current.join('');
-			
+
 		}		
 
 	}
@@ -75,5 +75,12 @@
 		queryLogicStructure = queryMap;
 		queryString = 'Give me ';
 		renderQuery();
+	}
+
+	QueryViewer.prototype.changeFocus = function(elementKey){
+
+		//focus updated from mapCreator
+		
+
 	}
 	
