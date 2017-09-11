@@ -35,7 +35,6 @@ function buildQuery(){
 
 		while(visitStack.length != 0){
 			var currentNode = visitStack.pop();
-			visitSPARQL(currentNode);
 
 			for(var i = currentNode.children.length-1; i>=0; i--){
 				if(queryLogicStructure[currentNode.children[i]].type=='concept')
@@ -43,8 +42,13 @@ function buildQuery(){
 				else
 					queryLogicStructure[currentNode.children[i]].variable = "?"+queryLogicStructure[currentNode.children[i]].label.replace( /\s/g, "") + "_" + queryLogicStructure[currentNode.children[i]].index;
 
+				if(queryLogicStructure[currentNode.children[i]].type=='something')
+					currentNode.variable = queryLogicStructure[currentNode.children[i]].variable;
+
 				visitStack.push(queryLogicStructure[currentNode.children[i]]);
 			}
+
+			visitSPARQL(currentNode);
 		}
 		querySPARQL.limit = 20;
 		executor.executeUserQuery(querySPARQL);
