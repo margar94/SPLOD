@@ -53,7 +53,6 @@ function verbalizeQuery(){
 }
 
 function visitVerbalizator(node){
-	console.log(node);
 	if(node.parent == null) // root
 		node.verbalization.current = node.verbalization.first;
 	else if(node.type == 'concept'){

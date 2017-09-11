@@ -31,7 +31,7 @@ function buildQuery(){
 	//visit query implicit tree 
 	if(queryLogicStructureRoot != null){
 		
-		queryLogicStructure[queryLogicStructureRoot].variable = "?"+queryLogicStructure[queryLogicStructureRoot].label.replace( /\s/g, "") + "_" + counter++;
+		queryLogicStructure[queryLogicStructureRoot].variable = "?"+queryLogicStructure[queryLogicStructureRoot].label.replace( /\s/g, "") + "_" + queryLogicStructure[queryLogicStructureRoot].index;
 		visitStack.push(queryLogicStructure[queryLogicStructureRoot]);
 
 		while(visitStack.length != 0){
@@ -40,9 +40,9 @@ function buildQuery(){
 
 			for(var i = currentNode.children.length-1; i>=0; i--){
 				if(queryLogicStructure[currentNode.children[i]].type=='concept')
-					queryLogicStructure[currentNode.children[i]].variable = "?"+currentNode.variable;
+					queryLogicStructure[currentNode.children[i]].variable = currentNode.variable;
 				else
-					queryLogicStructure[currentNode.children[i]].variable = "?"+queryLogicStructure[currentNode.children[i]].label.replace( /\s/g, "") + "_" + counter++;
+					queryLogicStructure[currentNode.children[i]].variable = "?"+queryLogicStructure[currentNode.children[i]].label.replace( /\s/g, "") + "_" + queryLogicStructure[currentNode.children[i]].index;
 
 				visitStack.push(queryLogicStructure[currentNode.children[i]]);
 			}
@@ -55,13 +55,14 @@ function buildQuery(){
 }
 
 function visitSPARQL(node){
+	console.log(node);
 	if(node.type == 'something'){
 		// ...
 	}else if(node.type == 'concept'){
-
-		querySPARQL.select += node.variable + " ";
 		querySPARQL.where += node.variable + " a <" + node.url + ">.\n";
 
+		if(queryLogicStructure[node.parent]==null || queryLogicStructure[node.parent].type != 'concept')
+			querySPARQL.select += node.variable + " ";
 	}else if(node.type == 'predicate'){
 		if(node.direction == 'direct'){
 			querySPARQL.where += queryLogicStructure[node.parent].variable + " <" + node.url + "> " + node.variable + ".\n";
