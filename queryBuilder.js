@@ -54,9 +54,8 @@ function buildQuery(){
 }
 
 function visitSPARQL(node){
-	console.log(node);
 	if(node.type == 'something'){
-		// ...
+		querySPARQL.select += node.variable + " ";
 	}else if(node.type == 'concept'){
 		querySPARQL.where += node.variable + " a <" + node.url + ">.\n";
 
