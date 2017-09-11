@@ -3,7 +3,6 @@ var queryLogicStructure;
 var queryLogicStructureRoot;
 var visitStack;
 var querySPARQL;
-var counter;
 
 var executor;
 
@@ -47,7 +46,7 @@ function buildQuery(){
 				visitStack.push(queryLogicStructure[currentNode.children[i]]);
 			}
 		}
-
+		querySPARQL.limit = 20;
 		executor.executeUserQuery(querySPARQL);
 	}
 

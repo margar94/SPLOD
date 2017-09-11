@@ -437,7 +437,7 @@ QueryExecutor.prototype.getAllSelectedEntityReversePredicates = function(entity,
     });	
 }
 
-//querySPARQL = {select:' ', where: ' '}
+//querySPARQL = {select:' ', where: ' ', limit}
 QueryExecutor.prototype.executeUserQuery = function(querySPARQL){
 
 	query = " prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
@@ -447,6 +447,8 @@ QueryExecutor.prototype.executeUserQuery = function(querySPARQL){
 						querySPARQL.where +
 					" } " +
 				" } ";
+	if(limit)
+		query += "LIMIT " + limit;  
 	
    	queryUrl = endpoint+"?query="+ encodeURIComponent(query) +"&format=json";
     $.ajax({
