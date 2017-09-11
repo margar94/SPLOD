@@ -1,7 +1,9 @@
 // Map that contains all the information to build query in natural language and in SPARQL
 var queryLogicMap;
-var somethingIndex;
 var rootQueryLogicMap;
+
+// Map that counts concepts and predicates occurences.
+var indexMap;
 
 var languageManager;
 
@@ -11,7 +13,8 @@ var queryVerbalizator;
 var MapCreator = function () {
 	queryLogicMap = {};
 	rootQueryLogicMap = null;
-	somethingIndex = 1;
+
+	indexMap = {};
 
 	languageManager = new LanguageManager();
 
@@ -30,16 +33,26 @@ MapCreator.prototype.selectedConcept = function(selectedUrl, selectedLabel) {
 
 	var verbalization = languageManager.verbalizeConcept(selectedLabel);
 
+	if(!indexMap.hasOwnProperty(selectedUrl)){
+		indexMap.selectedUrl = 1;
+	}
+	else{
+		indexMap.selectedUrl += 1;
+	}
+	var key = selectedUrl + "_" + indexMap.selectedUrl;
+	var index = indexMap.selectedUrl;
+
 	// new element in logic map
-	var newLogicElement = {url: selectedUrl, label: selectedLabel, 
+	var newLogicElement = {key: key, index: index,
+						   url: selectedUrl, label: selectedLabel, 
 						   type:'concept', direction: false, 
 						   verbalization: verbalization, 
 						   parent:null, children: []};
-	queryLogicMap[selectedUrl] = newLogicElement;
+	queryLogicMap[key] = newLogicElement;
 
 	if(rootQueryLogicMap == null){ // selectedConcept is the query's subject 
 		
-		rootQueryLogicMap = selectedUrl;
+		rootQueryLogicMap = key;
 
 	}else{
 
@@ -52,15 +65,15 @@ MapCreator.prototype.selectedConcept = function(selectedUrl, selectedLabel) {
 			newLogicElement.parent = precLogicElement.parent;
 
 			//update map
-			var indexSomething = $.inArray(precLogicElement.url, queryLogicMap[precLogicElement.parent].children);
-			queryLogicMap[precLogicElement.parent].children[indexSomething] = newLogicElement.url;
-			delete queryLogicMap[precLogicElement.url];
+			var indexSomething = $.inArray(precLogicElement.key, queryLogicMap[precLogicElement.parent].children);
+			queryLogicMap[precLogicElement.parent].children[indexSomething] = newLogicElement.key;
+			delete queryLogicMap[precLogicElement.key];
 			
 
 		}else if(precLogicElement.type=='concept'){ // concept refining
 
-			newLogicElement.parent = precLogicElement.url;
-			precLogicElement.children.push(selectedUrl);
+			newLogicElement.parent = precLogicElement.key;
+			precLogicElement.children.push(newLogicElement.key);
 
 		}else if(queryLogicMap[elementOnFocus].type=='predicate'){
 			//is it permitted??
@@ -70,7 +83,7 @@ MapCreator.prototype.selectedConcept = function(selectedUrl, selectedLabel) {
 
 	} 
 		
-	elementOnFocus = selectedUrl;
+	elementOnFocus = key;
 
 	queryVerbalizator.updateQuery(rootQueryLogicMap, queryLogicMap);
 	queryBuilder.updateQuery(rootQueryLogicMap, queryLogicMap);
@@ -94,45 +107,64 @@ MapCreator.prototype.selectedPredicate = function(selectedUrl, selectedLabel, pr
 
 	var verbalization = languageManager.verbalizePredicate(selectedLabel, predicateDirection);
 
+	if(!indexMap.hasOwnProperty(selectedUrl)){
+		indexMap.selectedUrl = 1;
+	}
+	else{
+		indexMap.selectedUrl += 1;
+	}
+	var key = selectedUrl + "_" + indexMap.selectedUrl;
+	var index = indexMap.selectedUrl;
+
 	// new element in logic map
-	var newLogicElement = {url: selectedUrl, label: selectedLabel, 
+	var newLogicElement = {key: key, index: index,
+						   url: selectedUrl, label: selectedLabel, 
 						   type:'predicate', direction: predicateDirection,
 						   verbalization: verbalization, 
-						   parent:null, children: [],};
-	queryLogicMap[selectedUrl] = newLogicElement;
+						   parent:null, children: []};
+	queryLogicMap[key] = newLogicElement;
 
 	if(rootQueryLogicMap == null){ // first element selected
 
-		rootQueryLogicMap = selectedUrl;
+		rootQueryLogicMap = key;
 
 	}else{ //there's a prec 
 
 		var precLogicElement = queryLogicMap[elementOnFocus];
 
-		precLogicElement.children.push(selectedUrl);
-		newLogicElement.parent = precLogicElement.url;
+		precLogicElement.children.push(key);
+		newLogicElement.parent = precLogicElement.key;
 	}
 		
 	if(predicateDirection=='reverse'){
 
 		var verbalization = languageManager.verbalizeSomething();
 
+		if(!indexMap.hasOwnProperty('something')){
+			indexMap['something'] = 1;
+		}
+		else{
+			indexMap['something'] += 1;
+		}
+		var somethingKey = 'something' + "_" + indexMap['something'];
+		var somethingIndex = indexMap['something'];
+
 		// new element in logic map
-		var somethingLogic = {url:'something'+somethingIndex, label:'thing'+somethingIndex, 
+		var somethingLogic = {key: somethingKey, index: somethingIndex,
+							  url: somethingKey, label:'thing', 
 							  type:'something', direction:false,
 							  verbalization:verbalization,
 							  parent:null, children:[]};
-		queryLogicMap['something'+somethingIndex] = somethingLogic;
+		queryLogicMap[somethingKey] = somethingLogic;
 
-		queryLogicMap[selectedUrl].children.push(somethingLogic.url);	
-		queryLogicMap[somethingLogic.url].parent = selectedUrl;
+		queryLogicMap[key].children.push(somethingKey);	
+		queryLogicMap[somethingKey].parent = key;
 
-		elementOnFocus = 'something'+somethingIndex;
-		somethingIndex++;
+		elementOnFocus = somethingKey;
 
 	}else{
 
-		elementOnFocus = selectedUrl;
+		elementOnFocus = key;
 
 	} 
 
