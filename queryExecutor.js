@@ -439,10 +439,23 @@ QueryExecutor.prototype.getAllSelectedEntityReversePredicates = function(entity,
 
 //querySPARQL = {select:' ', where: ' '}
 QueryExecutor.prototype.executeUserQuery = function(querySPARQL){
-	// execute query
 
-	var result = {};
-	resultManager.queryResult(result);
+	query = " prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
+				" SELECT " + querySPARQL.select +
+				" WHERE { " + 
+					" GRAPH " + graph + " { " +
+						querySPARQL.where +
+					" } " +
+				" } ";
+	
+   	queryUrl = endpoint+"?query="+ encodeURIComponent(query) +"&format=json";
+    $.ajax({
+        url: queryUrl,
+        success: function( data ) {
+			resultManager.queryResult(data.results.bindings);
+        }
+    });
+	
 }
 
 QueryExecutor.prototype.changeEndpoint = function (selectedEndpoint, selectedGraph) {
