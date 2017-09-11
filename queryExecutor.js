@@ -9,8 +9,6 @@ var queryUrl;
 
 var resultManager;
 
-
-
 var QueryExecutor = function (selectedEndpoint, selectedGraph) {
 	if(QueryExecutor.prototype._singletonInstance){
 		return QueryExecutor.prototype._singletonInstance;

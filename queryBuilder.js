@@ -8,9 +8,15 @@ var counter;
 var executor;
 
 var QueryBuilder = function () {
+	if(QueryBuilder.prototype._singletonInstance){
+		return QueryBuilder.prototype._singletonInstance;
+	}
+	
 	counter = 1;
 	executor = new QueryExecutor();
-}
+
+	QueryBuilder.prototype._singletonInstance = this;
+};
 
 QueryBuilder.prototype.updateQuery = function(queryLogicRoot, queryLogicMap){
 	queryLogicStructure = queryLogicMap;

@@ -7,8 +7,14 @@ var queryViewer;
 var predicatesCounter;
 
 var QueryVerbalizator = function () {
+	if(QueryVerbalizator.prototype._singletonInstance){
+		return QueryVerbalizator.prototype._singletonInstance;
+	}
+
 	queryViewer = new QueryViewer();
 	resetPredicatesCounter();
+
+	QueryVerbalizator.prototype._singletonInstance = this;
 };
 
 QueryVerbalizator.prototype.updateQuery = function(queryRoot, queryMap){
@@ -22,7 +28,7 @@ function verbalizeQuery(){
 	//visit query implicit tree 
 	if(queryLogicStructureRoot != null){
 
-		if(queryLogicStructureRoot.type=='concept')
+		if(queryLogicStructure[queryLogicStructureRoot].type=='concept')
 			queryLogicStructure[queryLogicStructureRoot].predicatesCounter = 0;
 		else
 			queryLogicStructure[queryLogicStructureRoot].predicatesCounter = 1;
@@ -36,7 +42,7 @@ function verbalizeQuery(){
 				if(queryLogicStructure[currentNode.children[i]].type=='concept' || queryLogicStructure[currentNode.children[i]].type=='something')
 					queryLogicStructure[currentNode.children[i]].predicatesCounter = 0;
 				else
-					queryLogicStructure[currentNode.children[i]].predicatesCounter = queryLogicStructure[currentNode].predicatesCounter+1;
+					queryLogicStructure[currentNode.children[i]].predicatesCounter = queryLogicStructure[currentNode.key].predicatesCounter+1;
 				visitStack.push(queryLogicStructure[currentNode.children[i]]);
 			}
 
@@ -47,6 +53,7 @@ function verbalizeQuery(){
 }
 
 function visitVerbalizator(node){
+	console.log(node);
 	if(node.parent == null) // root
 		node.verbalization.current = node.verbalization.first;
 	else if(node.type == 'concept'){

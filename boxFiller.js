@@ -3,8 +3,14 @@ var executor;
 var mapCreator;
 
 var BoxFiller= function () {
+	if(BoxFiller.prototype._singletonInstance){
+		return BoxFiller.prototype._singletonInstance;
+	}
+	
 	executor = new QueryExecutor(); 
 	mapCreator = new MapCreator();
+
+	BoxFiller.prototype._singletonInstance = this;
 };
 
 BoxFiller.prototype.retrieveConcepts = function(callback) {

@@ -1,6 +1,9 @@
-//var LanguageManager = function (selectedEndpoint, selectedGraph) {
 var LanguageManager = function () {
-	
+	if(LanguageManager.prototype._singletonInstance){
+		return LanguageManager.prototype._singletonInstance;
+	}
+
+	LanguageManager.prototype._singletonInstance = this;
 };
 
 LanguageManager.prototype.getArticle = function(noun){
