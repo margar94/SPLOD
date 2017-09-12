@@ -11,7 +11,7 @@ var queryBuilder = null;
 var queryVerbalizator = null;
 
 var elementOnFocus;
-var queryViewer = null;
+//var queryViewer = null;
 
 var MapCreator = function () {
 	if(MapCreator.prototype._singletonInstance){
@@ -91,13 +91,15 @@ MapCreator.prototype.selectedConcept = function(selectedUrl, selectedLabel) {
 	} 
 		
 	elementOnFocus = key;
+	/*
 	if(queryViewer == null)
 		queryViewer = new QueryViewer;
 	queryViewer.changeFocus(elementOnFocus);
+	*/
 
 	if(queryVerbalizator == null)
 		queryVerbalizator = new QueryVerbalizator;
-	queryVerbalizator.updateQuery(rootQueryLogicMap, queryLogicMap);
+	queryVerbalizator.updateQuery(rootQueryLogicMap, queryLogicMap, elementOnFocus);
 
 	if(queryBuilder == null)
 		queryBuilder = new QueryBuilder;
@@ -135,7 +137,8 @@ MapCreator.prototype.selectedPredicate = function(selectedUrl, selectedLabel, pr
 						   url: selectedUrl, label: selectedLabel, 
 						   type:'predicate', direction: predicateDirection,
 						   verbalization: verbalization, 
-						   parent:null, children: []};
+						   parent:null, children: [], 
+						   focus:false};
 	queryLogicMap[key] = newLogicElement;
 
 	if(rootQueryLogicMap == null){ // first element selected
@@ -177,18 +180,19 @@ MapCreator.prototype.selectedPredicate = function(selectedUrl, selectedLabel, pr
 		elementOnFocus = somethingKey;
 
 	}else{
-
+	
 		elementOnFocus = key;
 
 	} 
-
+	/*
 	if(queryViewer == null)
 		queryViewer = new QueryViewer;
 	queryViewer.changeFocus(elementOnFocus);
+	*/
 
 	if(queryVerbalizator == null)
 		queryVerbalizator = new QueryVerbalizator;
-	queryVerbalizator.updateQuery(rootQueryLogicMap, queryLogicMap);
+	queryVerbalizator.updateQuery(rootQueryLogicMap, queryLogicMap, elementOnFocus);
 
 	if(queryBuilder == null)
 		queryBuilder = new QueryBuilder;

@@ -6,6 +6,8 @@ var queryViewer;
 
 var predicatesCounter;
 
+var keyElementOnFocus
+
 var QueryVerbalizator = function () {
 	if(QueryVerbalizator.prototype._singletonInstance){
 		return QueryVerbalizator.prototype._singletonInstance;
@@ -17,10 +19,11 @@ var QueryVerbalizator = function () {
 	QueryVerbalizator.prototype._singletonInstance = this;
 };
 
-QueryVerbalizator.prototype.updateQuery = function(queryRoot, queryMap){
+QueryVerbalizator.prototype.updateQuery = function(queryRoot, queryMap, elementOnFocus){
 	visitStack = [];
 	queryLogicStructureRoot = queryRoot;
 	queryLogicStructure = queryMap;
+	keyElementOnFocus = elementOnFocus;
 	verbalizeQuery();
 }
 
@@ -48,7 +51,7 @@ function verbalizeQuery(){
 
 		}
 
-		queryViewer.updateQuery(queryLogicStructureRoot, queryLogicStructure);
+		queryViewer.updateQuery(queryLogicStructureRoot, queryLogicStructure, keyElementOnFocus);
 	}
 }
 
