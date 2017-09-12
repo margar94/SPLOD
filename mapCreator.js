@@ -233,6 +233,8 @@ MapCreator.prototype.removeElement = function(key){
 		var index = $.inArray(node.key, queryLogicMap[node.parent].children);
 		queryLogicMap[node.parent].children[index] = somethingKey;
 		delete queryLogicMap[node.key];
+
+		elementOnFocus = somethingKey;
 	}
 	else{
 
@@ -249,6 +251,17 @@ MapCreator.prototype.removeElement = function(key){
 			delete queryLogicMap[currentNode.key];
 
 		}
+
+		elementOnFocus = node.parent;
 	}
+
+	if(queryVerbalizator == null)
+		queryVerbalizator = new QueryVerbalizator;
+	queryVerbalizator.updateQuery(rootQueryLogicMap, queryLogicMap, elementOnFocus);
+
+	if(queryBuilder == null)
+		queryBuilder = new QueryBuilder;
+	queryBuilder.updateQuery(rootQueryLogicMap, queryLogicMap);
+
 
 }
