@@ -205,3 +205,50 @@ MapCreator.prototype.selectedPredicate = function(selectedUrl, selectedLabel, pr
 MapCreator.prototype.changeFocus = function(keyElementOnFocus){
 	elementOnFocus = keyElementOnFocus;
 }
+
+MapCreator.prototype.removeElement = function(key){
+	
+	var node = queryLogicMap[key];
+
+	if(queryLogicStructure[node.parent].type == 'predicate' && queryLogicStructure[node.parent].direction == 'reverse'){
+		var somethingVerbalization = languageManager.verbalizeSomething();
+
+		if(!indexMap.hasOwnProperty('something')){
+			indexMap['something'] = 1;
+		}
+		else{
+			indexMap['something'] += 1;
+		}
+		var somethingKey = 'something' + "_" + indexMap['something'];
+		var somethingIndex = indexMap['something'];
+
+		// new element in logic map
+		var somethingLogic = {key: somethingKey, index: somethingIndex,
+							  url: somethingKey, label:'thing', 
+							  type:'something', direction:false,
+							  verbalization:somethingVerbalization,
+							  parent:node.parent, children:node.children};
+		queryLogicMap[somethingKey] = somethingLogic;
+
+		var index = $.inArray(node.key, queryLogicMap[node.parent].children);
+		queryLogicMap[node.parent].children[index] = somethingKey;
+		delete queryLogicMap[node.key];
+	}
+	else{
+
+		var visitStack = [];
+		visitStack.push(node);
+
+		while(visitStack.length != 0){
+			var currentNode = visitStack.pop();
+
+			for(var i = currentNode.children.length-1; i>=0; i--){
+				visitStack.push(queryLogicStructure[currentNode.children[i]]);
+			}
+
+			delete queryLogicMap[currentNode.key];
+
+		}
+	}
+
+}
