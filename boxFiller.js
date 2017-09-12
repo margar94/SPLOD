@@ -1,6 +1,5 @@
 
 var executor;
-var mapCreator;
 
 var BoxFiller= function () {
 	if(BoxFiller.prototype._singletonInstance){
@@ -8,7 +7,6 @@ var BoxFiller= function () {
 	}
 	
 	executor = new QueryExecutor(); 
-	mapCreator = new MapCreator();
 
 	BoxFiller.prototype._singletonInstance = this;
 };
@@ -65,7 +63,6 @@ BoxFiller.prototype.updateConceptsFromConcept = function(entityUrl, entityLabel,
 		callback(data);
 	});
  
-	mapCreator.selectedConcept(entityUrl, entityLabel);
 }
 
 BoxFiller.prototype.updatePredicatesFromConcept = function(predUrl, predLabel, predicateDirection, callback){
@@ -161,7 +158,7 @@ BoxFiller.prototype.updatePredicatesFromPredicate = function(predUrl, predLabel,
 		callback(resultObj);
 	});
 
-	mapCreator.selectedPredicate(predUrl, predLabel, predicateDirection);
+	
 }
 
 

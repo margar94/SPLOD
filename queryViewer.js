@@ -6,6 +6,8 @@ var queryString;
 
 var mapCreator;
 
+var onFocus;
+
 function initQueryViewer(){
 	/*boxFiller = new BoxFiller();
 	queryVerbalizator = new QueryVerbalizator();
@@ -17,16 +19,20 @@ function renderQuery(){
 	if(queryLogicStructureRoot == null){
 		$('#queryNaturalLanguage').innerHTML = 'Give me...';
 	}else{
-		visitStack.push({type: 'endSpan', verbalization:{current: ['</span>']}, children:[] });
+		visitStack.push({type: 'firstEndSpan', verbalization:{current: ['</span>']}, children:[] });
 		visitStack.push(queryLogicStructure[queryLogicStructureRoot]);
-		visitStack.push({type: 'startSpan', verbalization:{current: ['<span>']}, children:[] });
+		visitStack.push({type: 'firstStartSpan', verbalization:{current: ['<span>']}, children:[], focusReference: queryLogicStructureRoot});
 
 		while(visitStack.length != 0){
 			var currentNode = visitStack.pop();
 			visitRenderer(currentNode);
 
 			for(var i = currentNode.children.length-1; i>=0; i--){
+
+				visitStack.push({type: 'endSpan', verbalization:{current: ['</span>']}, children:[] });
 				visitStack.push(queryLogicStructure[currentNode.children[i]]);
+				visitStack.push({type: 'startSpan', verbalization:{current: ['<span>']}, children:[], focusReference: currentNode.key });
+
 				if(i != 0){
 					visitStack.push({type: 'newLine', verbalization:{current: ['<br>']}, children:[] });
 					//visitStack.push({type: 'newList', verbalization:{current: ['<ul>']}, children:[] });
@@ -36,6 +42,9 @@ function renderQuery(){
 		}
 
 		$('#queryNaturalLanguage')[0].innerHTML = queryString;
+
+		attachEvents();
+		renderFocus();
 	}
 }
 
@@ -44,27 +53,34 @@ function visitRenderer(node){
 	//span on click -> mapCreator.changeFocus(key)
 	//render focus
 	
+
 	if(node.type == 'something'){
 
-		queryString += '<span>' + node.verbalization.current[0] + '</span>';
+		queryString += '<span class="focusable" meta-focusReference="'+node.key+'" id="'+node.key+'">' + node.verbalization.current[0] + '</span>';
 
 	}else if(node.type == 'concept'){
 
 		queryString += node.verbalization.current[0];
-		queryString += '<span class="conceptURI">' + node.verbalization.current[1] + '</span>';
+		queryString += '<span class="concept focusable" meta-focusReference="'+node.key+'" id="'+node.key+'">' + node.verbalization.current[1] + '</span>';
 
 	}else if(node.type == 'predicate'){
 
 		queryString += node.verbalization.current[0];
-		queryString += '<span class="predicateURI">' + node.verbalization.current[1] + '</span>';
+		queryString += '<span class="predicate focusable" meta-focusReference="'+node.key+'" id="'+node.key+'">' + node.verbalization.current[1] + '</span>';
 		if(node.direction == 'reverse')
 			queryString += node.verbalization.current[2];
 
-	}else{
+	}else if(node.type == 'startSpan'){
 
+		queryString += '<span class="focusable" meta-focusReference="'+node.focusReference+'">'; 
+
+	}else if(node.type == 'firstStartSpan'){
+ 		// to manage menu
+		queryString += '<span class="focusable" meta-focusReference="'+node.focusReference+'">'; 
+
+	}else {
 		queryString += node.verbalization.current.join('');
-
-	}		
+	}
 
 }
 
@@ -81,17 +97,47 @@ var QueryViewer= function () {
 	QueryViewer.prototype._singletonInstance = this;
 };
 
-QueryViewer.prototype.updateQuery = function(queryRoot, queryMap){
+QueryViewer.prototype.updateQuery = function(queryRoot, queryMap, focus){
 	visitStack = [];
 	queryLogicStructureRoot = queryRoot;
 	queryLogicStructure = queryMap;
+	onFocus = focus;
 	queryString = 'Give me ';
 	renderQuery();
 }
 
-QueryViewer.prototype.changeFocus = function(elementKey){
+function renderFocus(){
 
-	//focus updated from mapCreator
-	console.log("Focus on: " + elementKey);
+	//add class to highlight the focus
+	$('.highlighted').removeClass('highlighted');
+	$('#'+onFocus).addClass('highlighted');
+
+}
+
+function attachEvents(){
+
+	$('.focusable').click(function(e){
+		e.stopPropagation();
+		$('.highlighted').removeClass('highlighted');
+		$(this).addClass('highlighted');
+
+		//changeFocus notification
+		onFocus = $(this).attr('meta-focusReference');
+		if(queryLogicStructure[onFocus].type == 'concept'){
+
+			updateBoxesFromConcept(queryLogicStructure[onFocus].url, queryLogicStructure[onFocus].label);
+
+		}else if(queryLogicStructure[onFocus].type == 'predicate'){
+
+			updateBoxesFromPredicate(queryLogicStructure[onFocus].url, queryLogicStructure[onFocus].label, queryLogicStructure[onFocus].direction);
+
+		}else if(queryLogicStructure[onFocus].type == 'something'){
+
+			updateBoxesFromConcept(queryLogicStructure[queryLogicStructure[onFocus].parent].url, queryLogicStructure[queryLogicStructure[onFocus].parent].label);
+
+		}
+		mapCreator.changeFocus(onFocus);
+
+	});
 
 }

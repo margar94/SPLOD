@@ -1,10 +1,12 @@
 
 var boxFiller;
 var languageManager;
+var mapCreator;
 
 function initBoxViewer(){
 	boxFiller = new BoxFiller();
 	languageManager = new LanguageManager();
+	mapCreator = new MapCreator();
 }
 
 function fillConcepts(){
@@ -13,10 +15,27 @@ function fillConcepts(){
 	});
 }
 
+function updateBoxesFromConcept(conceptUrl, conceptLabel){
+	
+	boxFiller.updateConceptsFromConcept(conceptUrl, conceptLabel, renderConcepts);
+	boxFiller.updatePredicatesFromConcept(conceptUrl, conceptLabel, false, renderPredicates);
+
+}
+
 function fillPredicates(){
 	boxFiller.retrievePredicates(function (predicates){
 		renderPredicates(predicates);
 	});
+}
+
+function updateBoxesFromPredicate(predicateUrl, predicateLabel, predicateDirection){
+
+	if(predicateDirection == 'direct'){
+		boxFiller.updateConceptsFromDirectPredicate(predicateUrl, predicateLabel, renderConcepts);
+	}else{
+		boxFiller.updateConceptsFromReversePredicate(predicateUrl, predicateLabel, renderConcepts);
+	}
+	boxFiller.updatePredicatesFromPredicate(predicateUrl, predicateLabel, predicateDirection, renderPredicates);
 }
 
 function renderConcepts(concepts){
@@ -32,8 +51,8 @@ function renderConcepts(concepts){
 			.text(element.label)
 			.appendTo(conceptsList)
 			.on('click', function(){
-				boxFiller.updateConceptsFromConcept($(this).attr('meta-url'), $(this).attr('meta-label'), renderConcepts);
-				boxFiller.updatePredicatesFromConcept($(this).attr('meta-url'), $(this).attr('meta-label'), false, renderPredicates);
+				updateBoxesFromConcept($(this).attr('meta-url'), $(this).attr('meta-label'));
+				mapCreator.selectedConcept($(this).attr('meta-url'), $(this).attr('meta-label'));
 			});
 	});
 }
@@ -73,8 +92,8 @@ function renderDirectPredicates(directArray){
 			.text(element.verb +" "+ article +" "+ element.label)
 			.appendTo(predicatesList)
 			.on('click', function(){
-				boxFiller.updateConceptsFromDirectPredicate($(this).attr('meta-url'), $(this).attr('meta-label'), renderConcepts);
-				boxFiller.updatePredicatesFromPredicate($(this).attr('meta-url'), $(this).attr('meta-label'), $(this).attr('meta-predicateDirection'), renderPredicates);
+				updateBoxesFromPredicate($(this).attr('meta-url'), $(this).attr('meta-label'), $(this).attr('meta-predicateDirection'));
+				mapCreator.selectedPredicate($(this).attr('meta-url'), $(this).attr('meta-label'), $(this).attr('meta-predicateDirection'));
 			});
 	});
 }
@@ -100,8 +119,8 @@ function renderReversePredicates(reverseArray){
 			.text(element.verb +" "+ article +" "+ element.label)
 			.appendTo(predicatesList)
 			.on('click', function(){
-				boxFiller.updateConceptsFromReversePredicate($(this).attr('meta-url'), $(this).attr('meta-label'), renderConcepts);
-				boxFiller.updatePredicatesFromPredicate($(this).attr('meta-url'), $(this).attr('meta-label'), $(this).attr('meta-predicateDirection'), renderPredicates);
+				updateBoxesFromPredicate($(this).attr('meta-url'), $(this).attr('meta-label'), $(this).attr('meta-predicateDirection'));
+				mapCreator.selectedPredicate($(this).attr('meta-url'), $(this).attr('meta-label'), $(this).attr('meta-predicateDirection'));
 			});
 	});
 }

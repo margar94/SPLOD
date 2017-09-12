@@ -55,6 +55,10 @@
 			    overflow: scroll;
 			}
 
+			span.highlighted {
+				background-color: yellow;
+			}
+
 		</style>
 
 	</head>
@@ -74,15 +78,56 @@
 				</span>
 			</span>-->
 
+			<!-- 
+				onfocuschange su concept, predicate, something
+					- chi sottolineare
+					- chi mettere nel focus
+					- notifica della key che si sta eliminando
+
+
+
+
+
+			Give me every place that has a label
+
+				tutti gli span focusable tranne give me
+			
+				<div>give me 
+					<span class=> every 
+						<span id=key class=concept title=url>place</span>
+						<span> that has
+							<span id=key class=predicate title=url>label</span>
+						</span>
+					</span>
+				</div>
+
+
+				Give me every place that is the label of something
+
+				tutti gli span focusable tranne give me
+			
+				<div>give me 
+					<span class=> every 
+						<span id=key class=concept title=url>place</span>
+						<span> that is the
+							<span id=key class=predicate title=url>label</span>
+							of
+							<span id=key class=??? title=url (non significativa)> something</span>
+						</span>
+					</span>
+				</div>
+
+			-->
+
 		</div>
 		<div>
-			<div id="concepts">
+			<div id="conceptsBox">
 				<h1>Concetti</h1>
 				<ul id="conceptsList"></ul>
 
 			</div>
 
-			<div id="predicates">
+			<div id="predicatesBox">
 				<h1>Predicati</h1>
 				<ul id="predicatesList"></ul>
 
