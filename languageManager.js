@@ -90,11 +90,11 @@ LanguageManager.prototype.verbalizePredicate = function(predicateLabel, predicat
 LanguageManager.prototype.verbalizeSomething = function(){
 
 	verbalization = {
-		standard: ['something'],
+		standard: ['something '],
 		modified: [],
 		truncated: [],
 		first: [],
-		current: ['something']};
+		current: ['something ']};
 
 	return verbalization;
 

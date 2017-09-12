@@ -39,7 +39,7 @@
 				position:absolute;
 				margin-left: 47%;
 				padding: 5px;
-			    border: 2px solid yellow;
+			    border: 2px solid orange;
 			    border-radius: 5px;
 			    width: 50%;
 			    height: 500px;
@@ -57,6 +57,14 @@
 
 			span.highlighted {
 				background-color: yellow;
+			}
+
+			span.concept {
+				color: green;
+			}
+
+			span.predicate {
+				color: orange;
 			}
 
 		</style>
@@ -121,6 +129,9 @@
 
 		</div>
 		<div>
+			<button type="button" onclick="mapCreator.removeElement($('.highlighted').attr('meta-removereference'));">Remove</button>
+			<span id="focus"></span>
+		<div>
 			<div id="conceptsBox">
 				<h1>Concetti</h1>
 				<ul id="conceptsList"></ul>
@@ -144,6 +155,7 @@
 	<script>
 		
 		$(document).ready(function(){
+
 			initBoxViewer();
 			initQueryViewer();
 			initResultViewer();
