@@ -56,7 +56,7 @@ function visitRenderer(node){
 
 	if(node.type == 'something'){
 
-		queryString += '<span class="focusable"  meta-removeReference="'+node.parent+'" meta-focusReference="'+node.key+'" id="'+node.key+'">' + node.verbalization.current[0] + '</span>';
+		queryString += '<span class="focusable"  meta-removeReference="'+node.key+'" meta-focusReference="'+node.key+'" id="'+node.key+'">' + node.verbalization.current[0] + '</span>';
 
 	}else if(node.type == 'concept'){
 
@@ -128,6 +128,7 @@ function attachEvents(){
 		//changeFocus notification
 		onFocus = $(this).attr('meta-focusReference');
 		$('#focus').text('Element on focus: ' + onFocus);
+
 		if(queryLogicStructure[onFocus].type == 'concept'){
 
 			updateBoxesFromConcept(queryLogicStructure[onFocus].url, queryLogicStructure[onFocus].label);
