@@ -210,7 +210,7 @@ MapCreator.prototype.removeElement = function(key){
 	
 	var node = queryLogicMap[key];
 
-	if(queryLogicStructure[node.parent].type == 'predicate' && queryLogicStructure[node.parent].direction == 'reverse'){
+	if(node.type == 'concept' && queryLogicStructure[node.parent].type == 'predicate' && queryLogicStructure[node.parent].direction == 'reverse'){
 		var somethingVerbalization = languageManager.verbalizeSomething();
 
 		if(!indexMap.hasOwnProperty('something')){
@@ -248,12 +248,23 @@ MapCreator.prototype.removeElement = function(key){
 				visitStack.push(queryLogicStructure[currentNode.children[i]]);
 			}
 
+			var index = $.inArray(currentNode.key, queryLogicMap[currentNode.parent].children);
+			queryLogicMap[currentNode.parent].children.splice(index, 1);
 			delete queryLogicMap[currentNode.key];
 
 		}
 
+		if(node.type == 'something'){
+			node = queryLogicMap[node.parent];
+			var index = $.inArray(node.key, queryLogicMap[node.parent].children);
+			queryLogicMap[node.parent].children.splice(index, 1);
+			delete queryLogicMap[node.key];
+		}
+
 		elementOnFocus = node.parent;
 	}
+
+	console.log(queryLogicMap);
 
 	if(queryVerbalizator == null)
 		queryVerbalizator = new QueryVerbalizator;
