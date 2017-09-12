@@ -78,7 +78,9 @@ function visitRenderer(node){
  		// to manage menu
 		queryString += '<span class="focusable" meta-focusReference="'+node.focusReference+'">'; 
 
-	}else {
+	}else if(node.type == 'newLine'){
+
+	} else {
 		queryString += node.verbalization.current.join('');
 	}
 
@@ -110,8 +112,9 @@ function renderFocus(){
 
 	//add class to highlight the focus
 	$('.highlighted').removeClass('highlighted');
-	$('#'+onFocus).addClass('highlighted');
-
+	//var id = '#' + onFocus;
+	//$(id).addClass('highlighted');
+	document.getElementById(onFocus).className +=' highlighted';
 }
 
 function attachEvents(){
