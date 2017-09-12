@@ -50,23 +50,21 @@ function renderQuery(){
 
 function visitRenderer(node){
 
-	//span on click -> mapCreator.changeFocus(key)
-	//render focus
-	
+	var utils = 'meta-removeReference="'+node.key+'" meta-focusReference="'+node.key+'" id="'+node.key+'"';
 
 	if(node.type == 'something'){
 
-		queryString += '<span class="focusable"  meta-removeReference="'+node.key+'" meta-focusReference="'+node.key+'" id="'+node.key+'">' + node.verbalization.current[0] + '</span>';
+		queryString += '<span class="focusable" '+utils+' >' + node.verbalization.current[0] + '</span>';
 
 	}else if(node.type == 'concept'){
 
 		queryString += node.verbalization.current[0];
-		queryString += '<span class="concept focusable"  meta-removeReference="'+node.key+'" meta-focusReference="'+node.key+'" id="'+node.key+'">' + node.verbalization.current[1] + '</span>';
+		queryString += '<span class="concept focusable" '+utils+' >' + node.verbalization.current[1] + '</span>';
 
 	}else if(node.type == 'predicate'){
 
 		queryString += node.verbalization.current[0];
-		queryString += '<span class="predicate focusable" meta-removeReference="'+node.key+'" meta-focusReference="'+node.key+'" id="'+node.key+'">' + node.verbalization.current[1] + '</span>';
+		queryString += '<span class="predicate focusable" '+utils+' >' + node.verbalization.current[1] + '</span>';
 		if(node.direction == 'reverse')
 			queryString += node.verbalization.current[2];
 
