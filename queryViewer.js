@@ -17,7 +17,8 @@ function initQueryViewer(){
 function renderQuery(){
 	//visit query implicit tree 
 	if(queryLogicStructureRoot == null){
-		$('#queryNaturalLanguage').innerHTML = 'Give me...';
+		//$('#queryNaturalLanguage')[0].innerHTML = 'Give me...';
+		queryString = "Give me..."
 	}else{
 		visitStack.push({type: 'firstEndSpan', verbalization:{current: ['</span>']}, children:[] });
 		visitStack.push(queryLogicStructure[queryLogicStructureRoot]);
@@ -40,12 +41,16 @@ function renderQuery(){
 			}
 
 		}
-
+/*
 		$('#queryNaturalLanguage')[0].innerHTML = queryString;
 
 		attachEvents();
-		renderFocus();
+		renderFocus();*/
 	}
+	$('#queryNaturalLanguage')[0].innerHTML = queryString;
+
+	attachEvents();
+	renderFocus();
 }
 
 function visitRenderer(node){
@@ -112,8 +117,12 @@ function renderFocus(){
 	$('.highlighted').removeClass('highlighted');
 	//var id = '#' + onFocus;
 	//$(id).addClass('highlighted');
-	document.getElementById(onFocus).className +=' highlighted';
-	$('#focus').text('Element on focus: ' + onFocus);
+	if(onFocus!=null){
+		document.getElementById(onFocus).className +=' highlighted';
+		$('#focus').text('Element on focus: ' + onFocus);
+	}
+	else
+		$('#focus').text();
 }
 
 function attachEvents(){

@@ -8,7 +8,7 @@
 	function renderResult(results){
 
 		//fill result box & result table
-		console.log(results);
+		//console.log(results);
 		createTable(results);
 
 	}

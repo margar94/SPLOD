@@ -39,6 +39,7 @@ function verbalizeQuery(){
 
 		while(visitStack.length != 0){
 			var currentNode = visitStack.pop();
+			currentNode.verbalization.current = currentNode.verbalization.standard;
 			visitVerbalizator(currentNode);
 
 			for(var i = currentNode.children.length-1; i>=0; i--){
@@ -51,8 +52,10 @@ function verbalizeQuery(){
 
 		}
 
-		queryViewer.updateQuery(queryLogicStructureRoot, queryLogicStructure, keyElementOnFocus);
 	}
+
+	queryViewer.updateQuery(queryLogicStructureRoot, queryLogicStructure, keyElementOnFocus);
+
 }
 
 function visitVerbalizator(node){

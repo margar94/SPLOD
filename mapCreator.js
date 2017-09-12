@@ -202,15 +202,17 @@ MapCreator.prototype.selectedPredicate = function(selectedUrl, selectedLabel, pr
 
 }
 
+//update focus
 MapCreator.prototype.changeFocus = function(keyElementOnFocus){
 	elementOnFocus = keyElementOnFocus;
 }
 
+// remove element in map
 MapCreator.prototype.removeElement = function(key){
 	
 	var node = queryLogicMap[key];
 
-	if(node.type == 'concept' && queryLogicStructure[node.parent].type == 'predicate' && queryLogicStructure[node.parent].direction == 'reverse'){
+	if(node.type == 'concept' && node.parent!=null && queryLogicStructure[node.parent].type == 'predicate' && queryLogicStructure[node.parent].direction == 'reverse'){
 		var somethingVerbalization = languageManager.verbalizeSomething();
 
 		if(!indexMap.hasOwnProperty('something')){
@@ -248,10 +250,17 @@ MapCreator.prototype.removeElement = function(key){
 				visitStack.push(queryLogicStructure[currentNode.children[i]]);
 			}
 
-			var index = $.inArray(currentNode.key, queryLogicMap[currentNode.parent].children);
-			queryLogicMap[currentNode.parent].children.splice(index, 1);
+			/*if(currentNode.parent!=null){
+				var index = $.inArray(currentNode.key, queryLogicMap[currentNode.parent].children);
+				queryLogicMap[currentNode.parent].children.splice(index, 1);
+			}*/
 			delete queryLogicMap[currentNode.key];
 
+		}
+
+		if(node.parent!=null){
+			var index = $.inArray(node.key, queryLogicMap[node.parent].children);
+			queryLogicMap[node.parent].children.splice(index, 1);
 		}
 
 		if(node.type == 'something'){
@@ -264,7 +273,9 @@ MapCreator.prototype.removeElement = function(key){
 		elementOnFocus = node.parent;
 	}
 
-	console.log(queryLogicMap);
+	if(rootQueryLogicMap == key){
+		rootQueryLogicMap = null;
+	}
 
 	if(queryVerbalizator == null)
 		queryVerbalizator = new QueryVerbalizator;
