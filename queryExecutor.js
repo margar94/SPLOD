@@ -7,6 +7,8 @@ var graph;
 var query; 
 var queryUrl;
 
+var language;
+
 var resultManager;
 
 var QueryExecutor = function (selectedEndpoint, selectedGraph) {
@@ -23,8 +25,10 @@ var QueryExecutor = function (selectedEndpoint, selectedGraph) {
 		graph = selectedGraph;
 	}
 
-	query = "";
-	queryUrl = "";
+	query = '';
+	queryUrl = '';
+
+	language = 'en';
 
 	resultManager = new ResultManager();
 
@@ -43,7 +47,7 @@ QueryExecutor.prototype.getAllEntities = function(callback) {
 					" GRAPH " + graph + " { " +
 						" ?url rdfs:subClassOf owl:Thing. " +
 						" OPTIONAL {?url rdfs:label ?label. " +
-						" FILTER (lang(?label) = 'en')} " +
+						" FILTER (lang(?label) = '" + language + "')} " +
 					" } " +
 				" } ";
 	
@@ -56,30 +60,7 @@ QueryExecutor.prototype.getAllEntities = function(callback) {
     });	
 }
 
-/*
-	Get entity subclasses.
-	@url : url of superclass  
-*/
-QueryExecutor.prototype.getEntitySubclasses = function(url, callback) {
-	query = " prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
-				" prefix owl: <http://www.w3.org/2002/07/owl#> " +
-				" SELECT ?url ?label " +
-				" WHERE { " + 
-					" GRAPH " + graph + " { " +
-						" ?url rdfs:subClassOf <" + url +"> . " +
-						" OPTIONAL {?url rdfs:label ?label. " +
-						" FILTER (lang(?label) = 'en')} " +
-					" } " +
-				" } ";
-	
-   	queryUrl = endpoint+"?query="+ encodeURIComponent(query) +"&format=json";
-    $.ajax({
-        url: queryUrl,
-        success: function( data ) {
-			callback(handleResponseUrlAndLabel(data));
-        }
-    });	
-}
+
 /*
 	TODO : entity that has subclasses
 */
@@ -91,66 +72,6 @@ QueryExecutor.prototype.getEntitySubclasses = function(url, callback) {
 /*
 	TODO : Filter entities by label.
 */
-
-/*
-	Tested query : 
-		Get all Thing's predicates.
-		1.  prefix owl: <http://www.w3.org/2002/07/owl#> 
-			SELECT DISTINCT ?url ?label 
-			WHERE { 
-			GRAPH <http://dbpedia.org> { 
-			?s a owl:Thing. {?s1 ?url ?s} UNION {?s ?url ?s2} ?url rdfs:label ?label. 
-			FILTER (lang(?label) = 'en') }  }
-			
-		Get all Property.
-		2.  prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-			prefix owl: <http://www.w3.org/2002/07/owl#> 
-			SELECT DISTINCT ?url ?label 
-			WHERE { 
-			GRAPH <http://dbpedia.org> { 
-			?url a rdf:Property. 
-			?url rdfs:label ?label. 
-			FILTER (lang(?label) = 'en') }  }
-*/
-
-QueryExecutor.prototype.getAllPredicates = function(limit, callback) {
-	// Option 1
-	/*
-		query = " prefix owl: <http://www.w3.org/2002/07/owl#> " +
-				" SELECT DISTINCT ?url ?label " +
-				" WHERE { " + 
-					" GRAPH " + graph + " { " +
-						" ?s a owl:Thing. " +
-						" {?s1 ?url ?s} UNION {?s ?url ?s2} " +
-						" ?url rdfs:label ?label. " +
-						" FILTER (lang(?label) = 'en') " +
-					" } " +
-				" } ";
-	*/
-	// Option 2
-	query = "prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
-				" SELECT DISTINCT ?url ?label " +
-				" WHERE { " + 
-					" GRAPH " + graph + " { " +
-						" ?url a rdf:Property. " +
-						" ?url rdfs:label ?label. " +
-						" FILTER (lang(?label) = 'en') " +
-					" } " +
-				" } ";
-				
-				
-	if(limit)
-		query += "LIMIT " + limit;  
-	
-   	queryUrl = endpoint+"?query="+ encodeURIComponent(query) +"&format=json";
-    $.ajax({
-        url: queryUrl,
-        success: function( data ) {
-			callback(handleResponseUrlAndLabel(data));
-        }
-    });	
-	
-}
 
 /*
 	Tested query : 
@@ -175,7 +96,7 @@ QueryExecutor.prototype.getAllDirectPredicates = function(limit, callback) {
 					" ?s a owl:Thing. " +
 					" ?s ?url ?s2. " +
 					" OPTIONAL {?url rdfs:label ?label. " +
-					" FILTER (lang(?label) = 'en')} " +
+					" FILTER (lang(?label) = '" + language + "')} " +
 				" } " +
 			" } ";
 				
@@ -215,7 +136,7 @@ QueryExecutor.prototype.getAllReversePredicates = function(limit, callback) {
 					" ?s a owl:Thing. " +
 					" ?s2 ?url ?s. " +
 					" OPTIONAL {?url rdfs:label ?label. " +
-					" FILTER (lang(?label) = 'en')} " +
+					" FILTER (lang(?label) = '" + language + "')} " +
 				" } " +
 			" } ";
 				
@@ -233,35 +154,23 @@ QueryExecutor.prototype.getAllReversePredicates = function(limit, callback) {
 	
 }
 
+
 /*
-	Tested query 
-		prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
-		prefix owl: <http://www.w3.org/2002/07/owl#> 
-		SELECT DISTINCT ?url ?label
-		WHERE { 
-		GRAPH <http://dbpedia.org> { 
-		?s <http://dbpedia.org/property/author> ?o  .
-		?o ?url ?s2.
-		?url rdfs:label ?label. 
-		FILTER (lang(?label) = 'en') 
-				
-		}}LIMIT 100
-
-	This function get all direct entity's predicates.
+	Get entity subclasses.
+	@url : url of superclass  
 */
-
-QueryExecutor.prototype.getDirectPredicatesFromPredicate = function(predicate, limit, callback) {
+QueryExecutor.prototype.getEntitySubclasses = function(url, limit, callback) {
 	query = " prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
 				" prefix owl: <http://www.w3.org/2002/07/owl#> " +
-				" SELECT DISTINCT ?url ?label " +
+				" SELECT ?url ?label " +
 				" WHERE { " + 
 					" GRAPH " + graph + " { " +
-						" ?s <"+predicate+"> ?o. " +
-						" ?o ?url ?s2. " +
-						" ?url rdfs:label ?label. " +
-						" FILTER (lang(?label) = 'en') " +
+						" ?url rdfs:subClassOf <" + url +"> . " +
+						" OPTIONAL {?url rdfs:label ?label. " +
+						" FILTER (lang(?label) = '" + language + "')} " +
 					" } " +
 				" } ";
+
 	if(limit)
 		query += "LIMIT " + limit;  
 	
@@ -275,33 +184,9 @@ QueryExecutor.prototype.getDirectPredicatesFromPredicate = function(predicate, l
 }
 
 /*
-	This function get all reverse entity's predicates.
+	Get direct predicates from entity.
+	@entity : url of Concept  
 */
-
-QueryExecutor.prototype.getReversePredicatesFromPredicate = function(predicate, limit, callback) {
-	query = " prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
-				" prefix owl: <http://www.w3.org/2002/07/owl#> " +
-				" SELECT DISTINCT ?url ?label " +
-				" WHERE { " + 
-					" GRAPH " + graph + " { " +
-						" ?s <"+predicate+"> ?o. " +
-						" ?s2 ?url ?o. " +
-						" ?url rdfs:label ?label. " +
-						" FILTER (lang(?label) = 'en') " +
-					" } " +
-				" } ";
-	if(limit)
-		query += "LIMIT " + limit;  
-	
-   	queryUrl = endpoint+"?query="+ encodeURIComponent(query) +"&format=json";
-    $.ajax({
-        url: queryUrl,
-        success: function( data ) {
-			callback(handleResponseUrlAndLabel(data));
-        }
-    });	
-}
-
 QueryExecutor.prototype.getDirectPredicatesFromConcept = function(entity, limit, callback) {
 	query = " prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
 				" prefix owl: <http://www.w3.org/2002/07/owl#> " +
@@ -310,8 +195,8 @@ QueryExecutor.prototype.getDirectPredicatesFromConcept = function(entity, limit,
 					" GRAPH " + graph + " { " +
 						" ?s a <"+entity+">. " +
 						" ?s ?url ?s2. " +
-						" ?url rdfs:label ?label. " +
-						" FILTER (lang(?label) = 'en') " +
+						" OPTIONAL {?url rdfs:label ?label. " +
+						" FILTER (lang(?label) = '" + language + "')} " +
 					" } " +
 				" } ";
 	if(limit)
@@ -329,7 +214,6 @@ QueryExecutor.prototype.getDirectPredicatesFromConcept = function(entity, limit,
 /*
 	This function get all reverse entity's predicates.
 */
-
 QueryExecutor.prototype.getReversePredicatesFromConcept = function(entity, limit, callback) {
 	query = " prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
 				" prefix owl: <http://www.w3.org/2002/07/owl#> " +
@@ -338,8 +222,8 @@ QueryExecutor.prototype.getReversePredicatesFromConcept = function(entity, limit
 					" GRAPH " + graph + " { " +
 						" ?s a <"+entity+">. " +
 						" ?s2 ?url ?s. " +
-						" ?url rdfs:label ?label. " +
-						" FILTER (lang(?label) = 'en') " +
+						" OPTIONAL {?url rdfs:label ?label. " +
+						" FILTER (lang(?label) = '" + language + "')} " +
 					" } " +
 				" } ";
 	if(limit)
@@ -355,19 +239,16 @@ QueryExecutor.prototype.getReversePredicatesFromConcept = function(entity, limit
 }
 
 /*
-	This function get all entity's direct predicates.
+	This function get all subject of the selected predicate.
 */
-
-QueryExecutor.prototype.getAllSelectedEntityDirectPredicates = function(entity, limit, callback) {
+QueryExecutor.prototype.getConceptsFromDirectPredicate = function(predicate, limit, callback) {
 	query = " prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
-				" prefix owl: <http://www.w3.org/2002/07/owl#> " +
 				" SELECT DISTINCT ?url ?label " +
 				" WHERE { " + 
 					" GRAPH " + graph + " { " +
-						" ?s a " + entity + " . " +
-						" ?s ?url ?s2. " +
-						" ?url rdfs:label ?label. " +
-						" FILTER (lang(?label) = 'en') " +
+						" ?url <"+predicate+"> ?s. " +
+						" OPTIONAL {?url rdfs:label ?label. " +
+						" FILTER (lang(?label) = '" + language + "')} " +
 					" } " +
 				" } ";
 	if(limit)
@@ -385,16 +266,54 @@ QueryExecutor.prototype.getAllSelectedEntityDirectPredicates = function(entity, 
 /*
 	This function get all object of the selected predicate.
 */
-
-QueryExecutor.prototype.getPredicateObject = function(predicate, limit, callback) {
+QueryExecutor.prototype.getConceptsFromReversePredicate = function(predicate, limit, callback) {
 	query = " prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
 				" prefix owl: <http://www.w3.org/2002/07/owl#> " +
 				" SELECT DISTINCT ?url ?label " +
 				" WHERE { " + 
 					" GRAPH " + graph + " { " +
 						" ?s <"+predicate+"> ?url. " +
-						" ?url rdfs:label ?label. " +
-						" FILTER (lang(?label) = 'en') " +
+						" OPTIONAL {?url rdfs:label ?label. " +
+						" FILTER (lang(?label) = '" + language + "')} " +
+					" } " +
+				" } ";
+	if(limit)
+		query += "LIMIT " + limit;  
+	
+   	queryUrl = endpoint+"?query="+ encodeURIComponent(query) +"&format=json";
+    $.ajax({
+        url: queryUrl,
+        success: function( data ) {
+			callback(handleResponseUrlAndLabel(data));
+        }
+    });	
+}
+/*
+	Tested query 
+		prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
+		prefix owl: <http://www.w3.org/2002/07/owl#> 
+		SELECT DISTINCT ?url ?label
+		WHERE { 
+		GRAPH <http://dbpedia.org> { 
+		?s <http://dbpedia.org/property/author> ?o  .
+		?o ?url ?s2.
+		?url rdfs:label ?label. 
+		FILTER (lang(?label) = 'en') 
+				
+		}}LIMIT 100
+
+	This function get all direct entity's predicates.
+*/
+QueryExecutor.prototype.getDirectPredicatesFromPredicate = function(predicate, limit, callback) {
+	query = " prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
+				" prefix owl: <http://www.w3.org/2002/07/owl#> " +
+				" SELECT DISTINCT ?url ?label " +
+				" WHERE { " + 
+					" GRAPH " + graph + " { " +
+						" ?s <"+predicate+"> ?o. " +
+						" ?o ?url ?s2. " +
+						" OPTIONAL {?url rdfs:label ?label. " +
+						" FILTER (lang(?label) = '" + language + "')} " +
 					" } " +
 				" } ";
 	if(limit)
@@ -409,20 +328,16 @@ QueryExecutor.prototype.getPredicateObject = function(predicate, limit, callback
     });	
 }
 
-/*
-	This function get all entity's reverse predicates.
-*/
-
-QueryExecutor.prototype.getAllSelectedEntityReversePredicates = function(entity, limit, callback) {
+QueryExecutor.prototype.getReversePredicatesFromPredicate = function(predicate, limit, callback) {
 	query = " prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
 				" prefix owl: <http://www.w3.org/2002/07/owl#> " +
 				" SELECT DISTINCT ?url ?label " +
 				" WHERE { " + 
 					" GRAPH " + graph + " { " +
-						" ?s a " + entity + " . " +
-						" ?s1 ?url ?s. " +
-						" ?url rdfs:label ?label. " +
-						" FILTER (lang(?label) = 'en') " +
+						" ?s <"+predicate+"> ?o. " +
+						" ?s2 ?url ?o. " +
+						" OPTIONAL {?url rdfs:label ?label. " +
+						" FILTER (lang(?label) = '" + language + "')} " +
 					" } " +
 				" } ";
 	if(limit)
@@ -432,8 +347,8 @@ QueryExecutor.prototype.getAllSelectedEntityReversePredicates = function(entity,
     $.ajax({
         url: queryUrl,
         success: function( data ) {
-			callback(handleResponseUrlAndLabel(data));        
-		}
+			callback(handleResponseUrlAndLabel(data));
+        }
     });	
 }
 
@@ -487,17 +402,3 @@ function handleResponseUrlAndLabel(data) {
 	console.log(result);
 	return result;
 }
-
-function createLabel(url){
-	var label = '';
-
-	var splittedParts = url.split('/')
-	label = splittedParts[splittedParts.length-1];
-
-	splittedParts = label.split('#')
-	label = splittedParts[splittedParts.length-1];	
-
-	return label;
-}
-
-
