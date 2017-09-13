@@ -35,7 +35,8 @@ QueryViewer.prototype.updateQuery = function(queryRoot, queryMap, focus){
 	renderQuery();
 }
 
-
+//ATTENZIONE
+//focusReference: currentNode.key, removeReference: currentNode.children[i] negli span lista
 function renderQuery(){
 	//visit query implicit tree 
 	if(queryLogicStructureRoot == null){
@@ -50,11 +51,25 @@ function renderQuery(){
 			var currentNode = visitStack.pop();
 			visitRenderer(currentNode);
 
+			var childrenNumber;
+			(currentNode.children.length >= 2)?childrenNumber = true : childrenNumber = false;
+
+			if(childrenNumber){
+				visitStack.push({type: 'endSpan', verbalization:{current: ['</span>']}, children:[] });
+				visitStack.push({type: 'endul', verbalization:{current: ['</ul>']}, children:[] });
+			}
+
 			for(var i = currentNode.children.length-1; i>=0; i--){
+
+				if(childrenNumber)
+					visitStack.push({type: 'endli', verbalization:{current: ['</li>']}, children:[] });
 
 				visitStack.push({type: 'endSpan', verbalization:{current: ['</span>']}, children:[] });
 				visitStack.push(queryLogicStructure[currentNode.children[i]]);
 				visitStack.push({type: 'startSpan', verbalization:{current: ['<span>']}, children:[], focusReference: currentNode.key, removeReference: currentNode.children[i] });
+
+				if(childrenNumber)
+					visitStack.push({type: 'startli', verbalization:{current: ['<li>']}, children:[] });
 
 				if(i != 0){
 					visitStack.push({type: 'newLine', verbalization:{current: ['<br>']}, children:[] });
@@ -62,6 +77,10 @@ function renderQuery(){
 				}
 			}
 
+			if(childrenNumber){
+				visitStack.push({type: 'startul', verbalization:{current: ['<ul>']}, children:[] });
+				visitStack.push({type: 'startSpan', verbalization:{current: ['<span>']}, children:[] });
+			}
 		}
 
 	}
