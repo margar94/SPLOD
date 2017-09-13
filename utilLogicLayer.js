@@ -7,5 +7,7 @@ function createLabel(url){
 	splittedParts = label.split('#')
 	label = splittedParts[splittedParts.length-1];	
 
+	label = label.replace(/\_/g, " ");
+
 	return label;
 }

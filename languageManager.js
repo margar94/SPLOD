@@ -99,3 +99,16 @@ LanguageManager.prototype.verbalizeSomething = function(){
 	return verbalization;
 
 }
+
+LanguageManager.prototype.getOrdinalNumber = function(cardinalNumber){
+	var ordinalNumber = '';
+	
+	switch(cardinalNumber){
+		case 1 : ordinalNumber = '1st'; break;
+		case 2 : ordinalNumber = '2nd'; break;
+		case 3 : ordinalNumber = '3rd'; break;
+		default : ordinalNumber = cardinalNumber+'th'; break;
+	}
+
+	return ordinalNumber;
+}

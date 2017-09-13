@@ -73,7 +73,7 @@ function renderQuery(){
 
 function visitRenderer(node){
 
-	var utils = 'meta-removeReference="'+node.key+'" meta-focusReference="'+node.key+'" id="'+node.key+'"';
+	var utils = 'meta-removeReference="'+node.key+'" meta-focusReference="'+node.key+'" id="'+node.key+'" title="'+node.url+'"';
 
 	if(node.type == 'something'){
 
@@ -115,7 +115,10 @@ function renderFocus(){
 
 	if(onFocus!=null){
 		document.getElementById(onFocus).className +=' highlighted';
-		var label = createLabel(onFocus);
+
+		var number = queryLogicStructure[onFocus].index; 
+		var label = languageManager.getOrdinalNumber(number) + " " + queryLogicStructure[onFocus].label;
+
 		$('#focus').text('Element on focus: ' + label);
 
 
@@ -150,7 +153,11 @@ function attachEvents(){
 
 		//changeFocus notification
 		onFocus = $(this).attr('meta-focusReference');
-		$('#focus').text('Element on focus: ' + onFocus);
+
+		var number = queryLogicStructure[onFocus].index; 
+		var label = languageManager.getOrdinalNumber(number) + " " + queryLogicStructure[onFocus].label;
+
+		$('#focus').text('Element on focus: ' + label);
 
 
 		if(queryLogicStructure[onFocus].type == 'concept'){
