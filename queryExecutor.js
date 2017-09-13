@@ -42,8 +42,8 @@ QueryExecutor.prototype.getAllEntities = function(callback) {
 				" WHERE { " + 
 					" GRAPH " + graph + " { " +
 						" ?url rdfs:subClassOf owl:Thing. " +
-						" ?url rdfs:label ?label. " +
-						" FILTER (lang(?label) = 'en') " +
+						" OPTIONAL {?url rdfs:label ?label. " +
+						" FILTER (lang(?label) = 'en')} " +
 					" } " +
 				" } ";
 	
@@ -67,8 +67,8 @@ QueryExecutor.prototype.getEntitySubclasses = function(url, callback) {
 				" WHERE { " + 
 					" GRAPH " + graph + " { " +
 						" ?url rdfs:subClassOf <" + url +"> . " +
-						" ?url rdfs:label ?label. " +
-						" FILTER (lang(?label) = 'en') " +
+						" OPTIONAL {?url rdfs:label ?label. " +
+						" FILTER (lang(?label) = 'en')} " +
 					" } " +
 				" } ";
 	
@@ -174,8 +174,8 @@ QueryExecutor.prototype.getAllDirectPredicates = function(limit, callback) {
 				" GRAPH " + graph + " { " +
 					" ?s a owl:Thing. " +
 					" ?s ?url ?s2. " +
-					" ?url rdfs:label ?label. " +
-					" FILTER (lang(?label) = 'en') " +
+					" OPTIONAL {?url rdfs:label ?label. " +
+					" FILTER (lang(?label) = 'en')} " +
 				" } " +
 			" } ";
 				
@@ -214,8 +214,8 @@ QueryExecutor.prototype.getAllReversePredicates = function(limit, callback) {
 				" GRAPH " + graph + " { " +
 					" ?s a owl:Thing. " +
 					" ?s2 ?url ?s. " +
-					" ?url rdfs:label ?label. " +
-					" FILTER (lang(?label) = 'en') " +
+					" OPTIONAL {?url rdfs:label ?label. " +
+					" FILTER (lang(?label) = 'en')} " +
 				" } " +
 			" } ";
 				
@@ -472,13 +472,32 @@ function handleResponseUrlAndLabel(data) {
 	
 	var arrayData = data.results.bindings;
 	var result = new Array();
-
+	var element;
+	var label;
+	
 	for(i=0; i<arrayData.length; i++){
-		result.push({url:arrayData[i].url.value, label:arrayData[i].label.value});
+		element = arrayData[i];
+		if(element.label == undefined){
+			label = createLabel(element.url.value);
+			element.label = {value:label};
+		}
+		result.push({url:element.url.value, label:element.label.value});
 	}
 	
-	//console.log(result);
+	console.log(result);
 	return result;
+}
+
+function createLabel(url){
+	var label = '';
+
+	var splittedParts = url.split('/')
+	label = splittedParts[splittedParts.length-1];
+
+	splittedParts = label.split('#')
+	label = splittedParts[splittedParts.length-1];	
+
+	return label;
 }
 
 

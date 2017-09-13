@@ -6,7 +6,7 @@ var queryViewer;
 
 var predicatesCounter;
 
-var keyElementOnFocus
+var keyElementOnFocus;
 
 var QueryVerbalizator = function () {
 	if(QueryVerbalizator.prototype._singletonInstance){
