@@ -380,6 +380,10 @@ QueryExecutor.prototype.changeEndpoint = function (selectedEndpoint, selectedGra
 	graph = selectedGraph;
 }
 
+QueryExecutor.prototype.changeLanguage = function (selectedLanguage) {
+	language = selectedLanguage;
+}
+
 /*
 	Handle response of GetAllEntitis function: it creates an array with entities' url and label.
 */
