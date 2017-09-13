@@ -14,6 +14,28 @@ function initQueryViewer(){
 	languageManager = new LanguageManager();*/
 }
 
+var QueryViewer= function () {
+	if(QueryViewer.prototype._singletonInstance){
+		return QueryViewer.prototype._singletonInstance;
+	}
+
+	mapCreator = new MapCreator();
+	queryLogicStructure = {}; 
+	visitStack = [];
+
+	QueryViewer.prototype._singletonInstance = this;
+};
+
+QueryViewer.prototype.updateQuery = function(queryRoot, queryMap, focus){
+	visitStack = [];
+	queryLogicStructureRoot = queryRoot;
+	queryLogicStructure = queryMap;
+	onFocus = focus;
+	queryString = 'Give me ';
+	renderQuery();
+}
+
+
 function renderQuery(){
 	//visit query implicit tree 
 	if(queryLogicStructureRoot == null){
@@ -41,11 +63,7 @@ function renderQuery(){
 			}
 
 		}
-/*
-		$('#queryNaturalLanguage')[0].innerHTML = queryString;
 
-		attachEvents();
-		renderFocus();*/
 	}
 	$('#queryNaturalLanguage')[0].innerHTML = queryString;
 
@@ -90,33 +108,11 @@ function visitRenderer(node){
 }
 
 
-var QueryViewer= function () {
-	if(QueryViewer.prototype._singletonInstance){
-		return QueryViewer.prototype._singletonInstance;
-	}
-
-	mapCreator = new MapCreator();
-	queryLogicStructure = {}; 
-	visitStack = [];
-
-	QueryViewer.prototype._singletonInstance = this;
-};
-
-QueryViewer.prototype.updateQuery = function(queryRoot, queryMap, focus){
-	visitStack = [];
-	queryLogicStructureRoot = queryRoot;
-	queryLogicStructure = queryMap;
-	onFocus = focus;
-	queryString = 'Give me ';
-	renderQuery();
-}
-
 function renderFocus(){
-console.log(onFocus);
+
 	//add class to highlight the focus
 	$('.highlighted').removeClass('highlighted');
-	//var id = '#' + onFocus;
-	//$(id).addClass('highlighted');
+
 	if(onFocus!=null){
 		document.getElementById(onFocus).className +=' highlighted';
 		$('#focus').text('Element on focus: ' + onFocus);

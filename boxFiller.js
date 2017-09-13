@@ -58,8 +58,10 @@ BoxFiller.prototype.retrievePredicates = function(callback) {
 
 
 BoxFiller.prototype.updateConceptsFromConcept = function(entityUrl, entityLabel, callback){
-	//console.log(entityUrl);
-	executor.getEntitySubclasses(entityUrl, function(data){
+	
+	var limit = false;
+
+	executor.getEntitySubclasses(entityUrl, limit, function(data){
 		callback(data);
 	});
  
@@ -108,11 +110,18 @@ BoxFiller.prototype.updatePredicatesFromConcept = function(predUrl, predLabel, p
 
 
 
-BoxFiller.prototype.updateConceptsFromDirectPredicate = function(predUrl, predLabel, callback){}
+BoxFiller.prototype.updateConceptsFromDirectPredicate = function(predUrl, predLabel, callback){
+
+	var limit = false;
+	executor.getConceptsFromDirectPredicate(predUrl, limit, function(data){
+		callback(data);
+	});
+
+}
 
 BoxFiller.prototype.updateConceptsFromReversePredicate = function(predUrl, predLabel, callback){
 	var limit = false;
-	executor.getPredicateObject(predUrl, limit, function(data){
+	executor.getConceptsFromReversePredicate(predUrl, limit, function(data){
 		callback(data);
 	});
 }
@@ -160,6 +169,7 @@ BoxFiller.prototype.updatePredicatesFromPredicate = function(predUrl, predLabel,
 
 	
 }
+
 
 
 
