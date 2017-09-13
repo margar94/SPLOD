@@ -115,7 +115,8 @@ function renderFocus(){
 
 	if(onFocus!=null){
 		document.getElementById(onFocus).className +=' highlighted';
-		$('#focus').text('Element on focus: ' + onFocus);
+		var label = createLabel(onFocus);
+		$('#focus').text('Element on focus: ' + label);
 
 
 		if(queryLogicStructure[onFocus].type == 'concept'){
