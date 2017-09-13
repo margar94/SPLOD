@@ -403,6 +403,6 @@ function handleResponseUrlAndLabel(data) {
 		result.push({url:element.url.value, label:element.label.value});
 	}
 	
-	console.log(result);
+	//console.log(result);
 	return result;
 }

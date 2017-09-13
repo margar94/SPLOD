@@ -40,14 +40,14 @@ MapCreator.prototype.selectedConcept = function(selectedUrl, selectedLabel) {
 
 	var verbalization = languageManager.verbalizeConcept(selectedLabel);
 
-	if(!indexMap.hasOwnProperty(selectedUrl)){
-		indexMap.selectedUrl = 1;
+	if(!(selectedUrl in indexMap)){
+		indexMap[selectedUrl] = 1;
 	}
 	else{
-		indexMap.selectedUrl += 1;
+		indexMap[selectedUrl] += 1;
 	}
-	var key = selectedUrl + "_" + indexMap.selectedUrl;
-	var index = indexMap.selectedUrl;
+	var key = selectedUrl + "_" + indexMap[selectedUrl];
+	var index = indexMap[selectedUrl];
 
 	// new element in logic map
 	var newLogicElement = {key: key, index: index,
@@ -123,14 +123,14 @@ MapCreator.prototype.selectedPredicate = function(selectedUrl, selectedLabel, pr
 
 	var verbalization = languageManager.verbalizePredicate(selectedLabel, predicateDirection);
 
-	if(!indexMap.hasOwnProperty(selectedUrl)){
-		indexMap.selectedUrl = 1;
+	if(!(selectedUrl in indexMap)){
+		indexMap[selectedUrl] = 1;
 	}
 	else{
-		indexMap.selectedUrl += 1;
+		indexMap[selectedUrl] += 1;
 	}
-	var key = selectedUrl + "_" + indexMap.selectedUrl;
-	var index = indexMap.selectedUrl;
+	var key = selectedUrl + "_" + indexMap[selectedUrl];
+	var index = indexMap[selectedUrl];
 
 	// new element in logic map
 	var newLogicElement = {key: key, index: index,
