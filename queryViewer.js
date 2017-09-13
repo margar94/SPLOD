@@ -117,10 +117,14 @@ function renderFocus(){
 		document.getElementById(onFocus).className +=' highlighted';
 		$('#focus').text('Element on focus: ' + onFocus);
 
+
 		if(queryLogicStructure[onFocus].type == 'concept'){
 			updateBoxesFromConcept(queryLogicStructure[onFocus].url, queryLogicStructure[onFocus].label);
-		}else{
+		}else if(queryLogicStructure[onFocus].type == 'predicate'){
 			updateBoxesFromPredicate(queryLogicStructure[onFocus].url, queryLogicStructure[onFocus].label, queryLogicStructure[onFocus].direction);
+		}else if(queryLogicStructure[onFocus].type == 'something'){
+			var parent = queryLogicStructure[queryLogicStructure[onFocus].parent];
+			updateBoxesFromPredicate(parent.url, parent.label, parent.direction);
 		}
 
 	}
