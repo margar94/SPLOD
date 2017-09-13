@@ -112,7 +112,7 @@ QueryViewer.prototype.updateQuery = function(queryRoot, queryMap, focus){
 }
 
 function renderFocus(){
-
+console.log(onFocus);
 	//add class to highlight the focus
 	$('.highlighted').removeClass('highlighted');
 	//var id = '#' + onFocus;
@@ -120,9 +120,24 @@ function renderFocus(){
 	if(onFocus!=null){
 		document.getElementById(onFocus).className +=' highlighted';
 		$('#focus').text('Element on focus: ' + onFocus);
+
+		if(queryLogicStructure[onFocus].type == 'concept'){
+			updateBoxesFromConcept(queryLogicStructure[onFocus].url, queryLogicStructure[onFocus].label);
+		}else{
+			updateBoxesFromPredicate(queryLogicStructure[onFocus].url, queryLogicStructure[onFocus].label, queryLogicStructure[onFocus].direction);
+		}
+
 	}
-	else
-		$('#focus').text();
+	else{
+
+		fillConcepts();
+		fillPredicates();
+
+		$('#focus').text('');
+
+	}
+
+		
 }
 
 function attachEvents(){
@@ -135,6 +150,7 @@ function attachEvents(){
 		//changeFocus notification
 		onFocus = $(this).attr('meta-focusReference');
 		$('#focus').text('Element on focus: ' + onFocus);
+
 
 		if(queryLogicStructure[onFocus].type == 'concept'){
 

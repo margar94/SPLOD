@@ -65,7 +65,7 @@ function renderPredicates(predicates){
 	var reverseArray = predicates.reverseArray;
 	var attributesArray = predicates.attributesArray;
 	
-	renderAttributes(attributesArray);
+	//renderAttributes(attributesArray);
 	renderDirectPredicates(directArray);
 	renderReversePredicates(reverseArray);
 	

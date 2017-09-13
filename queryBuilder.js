@@ -40,7 +40,7 @@ function buildQuery(){
 				if(queryLogicStructure[currentNode.children[i]].type=='concept')
 					queryLogicStructure[currentNode.children[i]].variable = currentNode.variable;
 				else
-					queryLogicStructure[currentNode.children[i]].variable = "?"+queryLogicStructure[currentNode.children[i]].label.replace( /\s/g, "") + "_" + queryLogicStructure[currentNode.children[i]].index;
+					queryLogicStructure[currentNode.children[i]].variable = "?"+queryLogicStructure[currentNode.children[i]].label.replace( /[\s -]/g, "") + "_" + queryLogicStructure[currentNode.children[i]].index;
 
 				if(queryLogicStructure[currentNode.children[i]].type=='something')
 					currentNode.variable = queryLogicStructure[currentNode.children[i]].variable;
