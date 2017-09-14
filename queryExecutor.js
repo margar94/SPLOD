@@ -53,7 +53,7 @@ QueryExecutor.prototype.getAllEntities = function(callback) {
 							" ?superclass a owl:Class ; rdfs:subClassOf ?subclass. " +
 							" OPTIONAL {?superclass rdfs:label ?label_superclass. " +
 							" ?subclass rdfs:label ?label_subclass. " +
-							" FILTER ((lang(?label_superclass) = '" + language + "') &&  (lang(?label_subclass) = '" + language + "')) " +
+							" FILTER ((lang(?label_superclass) = '" + language + "') &&  (lang(?label_subclass) = '" + language + "')) }" +
 						" } " +
 					" } ";
 		
@@ -408,28 +408,30 @@ function buildClassHierarchy(data){
 	var element; 
 	var label;
 
-	$.each(arrayData, function(index)){
+	$.each(arrayData, function(index){
 		element = arrayData[index];
 
 		if(!(element.superclass.value in classHierarchyMap)){
-			classHierarchyMap[superclass.value] = {label: '', children : []};
+			classHierarchyMap[element.superclass.value] = {label: '', children : []};
 		
-			label = element.label_superclass.value;
+			label = element.label_superclass;
 			if(label == undefined)
 				label = createLabel(element.superclass.value);
+			else label = element.label_superclass.value;
 		}
 
-		classHierarchyMap[superclass.value].label = label;
-		classHierarchyMap[superclass.value].children.push(element.subclass.value);
+		classHierarchyMap[element.superclass.value].label = label;
+		classHierarchyMap[element.superclass.value].children.push(element.subclass.value);
 
 		if(!(element.subclass.value in classHierarchyMap)){
-			classHierarchyMap[subclass.value] = {label: '', children : []};
+			classHierarchyMap[element.subclass.value] = {label: '', children : []};
 
-			label = element.label_subclass.value;
+			label = element.label_subclass;
 			if(label == undefined)
 				label = createLabel(element.subclass.value);
+			else label = element.label_subclass.value;
 		}
 
-	}
+	});
 
 }

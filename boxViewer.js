@@ -9,15 +9,16 @@ function initBoxViewer(){
 	mapCreator = new MapCreator();
 }
 
+//first filling, map returned
 function fillConcepts(){
 	boxFiller.retrieveConcepts(function (concepts){
-		renderConcepts(concepts);
+		renderConceptsHierarchy(concepts);
 	});
 }
 
 function updateBoxesFromConcept(conceptUrl, conceptLabel){
 	
-	boxFiller.updateConceptsFromConcept(conceptUrl, conceptLabel, renderConcepts);
+	boxFiller.updateConceptsFromConcept(conceptUrl, conceptLabel, renderConceptsHierarchy);
 	boxFiller.updatePredicatesFromConcept(conceptUrl, conceptLabel, false, renderPredicates);
 
 }
@@ -55,6 +56,13 @@ function renderConcepts(concepts){
 				mapCreator.selectedConcept($(this).attr('meta-url'), $(this).attr('meta-label'));
 			});
 	});
+}
+
+function renderConceptsHierarchy(concepts){
+	var conceptsList = $("#conceptsList");
+	conceptsList.empty();
+
+	console.log(concepts);
 }
 
 function renderPredicates(predicates){
