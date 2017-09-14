@@ -28,7 +28,8 @@ LanguageManager.prototype.verbalizeConcept = function(conceptLabel){
 	verbalization.modified.push('that is ' + LanguageManager.prototype.getArticle(conceptLabel) + ' ');
 	verbalization.modified.push(conceptLabel + ' ');
 
-	//verbalization.truncated.push();
+	verbalization.truncated.push('is ' + LanguageManager.prototype.getArticle(conceptLabel) + ' ');
+	verbalization.truncated.push(conceptLabel + ' ');
 
 	verbalization.first.push('every ');
 	verbalization.first.push(conceptLabel + ' ');

@@ -82,9 +82,12 @@ MapCreator.prototype.selectedConcept = function(selectedUrl, selectedLabel) {
 			newLogicElement.parent = precLogicElement.key;
 			precLogicElement.children.push(newLogicElement.key);
 
-		}else if(queryLogicMap[elementOnFocus].type=='predicate'){
-			//is it permitted??
-		}else if(queryLogicMap[elementOnFocus].type=='operator'){
+		}else if(precLogicElement.type=='predicate'){ // direct predicate
+
+			newLogicElement.parent = precLogicElement.key;
+			precLogicElement.children.push(newLogicElement.key);
+
+		}else if(precLogicElement.type=='operator'){
 			//TODO
 		}
 

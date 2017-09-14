@@ -43,7 +43,14 @@ function verbalizeQuery(){
 			visitVerbalizator(currentNode);
 
 			for(var i = currentNode.children.length-1; i>=0; i--){
-				if(queryLogicStructure[currentNode.children[i]].type=='concept' || queryLogicStructure[currentNode.children[i]].type=='something')
+				if(queryLogicStructure[currentNode.children[i]].type=='concept'){
+					if(currentNode.type == 'predicate')
+						queryLogicStructure[currentNode.children[i]].predicatesCounter = queryLogicStructure[currentNode.key].predicatesCounter+1;
+					else
+						queryLogicStructure[currentNode.children[i]].predicatesCounter = 0;
+				}
+
+				else if(queryLogicStructure[currentNode.children[i]].type=='something')
 					queryLogicStructure[currentNode.children[i]].predicatesCounter = 0;
 				else
 					queryLogicStructure[currentNode.children[i]].predicatesCounter = queryLogicStructure[currentNode.key].predicatesCounter+1;
@@ -64,6 +71,12 @@ function visitVerbalizator(node){
 	else if(node.type == 'concept'){
 		if(queryLogicMap[node.parent].type == 'concept')
 			node.verbalization.current = node.verbalization.modified;
+		else if(queryLogicMap[node.parent].type == 'predicate' && queryLogicMap[node.parent].direction == 'direct'){ 
+			node.verbalization.current = node.verbalization.truncated;
+			if(node.predicatesCounter%2 == 0){
+				queryLogicMap[node.parent].verbalization.current = queryLogicMap[node.parent].verbalization.modified;
+			}
+		}
 	}
 	else if(node.type == 'predicate'){
 		if(queryLogicMap[node.parent].type == 'predicate' && queryLogicMap[node.parent].direction == 'direct'){
