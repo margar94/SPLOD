@@ -11,6 +11,8 @@ var language;
 
 var resultManager;
 
+var classHierarchyMap;
+
 var QueryExecutor = function (selectedEndpoint, selectedGraph) {
 	if(QueryExecutor.prototype._singletonInstance){
 		return QueryExecutor.prototype._singletonInstance;
@@ -30,6 +32,8 @@ var QueryExecutor = function (selectedEndpoint, selectedGraph) {
 
 	language = 'en';
 
+	classHierarchyMap = {};
+
 	resultManager = new ResultManager();
 
 	QueryExecutor.prototype._singletonInstance = this;
@@ -37,27 +41,34 @@ var QueryExecutor = function (selectedEndpoint, selectedGraph) {
 };
 
 /*
-	Get all top level classes. According to http://mappings.dbpedia.org/server/ontology/classes/ all top level classes are Thing's subclasses. 
+	Get classe's hierarchy. 
 */
 QueryExecutor.prototype.getAllEntities = function(callback) {
-	query = " prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
-				" prefix owl: <http://www.w3.org/2002/07/owl#> " +
-				" SELECT ?url ?label " +
-				" WHERE { " + 
-					" GRAPH " + graph + " { " +
-						" ?url rdfs:subClassOf owl:Thing. " +
-						" OPTIONAL {?url rdfs:label ?label. " +
-						" FILTER (lang(?label) = '" + language + "')} " +
-					" } " +
-				" } ";
-	
-   	queryUrl = endpoint+"?query="+ encodeURIComponent(query) +"&format=json";
-    $.ajax({
-        url: queryUrl,
-        success: function( data ) {
-			callback(handleResponseUrlAndLabel(data));
-        }
-    });	
+	if($.isEmptyObject(classHierarchyMap)){
+		query = " prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
+					" prefix owl: <http://www.w3.org/2002/07/owl#> " +
+					" SELECT DISTINCT * " +
+					" WHERE { " + 
+						" GRAPH " + graph + " { " +
+							" ?superclass a owl:Class ; rdfs:subClassOf ?subclass. " +
+							" OPTIONAL {?superclass rdfs:label ?label_superclass. " +
+							" ?subclass rdfs:label ?label_subclass. " +
+							" FILTER ((lang(?label_superclass) = '" + language + "') &&  (lang(?label_subclass) = '" + language + "')) " +
+						" } " +
+					" } ";
+		
+	   	queryUrl = endpoint+"?query="+ encodeURIComponent(query) +"&format=json";
+	    $.ajax({
+	        url: queryUrl,
+	        success: function( data ) {
+	        	buildClassHierarchy(data);
+				callback(classHierarchyMap);
+	        }
+	    });	
+	}
+	else{
+		callback(classHierarchyMap);
+	}
 }
 
 
@@ -108,7 +119,7 @@ QueryExecutor.prototype.getAllDirectPredicates = function(limit, callback) {
     $.ajax({
         url: queryUrl,
         success: function( data ) {
-			callback(handleResponseUrlAndLabel(data));
+			callback(getUrlAndLabelFromResult(data));
         }
     });	
 	
@@ -148,7 +159,7 @@ QueryExecutor.prototype.getAllReversePredicates = function(limit, callback) {
     $.ajax({
         url: queryUrl,
         success: function( data ) {
-			callback(handleResponseUrlAndLabel(data));
+			callback(getUrlAndLabelFromResult(data));
         }
     });	
 	
@@ -160,27 +171,7 @@ QueryExecutor.prototype.getAllReversePredicates = function(limit, callback) {
 	@url : url of superclass  
 */
 QueryExecutor.prototype.getEntitySubclasses = function(url, limit, callback) {
-	query = " prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
-				" prefix owl: <http://www.w3.org/2002/07/owl#> " +
-				" SELECT ?url ?label " +
-				" WHERE { " + 
-					" GRAPH " + graph + " { " +
-						" ?url rdfs:subClassOf <" + url +"> . " +
-						" OPTIONAL {?url rdfs:label ?label. " +
-						" FILTER (lang(?label) = '" + language + "')} " +
-					" } " +
-				" } ";
-
-	if(limit)
-		query += "LIMIT " + limit;  
-	
-   	queryUrl = endpoint+"?query="+ encodeURIComponent(query) +"&format=json";
-    $.ajax({
-        url: queryUrl,
-        success: function( data ) {
-			callback(handleResponseUrlAndLabel(data));
-        }
-    });	
+	callback(classHierarchyMap);
 }
 
 /*
@@ -206,7 +197,7 @@ QueryExecutor.prototype.getDirectPredicatesFromConcept = function(entity, limit,
     $.ajax({
         url: queryUrl,
         success: function( data ) {
-			callback(handleResponseUrlAndLabel(data));
+			callback(getUrlAndLabelFromResult(data));
         }
     });	
 }
@@ -233,7 +224,7 @@ QueryExecutor.prototype.getReversePredicatesFromConcept = function(entity, limit
     $.ajax({
         url: queryUrl,
         success: function( data ) {
-			callback(handleResponseUrlAndLabel(data));
+			callback(getUrlAndLabelFromResult(data));
         }
     });	
 }
@@ -258,7 +249,7 @@ QueryExecutor.prototype.getConceptsFromDirectPredicate = function(predicate, lim
     $.ajax({
         url: queryUrl,
         success: function( data ) {
-			callback(handleResponseUrlAndLabel(data));
+			callback(getUrlAndLabelFromResult(data));
         }
     });	
 }
@@ -284,7 +275,7 @@ QueryExecutor.prototype.getConceptsFromReversePredicate = function(predicate, li
     $.ajax({
         url: queryUrl,
         success: function( data ) {
-			callback(handleResponseUrlAndLabel(data));
+			callback(getUrlAndLabelFromResult(data));
         }
     });	
 }
@@ -323,7 +314,7 @@ QueryExecutor.prototype.getDirectPredicatesFromPredicate = function(predicate, l
     $.ajax({
         url: queryUrl,
         success: function( data ) {
-			callback(handleResponseUrlAndLabel(data));
+			callback(getUrlAndLabelFromResult(data));
         }
     });	
 }
@@ -347,7 +338,7 @@ QueryExecutor.prototype.getReversePredicatesFromPredicate = function(predicate, 
     $.ajax({
         url: queryUrl,
         success: function( data ) {
-			callback(handleResponseUrlAndLabel(data));
+			callback(getUrlAndLabelFromResult(data));
         }
     });	
 }
@@ -391,7 +382,7 @@ QueryExecutor.prototype.changeLanguage = function (selectedLanguage) {
 /*
 	Handle response of GetAllEntitis function: it creates an array with entities' url and label.
 */
-function handleResponseUrlAndLabel(data) {
+function getUrlAndLabelFromResult(data) {
 	
 	var arrayData = data.results.bindings;
 	var result = new Array();
@@ -409,4 +400,36 @@ function handleResponseUrlAndLabel(data) {
 	
 	//console.log(result);
 	return result;
+}
+
+function buildClassHierarchy(data){
+
+	var arrayData = data.results.bindings;
+	var element; 
+	var label;
+
+	$.each(arrayData, function(index)){
+		element = arrayData[index];
+
+		if(!(element.superclass.value in classHierarchyMap)){
+			classHierarchyMap[superclass.value] = {label: '', children : []};
+		
+			label = element.label_superclass.value;
+			if(label == undefined)
+				label = createLabel(element.superclass.value);
+		}
+
+		classHierarchyMap[superclass.value].label = label;
+		classHierarchyMap[superclass.value].children.push(element.subclass.value);
+
+		if(!(element.subclass.value in classHierarchyMap)){
+			classHierarchyMap[subclass.value] = {label: '', children : []};
+
+			label = element.label_subclass.value;
+			if(label == undefined)
+				label = createLabel(element.subclass.value);
+		}
+
+	}
+
 }
