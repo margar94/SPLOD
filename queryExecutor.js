@@ -369,7 +369,7 @@ QueryExecutor.prototype.executeUserQuery = function(querySPARQL){
     $.ajax({
         url: queryUrl,
         success: function( data ) {
-			resultManager.queryResult(data.results.bindings);
+			resultManager.queryResult(querySPARQL.select,querySPARQL.labelSelect, data.results.bindings);
         }
     });
 	

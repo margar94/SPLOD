@@ -21,7 +21,7 @@ QueryBuilder.prototype.updateQuery = function(queryLogicRoot, queryLogicMap){
 	queryLogicStructure = queryLogicMap;
 	queryLogicStructureRoot = queryLogicRoot;
 	visitStack = [];
-	querySPARQL = {select:[], where:''}; //add other field
+	querySPARQL = {select:[], labelSelect:[], where:''}; //add other field
 	buildQuery();
 }
 
@@ -59,12 +59,18 @@ function buildQuery(){
 
 function visitSPARQL(node){
 	// select management
-	if(($.inArray(node.variable, querySPARQL.select))<0)
-		querySPARQL.select.push(node.variable);
+	if(!(node.type == 'predicate' && node.direction == 'reverse')){
+
+		if(($.inArray(node.variable, querySPARQL.select))<0){
+			querySPARQL.select.push(node.variable);
+			querySPARQL.labelSelect.push(node.label);
+		}
+
+	}
 	
 	// where management
 	if(node.type == 'something'){
-		// ...
+		//...
 	}else if(node.type == 'concept'){
 		querySPARQL.where += node.variable + " a <" + node.url + ">.\n";
 	}else if(node.type == 'predicate'){

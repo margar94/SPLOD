@@ -6,7 +6,7 @@ var ResultManager = function () {
 	ResultManager.prototype._singletonInstance = this;
 };
 
-ResultManager.prototype.queryResult = function(results){
+ResultManager.prototype.queryResult = function(select, labelSelect, results){
 
 	/*var aggregatedResults = {};
 	$.each(results, function(index){
@@ -21,5 +21,5 @@ ResultManager.prototype.queryResult = function(results){
 
 	renderResult(aggregatedResults);
 */
-	renderResult(results);
+	renderResult(select, labelSelect, results);
 }
