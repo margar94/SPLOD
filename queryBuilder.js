@@ -54,10 +54,10 @@ function buildQuery(){
 		executor.executeUserQuery(querySPARQL);
 	}
 
-	//console.log(querySPARQL);
+	console.log(querySPARQL);
 }
 
-function visitSPARQL(node){
+/*function visitSPARQL(node){
 	if(node.type == 'something'){
 		querySPARQL.select += node.variable + " ";
 	}else if(node.type == 'concept'){
@@ -71,6 +71,32 @@ function visitSPARQL(node){
 		}
 		else{
 			querySPARQL.where += node.variable + " <" + node.url + "> " + queryLogicStructure[node.parent].variable + ".\n";
+		}
+	}else{
+		// other node
+	}		
+
+}*/
+
+function visitSPARQL(node){
+	querySPARQL.select += node.variable + " ";
+	if(node.type == 'something'){
+		//
+	}else if(node.type == 'concept'){
+		querySPARQL.where += node.variable + " a <" + node.url + ">.\n";
+
+		
+	}else if(node.type == 'predicate'){
+		var parentVariable;
+		if(node.parent == null)
+			parentVariable = '?_'; // useless variable
+		else
+			parentVariable = queryLogicStructure[node.parent].variable;
+		if(node.direction == 'direct'){
+			querySPARQL.where += parentVariable + " <" + node.url + "> " + node.variable + ".\n";
+		}
+		else{
+			querySPARQL.where += node.variable + " <" + node.url + "> " + parentVariable + ".\n";
 		}
 	}else{
 		// other node
