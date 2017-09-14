@@ -35,6 +35,9 @@
 				var td = $("<td/>")
 					.text(element[field].value)
 					.appendTo(tr);
+					
+				if('url' in element[field])
+					td.attr('title', element[field].url);
 			}
 			tr.appendTo(resultsTable);
 		});

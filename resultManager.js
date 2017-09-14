@@ -8,18 +8,19 @@ var ResultManager = function () {
 
 ResultManager.prototype.queryResult = function(select, labelSelect, results){
 
-	/*var aggregatedResults = {};
+	
+	console.log(results);
 	$.each(results, function(index){
-		var element = results[index];
 
-		for(field in element) {
-			if(!aggregatedResults.hasOwnProperty(field))
-				aggregatedResults[field] = [];
-			aggregatedResults[field].push(element[field].value);
+		var element = results[index];
+		for(field in element){
+			if(element[field].type == 'uri'){
+				element[field].url = element[field].value;
+				element[field].value = createLabel(element[field].value);
+			}
 		}
+
 	});
 
-	renderResult(aggregatedResults);
-*/
 	renderResult(select, labelSelect, results);
 }
