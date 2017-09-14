@@ -352,11 +352,11 @@ QueryExecutor.prototype.getReversePredicatesFromPredicate = function(predicate, 
     });	
 }
 
-//querySPARQL = {select:' ', where: ' ', limit}
+//querySPARQL = {select:[], where: ' ', limit}
 QueryExecutor.prototype.executeUserQuery = function(querySPARQL){
 
 	query = " prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
-				" SELECT " + querySPARQL.select +
+				" SELECT " + querySPARQL.select.join(' ') +
 				" WHERE { " + 
 					" GRAPH " + graph + " { " +
 						querySPARQL.where +

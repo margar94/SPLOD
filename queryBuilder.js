@@ -21,7 +21,7 @@ QueryBuilder.prototype.updateQuery = function(queryLogicRoot, queryLogicMap){
 	queryLogicStructure = queryLogicMap;
 	queryLogicStructureRoot = queryLogicRoot;
 	visitStack = [];
-	querySPARQL = {select:'', where:''}; //add other field
+	querySPARQL = {select:[], where:''}; //add other field
 	buildQuery();
 }
 
@@ -30,7 +30,7 @@ function buildQuery(){
 	//visit query implicit tree 
 	if(queryLogicStructureRoot != null){
 		
-		queryLogicStructure[queryLogicStructureRoot].variable = "?"+queryLogicStructure[queryLogicStructureRoot].label.replace( /\s/g, "") + "_" + queryLogicStructure[queryLogicStructureRoot].index;
+		queryLogicStructure[queryLogicStructureRoot].variable = "?"+queryLogicStructure[queryLogicStructureRoot].label.replace( /[\s -]/g, "") + "_" + queryLogicStructure[queryLogicStructureRoot].index;
 		visitStack.push(queryLogicStructure[queryLogicStructureRoot]);
 
 		while(visitStack.length != 0){
@@ -57,35 +57,16 @@ function buildQuery(){
 	console.log(querySPARQL);
 }
 
-/*function visitSPARQL(node){
-	if(node.type == 'something'){
-		querySPARQL.select += node.variable + " ";
-	}else if(node.type == 'concept'){
-		querySPARQL.where += node.variable + " a <" + node.url + ">.\n";
-
-		if(queryLogicStructure[node.parent]==null || queryLogicStructure[node.parent].type != 'concept')
-			querySPARQL.select += node.variable + " ";
-	}else if(node.type == 'predicate'){
-		if(node.direction == 'direct'){
-			querySPARQL.where += queryLogicStructure[node.parent].variable + " <" + node.url + "> " + node.variable + ".\n";
-		}
-		else{
-			querySPARQL.where += node.variable + " <" + node.url + "> " + queryLogicStructure[node.parent].variable + ".\n";
-		}
-	}else{
-		// other node
-	}		
-
-}*/
-
 function visitSPARQL(node){
-	querySPARQL.select += node.variable + " ";
+	// select management
+	if(($.inArray(node.variable, querySPARQL.select))<0)
+		querySPARQL.select.push(node.variable);
+	
+	// where management
 	if(node.type == 'something'){
-		//
+		// ...
 	}else if(node.type == 'concept'){
 		querySPARQL.where += node.variable + " a <" + node.url + ">.\n";
-
-		
 	}else if(node.type == 'predicate'){
 		var parentVariable;
 		if(node.parent == null)
