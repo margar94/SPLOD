@@ -355,23 +355,27 @@ QueryExecutor.prototype.getReversePredicatesFromPredicate = function(predicate, 
 //querySPARQL = {select:[], where: ' ', limit}
 QueryExecutor.prototype.executeUserQuery = function(querySPARQL){
 
-	query = " prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
-				" SELECT " + querySPARQL.select.join(' ') +
-				" WHERE { " + 
-					" GRAPH " + graph + " { " +
-						querySPARQL.where +
-					" } " +
-				" } ";
-	if(querySPARQL.limit)
-		query += "LIMIT " + querySPARQL.limit;  
-	
-   	queryUrl = endpoint+"?query="+ encodeURIComponent(query) +"&format=json";
-    $.ajax({
-        url: queryUrl,
-        success: function( data ) {
-			resultManager.queryResult(querySPARQL.select,querySPARQL.labelSelect, data.results.bindings);
-        }
-    });
+	if(querySPARQL.select.length == 0)
+		resultManager.queryResult(querySPARQL.select, querySPARQL.labelSelect, []);
+	else{
+		query = " prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
+					" SELECT " + querySPARQL.select.join(' ') +
+					" WHERE { " + 
+						" GRAPH " + graph + " { " +
+							querySPARQL.where +
+						" } " +
+					" } ";
+		if(querySPARQL.limit)
+			query += "LIMIT " + querySPARQL.limit;  
+		
+	   	queryUrl = endpoint+"?query="+ encodeURIComponent(query) +"&format=json";
+	    $.ajax({
+	        url: queryUrl,
+	        success: function( data ) {
+				resultManager.queryResult(querySPARQL.select, querySPARQL.labelSelect, data.results.bindings);
+	        }
+	    });
+	}
 	
 }
 
