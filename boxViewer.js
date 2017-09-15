@@ -62,7 +62,21 @@ function renderConceptsHierarchy(concepts){
 	var conceptsList = $("#conceptsList");
 	conceptsList.empty();
 
-	console.log(concepts);
+	for(concept in concepts){
+		console.log(concept);
+		var li = $("<li/>")
+			.attr('title', concept)
+			.attr('meta-url', concept)
+			.attr('meta-label', concepts[concept].label)
+			.text(concepts[concept].label)
+			.appendTo(conceptsList)
+			.on('click', function(){
+				updateBoxesFromConcept($(this).attr('meta-url'), $(this).attr('meta-label'));
+				mapCreator.selectedConcept($(this).attr('meta-url'), $(this).attr('meta-label'));
+			});
+	}
+
+	
 }
 
 function renderPredicates(predicates){
