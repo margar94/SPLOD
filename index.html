@@ -25,11 +25,15 @@
 				font-family: 'Roboto', sans-serif;
 			}
 
-			div#queryNaturalLanguage {
+			div#queryBox {
 				padding: 5px;
 				margin: 5px;
 			    border: 2px solid royalblue;
 			    border-radius: 5px;
+			}
+
+			div#queryNaturalLanguage {
+				display: inline-block;
 			}
 
 			div#conceptsBox {
@@ -75,13 +79,17 @@
 				color: orange;
 			}
 
+			#removeButton {
+				height: 20px;
+			}
+
 		</style>
 
 	</head>
 	<body>
-			
-		<div id="queryNaturalLanguage">
-			<span id="span1">Give me...</span>
+		<div id="queryBox">	
+			<div id="queryNaturalLanguage">
+				<span id="span1">Give me...</span>
 
 			<!--<span>A 
 				<span>B 
@@ -135,10 +143,12 @@
 
 			-->
 
+			</div>
+			<input id="removeButton" type="image" src="img/remove.png" onclick="mapCreator.removeElement($('.highlighted').attr('meta-removereference'));"></input>
 		</div>
 		<div>
-			<button type="button" onclick="mapCreator.removeElement($('.highlighted').attr('meta-removereference'));">Remove</button>
 			<span id="focus"></span>
+		</div>
 		<div>
 			<div id="conceptsBox">
 				<h1>Concetti</h1>
