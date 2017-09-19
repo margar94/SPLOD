@@ -36,8 +36,20 @@
 					.text(element[field].value)
 					.appendTo(tr);
 					
-				if('url' in element[field])
+				if('url' in element[field]){
 					td.attr('title', element[field].url);
+
+					var a = $("<a/>")
+						.attr('href', element[field].url)
+						.appendTo(td);
+
+					var img = $("<img/>")
+						.attr('src', 'img/ic_open_in_new_black_24dp_2x.png')
+						.attr('class', 'imgResult')
+						.appendTo(a);
+				}
+
+
 			}
 			tr.appendTo(resultsTable);
 		});

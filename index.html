@@ -41,7 +41,7 @@
 				padding: 5px;
 			    border: 2px solid limegreen;
 			    border-radius: 5px;
-			    width: 45%;
+			    width: 30%;
 			    height: 500px;
 			    overflow: scroll;
 			    display: inline-block;
@@ -49,11 +49,23 @@
 
 			div#predicatesBox {
 				position:absolute;
-				margin-left: 47%;
+				margin-left: 33%;
 				padding: 5px;
 			    border: 2px solid orange;
 			    border-radius: 5px;
-			    width: 50%;
+			    width: 30%;
+			    height: 500px;
+			    overflow: scroll;
+			    display: inline-block;
+			}
+
+			div#resultsBox {
+				position:absolute;
+				margin-left: 66%;
+				padding: 5px;
+			    border: 2px solid red;
+			    border-radius: 5px;
+			    width: 30%;
 			    height: 500px;
 			    overflow: scroll;
 			    display: inline-block;
@@ -81,6 +93,10 @@
 
 			span.predicate {
 				color: orange;
+			}
+
+			img.imgResult {
+				height: 10px;
 			}
 
 			#removeButton {
@@ -162,20 +178,26 @@
 		</div>
 		<div>
 			<div id="conceptsBox">
-				<h1>Concetti</h1>
+				<h1>Concepts</h1>
 				<ul id="conceptsList"></ul>
 
 			</div>
 
 			<div id="predicatesBox">
-				<h1>Predicati</h1>
+				<h1>Predicates</h1>
 				<ul id="predicatesList"></ul>
 
+			</div>
+			<div id="resultsBox">
+				<!--<h1>Predicati</h1>-->
+				<ul id="operatorList"></ul>
+				<ul id="resultList"></ul>
 			</div>
 		</div>
 
 		<div id="resultsTableBox">
-			<table id="resultsTable">
+			<h1>Results</h1>
+			<table id="resultsTable" border="1">
 			</table>
 		</div>
 
@@ -204,8 +226,6 @@
 			$.each(spanToRemove, function(index){
 				spanToRemove[index].className += ' highlightRemove';
 			});
-
-
 		}
 
 		function removeHighlightElementsToRemove(){
