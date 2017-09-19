@@ -71,6 +71,10 @@
 				background-color: yellow;
 			}
 
+			span.highlightRemove {
+				background-color: yellow;
+			}
+
 			span.concept {
 				color: limegreen;
 			}
@@ -149,7 +153,7 @@
 
 			</div>
 			<div id="removeButtonDiv">
-				<input id="removeButton" type="image" src="img/remove.png" onclick="mapCreator.removeElement($('.highlighted').attr('meta-removereference'));"></input> 
+				<input id="removeButton" type="image" src="img/remove.png" onmouseover="highlightElementsToRemove();" onmouseleave="removeHighlightElementsToRemove();" onclick="mapCreator.removeElement($('.highlighted').attr('meta-removereference'));"></input> 
 			</div>
 		</div>
 		
@@ -189,6 +193,28 @@
 			fillPredicates();
 
 		});
+
+		function highlightElementsToRemove(){
+
+			var IDtoRemove = $('.highlighted').attr('meta-removereference');
+
+			var spanToRemove = document.getElementById(IDtoRemove).parentNode.querySelectorAll('span');
+			document.getElementById(IDtoRemove).parentNode.className += ' highlightRemove';
+
+			$.each(spanToRemove, function(index){
+				spanToRemove[index].className += ' highlightRemove';
+			});
+
+
+		}
+
+		function removeHighlightElementsToRemove(){
+			var toRemoveHightlight = $('.highlightRemove');
+
+			$.each(toRemoveHightlight, function(index){
+				toRemoveHightlight[index].setAttribute('class', toRemoveHightlight[index].getAttribute('class').replace(' highlightRemove', ''));
+			});
+		}
 
 	</script>
 
