@@ -83,6 +83,10 @@
 				height: 20px;
 			}
 
+			#removeButtonDiv{
+				float:right;
+			}
+
 		</style>
 
 	</head>
@@ -144,8 +148,11 @@
 			-->
 
 			</div>
-			<input id="removeButton" type="image" src="img/remove.png" onclick="mapCreator.removeElement($('.highlighted').attr('meta-removereference'));"></input>
+			<div id="removeButtonDiv">
+				<input id="removeButton" type="image" src="img/remove.png" onclick="mapCreator.removeElement($('.highlighted').attr('meta-removereference'));"></input> 
+			</div>
 		</div>
+		
 		<div>
 			<span id="focus"></span>
 		</div>
