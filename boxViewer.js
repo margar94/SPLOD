@@ -63,7 +63,7 @@ function renderConceptsHierarchy(concepts){
 	conceptsList.empty();
 
 	for(concept in concepts){
-		console.log(concept);
+		//console.log(concept);
 		var li = $("<li/>")
 			.attr('title', concept)
 			.attr('meta-url', concept)

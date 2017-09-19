@@ -55,7 +55,7 @@ function buildQuery(){
 
 	executor.executeUserQuery(querySPARQL);
 
-	console.log(querySPARQL);
+	//console.log(querySPARQL);
 }
 
 function visitSPARQL(node){
