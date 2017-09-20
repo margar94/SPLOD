@@ -12,8 +12,8 @@ var BoxFiller= function () {
 };
 
 BoxFiller.prototype.retrieveConcepts = function(callback) {
-	executor.getAllEntities(function(data){
-		callback(data);
+	executor.getAllEntities(function(rootMap, map){
+		callback(rootMap, map);
 	});
 }
 
@@ -61,8 +61,8 @@ BoxFiller.prototype.updateConceptsFromConcept = function(entityUrl, entityLabel,
 	
 	var limit = false;
 
-	executor.getEntitySubclasses(entityUrl, limit, function(data){
-		callback(data);
+	executor.getEntitySubclasses(entityUrl, limit, function(roots, map){
+		callback(roots, map);
 	});
  
 }
@@ -113,16 +113,16 @@ BoxFiller.prototype.updatePredicatesFromConcept = function(predUrl, predLabel, p
 BoxFiller.prototype.updateConceptsFromDirectPredicate = function(predUrl, predLabel, callback){
 
 	var limit = false;
-	executor.getConceptsFromDirectPredicate(predUrl, limit, function(data){
-		callback(data);
+	executor.getConceptsFromDirectPredicate(predUrl, limit, function(roots, map){
+		callback(roots, map);
 	});
 
 }
 
 BoxFiller.prototype.updateConceptsFromReversePredicate = function(predUrl, predLabel, callback){
 	var limit = false;
-	executor.getConceptsFromReversePredicate(predUrl, limit, function(data){
-		callback(data);
+	executor.getConceptsFromReversePredicate(predUrl, limit, function(roots, map){
+		callback(roots, map);
 	});
 }
 

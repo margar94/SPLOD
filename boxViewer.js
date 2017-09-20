@@ -11,8 +11,8 @@ function initBoxViewer(){
 
 //first filling, map returned
 function fillConcepts(){
-	boxFiller.retrieveConcepts(function (concepts){
-		renderConceptsHierarchy(concepts);
+	boxFiller.retrieveConcepts(function (rootMap, map){
+		renderConceptsHierarchy(rootMap, map);
 	});
 }
 
@@ -57,8 +57,8 @@ function renderConcepts(concepts){
 			});
 	});
 }
-
-function renderConceptsHierarchy(concepts){
+/*
+function renderConceptsHierarchy(rootMap, concepts){
 	var conceptsList = $("#conceptsList");
 	conceptsList.empty();
 
@@ -76,8 +76,51 @@ function renderConceptsHierarchy(concepts){
 			});
 	}
 
+	while(elementStack.length!=0){
+		currentElement = elementStack.pop();
+		submap[currentElement] = classHierarchyMap[currentElement];
+
+		children = classHierarchyMap[currentElement].children;
+
+		for(var i=0; i<children.length; i++)
+			elementStack.push(children[i]);
+	}
+
 	
+}*/
+function renderConceptsHierarchy(roots, concepts){
+	var conceptsList = $("#conceptsList");
+	conceptsList.empty();
+	for(var i=0; i<roots.length; i++)
+		iterativePreorderVisit(roots[i], concepts, conceptsList);
 }
+
+function iterativePreorderVisit(concept, concepts, toAppend){
+	//console.log(concepts);
+	//console.log(concept);
+	//console.log(concepts[concept]);
+	var li = $("<li/>")
+		.attr('title', concept)
+		.attr('meta-url', concept)
+		.attr('meta-label', concepts[concept].label)
+		.text(concepts[concept].label)
+		.appendTo(toAppend)
+		.on('click', function(){
+			updateBoxesFromConcept($(this).attr('meta-url'), $(this).attr('meta-label'));
+			mapCreator.selectedConcept($(this).attr('meta-url'), $(this).attr('meta-label'));
+		});
+
+	var children = concepts[concept].children;
+	if(children.length!=0){
+		var ul = $("<ul/>").appendTo(li);
+		for(var i=0; i<children.length; i++){
+			iterativePreorderVisit(children[i], concepts, ul);
+		}
+		
+	}
+
+}
+
 
 function renderPredicates(predicates){
 	var predicatesList = $("#predicatesList");

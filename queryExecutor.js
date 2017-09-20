@@ -12,6 +12,7 @@ var language;
 var resultManager;
 
 var classHierarchyMap;
+var classHierarchyMapRoots;
 
 var QueryExecutor = function (selectedEndpoint, selectedGraph) {
 	if(QueryExecutor.prototype._singletonInstance){
@@ -33,6 +34,7 @@ var QueryExecutor = function (selectedEndpoint, selectedGraph) {
 	language = 'en';
 
 	classHierarchyMap = {};
+	classHierarchyMapRoots = [];
 
 	resultManager = new ResultManager();
 
@@ -50,7 +52,7 @@ QueryExecutor.prototype.getAllEntities = function(callback) {
 					" SELECT DISTINCT * " +
 					" WHERE { " + 
 						" GRAPH " + graph + " { " +
-							" ?superclass a owl:Class ; rdfs:subClassOf ?subclass. " +
+							" ?subclass a owl:Class ; rdfs:subClassOf ?superclass. " +
 							" OPTIONAL {?superclass rdfs:label ?label_superclass. " +
 							" ?subclass rdfs:label ?label_subclass. " +
 							" FILTER ((lang(?label_superclass) = '" + language + "') &&  (lang(?label_subclass) = '" + language + "')) }" +
@@ -61,13 +63,15 @@ QueryExecutor.prototype.getAllEntities = function(callback) {
 	    $.ajax({
 	        url: queryUrl,
 	        success: function( data ) {
-	        	buildClassHierarchy(data);
-				callback(classHierarchyMap);
+	        	manageClassHierarchy(data);
+	        	//console.log(classHierarchyMap);
+	        	//console.log(classHierarchyMapRoots);
+				callback(classHierarchyMapRoots, classHierarchyMap);
 	        }
 	    });	
 	}
 	else{
-		callback(classHierarchyMap);
+		callback(classHierarchyMapRoots, classHierarchyMap);
 	}
 }
 
@@ -119,7 +123,9 @@ QueryExecutor.prototype.getAllDirectPredicates = function(limit, callback) {
     $.ajax({
         url: queryUrl,
         success: function( data ) {
-			callback(getUrlAndLabelFromResult(data));
+        	var result = getUrlAndLabelFromResult(data);
+        	//console.log(result);
+			callback(result);
         }
     });	
 	
@@ -171,7 +177,11 @@ QueryExecutor.prototype.getAllReversePredicates = function(limit, callback) {
 	@url : url of superclass  
 */
 QueryExecutor.prototype.getEntitySubclasses = function(url, limit, callback) {
-	callback(classHierarchyMap);
+	var submap={};
+	if(url in classHierarchyMap){
+		submap = buildSubmapHierarchy(url);
+	}
+	callback([url], submap);
 }
 
 /*
@@ -236,8 +246,9 @@ QueryExecutor.prototype.getConceptsFromDirectPredicate = function(predicate, lim
 	query = " prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
 				" SELECT DISTINCT ?url ?label " +
 				" WHERE { " + 
-					" GRAPH " + graph + " { " +
-						" ?url <"+predicate+"> ?s. " +
+					" GRAPH " + graph + " { " +	
+						" ?subject <"+predicate+"> ?o. " +
+						" ?subject a ?url. " +
 						" OPTIONAL {?url rdfs:label ?label. " +
 						" FILTER (lang(?label) = '" + language + "')} " +
 					" } " +
@@ -263,7 +274,8 @@ QueryExecutor.prototype.getConceptsFromReversePredicate = function(predicate, li
 				" SELECT DISTINCT ?url ?label " +
 				" WHERE { " + 
 					" GRAPH " + graph + " { " +
-						" ?s <"+predicate+"> ?url. " +
+						" ?s <"+predicate+"> ?o. " +
+						" ?o a ?url. " +
 						" OPTIONAL {?url rdfs:label ?label. " +
 						" FILTER (lang(?label) = '" + language + "')} " +
 					" } " +
@@ -402,7 +414,7 @@ function getUrlAndLabelFromResult(data) {
 	return result;
 }
 
-function buildClassHierarchy(data){
+function manageClassHierarchy(data){
 
 	var arrayData = data.results.bindings;
 	var element; 
@@ -412,26 +424,56 @@ function buildClassHierarchy(data){
 		element = arrayData[index];
 
 		if(!(element.superclass.value in classHierarchyMap)){
-			classHierarchyMap[element.superclass.value] = {label: '', children : []};
 		
 			label = element.label_superclass;
 			if(label == undefined)
 				label = createLabel(element.superclass.value);
 			else label = element.label_superclass.value;
+
+			classHierarchyMap[element.superclass.value] = {label: label, children : [], parent:null};
 		}
 
-		classHierarchyMap[element.superclass.value].label = label;
 		classHierarchyMap[element.superclass.value].children.push(element.subclass.value);
 
 		if(!(element.subclass.value in classHierarchyMap)){
-			classHierarchyMap[element.subclass.value] = {label: '', children : []};
 
-			label = element.label_subclass;
-			if(label == undefined)
-				label = createLabel(element.subclass.value);
-			else label = element.label_subclass.value;
+			var subclass_label = element.label_subclass;
+			if(subclass_label == undefined)
+				subclass_label = createLabel(element.subclass.value);
+			else subclass_label = element.label_subclass.value;
+
+			classHierarchyMap[element.subclass.value] = {label: subclass_label, children : []};
+
 		}
+		classHierarchyMap[element.subclass.value].parent = element.superclass.value;
 
 	});
 
+	for(element in classHierarchyMap){
+		if(classHierarchyMap[element].parent==null){
+			classHierarchyMapRoots.push(element);
+		}
+	}
+
+}
+
+function buildSubmapHierarchy(selectedClass){
+	var elementStack = [];
+	elementStack.push(selectedClass);
+
+	var submap = {};
+	var currentElement;
+	var children;
+
+	while(elementStack.length!=0){
+		currentElement = elementStack.pop();
+		submap[currentElement] = classHierarchyMap[currentElement];
+
+		children = classHierarchyMap[currentElement].children;
+
+		for(var i=0; i<children.length; i++)
+			elementStack.push(children[i]);
+	}
+
+	return submap;
 }
