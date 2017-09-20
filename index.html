@@ -107,6 +107,14 @@
 				float:right;
 			}
 
+			.search {
+			  width: 100%;
+			  font-size: 16px;
+			  padding: 12px 20px 12px 20px;
+			  border: 1px solid #ddd;
+			  margin-bottom: 12px;
+			}
+
 		</style>
 
 	</head>
@@ -179,18 +187,27 @@
 		<div>
 			<div id="conceptsBox">
 				<h1>Concepts</h1>
+				<input type="text" id="searchConceptsBox" class="search"
+					onkeyup="filter('searchConceptsBox', 'conceptsBox')" 
+					placeholder="Search for a concept..." title="Type in a concept">
 				<ul id="conceptsList"></ul>
 
 			</div>
 
 			<div id="predicatesBox">
 				<h1>Predicates</h1>
+				<input type="text" id="searchPredicatesBox" class="search"
+					onkeyup="filter('searchPredicatesBox', 'predicatesBox')" 
+					placeholder="Search for a predicate..." title="Type in a predicate">
 				<ul id="predicatesList"></ul>
 
 			</div>
 			<div id="resultsBox">
 				<!--<h1>Predicati</h1>-->
 				<ul id="operatorList"></ul>
+				<!--<input type="text" id="searchResultsBox" class="search"
+					onkeyup="filter('searchResultsBox', 'resultsBox')" 
+					placeholder="Search for a result..." title="Type in a result">-->
 				<ul id="resultList"></ul>
 			</div>
 		</div>
@@ -234,6 +251,23 @@
 			$.each(toRemoveHightlight, function(index){
 				toRemoveHightlight[index].setAttribute('class', toRemoveHightlight[index].getAttribute('class').replace(' highlightRemove', ''));
 			});
+		}
+
+		function filter(inputName, boxName) {
+		    var input, filter, box, li, text, i;
+		    input = document.getElementById(inputName);
+		    filter = input.value.toLowerCase();
+		   	box = document.getElementById(boxName);
+		    li = box.getElementsByTagName("li");
+		    for (i = 0; i < li.length; i++) {
+		        text = li[i].innerHTML;
+		        if (text.toLowerCase().indexOf(filter) > -1) {
+		            li[i].style.display = "";
+		        } else {
+		            li[i].style.display = "none";
+
+		        }
+		    }
 		}
 
 	</script>

@@ -96,9 +96,6 @@ function renderConceptsHierarchy(roots, concepts){
 }
 
 function iterativePreorderVisit(concept, concepts, toAppend){
-	//console.log(concepts);
-	//console.log(concept);
-	//console.log(concepts[concept]);
 	var li = $("<li/>")
 		.attr('title', concept)
 		.attr('meta-url', concept)
@@ -115,10 +112,8 @@ function iterativePreorderVisit(concept, concepts, toAppend){
 		var ul = $("<ul/>").appendTo(li);
 		for(var i=0; i<children.length; i++){
 			iterativePreorderVisit(children[i], concepts, ul);
-		}
-		
+		}		
 	}
-
 }
 
 
