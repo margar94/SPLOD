@@ -17,6 +17,8 @@ function fillConcepts(){
 }
 
 function updateBoxesFromConcept(conceptUrl, conceptLabel){
+	$("#searchConceptsBox").val('');
+	$("#searchPredicatesBox").val('');
 	
 	boxFiller.updateConceptsFromConcept(conceptUrl, conceptLabel, renderConceptsHierarchy);
 	boxFiller.updatePredicatesFromConcept(conceptUrl, conceptLabel, false, renderPredicates);
@@ -30,6 +32,8 @@ function fillPredicates(){
 }
 
 function updateBoxesFromPredicate(predicateUrl, predicateLabel, predicateDirection){
+	$("#searchConceptsBox").val('');
+	$("#searchPredicatesBox").val('');
 
 	if(predicateDirection == 'direct'){
 		boxFiller.updateConceptsFromDirectPredicate(predicateUrl, predicateLabel, renderConcepts);
