@@ -67,26 +67,6 @@ function renderQuery(){
 				visitStack.push(queryLogicStructure[currentNode.children[i]]);
 				visitStack.push({type: 'startSpan', verbalization:{current: ['<span>']}, children:[], focusReference: currentNode.key, removeReference: currentNode.children[i] });
 
-				/*
-				if(queryLogicStructure[currentNode.children[i]].type == 'predicate' 
-					&& queryLogicStructure[currentNode.children[i]].direction == 'direct'
-					&& currentNode.type == 'everything'
-					&& currentNode.children.length<=2
-					&& currentNode.counterDirectPredicatesChildren==1){
-						visitStack[visitStack.length-1].removeReference = currentNode.key;
-						visitStack[visitStack.length-2].removeReference = currentNode.key;
-				}
-
-				if(queryLogicStructure[currentNode.children[i]].type == 'predicate' 
-					&& queryLogicStructure[currentNode.children[i]].direction == 'reverse'
-					&& currentNode.type == 'everything'
-					&& currentNode.children.length==2
-					&& currentNode.counterDirectPredicatesChildren==0){
-						visitStack[visitStack.length-1].removeReference = currentNode.key;
-						visitStack[visitStack.length-2].removeReference = currentNode.key;
-				}
-				*/
-
 				if(childrenNumber)
 					visitStack.push({type: 'startli', verbalization:{current: ['<li>']}, children:[] });
 
@@ -114,7 +94,7 @@ function visitRenderer(node){
 	var utils = 'meta-removeReference="'+ node.key +'" meta-focusReference="'+node.key+'" id="'+node.key+'" title="'+node.url+'"';
 
 	if(node.type == 'something'){
-
+		utils = 'meta-removeReference="'+ node.parent +'" meta-focusReference="'+node.key+'" id="'+node.key+'" title="'+node.url+'"';
 		queryString += '<span class="focusable" '+utils+' >' + node.verbalization.current[0] + '</span>';
 
 	}else if(node.type == 'everything'){

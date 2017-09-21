@@ -59,6 +59,9 @@ function buildQuery(){
 }
 
 function visitSPARQL(node){
+
+	var parentVariable;
+
 	// select management
 	if(!(node.type == 'predicate' && node.direction == 'reverse')){
 
@@ -67,6 +70,15 @@ function visitSPARQL(node){
 			querySPARQL.labelSelect.push(node.label);
 		}
 
+	}else{
+		if(node.parent == null){
+			parentVariable = "?"+node.label.replace( /[\s -]/g, "") + "_" + node.index;
+			querySPARQL.select.push(parentVariable);
+			querySPARQL.labelSelect.push(node.label);
+		}
+		else{
+			parentVariable = queryLogicStructure[node.parent].variable;
+		}
 	}
 	
 	// where management
@@ -74,12 +86,7 @@ function visitSPARQL(node){
 		//...
 	}else if(node.type == 'concept'){
 		querySPARQL.where += node.variable + " a <" + node.url + ">.\n";
-	}else if(node.type == 'predicate'){
-		var parentVariable;
-		if(node.parent == null)
-			parentVariable = '?_'; // useless variable
-		else
-			parentVariable = queryLogicStructure[node.parent].variable;
+	}else if(node.type == 'predicate'){			
 		if(node.direction == 'direct'){
 			querySPARQL.where += parentVariable + " <" + node.url + "> " + node.variable + ".\n";
 		}
