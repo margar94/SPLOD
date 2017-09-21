@@ -153,6 +153,9 @@ function renderFocus(){
 		}else if(queryLogicStructure[onFocus].type == 'something'){
 			var parent = queryLogicStructure[queryLogicStructure[onFocus].parent];
 			updateBoxesFromPredicate(parent.url, parent.label, parent.direction);
+		}else if(queryLogicStructure[onFocus].type == 'everything'){
+			fillConcepts();
+			fillPredicates();
 		}
 		
 	}
@@ -196,6 +199,11 @@ function attachEvents(){
 
 			updateBoxesFromConcept(queryLogicStructure[queryLogicStructure[onFocus].parent].url, queryLogicStructure[queryLogicStructure[onFocus].parent].label);
 
+		}else if(queryLogicStructure[onFocus].type == 'everything'){
+			
+			fillConcepts();
+			fillPredicates();
+			
 		}
 		
 
