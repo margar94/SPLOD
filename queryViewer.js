@@ -98,6 +98,10 @@ function visitRenderer(node){
 
 		queryString += '<span class="focusable" '+utils+' >' + node.verbalization.current[0] + '</span>';
 
+	}else if(node.type == 'everything'){
+
+		queryString += '<span class="focusable" '+utils+' >' + node.verbalization.current[0] + '</span>';
+
 	}else if(node.type == 'concept'){
 
 		queryString += node.verbalization.current[0];
