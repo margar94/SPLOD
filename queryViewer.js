@@ -68,6 +68,10 @@ function renderQuery(){
 				visitStack.push(queryLogicStructure[currentNode.children[i]]);
 				visitStack.push({type: 'startSpan', verbalization:{current: ['<span>']}, children:[], focusReference: currentNode.key, removeReference: currentNode.children[i] });
 
+				if(!childrenNumber){
+					visitStack[visitStack.length-1].removeReference = currentNode.key;
+				}
+
 				if(childrenNumber)
 					visitStack.push({type: 'startli', verbalization:{current: ['<li>']}, children:[] });
 
@@ -108,8 +112,6 @@ function visitRenderer(node){
 		queryString += '<span class="concept focusable" '+utils+' >' + node.verbalization.current[1] + '</span>';
 
 	}else if(node.type == 'predicate'){
-		if(queryLogicStructure[node.parent].type == 'everything')
-			utils = 'meta-removeReference="'+node.parent+'" meta-focusReference="'+node.key+'" id="'+node.key+'" title="'+node.url+'"';
 		
 		queryString += node.verbalization.current[0];
 		queryString += '<span class="predicate focusable" '+utils+' >' + node.verbalization.current[1] + '</span>';
