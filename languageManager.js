@@ -101,6 +101,19 @@ LanguageManager.prototype.verbalizeSomething = function(){
 
 }
 
+LanguageManager.prototype.verbalizeEverything = function(){
+
+	verbalization = {
+		standard: ['everything '],
+		modified: [],
+		truncated: [],
+		first: [],
+		current: ['everything ']};
+
+	return verbalization;
+
+}
+
 LanguageManager.prototype.getOrdinalNumber = function(cardinalNumber){
 	var ordinalNumber = '';
 	
