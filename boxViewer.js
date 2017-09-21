@@ -36,9 +36,9 @@ function updateBoxesFromPredicate(predicateUrl, predicateLabel, predicateDirecti
 	$("#searchPredicatesBox").val('');
 
 	if(predicateDirection == 'direct'){
-		boxFiller.updateConceptsFromDirectPredicate(predicateUrl, predicateLabel, renderConcepts);
+		boxFiller.updateConceptsFromDirectPredicate(predicateUrl, predicateLabel, renderConceptsHierarchy);
 	}else{
-		boxFiller.updateConceptsFromReversePredicate(predicateUrl, predicateLabel, renderConcepts);
+		boxFiller.updateConceptsFromReversePredicate(predicateUrl, predicateLabel, renderConceptsHierarchy);
 	}
 	boxFiller.updatePredicatesFromPredicate(predicateUrl, predicateLabel, predicateDirection, renderPredicates);
 }

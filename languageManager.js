@@ -64,22 +64,25 @@ LanguageManager.prototype.verbalizePredicate = function(predicateLabel, predicat
 		verbalization.first.push(predicateLabel + ' ');
 
 	}else if(predicateDirection == 'reverse'){
+		var postLabel = 'of ';
+		if(LanguageManager.prototype.endsWithPreposition(predicateLabel))
+			postLabel = ' ';
 
 		verbalization.standard.push('that is the ');
 		verbalization.standard.push(predicateLabel + ' ');
-		verbalization.standard.push('of ');
+		verbalization.standard.push(postLabel);
 
 		verbalization.modified.push('');
 		verbalization.modified.push('the ' + predicateLabel + ' ');
-		verbalization.modified.push('of ');
+		verbalization.modified.push(postLabel);
 
 		verbalization.truncated.push('is the ');
 		verbalization.truncated.push(predicateLabel + ' ');
-		verbalization.truncated.push('of ');
+		verbalization.truncated.push(postLabel);
 
 		verbalization.first.push('the ');
 		verbalization.first.push(predicateLabel + ' ');
-		verbalization.first.push('of ');
+		verbalization.first.push(postLabel);
 	}
 	
 	verbalization.current = verbalization.standard;
@@ -125,4 +128,8 @@ LanguageManager.prototype.getOrdinalNumber = function(cardinalNumber){
 	}
 
 	return ordinalNumber;
+}
+
+LanguageManager.prototype.endsWithPreposition = function(label){
+	return label.match(/[On For From A Of As \son \sfor \sfrom \sa \sof \sas]$/);
 }

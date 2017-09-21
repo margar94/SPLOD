@@ -12,8 +12,8 @@ var BoxFiller= function () {
 };
 
 BoxFiller.prototype.retrieveConcepts = function(callback) {
-	executor.getAllEntities(function(rootMap, map){
-		callback(rootMap, map);
+	executor.getAllEntities(function(roots, map){
+		callback(roots, map);
 	});
 }
 

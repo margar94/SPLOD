@@ -32,7 +32,7 @@ function verbalizeQuery(){
 	if(queryLogicStructureRoot != null){
 
 		// complete map's info with predicatesCounter
-		if(queryLogicStructure[queryLogicStructureRoot].type=='concept')
+		if(queryLogicStructure[queryLogicStructureRoot].type=='concept' || queryLogicStructure[queryLogicStructureRoot].type=='everything')
 			queryLogicStructure[queryLogicStructureRoot].predicatesCounter = 0;
 		else
 			queryLogicStructure[queryLogicStructureRoot].predicatesCounter = 1;

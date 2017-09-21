@@ -37,16 +37,17 @@ function buildQuery(){
 			var currentNode = visitStack.pop();
 
 			for(var i = currentNode.children.length-1; i>=0; i--){
-				if(queryLogicStructure[currentNode.children[i]].type=='concept')
-					queryLogicStructure[currentNode.children[i]].variable = currentNode.variable;
+				if(!(currentNode.type == 'predicate' && currentNode.direction == 'reverse')
+					&& queryLogicStructure[currentNode.children[i]].type=='concept')
+						queryLogicStructure[currentNode.children[i]].variable = currentNode.variable;
 				else
 					queryLogicStructure[currentNode.children[i]].variable = "?"+queryLogicStructure[currentNode.children[i]].label.replace( /[\s -]/g, "") + "_" + queryLogicStructure[currentNode.children[i]].index;
 
-				if(queryLogicStructure[currentNode.children[i]].type=='something')
-					currentNode.variable = queryLogicStructure[currentNode.children[i]].variable;
-
 				visitStack.push(queryLogicStructure[currentNode.children[i]]);
 			}
+
+			if(currentNode.type == 'predicate' && currentNode.direction == 'reverse') // i have only a child
+				currentNode.variable = queryLogicStructure[currentNode.children[0]].variable;
 
 			visitSPARQL(currentNode);
 		}
@@ -60,6 +61,7 @@ function buildQuery(){
 
 function visitSPARQL(node){
 
+	//it is used only by predicates
 	var parentVariable;
 
 	// select management
@@ -70,7 +72,12 @@ function visitSPARQL(node){
 			querySPARQL.labelSelect.push(node.label);
 		}
 
-	}else{
+		if(node.parent==null)
+			parentVariable = "?_";
+		else
+			parentVariable = queryLogicStructure[node.parent].variable;
+
+	}else{ // node is a reverse predicate
 		if(node.parent == null){
 			parentVariable = "?"+node.label.replace( /[\s -]/g, "") + "_" + node.index;
 			querySPARQL.select.push(parentVariable);
@@ -86,7 +93,7 @@ function visitSPARQL(node){
 		//...
 	}else if(node.type == 'concept'){
 		querySPARQL.where += node.variable + " a <" + node.url + ">.\n";
-	}else if(node.type == 'predicate'){			
+	}else if(node.type == 'predicate'){
 		if(node.direction == 'direct'){
 			querySPARQL.where += parentVariable + " <" + node.url + "> " + node.variable + ".\n";
 		}

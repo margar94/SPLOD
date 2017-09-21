@@ -247,8 +247,8 @@ QueryExecutor.prototype.getConceptsFromDirectPredicate = function(predicate, lim
 				" SELECT DISTINCT ?url ?label " +
 				" WHERE { " + 
 					" GRAPH " + graph + " { " +	
-						" ?subject <"+predicate+"> ?o. " +
-						" ?subject a ?url. " +
+						" ?subject <"+predicate+"> ?object. " +
+						" ?object a ?url. " +
 						" OPTIONAL {?url rdfs:label ?label. " +
 						" FILTER (lang(?label) = '" + language + "')} " +
 					" } " +
@@ -260,7 +260,8 @@ QueryExecutor.prototype.getConceptsFromDirectPredicate = function(predicate, lim
     $.ajax({
         url: queryUrl,
         success: function( data ) {
-			callback(getUrlAndLabelFromResult(data));
+        	var result = getResultMap(data);
+			callback(result.roots, result.map);
         }
     });	
 }
@@ -287,7 +288,8 @@ QueryExecutor.prototype.getConceptsFromReversePredicate = function(predicate, li
     $.ajax({
         url: queryUrl,
         success: function( data ) {
-			callback(getUrlAndLabelFromResult(data));
+			var result = getResultMap(data);
+			callback(result.roots, result.map);
         }
     });	
 }
@@ -476,4 +478,56 @@ function buildSubmapHierarchy(selectedClass){
 	}
 
 	return submap;
+}
+
+function getResultMap(data){
+	var arrayData = data.results.bindings;
+	var map = {};
+	var label;
+	var roots = [];
+
+	$.each(arrayData, function(index){
+		element = arrayData[index];
+
+		label = element.label;
+		if(label == undefined)
+			label = createLabel(element.url.value);
+		else label = element.url.value;
+
+		if(element.url.value in classHierarchyMap){
+			updateMap(element.url.value, label, map);
+		}else{
+			map[element.url.value] = {label: label, children: [], parent: null};
+		}
+
+	});
+
+	for(element in map){
+		if(map[element].parent==null || map[element].parent != "http://www.w3.org/2002/07/owl#Thing"){
+			if(map[element].label != 'Thing')
+				roots.push(element);
+		}
+	}
+
+	return {roots:roots, map:map};
+
+}
+
+function updateMap(url, label, map){
+	var elementStack = [];
+	elementStack.push(url);
+
+	var currentElement;
+	var children;
+
+	while(elementStack.length!=0){
+		currentElement = elementStack.pop();
+		map[currentElement] = classHierarchyMap[currentElement];
+		
+		children = classHierarchyMap[currentElement].children;
+
+		for(var i=0; i<children.length; i++)
+			elementStack.push(children[i]);
+	}
+
 }
