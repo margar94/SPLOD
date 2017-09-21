@@ -108,7 +108,9 @@ function visitRenderer(node){
 		queryString += '<span class="concept focusable" '+utils+' >' + node.verbalization.current[1] + '</span>';
 
 	}else if(node.type == 'predicate'){
-
+		if(queryLogicStructure[node.parent].type == 'everything')
+			utils = 'meta-removeReference="'+node.parent+'" meta-focusReference="'+node.key+'" id="'+node.key+'" title="'+node.url+'"';
+		
 		queryString += node.verbalization.current[0];
 		queryString += '<span class="predicate focusable" '+utils+' >' + node.verbalization.current[1] + '</span>';
 		if(node.direction == 'reverse')
