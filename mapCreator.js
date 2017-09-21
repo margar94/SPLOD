@@ -140,13 +140,31 @@ MapCreator.prototype.selectedPredicate = function(selectedUrl, selectedLabel, pr
 						   url: selectedUrl, label: selectedLabel, 
 						   type:'predicate', direction: predicateDirection,
 						   verbalization: verbalization, 
-						   parent:null, children: [], 
-						   focus:false};
+						   parent:null, children: []};
 	queryLogicMap[key] = newLogicElement;
 
 	if(rootQueryLogicMap == null){ // first element selected
 
-		rootQueryLogicMap = key;
+		var verbalizationEverything = languageManager.verbalizeEverything();
+
+		if(!indexMap.hasOwnProperty('everything')){
+			indexMap['everything'] = 1;
+		}
+		else{
+			indexMap['everything'] += 1;
+		}
+		var everythingKey = 'everything' + "_" + indexMap['everything'];
+		var everythingIndex = indexMap['everything'];
+
+		var everythingElement = {key: everythingKey, index: everythingIndex,
+							  url: everythingKey, label:'thing', 
+							  type:'everything', direction:false,
+							  verbalization:verbalizationEverything,
+							  parent:null, children:[key]};
+		queryLogicMap[everythingKey] = everythingElement;
+
+		rootQueryLogicMap = everythingKey;
+		newLogicElement.parent = everythingKey;
 
 	}else{ //there's a prec 
 

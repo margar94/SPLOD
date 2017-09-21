@@ -18,7 +18,7 @@ BoxFiller.prototype.retrieveConcepts = function(callback) {
 }
 
 BoxFiller.prototype.retrievePredicates = function(callback) {
-	var limit = 20;
+	var limit = 100;
 
 	var directData;
 	var reverseData;

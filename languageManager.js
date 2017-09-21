@@ -107,7 +107,7 @@ LanguageManager.prototype.verbalizeEverything = function(){
 		standard: ['everything '],
 		modified: [],
 		truncated: [],
-		first: [],
+		first: ['everything '],
 		current: ['everything ']};
 
 	return verbalization;
