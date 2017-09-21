@@ -129,6 +129,9 @@ function visitRenderer(node){
 	}else if(node.type == 'predicate'){
 		
 		queryString += node.verbalization.current[0];
+
+		if(node.direction == 'reverse')
+			utils = 'meta-removeReference="'+ node.key +'" meta-focusReference="'+node.children[0]+'" id="'+node.key+'" title="'+node.url+'"';
 		queryString += '<span class="predicate focusable" '+utils+' >' + node.verbalization.current[1] + '</span>';
 		if(node.direction == 'reverse')
 			queryString += node.verbalization.current[2];
@@ -163,7 +166,7 @@ function renderFocus(){
 		var label = languageManager.getOrdinalNumber(number) + " " + queryLogicStructure[onFocus].label;
 
 		$('#focus').text('Element on focus: ' + label);
-
+		//mapCreator.changeFocus(onFocus);
 
 		if(queryLogicStructure[onFocus].type == 'concept'){
 			updateBoxesFromConcept(queryLogicStructure[onFocus].url, queryLogicStructure[onFocus].label);
@@ -173,7 +176,7 @@ function renderFocus(){
 			var parent = queryLogicStructure[queryLogicStructure[onFocus].parent];
 			updateBoxesFromPredicate(parent.url, parent.label, parent.direction);
 		}
-
+		
 	}
 	else{
 
@@ -201,7 +204,7 @@ function attachEvents(){
 		var label = languageManager.getOrdinalNumber(number) + " " + queryLogicStructure[onFocus].label;
 
 		$('#focus').text('Element on focus: ' + label);
-
+		mapCreator.changeFocus(onFocus);
 
 		if(queryLogicStructure[onFocus].type == 'concept'){
 
@@ -216,7 +219,7 @@ function attachEvents(){
 			updateBoxesFromConcept(queryLogicStructure[queryLogicStructure[onFocus].parent].url, queryLogicStructure[queryLogicStructure[onFocus].parent].label);
 
 		}
-		mapCreator.changeFocus(onFocus);
+		
 
 	});
 

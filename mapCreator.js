@@ -121,7 +121,6 @@ MapCreator.prototype.selectedConcept = function(selectedUrl, selectedLabel) {
 						 'reverse' if the selected predicate is a reverse relation.
 */
 MapCreator.prototype.selectedPredicate = function(selectedUrl, selectedLabel, predicateDirection) {
-
 	console.log(selectedUrl + " - PREDICATE selected - " + predicateDirection);
 
 	// new element in logic map
@@ -332,7 +331,6 @@ MapCreator.prototype.removeElement = function(key){
 		}
 
 	}
-	console.log(elementOnFocus);
 
 	if(rootQueryLogicMap == key){
 		rootQueryLogicMap = null;
