@@ -134,8 +134,6 @@ function visitRenderer(node){
 
 
 function renderFocus(){
-	console.log(onFocus);
-
 	//add class to highlight the focus
 	$('.highlighted').removeClass('highlighted');
 
