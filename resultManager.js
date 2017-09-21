@@ -9,7 +9,7 @@ var ResultManager = function () {
 ResultManager.prototype.queryResult = function(select, labelSelect, results){
 
 	
-	console.log(results);
+	//console.log(results);
 	$.each(results, function(index){
 
 		var element = results[index];

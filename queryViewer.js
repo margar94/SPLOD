@@ -40,7 +40,6 @@ QueryViewer.prototype.updateQuery = function(queryRoot, queryMap, focus){
 function renderQuery(){
 	//visit query implicit tree 
 	if(queryLogicStructureRoot == null){
-		//$('#queryNaturalLanguage')[0].innerHTML = 'Give me...';
 		queryString = "Give me..."
 	}else{
 		visitStack.push({type: 'firstEndSpan', verbalization:{current: ['</span>']}, children:[] });
@@ -68,9 +67,25 @@ function renderQuery(){
 				visitStack.push(queryLogicStructure[currentNode.children[i]]);
 				visitStack.push({type: 'startSpan', verbalization:{current: ['<span>']}, children:[], focusReference: currentNode.key, removeReference: currentNode.children[i] });
 
-				if(!childrenNumber){
-					visitStack[visitStack.length-1].removeReference = currentNode.key;
+				/*
+				if(queryLogicStructure[currentNode.children[i]].type == 'predicate' 
+					&& queryLogicStructure[currentNode.children[i]].direction == 'direct'
+					&& currentNode.type == 'everything'
+					&& currentNode.children.length<=2
+					&& currentNode.counterDirectPredicatesChildren==1){
+						visitStack[visitStack.length-1].removeReference = currentNode.key;
+						visitStack[visitStack.length-2].removeReference = currentNode.key;
 				}
+
+				if(queryLogicStructure[currentNode.children[i]].type == 'predicate' 
+					&& queryLogicStructure[currentNode.children[i]].direction == 'reverse'
+					&& currentNode.type == 'everything'
+					&& currentNode.children.length==2
+					&& currentNode.counterDirectPredicatesChildren==0){
+						visitStack[visitStack.length-1].removeReference = currentNode.key;
+						visitStack[visitStack.length-2].removeReference = currentNode.key;
+				}
+				*/
 
 				if(childrenNumber)
 					visitStack.push({type: 'startli', verbalization:{current: ['<li>']}, children:[] });
@@ -96,7 +111,7 @@ function renderQuery(){
 
 function visitRenderer(node){
 
-	var utils = 'meta-removeReference="'+node.key+'" meta-focusReference="'+node.key+'" id="'+node.key+'" title="'+node.url+'"';
+	var utils = 'meta-removeReference="'+ node.key +'" meta-focusReference="'+node.key+'" id="'+node.key+'" title="'+node.url+'"';
 
 	if(node.type == 'something'){
 
@@ -136,6 +151,7 @@ function visitRenderer(node){
 
 
 function renderFocus(){
+	console.log(onFocus);
 
 	//add class to highlight the focus
 	$('.highlighted').removeClass('highlighted');

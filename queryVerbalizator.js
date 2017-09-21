@@ -31,6 +31,7 @@ function verbalizeQuery(){
 	//visit query implicit tree 
 	if(queryLogicStructureRoot != null){
 
+		// complete map's info with predicatesCounter
 		if(queryLogicStructure[queryLogicStructureRoot].type=='concept')
 			queryLogicStructure[queryLogicStructureRoot].predicatesCounter = 0;
 		else
@@ -43,6 +44,7 @@ function verbalizeQuery(){
 			visitVerbalizator(currentNode);
 
 			for(var i = currentNode.children.length-1; i>=0; i--){
+				//update predicatesCouter
 				if(queryLogicStructure[currentNode.children[i]].type=='concept'){
 					if(currentNode.type == 'predicate')
 						queryLogicStructure[currentNode.children[i]].predicatesCounter = queryLogicStructure[currentNode.key].predicatesCounter+1;
