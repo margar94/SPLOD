@@ -242,7 +242,10 @@ MapCreator.prototype.removeElement = function(key){
 	var node = queryLogicMap[key];
 
 	// check if concept replaced something
-	if(node.type == 'concept' && node.parent!=null && queryLogicStructure[node.parent].type == 'predicate' && queryLogicStructure[node.parent].direction == 'reverse'){
+	if(node.type == 'concept' && 
+		node.parent!=null && 
+		queryLogicStructure[node.parent].type == 'predicate' && queryLogicStructure[node.parent].direction == 'reverse'){
+		
 		var somethingVerbalization = languageManager.verbalizeSomething();
 
 		if(!indexMap.hasOwnProperty('something')){
@@ -254,13 +257,32 @@ MapCreator.prototype.removeElement = function(key){
 		var somethingKey = 'something' + "_" + indexMap['something'];
 		var somethingIndex = indexMap['something'];
 
+		/*
+			To inherite node.children list and update child's parent
+
+			// new element in logic map
+			var somethingLogic = {key: somethingKey, index: somethingIndex,
+								  url: somethingKey, label:'thing', 
+								  type:'something', direction:false,
+								  verbalization:somethingVerbalization,
+								  parent:node.parent, children:node.children};
+			queryLogicMap[somethingKey] = somethingLogic;
+
+			for(var i=0; i<node.children.length; i++)
+				queryLogicMap[node.children[i]].parent = somethingKey;
+		*/
+
+		// to remove all node.children element
 		// new element in logic map
 		var somethingLogic = {key: somethingKey, index: somethingIndex,
-							  url: somethingKey, label:'thing', 
-							  type:'something', direction:false,
-							  verbalization:somethingVerbalization,
-							  parent:node.parent, children:node.children};
+								  url: somethingKey, label:'thing', 
+								  type:'something', direction:false,
+								  verbalization:somethingVerbalization,
+								  parent:node.parent, children:[]};
 		queryLogicMap[somethingKey] = somethingLogic;
+
+		for(var i=0; i<node.children.length; i++)
+			delete queryLogicMap[node.children[i]];
 
 		var index = $.inArray(node.key, queryLogicMap[node.parent].children);
 		queryLogicMap[node.parent].children[index] = somethingKey;

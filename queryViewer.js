@@ -149,6 +149,7 @@ function renderFocus(){
 		if(queryLogicStructure[onFocus].type == 'concept'){
 			updateBoxesFromConcept(queryLogicStructure[onFocus].url, queryLogicStructure[onFocus].label);
 		}else if(queryLogicStructure[onFocus].type == 'predicate'){
+			console.log(queryLogicStructure[onFocus]);
 			updateBoxesFromPredicate(queryLogicStructure[onFocus].url, queryLogicStructure[onFocus].label, queryLogicStructure[onFocus].direction);
 		}else if(queryLogicStructure[onFocus].type == 'something'){
 			var parent = queryLogicStructure[queryLogicStructure[onFocus].parent];
@@ -197,7 +198,7 @@ function attachEvents(){
 
 		}else if(queryLogicStructure[onFocus].type == 'something'){
 
-			updateBoxesFromConcept(queryLogicStructure[queryLogicStructure[onFocus].parent].url, queryLogicStructure[queryLogicStructure[onFocus].parent].label);
+			updateBoxesFromPredicate(queryLogicStructure[queryLogicStructure[onFocus].parent].url, queryLogicStructure[queryLogicStructure[onFocus].parent].label, queryLogicStructure[queryLogicStructure[onFocus].parent].direction);
 
 		}else if(queryLogicStructure[onFocus].type == 'everything'){
 			
