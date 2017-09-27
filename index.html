@@ -240,13 +240,14 @@
 		function highlightElementsToRemove(){
 
 			var IDtoRemove = $('.highlighted').attr('meta-removereference');
+			if(IDtoRemove != undefined){
+				var spanToRemove = document.getElementById(IDtoRemove).parentNode.querySelectorAll('span');
+				document.getElementById(IDtoRemove).parentNode.className += ' highlightRemove';
 
-			var spanToRemove = document.getElementById(IDtoRemove).parentNode.querySelectorAll('span');
-			document.getElementById(IDtoRemove).parentNode.className += ' highlightRemove';
-
-			$.each(spanToRemove, function(index){
-				spanToRemove[index].className += ' highlightRemove';
-			});
+				$.each(spanToRemove, function(index){
+					spanToRemove[index].className += ' highlightRemove';
+				});
+			}
 		}
 
 		function removeHighlightElementsToRemove(){
