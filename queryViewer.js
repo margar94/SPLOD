@@ -143,7 +143,7 @@ function renderFocus(){
 		var number = queryLogicStructure[onFocus].index; 
 		var label = languageManager.getOrdinalNumber(number) + " " + queryLogicStructure[onFocus].label;
 
-		$('#focus').text('Element on focus: ' + label);
+		$('#focus').text(' ' + label);
 		//mapCreator.changeFocus(onFocus);
 
 		if(queryLogicStructure[onFocus].type == 'concept'){
@@ -165,7 +165,7 @@ function renderFocus(){
 		fillConcepts();
 		fillPredicates();
 
-		$('#focus').text('');
+		$('#focus').text(' -');
 
 	}
 
@@ -185,7 +185,7 @@ function attachEvents(){
 		var number = queryLogicStructure[onFocus].index; 
 		var label = languageManager.getOrdinalNumber(number) + " " + queryLogicStructure[onFocus].label;
 
-		$('#focus').text('Element on focus: ' + label);
+		$('#focus').text(' ' + label);
 		mapCreator.changeFocus(onFocus);
 
 		if(queryLogicStructure[onFocus].type == 'concept'){
