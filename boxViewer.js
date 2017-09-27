@@ -42,7 +42,7 @@ function updateBoxesFromPredicate(predicateUrl, predicateLabel, predicateDirecti
 	}
 	boxFiller.updatePredicatesFromPredicate(predicateUrl, predicateLabel, predicateDirection, renderPredicates);
 }
-
+/*
 function renderConcepts(concepts){
 	var conceptsList = $("#conceptsList");
 	conceptsList.empty();
@@ -60,7 +60,7 @@ function renderConcepts(concepts){
 				mapCreator.selectedConcept($(this).attr('meta-url'), $(this).attr('meta-label'));
 			});
 	});
-}
+}*/
 /*
 function renderConceptsHierarchy(rootMap, concepts){
 	var conceptsList = $("#conceptsList");
@@ -101,6 +101,7 @@ function renderConceptsHierarchy(roots, concepts){
 
 function iterativePreorderVisit(concept, concepts, toAppend){
 	var li = $("<li/>")
+		.attr('class', 'collection-item')
 		.attr('title', concept)
 		.attr('meta-url', concept)
 		.attr('meta-label', concepts[concept].label)
@@ -113,7 +114,9 @@ function iterativePreorderVisit(concept, concepts, toAppend){
 
 	var children = concepts[concept].children;
 	if(children.length!=0){
-		var ul = $("<ul/>").appendTo(li);
+		var ul = $("<ul/>")		
+			//.attr('class', 'collection')
+			.appendTo(li);
 		for(var i=0; i<children.length; i++){
 			iterativePreorderVisit(children[i], concepts, ul);
 		}		
@@ -147,6 +150,7 @@ function renderDirectPredicates(directArray){
 		article = languageManager.getArticle(element.label);
 		
 		var li = $("<li/>")
+			.attr('class', 'collection-item')
 			.attr('title', element.url)
 			.attr('meta-url', element.url)
 			.attr('meta-label', element.label)
@@ -174,6 +178,7 @@ function renderReversePredicates(reverseArray){
 		article = languageManager.getArticle(element.label);
 
 		var li = $("<li/>")
+			.attr('class', 'collection-item')
 			.attr('title', element.url)
 			.attr('meta-url', element.url)
 			.attr('meta-label', element.label)
@@ -188,7 +193,7 @@ function renderReversePredicates(reverseArray){
 			});
 	});
 }
-
+/*
 function renderAttributes(attributesArray){
 
 	var li = $("<li/>")
@@ -211,7 +216,7 @@ function renderAttributes(attributesArray){
 				boxFiller.selectedAttribute($(this).attr('meta-url'), $(this).attr('meta-label'));
 			});
 	});
-}
+}*/
 
 
 
