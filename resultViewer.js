@@ -17,6 +17,7 @@
 
 		var resultsTable = $('#resultsTable');
 		resultsTable.empty();
+		var thead = $("<thead/>");
 
 		var tr = $("<tr/>");
 		for(field in labelSelect){
@@ -24,8 +25,10 @@
 				.text(labelSelect[field])
 				.appendTo(tr);
 		}
-		tr.appendTo(resultsTable);
+		tr.appendTo(thead);
+		thead.appendTo(resultsTable);
 
+		var tbody = $("<tbody/>");
 
 		$.each(results, function(index){
 			var element = results[index];
@@ -51,6 +54,7 @@
 
 
 			}
-			tr.appendTo(resultsTable);
+			tr.appendTo(tbody);
 		});
+		tbody.appendTo(resultsTable);
 	}
