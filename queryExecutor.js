@@ -4,8 +4,8 @@
 
 var endpoint;
 var graph;
-var query; 
-var queryUrl;
+var query, query2; 
+var queryUrl, queryUrl2;
 
 var language;
 
@@ -30,6 +30,8 @@ var QueryExecutor = function (selectedEndpoint, selectedGraph) {
 
 	query = '';
 	queryUrl = '';
+	query2 = '';
+	queryUrl2 = '';
 
 	language = 'en';
 
@@ -64,11 +66,32 @@ QueryExecutor.prototype.getAllEntities = function(callback) {
 	        url: queryUrl,
 	        success: function( data ) {
 	        	manageClassHierarchy(data);
-	        	//console.log(classHierarchyMap);
-	        	//console.log(classHierarchyMapRoots);
-				callback(classHierarchyMapRoots, classHierarchyMap);
-	        }
-	    });	
+				//callback(classHierarchyMapRoots, classHierarchyMap);
+
+				query2 = " prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
+					" prefix owl: <http://www.w3.org/2002/07/owl#> " +
+					" SELECT ?subclass (count(?subclass) as ?numberOfInstances)  " +
+					" WHERE { " + 
+						" GRAPH " + graph + " { " +
+							" ?istance a ?subclass. "+
+							" ?subclass a owl:Class ; rdfs:subClassOf ?superclass. " +
+						" } " +
+					" } " +
+					" group by ?subclass ";
+		
+			   	queryUrl2 = endpoint+"?query="+ encodeURIComponent(query2) +"&format=json";
+			    $.ajax({
+			        url: queryUrl2,
+			        success: function( data ) {
+			        	addInstancesOccurenceClassHierarchy(data);
+			        	getClassHierarchyMapRoots();
+			        	console.log(classHierarchyMap);
+						callback(classHierarchyMapRoots, classHierarchyMap);
+			        }
+			    });	
+			}
+		});
+
 	}
 	else{
 		callback(classHierarchyMapRoots, classHierarchyMap);
@@ -432,7 +455,7 @@ function manageClassHierarchy(data){
 				label = createLabel(element.superclass.value);
 			else label = element.label_superclass.value;
 
-			classHierarchyMap[element.superclass.value] = {label: label, children : [], parent:null};
+			classHierarchyMap[element.superclass.value] = {url:element.superclass.value, label: label, children : [], parent:null, numberOfInstances:0};
 		}
 
 		classHierarchyMap[element.superclass.value].children.push(element.subclass.value);
@@ -444,18 +467,14 @@ function manageClassHierarchy(data){
 				subclass_label = createLabel(element.subclass.value);
 			else subclass_label = element.label_subclass.value;
 
-			classHierarchyMap[element.subclass.value] = {label: subclass_label, children : []};
+			classHierarchyMap[element.subclass.value] = {url:element.subclass.value, label: subclass_label, children : [], numberOfInstances:0};
 
 		}
 		classHierarchyMap[element.subclass.value].parent = element.superclass.value;
 
 	});
 
-	for(element in classHierarchyMap){
-		if(classHierarchyMap[element].parent==null){
-			classHierarchyMapRoots.push(element);
-		}
-	}
+	
 
 }
 
@@ -530,4 +549,61 @@ function updateMap(url, label, map){
 			elementStack.push(children[i]);
 	}
 
+}
+
+function addInstancesOccurenceClassHierarchy(data){
+	var arrayData = data.results.bindings;
+
+	$.each(arrayData, function(index){
+		element = arrayData[index];
+
+		if(element.subclass.value in classHierarchyMap){
+			classHierarchyMap[element.subclass.value].numberOfInstances = element.numberOfInstances.value;
+		}
+		else{
+			console.log("QUERYEXECUTOR : " + element.subclass.value + " not in map");
+		}
+	});
+
+	cleanMap();
+}
+
+function cleanMap(){
+	var element;
+	var elementsToCheck = [];
+
+	for(key in classHierarchyMap){
+		element = classHierarchyMap[key];
+		if(element.numberOfInstances == 0 && element.children.length == 0){
+			var index = $.inArray(element.url, classHierarchyMap[element.parent].children);
+			classHierarchyMap[element.parent].children.splice(index, 1);
+			elementsToCheck.push(element.parent);
+			delete classHierarchyMap[element.url];
+		}
+	}
+
+				//console.log(elementsToCheck);
+
+	while(elementsToCheck.length!=0){
+
+		element = classHierarchyMap[elementsToCheck.pop()];
+
+		if(element!=undefined && element.numberOfInstances == 0 && element.children.length == 0){
+			var index = $.inArray(element.url, classHierarchyMap[element.parent].children);
+			classHierarchyMap[element.parent].children.splice(index, 1);
+			elementsToCheck.push(element.parent);
+			delete classHierarchyMap[element.url];
+
+		}
+	}
+
+}
+
+function getClassHierarchyMapRoots(){
+	classHierarchyMapRoots = [];
+	for(element in classHierarchyMap){
+		if(classHierarchyMap[element].parent==null){
+			classHierarchyMapRoots.push(element);
+		}
+	}
 }

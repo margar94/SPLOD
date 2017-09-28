@@ -100,6 +100,7 @@ function renderConceptsHierarchy(roots, concepts){
 }
 
 function iterativePreorderVisit(concept, concepts, toAppend){
+	//console.log(concept);
 	var li = $("<li/>")
 		.attr('class', 'collection-item')
 		.attr('title', concept)
