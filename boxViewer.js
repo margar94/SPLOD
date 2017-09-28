@@ -111,6 +111,12 @@ function iterativePreorderVisit(concept, concepts, toAppend){
 			updateBoxesFromConcept($(this).attr('meta-url'), $(this).attr('meta-label'));
 			mapCreator.selectedConcept($(this).attr('meta-url'), $(this).attr('meta-label'));
 		});
+		
+	var badge = $("<span/>")
+		.attr('class', 'new badge')
+		.attr('data-badge-caption', '')
+		.text(concepts[concept].numberOfInstances)
+		.appendTo(li);
 
 	var children = concepts[concept].children;
 	if(children.length!=0){

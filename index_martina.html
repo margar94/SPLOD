@@ -16,11 +16,14 @@
 		<script src="resultViewer.js"></script>
 
 		<script src="utilLogicLayer.js"></script>
+		<script src="utilPresentationLayer.js"></script>
+
 
 		<script src="Materialize/js/materialize.min.js"></script>
 		<link href="Materialize/fonts/roboto/Roboto-Regular.woff" rel="stylesheet">	
 		<link href="Materialize/fonts/roboto/Roboto-Regular.woff2" rel="stylesheet">		
 		<link href="Materialize/css/materialize.min.css" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
 		<style>
 
@@ -43,15 +46,8 @@
 			}
 
 			div#resultsBox {
-				position:absolute;
-				margin-left: 66%;
-				padding: 5px;
-			    border: 2px solid red;
-			    border-radius: 5px;
-			    width: 30%;
-			    height: 500px;
+			    height: 300px;
 			    overflow: auto;
-			    display: inline-block;
 			}
 
 			div#resultsTableBox {
@@ -68,12 +64,12 @@
 			}
 
 			span.concept {
-				color: #009688;
+				color: #00e676;
 				font-weight: bold;
 			}
 
 			span.predicate {
-				color: #3f51b5;
+				color: #c6ff00 ;
 				font-weight: bold;
 			}
 
@@ -83,6 +79,19 @@
 
 			li.indicator{
 				display:none;
+			}
+
+			#sparqlQuery{
+				margin-top: -40px;
+				float:right;
+			}
+
+			#removeButton {
+				height: 20px;
+			}
+
+			#removeButton:hover{
+				cursor: pointer;
 			}
 
 			::-webkit-scrollbar {
@@ -99,18 +108,27 @@
 			    border: thin solid gray;
 			}
 
+			#mytabs a{
+				color:black;
+			}
+
 			.tabs #conceptsTab a:hover,
 			.tabs #conceptsTab a.active{
-				background-color: #009688;
+				background-color: #00e676;
 				color: white;
 			}
 
 			.tabs #predicatesTab a:hover,
 			.tabs #predicatesTab a.active{
-				background-color: #3f51b5;
+				background-color: #c6ff00 ;
 				color: white;
 			}
 
+			.tabs #resultsTab a:hover,
+			.tabs #resultsTab a.active{
+				background-color: #ff9800 ;
+				color: white;
+			}
 
 		</style>
 
@@ -118,69 +136,34 @@
 	<body>
 		<div class="container">
 		  	<div class="row">
-				<div id="queryBox" class="col s12 card">	
-					<div id="queryNaturalLanguage">
-						<span id="span1">Give me...</span>
+				<div id="queryBox" class="col s12">	
+					<div class="card">
+						<div id="queryNaturalLanguage" class="card-content">
+							<span id="span1">Give me...</span>
+							<a class="btn-floating btn btn-small waves-effect waves-light blue modal-trigger" id="sparqlQuery" href="#modalSPARQL"><i class="material-icons">share</i></a>
 
-					<!--<span>A 
-						<span>B 
-							<span>
-								<ul>
-									<li>C <span>E </span> </li>
-								</ul>
-								<span>D </span>
-							</span>
-						</span>
-					</span>-->
+							<div id="modalSPARQL" class="modal">
+							    <div class="modal-content">
+							      <h4>SPARQL query</h4>
+							      <p>A bunch of text</p>
+							    </div>
+							    <div class="modal-footer">
+							      <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Close</a>
+							    </div>
+							  </div>
 
-					<!-- 
-						onfocuschange su concept, predicate, something
-							- chi sottolineare
-							- chi mettere nel focus
-							- notifica della key che si sta eliminando
-
-
-
-
-
-					Give me every place that has a label
-
-						tutti gli span focusable tranne give me
-					
-						<div>give me 
-							<span class=> every 
-								<span id=key class=concept title=url>place</span>
-								<span> that has
-									<span id=key class=predicate title=url>label</span>
-								</span>
-							</span>
 						</div>
+						<div class="card-action blue white-text">
+							<span class="white-text"> Focus: <span id="focus">-</span> </span>
 
-
-						Give me every place that is the label of something
-
-						tutti gli span focusable tranne give me
-					
-						<div>give me 
-							<span class=> every 
-								<span id=key class=concept title=url>place</span>
-								<span> that is the
-									<span id=key class=predicate title=url>label</span>
-									of
-									<span id=key class=??? title=url (non significativa)> something</span>
-								</span>
-							</span>
+				              <span class="right">
+				              <i class="small material-icons white-text" id="removeButton" 
+				              	title="Remove all the highlighted"
+				              	onmouseover="highlightElementsToRemove();" 
+				              	onmouseleave="removeHighlightElementsToRemove();" 
+				              	onclick="mapCreator.removeElement($('.highlighted').attr('meta-removereference'));">highlight_off</i>
+				            </span>
 						</div>
-
-					-->
-
-					</div>
-					<div class="card-action">
-						
-						<a href="" ><span> Focus: <span id="focus"></span> </span></a>
-
-						<a href="#" id="removeButton" onmouseover="highlightElementsToRemove();" onmouseleave="removeHighlightElementsToRemove();" onclick="mapCreator.removeElement($('.highlighted').attr('meta-removereference'));">REMOVE</a>
-						
 					</div>
 				</div>
 				
@@ -197,15 +180,15 @@
 
 
 			<div class="col s3">
-		      <ul id="myTabs" class="tabs" style="display: table-cell;border-right: 4px solid #009688;">
+		      <ul id="myTabs" class="tabs black-text" style="display: table-cell;border-right: 4px solid #00e676;">
 		   
-		        <li class="tab col s12" id="conceptsTab" onclick="$('#myTabs').css('border-right-color', '#009688')">	<a href="#conceptsBox">Concepts</a>
+		        <li class="tab col s12" id="conceptsTab" onclick="$('#myTabs').css('border-right-color', '#00e676')">	<a href="#conceptsBox">Concepts</a>
 		        </li>
-		        <li class="tab col s12" id="predicatesTab" onclick="$('#myTabs').css('border-right-color', '#3f51b5')">
+		        <li class="tab col s12" id="predicatesTab" onclick="$('#myTabs').css('border-right-color', '#c6ff00 ')">
 		        	<a href="#predicatesBox">Predicates</a>
 		        </li>
-		        <li class="tab col s12">
-		        	<a href="#resultsBox">Results</a>
+		        <li class="tab col s12" id="resultsTab" onclick="$('#myTabs').css('border-right-color', '#ff9800')">
+		        	<a href="#resultsBox">Operators</a>
 		        </li>
 		      </ul>
 		    </div>
@@ -269,15 +252,16 @@
 		            </div>
 		          </div>
 
-
-				<div id="resultsBox" class="hidable col s12">
-					<!--<h1>Predicati</h1>-->
-					<ul id="operatorList"></ul>
+				  <div id="resultsBox" class="card col s12">
+		            <div class="card-content ">
+		              <span class="card-title">Operators</span>
+		              <ul id="operatorList"></ul>
 					<!--<input type="text" id="searchResultsBox" class="search"
 						onkeyup="filter('searchResultsBox', 'resultsBox')" 
 						placeholder="Search for a result..." title="Type in a result">-->
 					<ul id="resultList"></ul>
-				</div>
+		            </div>
+		          </div>
 			</div>
 
 	      </div>
@@ -299,17 +283,28 @@
 			</div>
 		</div>
 
+
+			<ul class="collection">
+		        <li class="collection-item" style="background-color: #9c27b0">Query</li>
+		        <li class="collection-item light-green accent-3">Concepts</li>
+		        <li class="collection-item" style="background-color: #ff5722">Predicates</li>
+		        <li class="collection-item" style="background-color: #03a9f4">Operators</li>
+		        <li class="collection-item" style="background-color: #d32f2f">Results</li>
+		    </ul>
+
 	</body>
 
 	<script>
-
-
-
 		
 		$(document).ready(function(){
 
 			$('.hidable').hide();
 			$('#conceptsBox').show();
+
+			$(document).ready(function(){
+			    // the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
+			    $('.modal').modal();
+			});
 
 			initBoxViewer();
 			initQueryViewer();
@@ -320,42 +315,6 @@
 
 
 		});
-
-		function highlightElementsToRemove(){
-
-			var IDtoRemove = $('.highlighted').attr('meta-removereference');
-
-			var spanToRemove = document.getElementById(IDtoRemove).parentNode.querySelectorAll('span');
-			document.getElementById(IDtoRemove).parentNode.className += ' highlightRemove';
-
-			$.each(spanToRemove, function(index){
-				spanToRemove[index].className += ' highlightRemove';
-			});
-		}
-
-		function removeHighlightElementsToRemove(){
-			var toRemoveHightlight = $('.highlightRemove');
-
-			$.each(toRemoveHightlight, function(index){
-				toRemoveHightlight[index].setAttribute('class', toRemoveHightlight[index].getAttribute('class').replace(' highlightRemove', ''));
-			});
-		}
-
-		function filter(inputName, boxName) {
-		    var input, filter, box, li, text, i;
-		    input = document.getElementById(inputName);
-		    filter = input.value.toLowerCase();
-		   	box = document.getElementById(boxName);
-		    li = box.getElementsByTagName("li");
-		    for (i = 0; i < li.length; i++) {
-		        text = li[i].innerHTML;
-		        if (text.toLowerCase().indexOf(filter) > -1) {
-		            li[i].style.display = "";
-		        } else {
-		            li[i].style.display = "none";
-		        }
-		    }
-		}
 
 	</script>
 
