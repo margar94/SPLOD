@@ -1,18 +1,20 @@
 var resultDatatype;
 var savedResult;
 
-var ResultManager = function () {
-	if(ResultManager.prototype._singletonInstance){
-		return ResultManager.prototype._singletonInstance;
+var changedFocus = null;
+
+var OperatorManager = function () {
+	if(OperatorManager.prototype._singletonInstance){
+		return OperatorManager.prototype._singletonInstance;
 	}
 
 	resultDatatype = {};
 	savedResult = {};
 
-	ResultManager.prototype._singletonInstance = this;
+	OperatorManager.prototype._singletonInstance = this;
 };
 
-ResultManager.prototype.queryResult = function(select, labelSelect, keySelect, results){
+OperatorManager.prototype.queryResult = function(select, labelSelect, keySelect, results){
 
 	//console.log(results);
 	$.each(results, function(index){
@@ -105,6 +107,7 @@ ResultManager.prototype.queryResult = function(select, labelSelect, keySelect, r
 			case 'literal':
 				var index = $.inArray('?'+field, select);
 				resultDatatype[keySelect[index]] = {datatype : 'string'};
+				//we have access to string language
 				break;
 
 			case 'boolean': 
@@ -130,9 +133,13 @@ ResultManager.prototype.queryResult = function(select, labelSelect, keySelect, r
 
 	console.log(resultDatatype);
 
+	if(changedFocus!=null)
+		manageUpdateOperatorViewer();
+	
+
 	saveResults(select, keySelect, results);
 
-	renderResult(select, labelSelect, results);
+	//renderResult(select, labelSelect, results);
 }
 
 function saveResults(select, keySelect, results){
@@ -162,4 +169,17 @@ function saveResults(select, keySelect, results){
 
 	console.log(savedResult);
 	
+}
+
+OperatorManager.prototype.changedFocus = function(onFocus, userChangeFocus){
+	changedFocus = onFocus;
+	if(userChangeFocus){
+		manageUpdateOperatorViewer();
+	}
+}
+
+function manageUpdateOperatorViewer(){
+	console.log(resultDatatype[changedFocus]);
+	
+	changedFocus = null;
 }

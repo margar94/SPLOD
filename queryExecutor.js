@@ -9,7 +9,7 @@ var queryUrl, queryUrl2;
 
 var language;
 
-var resultManager;
+var operatorManager;
 
 var classHierarchyMap;
 var classHierarchyMapRoots;
@@ -38,7 +38,7 @@ var QueryExecutor = function (selectedEndpoint, selectedGraph) {
 	classHierarchyMap = {};
 	classHierarchyMapRoots = [];
 
-	resultManager = new ResultManager();
+	operatorManager = new OperatorManager();
 
 	QueryExecutor.prototype._singletonInstance = this;
 	
@@ -386,7 +386,7 @@ QueryExecutor.prototype.getReversePredicatesFromPredicate = function(predicate, 
 QueryExecutor.prototype.executeUserQuery = function(querySPARQL){
 
 	if(querySPARQL.select.length == 0)
-		resultManager.queryResult(querySPARQL.select, querySPARQL.labelSelect, querySPARQL.keySelect, []);
+		operatorManager.queryResult(querySPARQL.select, querySPARQL.labelSelect, querySPARQL.keySelect, []);
 	else{
 		query = " prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
 					" SELECT " + querySPARQL.select.join(' ') +
@@ -403,7 +403,8 @@ QueryExecutor.prototype.executeUserQuery = function(querySPARQL){
 	        url: queryUrl,
 	        success: function( data ) {
 	        	console.log(data.results.bindings);
-				resultManager.queryResult(querySPARQL.select, querySPARQL.labelSelect, querySPARQL.keySelect, data.results.bindings);
+				operatorManager.queryResult(querySPARQL.select, querySPARQL.labelSelect, querySPARQL.keySelect, data.results.bindings);
+	        	renderResultTable(querySPARQL.select, querySPARQL.labelSelect, data.results.bindings);
 	        }
 	    });
 	}

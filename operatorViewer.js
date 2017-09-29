@@ -1,8 +1,6 @@
 
-	function initResultViewer(){
-		/*boxFiller = new BoxFiller();
-		queryVerbalizator = new QueryVerbalizator();
-		languageManager = new LanguageManager();*/
+	function initOperatorViewer(){
+		
 	}
 	
 	function renderResult(select, labelSelect, results){

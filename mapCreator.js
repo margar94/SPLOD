@@ -9,6 +9,7 @@ var languageManager;
 
 var queryBuilder = null;
 var queryVerbalizator = null;
+var operatorManager = null;
 
 var elementOnFocus;
 //var queryViewer = null;
@@ -107,6 +108,10 @@ MapCreator.prototype.selectedConcept = function(selectedUrl, selectedLabel) {
 	if(queryBuilder == null)
 		queryBuilder = new QueryBuilder;
 	queryBuilder.updateQuery(rootQueryLogicMap, queryLogicMap);
+
+	if(operatorManager == null)
+		operatorManager = new OperatorManager;
+	operatorManager.changedFocus(elementOnFocus, false);
 
 	//console.log(queryLogicMap);
 	//console.log(elementsList);
@@ -227,6 +232,11 @@ MapCreator.prototype.selectedPredicate = function(selectedUrl, selectedLabel, pr
 		queryBuilder = new QueryBuilder;
 	queryBuilder.updateQuery(rootQueryLogicMap, queryLogicMap);
 
+	if(operatorManager == null)
+		operatorManager = new OperatorManager;
+	operatorManager.changedFocus(elementOnFocus, false);
+
+
 	//console.log(queryLogicMap);
 
 }
@@ -234,6 +244,11 @@ MapCreator.prototype.selectedPredicate = function(selectedUrl, selectedLabel, pr
 //update focus
 MapCreator.prototype.changeFocus = function(keyElementOnFocus){
 	elementOnFocus = keyElementOnFocus;
+
+	if(operatorManager == null)
+		operatorManager = new OperatorManager;
+	operatorManager.changedFocus(elementOnFocus, true);
+
 }
 
 // remove element in map
@@ -366,5 +381,8 @@ MapCreator.prototype.removeElement = function(key){
 		queryBuilder = new QueryBuilder;
 	queryBuilder.updateQuery(rootQueryLogicMap, queryLogicMap);
 
+	if(operatorManager == null)
+			operatorManager = new OperatorManager;
+	operatorManager.changedFocus(elementOnFocus, false);
 
 }
