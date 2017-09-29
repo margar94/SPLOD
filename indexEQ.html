@@ -31,12 +31,12 @@
 				font-family: 'Roboto', sans-serif;
 			}
 
-			div#queryBox {
-				padding: 5px;
-				margin: 5px;
-			    border: 2px solid royalblue;
-			    border-radius: 5px;
+			div#queryBox{
+				margin-top: 30px;
 			}
+
+
+			
 
 			div#queryNaturalLanguage {
 				display: inline-block;
@@ -56,6 +56,7 @@
 			    height: 500px;
 			    overflow: scroll;
 			    display: inline-block;
+			    width:100%;
 			}
 
 			div#predicatesBox {
@@ -72,6 +73,15 @@
 			    height: 500px;
 			    overflow: scroll;
 			    display: inline-block;
+			    width:100%;
+			}
+
+			div#resultsListBox{
+				padding: 5px;
+			    height: 500px;
+			    overflow: scroll;
+			    display: inline-block;
+			    width:100%;
 			}
 
 			div#resultsBox {
@@ -81,6 +91,10 @@
 			    height: 500px;
 			    overflow: scroll;
 			    display: inline-block;
+			}
+
+			div#resultsTable{
+				width:100%;
 			}
 
 			div#resultsTableBox {
@@ -107,13 +121,10 @@
 			}
 
 			img.imgResult {
-				height: 10px;
+				height: 15px;
 			}
 
-			#removeButton {
-				height: 20px;
-			}
-
+			
 			.search {
 			  width: 100%;
 			  font-size: 16px;
@@ -122,8 +133,33 @@
 			  margin-bottom: 12px;
 			}
 
-			
+			::-webkit-scrollbar {
+			    width: 9px;
+			    height: 9px;
+			}
+			::-webkit-scrollbar-track {
+			    background: #eee;
+			    border: thin solid lightgray;
+			    box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.1) inset;
+			}
+			::-webkit-scrollbar-thumb {
+			    background: #999;
+			    border: thin solid gray;
+			}
 
+			.search-wrapper {
+			    margin: 0 12px;
+			    -webkit-transition: margin .25s ease;
+			    transition: margin .25s ease;
+			}
+			
+			#sparqlQuery{
+				margin-top: -40px;
+			}
+
+			.likeSpan{
+				display: inline-block;
+			}
 		</style>
 
 	</head>
@@ -131,22 +167,24 @@
 
 		<div class="container">
 			<div class="row">
-				<div class="col s12 m12 l12">
+				<div class="col s12 m12 l12" id="queryBox">
 	    			<div class="card">
 			            <div class="card-content" >
 			              	<!--<span class="card-title">Your request is...</span>-->
 			              	<div id="queryNaturalLanguage">
 								<span id="span1">Give me...</span>
 						   	</div>
+						   	<a class="btn-floating btn btn-small waves-effect waves-light blue modal-trigger right" id="sparqlQuery" href="#modalSPARQL" title="See SPARQL query"><i class="material-icons">developer_mode</i></a>
 			            </div>
-			            <div class="card-action blue">
+			            <div class="card-action blue valign-wrapper ">
 			              <span class="white-text"> Focus: <span id="focus">-</span> </span>
 
+			            
 			              <span class="right">
-			              <i class="small material-icons white-text" id="removeButton" 
-			              	onmouseover="highlightElementsToRemove();" 
-			              	onmouseleave="removeHighlightElementsToRemove();" 
-			              	onclick="mapCreator.removeElement($('.highlighted').attr('meta-removereference'));">highlight_off</i>
+				              <i class="small material-icons white-text " title="Delete highlighted part of query" 
+				              	onmouseover="highlightElementsToRemove();" 
+				              	onmouseleave="removeHighlightElementsToRemove();" 
+				              	onclick="mapCreator.removeElement($('.highlighted').attr('meta-removereference'));">clear</i>
 			              </span>
 			            </div>
 			        </div>				
@@ -160,28 +198,40 @@
     			<div class="card">
 		            <div class="card-content" >
 		            	<span class="card-title green-text">Nouns</span>
-		              	<input type="text" id="searchConceptsBox" class="search"
-							onkeyup="filter('searchConceptsBox', 'conceptsListBox')" 
-							placeholder="Search for a concept..." title="Type in a concept">
+
+		            	<div class="card">
+		            		<div style="width:80%">
+				              	<input type="search" id="searchConceptsBox" 
+									onkeyup="filter('searchConceptsBox', 'conceptsListBox')" 
+									placeholder="Search for a concept..." title="Type in a concept">
+							
+								<i class="material-icons right"> search</i>
+															</div>
+
+						</div>
 
 						<div id="conceptsListBox" > <ul id="conceptsList" class="collection"></ul> </div>
 		            </div>
-		            <div class="card-action green">
+		            <div class="card-action green valign-wrapper">
 		              
-		              <span class="right">
-		              <i class="small material-icons white-text">device_hub</i>
-		              </span>
+		              
+		              	<i class="small material-icons white-text right" style="margin:0">device_hub</i>
 		            </div>
 		         </div>
 			</div>    		
+
     		<div class="col s12 m6 l6">
 
     			<div class="card">
 				    <div class="card-content">
 				      <span class="card-title orange-text">Verbs and other sentence's element</span>
-				      <input type="text" id="searchPredicatesBox" class="search"
-						onkeyup="filter('searchPredicatesBox', 'predicatesListBox')" 
-						placeholder="Search for a predicate..." title="Type in a predicate">
+
+				      <div class="card search-wrapper">
+					      <input type="search" id="searchPredicatesBox" 
+							onkeyup="filter('searchPredicatesBox', 'predicatesListBox')" 
+							placeholder="Search for a predicate..." title="Type in a predicate">
+  						  <i class="material-icons">search</i>
+					  </div>
 				    </div>
 				    <div class="card-tabs">
 				      <ul class="tabs tabs-fixed-width">
@@ -203,15 +253,24 @@
     		<!--<div class="col s4 m4 l2">
     			query sparql
     		</div>-->
-    	<div class="row">
-    		<div class="col s12 m12 12" id="resultsTableBox">
-    			<h1>Results</h1>
-					<table id="resultsTable" border="1">
-					</table>    		
-			</div>
-  		</div> 		
 
-    	</div>
+    	<div class="container">
+			<div class="row">
+				<div class="col s12 m12 l12">
+	    			<div class="card">
+	    			<div id="resultsListBox" >
+			            <div class="card-content" >
+			            	<span class="card-title red-text">Results' table</span>
+
+			              	<table id="resultsTable" class="striped"></table>
+			            </div>
+			            </div>
+			        </div>				
+	    		</div>
+	    	</div>
+	    </div>
+
+
 
 
 		

@@ -46,8 +46,12 @@
 						.attr('href', element[field].url)
 						.appendTo(td);
 
-					var img = $("<img/>")
+					/*var img = $("<img/>")
 						.attr('src', 'img/ic_open_in_new_black_24dp_2x.png')
+						.attr('class', 'imgResult')
+						.appendTo(a);*/
+
+					var icon = $("<i class='materialize-icon small'> open_in_new </i> ")
 						.attr('class', 'imgResult')
 						.appendTo(a);
 				}
