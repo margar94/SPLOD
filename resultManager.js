@@ -1,10 +1,13 @@
 var resultDatatype;
+var savedResult;
+
 var ResultManager = function () {
 	if(ResultManager.prototype._singletonInstance){
 		return ResultManager.prototype._singletonInstance;
 	}
 
 	resultDatatype = {};
+	savedResult = {};
 
 	ResultManager.prototype._singletonInstance = this;
 };
@@ -30,16 +33,14 @@ ResultManager.prototype.queryResult = function(select, labelSelect, keySelect, r
 	});
 
 	var result = results[0];
-		//console.log(result);
 
 	for(field in result){
-		//console.log('?'+field);
-		//console.log(select);
-		//console.log(keySelect);
+
 		var type = result[field].type;
 
 		switch(type){
 			case 'uri' : 
+			case 'anyURI':
 				var url = result[field].url;
 				if(url.match(/^https?:\/\/(?:[a-z\-]+\.)+[a-z]{2,6}(?:\/[^\/#?]+)+\.(?:jpe?g|gif|png)/)!=null){
 					var index = $.inArray('?'+field, select);
@@ -55,20 +56,30 @@ ResultManager.prototype.queryResult = function(select, labelSelect, keySelect, r
 				var datatype = createLabel(result[field].datatype);
 
 				switch(datatype){
-					case 'integer':
+					/*case 'integer':
 					case 'nonNegativeInteger':
+					case 'negativeInteger':
+					case 'nonPositiveInteger':
 					case 'positiveInteger':
 					case 'year':
 					case 'gYear':
+					case 'gMonth':
+					case 'gDay':
+					case 'gMonthDay':
+					case 'gYearMonth':
 					case 'kilometre':
 					case 'kilogramPerCubicMetre':
 					case 'klometrePerSecond':
 					case 'day':
 					case 'double':
+					case 'float':
 						var index = $.inArray('?'+field, select);
 						resultDatatype[keySelect[index]] = {datatype : 'number'};
 						break;			
+					*/
 					case 'date':
+					case 'dateTime':
+					case 'time':
 						var index = $.inArray('?'+field, select);
 						resultDatatype[keySelect[index]] = {datatype : 'date'};
 						break;
@@ -76,7 +87,17 @@ ResultManager.prototype.queryResult = function(select, labelSelect, keySelect, r
 						var index = $.inArray('?'+field, select);
 						resultDatatype[keySelect[index]] = {datatype : 'string'};
 						break;
-					default : console.log(datatype);
+					default : 
+						if($.isNumeric(result[field].value)){
+							var index = $.inArray('?'+field, select);
+							resultDatatype[keySelect[index]] = {datatype : 'number'};
+						}
+						else{
+							var index = $.inArray('?'+field, select);
+							resultDatatype[keySelect[index]] = {datatype : 'string'};
+						}
+						console.log('type : typed-literal, datatype:' +datatype);
+						break;
 				}
 
 				break;
@@ -86,7 +107,22 @@ ResultManager.prototype.queryResult = function(select, labelSelect, keySelect, r
 				resultDatatype[keySelect[index]] = {datatype : 'string'};
 				break;
 
-			default : console.log(type);
+			case 'boolean': 
+				var index = $.inArray('?'+field, select);
+				resultDatatype[keySelect[index]] = {datatype : 'string'};
+				break;
+
+			default : 
+				if($.isNumeric(result[field].value)){
+					var index = $.inArray('?'+field, select);
+					resultDatatype[keySelect[index]] = {datatype : 'number'};
+				}
+				else{
+					var index = $.inArray('?'+field, select);
+					resultDatatype[keySelect[index]] = {datatype : 'string'};
+				}
+				console.log('type:' +type);
+				break;
 
 		}
 
@@ -94,5 +130,36 @@ ResultManager.prototype.queryResult = function(select, labelSelect, keySelect, r
 
 	console.log(resultDatatype);
 
+	saveResults(select, keySelect, results);
+
 	renderResult(select, labelSelect, results);
+}
+
+function saveResults(select, keySelect, results){
+
+	for(var i=0; i<keySelect.length; i++){
+		savedResult[keySelect[i]] = [];
+	}
+
+	$.each(results, function(index){
+
+		var element = results[index];
+
+		for(field in element){
+			var cachedResult = {};
+			cachedResult.value = element[field].value;
+
+			var type = element[field].type;
+			if(type == 'uri')
+				cachedResult.url = element[field].url;
+
+			var index = $.inArray('?'+field, select);
+			savedResult[keySelect[index]].push(cachedResult);
+
+		}
+
+	});
+
+	console.log(savedResult);
+	
 }
