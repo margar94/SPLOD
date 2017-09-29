@@ -51,8 +51,9 @@
 						.attr('class', 'imgResult')
 						.appendTo(a);*/
 
-					var icon = $("<i class='materialize-icon small'> open_in_new </i> ")
-						.attr('class', 'imgResult')
+					var icon = $("<i class='material-icons tiny red-text'>")
+						.text('open_in_new')
+						//.attr('class', 'imgResult')
 						.appendTo(a);
 				}
 

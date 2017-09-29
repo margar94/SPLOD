@@ -22,7 +22,7 @@
 
 		<link href="Materialize/fonts/roboto/Roboto-Regular.woff" rel="stylesheet">	
 		<link href="Materialize/fonts/roboto/Roboto-Regular.woff2" rel="stylesheet">		
-		<link href="Materialize/css/materialize.min.css" rel="stylesheet">
+		<link href="Materialize/css/EQmaterialize.min.css" rel="stylesheet">
 		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
 		<style>
@@ -160,6 +160,30 @@
 			.likeSpan{
 				display: inline-block;
 			}
+
+			.tabs #directPredicatesTab a:hover,
+			.tabs #directPredicatesTab a.active,
+			.tabs #reversePredicatesTab a:hover,
+			.tabs #reversePredicatesTab a.active,
+			.tabs #operatorTab a:hover,
+			.tabs #operatorTab a.active{
+				background-color: orange;
+				color: white;
+			}
+			.tab #directPredicatesTab,
+			.tab #reversePredicatesTab,
+			.tab #operatorTab{
+				color: orange;
+			}
+
+			input {
+			  border-bottom: none!important;
+			  box-shadow: none!important;
+			}
+
+			.addToQuery:hover{
+				font-weight: bold
+			}
 		</style>
 
 	</head>
@@ -193,24 +217,30 @@
 	    </div>
 
 	    <div class="row">
+    		
     		<div class="col s12 m6 l6" >
-
     			<div class="card">
 		            <div class="card-content" >
 		            	<span class="card-title green-text">Nouns</span>
-
-		            	<div class="card">
-		            		<div style="width:80%">
-				              	<input type="search" id="searchConceptsBox" 
-									onkeyup="filter('searchConceptsBox', 'conceptsListBox')" 
-									placeholder="Search for a concept..." title="Type in a concept">
-							
-								<i class="material-icons right"> search</i>
-															</div>
-
+		            		<!--<div class="container">-->
+		            			<div class="card">
+		            				<div class=" valign-wrapper ">
+					            		<span class="input-field col s11 m11 l11 ">
+							              	<input type="search" id="searchConceptsBox" 
+												onkeyup="filter('searchConceptsBox', 'conceptsListBox')" 
+												title="Type in a concept">
+											<label for="searchConceptsBox">Search for a concept</label>
+										</span>
+										<span class="col s2 m2 l2 right">
+											<i class="material-icons"> search</i>
+										</span>
+									</div>
+								</div>
+							<!--</div>-->
+						</span>
+						<div id="conceptsListBox"> 
+							<ul id="conceptsList" class="collapsible" data-collapsible="expandable"></ul> 
 						</div>
-
-						<div id="conceptsListBox" > <ul id="conceptsList" class="collection"></ul> </div>
 		            </div>
 		            <div class="card-action green valign-wrapper">
 		              
@@ -225,26 +255,45 @@
     			<div class="card">
 				    <div class="card-content">
 				      <span class="card-title orange-text">Verbs and other sentence's element</span>
-
-				      <div class="card search-wrapper">
-					      <input type="search" id="searchPredicatesBox" 
-							onkeyup="filter('searchPredicatesBox', 'predicatesListBox')" 
-							placeholder="Search for a predicate..." title="Type in a predicate">
-  						  <i class="material-icons">search</i>
-					  </div>
+				      		<!--<div class="container">-->
+		            			<div class="card">
+		            				<div class=" valign-wrapper ">
+					            		<span class="input-field col s11 m11 l11 ">
+							              	<input type="search" id="searchPredicatessBox" 
+												onkeyup="filter('searchPredicatessBox', 'predicatesListBox')" 
+												title="Type in a concept">
+											<label for="searchPredicatesBox">Search for a predicate</label>
+										</span>
+										<span class="col s2 m2 l2 right">
+											<i class="material-icons"> search</i>
+										</span>
+									</div>
+								</div>
+							<!--</div>-->
 				    </div>
 				    <div class="card-tabs">
-				      <ul class="tabs tabs-fixed-width">
-				        <li class="tab"><a class="active" href="#direct">Direct</a></li>
-				        <li class="tab"><a href="#reverse">Reverse</a></li>
-				        <li class="tab"><a href="#operator">Operator</a></li>
+				      <ul class="tabs tabs-fixed-width" id="predicateTabs">
+				        <li class="tab" id="directPredicatesTab"><a class="active" href="#direct">Direct</a></li>
+				        <li class="tab" id="reversePredicatesTab"><a href="#reverse">Reverse</a></li>
+				        <li class="tab" id="operatorTab"><a href="#operator">Operator</a></li>
 				      </ul>
 				    </div>
 				    <div class="card-content grey lighten-4">
-				      <div id="direct"><div id="predicatesListBox">
-				      	<ul id="predicatesList" class="collection"></ul></div> </div>
-				      <div id="reverse"><ul id="predicatesList" class="collection"></ul></div>
-				      <div id="operator">Test 3</div>
+				      <div id="direct">
+				      	<div id="predicatesListBox">
+				      		<ul id="predicatesList" class="collection"></ul>
+				      	</div> 
+				      </div>
+				      <div id="reverse">
+				      	<div id="predicatesListBox">
+				      		<ul id="predicatesList" class="collection"></ul>
+				      	</div>
+				      </div>
+				      <div id="operator">
+				      	<div id="predicatesListBox">
+				      		<ul id="operatorList" class="collection"></ul>
+				      	</div>
+				      </div>
 				    </div>
 				</div>
 

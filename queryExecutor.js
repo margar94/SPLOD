@@ -133,7 +133,7 @@ QueryExecutor.prototype.getAllDirectPredicates = function(limit, callback) {
 			" SELECT DISTINCT ?url ?label " +
 			" WHERE { " + 
 				" GRAPH " + graph + " { " +
-					//" ?s a owl:Thing. " +
+					" ?s a owl:Thing. " +
 					" ?s ?url ?s2. " +
 					" OPTIONAL {?url rdfs:label ?label. " +
 					" FILTER (lang(?label) = '" + language + "')} " +
@@ -175,7 +175,7 @@ QueryExecutor.prototype.getAllReversePredicates = function(limit, callback) {
 			" SELECT DISTINCT ?url ?label " +
 			" WHERE { " + 
 				" GRAPH " + graph + " { " +
-					//" ?s a owl:Thing. " +
+					" ?s a owl:Thing. " +
 					" ?s2 ?url ?s. " +
 					" OPTIONAL {?url rdfs:label ?label. " +
 					" FILTER (lang(?label) = '" + language + "')} " +
@@ -402,6 +402,7 @@ QueryExecutor.prototype.executeUserQuery = function(querySPARQL){
 	    $.ajax({
 	        url: queryUrl,
 	        success: function( data ) {
+	        	console.log(data.results.bindings);
 				resultManager.queryResult(querySPARQL.select, querySPARQL.labelSelect, data.results.bindings);
 	        }
 	    });
@@ -476,7 +477,6 @@ function manageClassHierarchy(data){
 
 	});
 
-	console.log(classHierarchyMap);
 
 }
 

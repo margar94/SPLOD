@@ -98,17 +98,31 @@ function renderConceptsHierarchy(roots, concepts){
 	//console.log(concepts);
 	for(var i=0; i<roots.length; i++)
 		iterativePreorderVisit(roots[i], concepts, conceptsList);
+
+	$('.collapsible').collapsible();
 }
 
 function iterativePreorderVisit(concept, concepts, toAppend){
 	//console.log(concept);
+	/*
+		.addToQuery:hover{
+			font-weight: bold
+		}
+	*/
 	var li = $("<li/>")
-		.attr('class', 'collection-item')
+		.appendTo(toAppend);
+
+	var collapsibleheader = $("<div/>")
+		.attr('class', 'collapsible-header active')
+		.appendTo(li);
+
+	var headercontent = $("<span/>")
+		.attr('class', 'addToQuery')
 		.attr('title', concept)
 		.attr('meta-url', concept)
 		.attr('meta-label', concepts[concept].label)
 		.text(concepts[concept].label)
-		.appendTo(toAppend)
+		.appendTo(collapsibleheader)
 		.on('click', function(){
 			updateBoxesFromConcept($(this).attr('meta-url'), $(this).attr('meta-label'));
 			mapCreator.selectedConcept($(this).attr('meta-url'), $(this).attr('meta-label'));
@@ -118,13 +132,17 @@ function iterativePreorderVisit(concept, concepts, toAppend){
 		.attr('class', 'new badge')
 		.attr('data-badge-caption', '')
 		.text(concepts[concept].numberOfInstances)
-		.appendTo(li);
+		.appendTo(collapsibleheader);
 
 	var children = concepts[concept].children;
 	if(children.length!=0){
-		var ul = $("<ul/>")		
-			//.attr('class', 'collection')
+		var collapsiblebody = $("<div/>")
+			.attr('class', 'collapsible-body')
 			.appendTo(li);
+		var ul = $("<ul/>")		
+			.attr('class', 'collapsible')
+			.attr('data-collapsible','expandable')
+			.appendTo(collapsiblebody);
 		for(var i=0; i<children.length; i++){
 			iterativePreorderVisit(children[i], concepts, ul);
 		}		
