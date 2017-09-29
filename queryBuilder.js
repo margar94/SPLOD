@@ -21,7 +21,7 @@ QueryBuilder.prototype.updateQuery = function(queryLogicRoot, queryLogicMap){
 	queryLogicStructure = queryLogicMap;
 	queryLogicStructureRoot = queryLogicRoot;
 	visitStack = [];
-	querySPARQL = {select:[], labelSelect:[], where:''}; //add other field
+	querySPARQL = {select:[], labelSelect:[], keySelect:[], where:''}; //add other field
 	buildQuery();
 }
 
@@ -70,6 +70,7 @@ function visitSPARQL(node){
 		if(($.inArray(node.variable, querySPARQL.select))<0){
 			querySPARQL.select.push(node.variable);
 			querySPARQL.labelSelect.push(node.label);
+			querySPARQL.keySelect.push(node.key);
 		}
 
 		if(node.parent==null)
@@ -82,6 +83,7 @@ function visitSPARQL(node){
 			parentVariable = "?"+node.label.replace( /[\s -]/g, "") + "_" + node.index;
 			querySPARQL.select.push(parentVariable);
 			querySPARQL.labelSelect.push(node.label);
+			querySPARQL.keySelect.push(node.key);
 		}
 		else{
 			parentVariable = queryLogicStructure[node.parent].variable;

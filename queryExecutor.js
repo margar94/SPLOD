@@ -382,11 +382,11 @@ QueryExecutor.prototype.getReversePredicatesFromPredicate = function(predicate, 
     });	
 }
 
-//querySPARQL = {select:[], where: ' ', limit}
+//querySPARQL = {select:[], labelSelect:[], keySelect:[], where: ' ', limit}
 QueryExecutor.prototype.executeUserQuery = function(querySPARQL){
 
 	if(querySPARQL.select.length == 0)
-		resultManager.queryResult(querySPARQL.select, querySPARQL.labelSelect, []);
+		resultManager.queryResult(querySPARQL.select, querySPARQL.labelSelect, querySPARQL.keySelect, []);
 	else{
 		query = " prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
 					" SELECT " + querySPARQL.select.join(' ') +
@@ -403,7 +403,7 @@ QueryExecutor.prototype.executeUserQuery = function(querySPARQL){
 	        url: queryUrl,
 	        success: function( data ) {
 	        	console.log(data.results.bindings);
-				resultManager.queryResult(querySPARQL.select, querySPARQL.labelSelect, data.results.bindings);
+				resultManager.queryResult(querySPARQL.select, querySPARQL.labelSelect, querySPARQL.keySelect, data.results.bindings);
 	        }
 	    });
 	}
