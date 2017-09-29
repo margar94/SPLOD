@@ -95,6 +95,7 @@ function renderConceptsHierarchy(rootMap, concepts){
 function renderConceptsHierarchy(roots, concepts){
 	var conceptsList = $("#conceptsList");
 	conceptsList.empty();
+	//console.log(concepts);
 	for(var i=0; i<roots.length; i++)
 		iterativePreorderVisit(roots[i], concepts, conceptsList);
 }

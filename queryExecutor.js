@@ -70,14 +70,16 @@ QueryExecutor.prototype.getAllEntities = function(callback) {
 
 				query2 = " prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
 					" prefix owl: <http://www.w3.org/2002/07/owl#> " +
-					" SELECT ?subclass (count(?subclass) as ?numberOfInstances)  " +
+					" SELECT ?class (count(?class) as ?numberOfInstances)  " +
 					" WHERE { " + 
 						" GRAPH " + graph + " { " +
-							" ?istance a ?subclass. "+
-							" ?subclass a owl:Class ; rdfs:subClassOf ?superclass. " +
+							" {?istance a ?class. "+
+							" ?class a owl:Class ; rdfs:subClassOf ?superclass. } UNION" +
+							" {?istance a ?subclass. "+
+							" ?subclass a owl:Class ; rdfs:subClassOf ?class. }" +
 						" } " +
 					" } " +
-					" group by ?subclass ";
+					" group by ?class ";
 		
 			   	queryUrl2 = endpoint+"?query="+ encodeURIComponent(query2) +"&format=json";
 			    $.ajax({
@@ -85,7 +87,7 @@ QueryExecutor.prototype.getAllEntities = function(callback) {
 			        success: function( data ) {
 			        	addInstancesOccurenceClassHierarchy(data);
 			        	getClassHierarchyMapRoots();
-			        	console.log(classHierarchyMap);
+			        	//console.log(classHierarchyMap);
 						callback(classHierarchyMapRoots, classHierarchyMap);
 			        }
 			    });	
@@ -131,7 +133,7 @@ QueryExecutor.prototype.getAllDirectPredicates = function(limit, callback) {
 			" SELECT DISTINCT ?url ?label " +
 			" WHERE { " + 
 				" GRAPH " + graph + " { " +
-					" ?s a owl:Thing. " +
+					//" ?s a owl:Thing. " +
 					" ?s ?url ?s2. " +
 					" OPTIONAL {?url rdfs:label ?label. " +
 					" FILTER (lang(?label) = '" + language + "')} " +
@@ -173,7 +175,7 @@ QueryExecutor.prototype.getAllReversePredicates = function(limit, callback) {
 			" SELECT DISTINCT ?url ?label " +
 			" WHERE { " + 
 				" GRAPH " + graph + " { " +
-					" ?s a owl:Thing. " +
+					//" ?s a owl:Thing. " +
 					" ?s2 ?url ?s. " +
 					" OPTIONAL {?url rdfs:label ?label. " +
 					" FILTER (lang(?label) = '" + language + "')} " +
@@ -455,7 +457,7 @@ function manageClassHierarchy(data){
 				label = createLabel(element.superclass.value);
 			else label = element.label_superclass.value;
 
-			classHierarchyMap[element.superclass.value] = {url:element.superclass.value, label: label, children : [], parent:null, numberOfInstances:0};
+			classHierarchyMap[element.superclass.value] = {url:element.superclass.value, label: label, children : [], parent:[], numberOfInstances:0};
 		}
 
 		classHierarchyMap[element.superclass.value].children.push(element.subclass.value);
@@ -467,14 +469,14 @@ function manageClassHierarchy(data){
 				subclass_label = createLabel(element.subclass.value);
 			else subclass_label = element.label_subclass.value;
 
-			classHierarchyMap[element.subclass.value] = {url:element.subclass.value, label: subclass_label, children : [], numberOfInstances:0};
+			classHierarchyMap[element.subclass.value] = {url:element.subclass.value, label: subclass_label, children : [], numberOfInstances:0, parent: []};
 
 		}
-		classHierarchyMap[element.subclass.value].parent = element.superclass.value;
+		classHierarchyMap[element.subclass.value].parent.push(element.superclass.value);
 
 	});
 
-	
+	console.log(classHierarchyMap);
 
 }
 
@@ -557,53 +559,89 @@ function addInstancesOccurenceClassHierarchy(data){
 	$.each(arrayData, function(index){
 		element = arrayData[index];
 
-		if(element.subclass.value in classHierarchyMap){
-			classHierarchyMap[element.subclass.value].numberOfInstances = element.numberOfInstances.value;
+		if(element.class.value in classHierarchyMap){
+			classHierarchyMap[element.class.value].numberOfInstances = element.numberOfInstances.value;
 		}
 		else{
-			console.log("QUERYEXECUTOR : " + element.subclass.value + " not in map");
+			console.log("QUERYEXECUTOR : " + element.class.value + " not in map");
 		}
 	});
 
 	cleanMap();
 }
 
-function cleanMap(){
+function cleanMap(callback){
 	var element;
 	var elementsToCheck = [];
 
 	for(key in classHierarchyMap){
 		element = classHierarchyMap[key];
 		if(element.numberOfInstances == 0 && element.children.length == 0){
-			var index = $.inArray(element.url, classHierarchyMap[element.parent].children);
-			classHierarchyMap[element.parent].children.splice(index, 1);
-			elementsToCheck.push(element.parent);
+			var  parents = element.parent;
+			for(var i=0; i<parents.length; i++){
+				var index = $.inArray(element.url, classHierarchyMap[parents[i]].children);
+				classHierarchyMap[parents[i]].children.splice(index, 1);
+				elementsToCheck.push(parents[i]);
+			}
 			delete classHierarchyMap[element.url];
 		}
 	}
 
-				//console.log(elementsToCheck);
-
 	while(elementsToCheck.length!=0){
+		var url = elementsToCheck.pop();
+		element = classHierarchyMap[url];
 
-		element = classHierarchyMap[elementsToCheck.pop()];
+		if(element!=undefined && element.numberOfInstances == 0 && element.children.length == 0){
+			var  parents = element.parent;
+			for(var i=0; i<parents.length; i++){
+				var index = $.inArray(element.url, classHierarchyMap[parents[i]].children);
+				classHierarchyMap[parents[i]].children.splice(index, 1);
+				elementsToCheck.push(parents[i]);
+			}
+			delete classHierarchyMap[element.url];
+		}
+		//if(url=='http://dbpedia.org/ontology/Instrument')
+		//	alert('while' + classHierarchyMap['http://dbpedia.org/ontology/Device'].children.length);
+	}
+
+	//console.log(classHierarchyMap);
+
+
+				//console.log(elementsToCheck);
+/*
+	while(elementsToCheck.length!=0){
+		var url = elementsToCheck.pop();
+		element = classHierarchyMap[url];
+		//if(url=='http://dbpedia.org/ontology/Instrument')
+		//	console.log(element);
 
 		if(element!=undefined && element.numberOfInstances == 0 && element.children.length == 0){
 			var index = $.inArray(element.url, classHierarchyMap[element.parent].children);
+			
 			classHierarchyMap[element.parent].children.splice(index, 1);
+			
 			elementsToCheck.push(element.parent);
 			delete classHierarchyMap[element.url];
+			if(url=='http://dbpedia.org/ontology/Instrument')
+				alert('if'+classHierarchyMap['http://dbpedia.org/ontology/Device'].children.length);
 
 		}
+		if(url=='http://dbpedia.org/ontology/Instrument')
+			alert('while' + classHierarchyMap['http://dbpedia.org/ontology/Device'].children.length);
 	}
+
+alert('metodo'+classHierarchyMap['http://dbpedia.org/ontology/Device'].children.length);
+*/
+
 
 }
 
 function getClassHierarchyMapRoots(){
 	classHierarchyMapRoots = [];
 	for(element in classHierarchyMap){
-		if(classHierarchyMap[element].parent==null){
+		if(classHierarchyMap[element].parent.length==0){
 			classHierarchyMapRoots.push(element);
 		}
 	}
+
 }
