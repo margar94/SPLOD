@@ -30,7 +30,7 @@ function buildQuery(){
 	//visit query implicit tree 
 	if(queryLogicStructureRoot != null){
 		
-		queryLogicStructure[queryLogicStructureRoot].variable = "?"+queryLogicStructure[queryLogicStructureRoot].label.replace( /[\s - \' \\ \^ \/ \$ \* \+ \? \. \( \) \| \{ \} \[ \]]/g, "") + "_" + queryLogicStructure[queryLogicStructureRoot].index;
+		queryLogicStructure[queryLogicStructureRoot].variable = "?"+createVariableFromLabel(queryLogicStructure[queryLogicStructureRoot].label, queryLogicStructure[queryLogicStructureRoot].index);
 		visitStack.push(queryLogicStructure[queryLogicStructureRoot]);
 
 		while(visitStack.length != 0){
@@ -41,7 +41,7 @@ function buildQuery(){
 					&& queryLogicStructure[currentNode.children[i]].type=='concept')
 						queryLogicStructure[currentNode.children[i]].variable = currentNode.variable;
 				else
-					queryLogicStructure[currentNode.children[i]].variable = "?"+queryLogicStructure[currentNode.children[i]].label.replace( /[\s - \' \\ \^ \/ \$ \* \+ \? \. \( \) \| \{ \} \[ \]]/g, "") + "_" + queryLogicStructure[currentNode.children[i]].index;
+					queryLogicStructure[currentNode.children[i]].variable = "?"+createVariableFromLabel(queryLogicStructure[currentNode.children[i]].label, queryLogicStructure[currentNode.children[i]].index);
 
 				visitStack.push(queryLogicStructure[currentNode.children[i]]);
 			}
@@ -80,7 +80,7 @@ function visitSPARQL(node){
 
 	}else{ // node is a reverse predicate
 		if(node.parent == null){
-			parentVariable = "?"+node.label.replace( /[\s - \' \\ \/ \^ \$ \* \+ \? \. \( \) \| \{ \} \[ \]]/g, "") + "_" + node.index;
+			parentVariable = "?"+createVariableFromLabel(node.label, node.index);
 			querySPARQL.select.push(parentVariable);
 			querySPARQL.labelSelect.push(node.label);
 			querySPARQL.keySelect.push(node.key);
@@ -106,6 +106,10 @@ function visitSPARQL(node){
 		// other node
 	}		
 
+}
+
+function createVariableFromLabel(label, index){
+	return label.replace( /[\s - \' \\ \/ \^ \$ \* \+ \? \. \( \) \| \{ \} \[ \] \! \@ \# \% \^ \& \= \; \: \" \, \< \> ]/g, "") + "_" + index;
 }
 
 

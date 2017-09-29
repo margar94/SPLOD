@@ -59,6 +59,12 @@ ResultManager.prototype.queryResult = function(select, labelSelect, keySelect, r
 					case 'nonNegativeInteger':
 					case 'positiveInteger':
 					case 'year':
+					case 'gYear':
+					case 'kilometre':
+					case 'kilogramPerCubicMetre':
+					case 'klometrePerSecond':
+					case 'day':
+					case 'double':
 						var index = $.inArray('?'+field, select);
 						resultDatatype[keySelect[index]] = {datatype : 'number'};
 						break;			
