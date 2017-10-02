@@ -9,7 +9,6 @@ function initBoxViewer(){
 	mapCreator = new MapCreator();
 }
 
-//first filling, map returned
 function fillConcepts(){
 	boxFiller.retrieveConcepts(function (rootMap, map){
 		renderConceptsHierarchy(rootMap, map);
@@ -61,41 +60,11 @@ function renderConcepts(concepts){
 			});
 	});
 }*/
-/*
-function renderConceptsHierarchy(rootMap, concepts){
-	var conceptsList = $("#conceptsList");
-	conceptsList.empty();
 
-	for(concept in concepts){
-		//console.log(concept);
-		var li = $("<li/>")
-			.attr('title', concept)
-			.attr('meta-url', concept)
-			.attr('meta-label', concepts[concept].label)
-			.text(concepts[concept].label)
-			.appendTo(conceptsList)
-			.on('click', function(){
-				updateBoxesFromConcept($(this).attr('meta-url'), $(this).attr('meta-label'));
-				mapCreator.selectedConcept($(this).attr('meta-url'), $(this).attr('meta-label'));
-			});
-	}
-
-	while(elementStack.length!=0){
-		currentElement = elementStack.pop();
-		submap[currentElement] = classHierarchyMap[currentElement];
-
-		children = classHierarchyMap[currentElement].children;
-
-		for(var i=0; i<children.length; i++)
-			elementStack.push(children[i]);
-	}
-
-	
-}*/
 function renderConceptsHierarchy(roots, concepts){
 	var conceptsList = $("#conceptsList");
 	conceptsList.empty();
-	//console.log(concepts);
+
 	for(var i=0; i<roots.length; i++)
 		iterativePreorderVisit(roots[i], concepts, conceptsList);
 
@@ -103,12 +72,7 @@ function renderConceptsHierarchy(roots, concepts){
 }
 
 function iterativePreorderVisit(concept, concepts, toAppend){
-	//console.log(concept);
-	/*
-		.addToQuery:hover{
-			font-weight: bold
-		}
-	*/
+	
 	var li = $("<li/>")
 		.appendTo(toAppend);
 
@@ -149,16 +113,13 @@ function iterativePreorderVisit(concept, concepts, toAppend){
 	}
 }
 
-
 function renderPredicates(predicates){
-	var predicatesList = $("#predicatesList");
-	predicatesList.empty();
+	/*var predicatesList = $("#predicatesList");
+	predicatesList.empty();*/
 
 	var directArray = predicates.directArray;
 	var reverseArray = predicates.reverseArray;
-	var attributesArray = predicates.attributesArray;
 	
-	//renderAttributes(attributesArray);
 	renderDirectPredicates(directArray);
 	renderReversePredicates(reverseArray);
 	
@@ -166,10 +127,13 @@ function renderPredicates(predicates){
 
 function renderDirectPredicates(directArray){
 
-	var li = $("<li/>")
+	var directPredicatesList = $("#directPredicatesList");
+	directPredicatesList.empty();
+
+	/*var li = $("<li/>")
 		.css('backgroundColor', '#7c4dff')
 		.text('Direct predicates')
-		.appendTo(predicatesList);
+		.appendTo(predicatesList);*/
 
 	$.each(directArray, function(index){
 		element = directArray[index];
@@ -184,7 +148,7 @@ function renderDirectPredicates(directArray){
 			.attr('meta-article', element.article)
 			.attr('meta-predicateDirection', 'direct') 
 			.text(element.verb +" "+ article +" "+ element.label)
-			.appendTo(predicatesList)
+			.appendTo(directPredicatesList)
 			.on('click', function(){
 				updateBoxesFromPredicate($(this).attr('meta-url'), $(this).attr('meta-label'), $(this).attr('meta-predicateDirection'));
 				mapCreator.selectedPredicate($(this).attr('meta-url'), $(this).attr('meta-label'), $(this).attr('meta-predicateDirection'));
@@ -194,10 +158,13 @@ function renderDirectPredicates(directArray){
 
 function renderReversePredicates(reverseArray){
 
-	var li = $("<li/>")
+	var reversePredicatesList = $("#reversePredicatesList");
+	reversePredicatesList.empty();
+
+	/*var li = $("<li/>")
 		.css('backgroundColor', '#7c4dff')
 		.text('Reverse predicates')
-		.appendTo(predicatesList);
+		.appendTo(predicatesList);*/
 
 	$.each(reverseArray, function(index){
 		element = reverseArray[index];
@@ -212,7 +179,7 @@ function renderReversePredicates(reverseArray){
 			.attr('meta-article', element.article)
 			.attr('meta-predicateDirection', 'reverse')
 			.text(element.verb +" "+ article +" "+ element.label)
-			.appendTo(predicatesList)
+			.appendTo(reversePredicatesList)
 			.on('click', function(){
 				updateBoxesFromPredicate($(this).attr('meta-url'), $(this).attr('meta-label'), $(this).attr('meta-predicateDirection'));
 				mapCreator.selectedPredicate($(this).attr('meta-url'), $(this).attr('meta-label'), $(this).attr('meta-predicateDirection'));
