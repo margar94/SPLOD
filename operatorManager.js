@@ -1,11 +1,17 @@
 var resultDatatype;
 var savedResult;
+
 var operatorMap;
+var unaryOperator;
+
 var mapCreator;
 
 var pendingQuery;
 
-var changedFocus = null;
+var changedFocus;
+var onFocus;
+
+var isComplete;
 
 //OperatorManager is a singleton
 var OperatorManager = function () {
@@ -13,14 +19,23 @@ var OperatorManager = function () {
 		return OperatorManager.prototype._singletonInstance;
 	}
 
+	isComplete = false;
+
 	resultDatatype = {};
 	savedResult = {};
 	pendingQuery = [];
 	mapCreator = new MapCreator();
+
+	changedFocus = false;
+	onFocus = null;
+
+	unaryOperator = ['and', 'or', 'not', 'minimum', 'maximum', 'average'];
 	operatorMap = {
 		'number' : ['<', '<=', '>', '>=', '=', 'min', 'max', 'average', 'range', 'not'],
 
 		'string' : ['is', 'starts with', 'ends with', 'contains', 'not'],
+
+		'uri' : ['is'],
 
 		'and' : ['or'],
 		'or' : ['and'],
@@ -161,7 +176,7 @@ OperatorManager.prototype.queryResult = function(select, labelSelect, keySelect,
 
 	console.log(resultDatatype);
 
-	if(changedFocus!=null)
+	if(changedFocus)
 		manageUpdateOperatorViewer();
 	
 
@@ -175,19 +190,23 @@ function ready(){
 }
 
 OperatorManager.prototype.selectedOperator = function(operator){
-	console.log('operator');
 	pendingQuery.push(operator);
 
-	//eventuale comunicazione con mapcreator
-	//isCompleted = true;
+	var index = $.inArray(operator, unaryOperator);
+	if(index >= 0 ){
+		mapCreator.selectedOperator(pendingQuery);
+		isComplete = true;
+	}
+
 }
 
-OperatorManager.prototype.isCompleted = function(){
-	return isCompleted;
+OperatorManager.prototype.isComplete = function(){
+	return isComplete;
 }
 
 OperatorManager.prototype.getResultToCompleteOperator = function(){
-
+	//add fictious node
+	return saveResults[onFocus];
 }
 
 function saveResults(select, keySelect, results){
@@ -204,9 +223,10 @@ function saveResults(select, keySelect, results){
 			var cachedResult = {};
 			cachedResult.value = element[field].value;
 
-			var type = element[field].type;
+			/*var type = element[field].type;
 			if(type == 'uri')
 				cachedResult.url = element[field].url;
+			*/
 
 			var index = $.inArray('?'+field, select);
 			savedResult[keySelect[index]].push(cachedResult);
@@ -215,27 +235,27 @@ function saveResults(select, keySelect, results){
 
 	});
 
-	console.log(savedResult);
+	//console.log(savedResult);
 	
 }
 
 OperatorManager.prototype.changedFocus = function(onFocus, userChangeFocus){
-	changedFocus = onFocus;
+	changedFocus = true;
+	this.onFocus = onFocus;
 	if(userChangeFocus){
 		manageUpdateOperatorViewer();
 	}
 }
 
 function manageUpdateOperatorViewer(){
-	//console.log(resultDatatype[changedFocus]);
-
-	if(changedFocus in operatorMap){
-		renderOperatorList(operatorMap[changedFocus]);
-	}else if(resultDatatype[changedFocus] in operatorMap){
-		renderOperatorList(operatorMap[resultDatatype[changedFocus]]);
+	
+	if(onFocus in operatorMap){
+		renderOperatorList(operatorMap[onFocus]);
+	}else if(resultDatatype[onFocus].datatype in operatorMap){
+		renderOperatorList(operatorMap[resultDatatype[onFocus].datatype]);
 	}else{
 		renderOperatorList([]);
 	}
 	
-	changedFocus = null;
+	changedFocus = false;
 }
