@@ -205,8 +205,10 @@ OperatorManager.prototype.isComplete = function(){
 }
 
 OperatorManager.prototype.getResultToCompleteOperator = function(){
+	console.log(savedResult);
+
 	//add fictious node
-	return saveResults[onFocus];
+	return savedResult[onFocus];
 }
 
 function saveResults(select, keySelect, results){
@@ -242,8 +244,13 @@ function saveResults(select, keySelect, results){
 OperatorManager.prototype.changedFocus = function(onFocus, userChangeFocus){
 	changedFocus = true;
 	this.onFocus = onFocus;
-	if(userChangeFocus){
-		manageUpdateOperatorViewer();
+
+	if(onFocus!=null){
+		if(userChangeFocus){
+			manageUpdateOperatorViewer();
+		}
+	}else{
+		renderOperatorList([]);
 	}
 }
 

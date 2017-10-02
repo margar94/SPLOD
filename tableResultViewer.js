@@ -30,22 +30,15 @@ function createTable(select, labelSelect, results){
 		var tr = $("<tr/>");
 
 		for(field in element) {
-			var label;
-			if(element[field].type == 'uri'){
-				label = createLabel(element[field].value);
-			}
-			else
-				label = element[field].value;
-
 			var td = $("<td/>")
-				.text(label)
+				.text(element[field].value)
 				.appendTo(tr);
 				
 			if(element[field].type == 'uri'){
-				td.attr('title', element[field].value);
+				td.attr('title', element[field].url);
 
 				var a = $("<a/>")
-					.attr('href', element[field].value)
+					.attr('href', element[field].url)
 					.appendTo(td);
 
 				/*var img = $("<img/>")
