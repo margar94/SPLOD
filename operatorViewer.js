@@ -1,6 +1,8 @@
 
+	var operatorManager;
+	
 	function initOperatorViewer(){
-		
+		operatorManager = new OperatorManager;
 	}
 	
 	function renderResult(select, labelSelect, results){
@@ -11,53 +13,21 @@
 
 	}
 
-	function createTable(select, labelSelect, results){
+	function renderOperatorList(operators){
+		var operatorList = $.('#operatorList');
+		operatorList.empty();
 
-		var resultsTable = $('#resultsTable');
-		resultsTable.empty();
-		var thead = $("<thead/>");
+		$.each(operators, function(index){
+			var element = operators[index];
 
-		var tr = $("<tr/>");
-		for(field in labelSelect){
-			var th = $("<th/>")
-				.text(labelSelect[field])
-				.appendTo(tr);
-		}
-		tr.appendTo(thead);
-		thead.appendTo(resultsTable);
-
-		var tbody = $("<tbody/>");
-
-		$.each(results, function(index){
-			var element = results[index];
-			var tr = $("<tr/>");
-
-			for(field in element) {
-				var td = $("<td/>")
-					.text(element[field].value)
-					.appendTo(tr);
-					
-				if('url' in element[field]){
-					td.attr('title', element[field].url);
-
-					var a = $("<a/>")
-						.attr('href', element[field].url)
-						.appendTo(td);
-
-					/*var img = $("<img/>")
-						.attr('src', 'img/ic_open_in_new_black_24dp_2x.png')
-						.attr('class', 'imgResult')
-						.appendTo(a);*/
-
-					var icon = $("<i class='material-icons tiny red-text'>")
-						.text('open_in_new')
-						//.attr('class', 'imgResult')
-						.appendTo(a);
-				}
-
-
-			}
-			tr.appendTo(tbody);
+			var li = $("<li/>")
+			.attr('class', 'collection-item')
+			.attr('meta-value', element)
+			.text(element)
+			.appendTo(operatorList)
+			.on('click', function(){
+				operatorManager.selectedOperator($(this).attr('meta-value'));
+			});
 		});
-		tbody.appendTo(resultsTable);
+
 	}

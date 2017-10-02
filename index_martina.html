@@ -21,14 +21,15 @@
 
 
 		<script src="Materialize/js/materialize.min.js"></script>
-		<link href="Materialize/fonts/roboto/Roboto-Regular.woff" rel="stylesheet">	
-		<link href="Materialize/fonts/roboto/Roboto-Regular.woff2" rel="stylesheet">		
+		<link href="Materialize/fonts/roboto/Roboto-Regular.woff" rel="application/x-font-woff">	
+		<link href="Materialize/fonts/roboto/Roboto-Regular.woff2" rel="application/x-font-woff">		
 		<link href="Materialize/css/materialize.min.css" rel="stylesheet">
 		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
 		<style>
 
 			body {
+				background-color: #f5f5f5;
 				font-family: 'Roboto', sans-serif;
 			}
 
@@ -46,7 +47,7 @@
 			    overflow: auto;
 			}
 
-			div#resultsBox {
+			div#operatorsBox {
 			    height: 300px;
 			    overflow: auto;
 			}
@@ -109,31 +110,69 @@
 			    border: thin solid gray;
 			}
 
-			#mytabs a{
-				color:black;
-			}
-
 			.tabs #conceptsTab a:hover,
 			.tabs #conceptsTab a.active{
 				background-color: #00e676;
 				color: white;
 			}
 
+			.tabs #conceptsTab a{
+				color:#00e676;
+			}
+
 			.tabs #predicatesTab a:hover,
 			.tabs #predicatesTab a.active{
-				background-color: #c6ff00 ;
+				background-color: #7c4dff ;
 				color: white;
 			}
 
-			.tabs #resultsTab a:hover,
-			.tabs #resultsTab a.active{
-				background-color: #ff9800 ;
+			.tabs #predicatesTab a{
+				color:#7c4dff;
+			}
+
+			.tabs #operatorsTab a:hover,
+			.tabs #operatorsTab a.active{
+				background-color: #bdbdbd;
 				color: white;
+			}
+
+			.tabs #operatorsTab a{
+				color:#bdbdbd;
+			}
+
+			.tabs #queryTab a:hover,
+			.tabs #queryTab a.active{
+				background-color: #f44336;
+				color: white;
+			}
+
+			.tabs #queryTab a{
+				color:#f44336;
 			}
 
 			.addToQuery:hover{
 				font-weight: bold
 			}
+
+			input {
+			  border-bottom: none!important;
+			  box-shadow: none!important;
+			}
+
+			span.mySearch{
+				margin-top:0;
+				height: 45px;
+			}
+/*
+			span.mySearch:not(browser-default):active.not([readonly])+label{
+				color:red;
+			}
+
+			.input-field label:not(.label-icon).active{
+				transform: translateY(-4px) scale(0.7);
+				
+			}*/
+
 
 		</style>
 
@@ -180,101 +219,98 @@
 
 		<div class="row">
 
-
-
-
-
 			<div class="col s3">
 		      <ul id="myTabs" class="tabs black-text" style="display: table-cell;border-right: 4px solid #00e676;">
 		   
 		        <li class="tab col s12" id="conceptsTab" onclick="$('#myTabs').css('border-right-color', '#00e676')">	<a href="#conceptsBox">Concepts</a>
 		        </li>
-		        <li class="tab col s12" id="predicatesTab" onclick="$('#myTabs').css('border-right-color', '#c6ff00 ')">
+		        <li class="tab col s12" id="predicatesTab" onclick="$('#myTabs').css('border-right-color', '#7c4dff ')">
 		        	<a href="#predicatesBox">Predicates</a>
 		        </li>
-		        <li class="tab col s12" id="resultsTab" onclick="$('#myTabs').css('border-right-color', '#ff9800')">
-		        	<a href="#resultsBox">Operators</a>
+		        <li class="tab col s12" id="operatorsTab" onclick="$('#myTabs').css('border-right-color', '#bdbdbd')">
+		        	<a href="#operatorsBox">Operators</a>
+		        </li>
+		        <li class="tab col s12" id="queryTab" onclick="$('#myTabs').css('border-right-color', '#f44336')">
+		        	<a href="#dacambiareBox">Query</a>
 		        </li>
 		      </ul>
 		    </div>
 		   
+		    <div class="col s9">
+		        <!-- page content  -->
+		        <div>
 
-	        <!-- navigation panel -->
-	        <!--
-	        <ul class="collection">
-		        <li class="collection-item" style="background-color: #9c27b0" 
-		        	onclick="$('.hidable').hide();">Query</li>
-		        <li class="collection-item light-green accent-3" onclick="$('.hidable').hide();$('#conceptsBox').show();">Concepts</li>
-		        <li class="collection-item" style="background-color: #ff5722" onclick="$('.hidable').hide();$('#predicatesBox').show();">Predicates</li>
-		        <li class="collection-item" style="background-color: #03a9f4">Operators</li>
-		        <li class="collection-item" style="background-color: #d32f2f">Results</li>
-		    </ul>
--->
+		        	<div id="conceptsBox" class="card col s12">
+			            <div class="card-content ">
+			              <span class="card-title">Concepts</span>
 
-<!--
-			<ul class="section table-of-contents">
-		        <li onclick="$('.hidable').hide();"><a href="#">Query</a></li>
-		        <li onclick="$('.hidable').hide();$('#conceptsBox').show();"><a href="#conceptsBox">Concepts</a></li>
-		        <li onclick="$('.hidable').hide();$('#predicatesBox').show();"><a href="#predicatesBox">Predicates</a></li>
-		        <li><a href="#">Operators</a></li>
-		        <li><a href="#resultsBox">Results</a></li>
-		    </ul>
--->
+			              	  <div class="card">
+	            				<div class=" valign-wrapper ">
+				            		<span class="input-field col s11 m11 l11 mySearch">
+						              	<input type="search" id="searchConceptsBox" 
+											onkeyup="filter('searchConceptsBox', 'conceptsListBox')" 
+											title="Type in a concept">
+										<label for="searchConceptsBox">Search for a concept</label>
+									</span>
+									<span class="col s2 m2 l2 right">
+										<i class="material-icons"> search</i>
+									</span>
+								</div>
+							  </div>
+							 
+							<div id="conceptsListBox">
+								<ul id="conceptsList" class="collapsible" data-collapsible="expandable"></ul>
+							</div>
+			            </div>
+			          </div>
 
+			          <div id="predicatesBox" class="card col s12">
+			            <div class="card-content ">
+			              <span class="card-title">Predicate</span>
 
+		              	  <div class="card">
+            				<div class=" valign-wrapper ">
+			            		<span class="input-field col s11 m11 l11 mySearch">
+					              	<input type="search" id="searchConceptsBox" 
+										onkeyup="filter('searchConceptsBox', 'conceptsListBox')" 
+										title="Type in a concept">
+									<label for="searchConceptsBox">Search for a concept</label>
+								</span>
+								<span class="col s2 m2 l2 right">
+									<i class="material-icons"> search</i>
+								</span>
+							</div>
+						  </div>
 
+							<div id="predicatesListBox">
+								<ul id="predicatesList"></ul>
+							</div>
+			            </div>
+			          </div>
 
+					  <div id="operatorsBox" class="card col s12">
+			            <div class="card-content ">
+			              <span class="card-title">Operators</span>
+			              <ul id="operatorList"></ul>
+			              <ul id="resultList"></ul>
+						<!--<input type="text" id="searchResultsBox" class="search"
+							onkeyup="filter('searchResultsBox', 'resultsBox')" 
+							placeholder="Search for a result..." title="Type in a result">-->
+			            </div>
+			          </div>
 
-	      <div class="col s9">
-	        <!-- page content  -->
-	        <div>
+			          <div id="dacambiareBox" class="card col s12">
+			            <div class="card-content ">
+			              <span class="card-title">Other query</span>
+			            </div>
+			          </div>
+				</div>
 
-	        	<div id="conceptsBox" class="card col s12">
-		            <div class="card-content ">
-		              <span class="card-title">Concepts</span>
+	      	</div>
 
-		              	  <input type="text" id="searchConceptsBox" class="search"
-							onkeyup="filter('searchConceptsBox', 'conceptsBox')" 
-							placeholder="Enter concept here..." title="Type in a concept">
-						 
-						<div id="conceptsListBox">
-							<ul id="conceptsList" class="collapsible" data-collapsible="expandable"></ul>
-						</div>
-		            </div>
-		          </div>
+	    </div><!--end row-->
 
-		          <div id="predicatesBox" class="card col s12">
-		            <div class="card-content ">
-		              <span class="card-title">Predicate</span>
-
-	              	  <input type="text" id="searchPredicatesBox" class="search"
-						onkeyup="filter('searchPredicatesBox', 'predicatesBox')" 
-						placeholder="Search for a predicate..." title="Type in a predicate">
-
-						<div id="predicatesListBox">
-							<ul id="predicatesList"></ul>
-						</div>
-		            </div>
-		          </div>
-
-				  <div id="resultsBox" class="card col s12">
-		            <div class="card-content ">
-		              <span class="card-title">Operators</span>
-		              <ul id="operatorList"></ul>
-					<!--<input type="text" id="searchResultsBox" class="search"
-						onkeyup="filter('searchResultsBox', 'resultsBox')" 
-						placeholder="Search for a result..." title="Type in a result">-->
-					<ul id="resultList"></ul>
-		            </div>
-		          </div>
-			</div>
-
-	      </div>
-
-	    </div>
-
-		
-
+	    <!--start result table-->
 		<div class="row">
 			<div class="container">
 				<div id="resultsTableBox" class="card col s12">
@@ -287,23 +323,23 @@
 				</div>
 			</div>
 		</div>
+		<!--end result table-->
 
-
+<!--
 			<ul class="collection">
-		        <li class="collection-item" style="background-color: #9c27b0">Query</li>
-		        <li class="collection-item light-green accent-3">Concepts</li>
-		        <li class="collection-item" style="background-color: #ff5722">Predicates</li>
-		        <li class="collection-item" style="background-color: #03a9f4">Operators</li>
-		        <li class="collection-item" style="background-color: #d32f2f">Results</li>
+		        
+		        <li class="collection-item green accent-3 white-text">Concepts</li>
+		        <li class="collection-item deep-purple accent-2 white-text" >Predicates</li>
+		        <li class="collection-item grey lighten-1 white-text" >Operators</li>
+		        <li class="collection-item red white-text" >Explore</li>
 		    </ul>
-
+-->
 	</body>
 
 	<script>
 		
 		$(document).ready(function(){
 
-			$('.hidable').hide();
 			$('#conceptsBox').show();
 
 			$(document).ready(function(){
@@ -313,7 +349,7 @@
 
 			initBoxViewer();
 			initQueryViewer();
-			//initOperatorViewer();
+			initOperatorViewer();
 
 			fillConcepts();
 			fillPredicates();
