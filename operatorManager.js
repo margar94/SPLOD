@@ -35,6 +35,8 @@ var OperatorManager = function () {
 
 		'string' : ['is', 'starts with', 'ends with', 'contains', 'not'],
 
+		'date' : ['is', '<', '>', 'range'],
+
 		'uri' : ['is'],
 
 		'and' : ['or'],
@@ -205,10 +207,7 @@ OperatorManager.prototype.isComplete = function(){
 }
 
 OperatorManager.prototype.getResultToCompleteOperator = function(){
-	console.log(savedResult);
-
-	//add fictious node
-	return savedResult[onFocus];
+	return {blankNode : operatorMap[resultDatatype[onFocus].datatype], results: savedResult[onFocus]};
 }
 
 function saveResults(select, keySelect, results){
