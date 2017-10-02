@@ -17,6 +17,7 @@ function renderOperatorList(operators){
 	var operatorList = $('#operatorList');
 	operatorList.empty();
 	$('#operatorList').show();
+	$('#reusableResultList').hide();
 
 	$.each(operators, function(index){
 		var element = operators[index];
@@ -43,6 +44,7 @@ function renderReusableResultList(reusableResults){
 
 	var reusableResultList = $('#reusableResultList');
 	reusableResultList.empty();
+	reusableResultList.show();
 
 	$.each(reusableResults, function(index){
 		var element = reusableResults[index];
