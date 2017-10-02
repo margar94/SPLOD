@@ -62,8 +62,8 @@ function renderReusableResultList(reusableResults){
 
 		var li = $("<li/>")
 		.attr('class', 'collection-item')
-		.attr('meta-label', element.value)
-		.text(element.value)
+		.attr('meta-label', element)
+		.text(element)
 		.appendTo(reusableResultList)
 		.on('click', function(){
 			console.log("vmfdjbvjhfvb");

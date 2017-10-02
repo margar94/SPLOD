@@ -1,8 +1,9 @@
 var resultDatatype;
-var savedResult;
-
 var operatorMap;
 var unaryOperator;
+
+var savedResult;
+var literalLang;
 
 var mapCreator;
 
@@ -23,6 +24,7 @@ var OperatorManager = function () {
 
 	resultDatatype = {};
 	savedResult = {};
+	literalLang = {};
 	pendingQuery = [];
 	mapCreator = new MapCreator();
 
@@ -34,6 +36,8 @@ var OperatorManager = function () {
 		'number' : ['<', '<=', '>', '>=', '=', 'min', 'max', 'average', 'range', 'not'],
 
 		'string' : ['is', 'starts with', 'ends with', 'contains', 'not'],
+
+		'literal' : ['is', 'starts with', 'ends with', 'contains', 'not', 'lang'],
 
 		'date' : ['is', '<', '>', 'range'],
 
@@ -151,8 +155,7 @@ OperatorManager.prototype.queryResult = function(select, labelSelect, keySelect,
 
 			case 'literal':
 				var index = $.inArray('?'+field, select);
-				resultDatatype[keySelect[index]] = {datatype : 'string'};
-				//we have access to string language
+				resultDatatype[keySelect[index]] = {datatype : 'literal'};
 				break;
 
 			case 'boolean': 
@@ -207,13 +210,30 @@ OperatorManager.prototype.isComplete = function(){
 }
 
 OperatorManager.prototype.getResultToCompleteOperator = function(){
-	return {blankNode : operatorMap[resultDatatype[onFocus].datatype], results: savedResult[onFocus]};
+	var results;
+	var blankNode;
+
+	if(resultDatatype[onFocus].datatype=='literal' && pendingQuery[0] == 'lang'){
+		results = literalLang[onFocus];
+	}
+	else{
+		results = savedResult[onFocus];
+	}
+
+	if(resultDatatype[onFocus].datatype=='literal' || resultDatatype[onFocus].datatype=='string'){
+		blankNode = 'text';
+	}else{
+		blankNode = resultDatatype[onFocus].datatype;
+	}
+
+	return {blankNode : blankNode, results: results};
 }
 
 function saveResults(select, keySelect, results){
 
 	for(var i=0; i<keySelect.length; i++){
 		savedResult[keySelect[i]] = [];
+		literalLang[keySelect[i]] = [];
 	}
 
 	$.each(results, function(index){
@@ -221,8 +241,8 @@ function saveResults(select, keySelect, results){
 		var element = results[index];
 
 		for(field in element){
-			var cachedResult = {};
-			cachedResult.value = element[field].value;
+			//var cachedResult = {};
+			//cachedResult.value = element[field].value;
 
 			/*var type = element[field].type;
 			if(type == 'uri')
@@ -230,13 +250,21 @@ function saveResults(select, keySelect, results){
 			*/
 
 			var index = $.inArray('?'+field, select);
-			savedResult[keySelect[index]].push(cachedResult);
+			//savedResult[keySelect[index]].push(cachedResult);
+			savedResult[keySelect[index]].push(element[field].value);
+
+			var type = element[field].type;
+			if(type == 'literal'){
+				if($.inArray((element[field])['xml:lang'], literalLang[keySelect[index]])<0){
+					literalLang[keySelect[index]].push((element[field])['xml:lang']);
+				}
+			}
 
 		}
 
 	});
 
-	//console.log(savedResult);
+	console.log(literalLang);
 	
 }
 
