@@ -1,8 +1,13 @@
 var resultDatatype;
 var savedResult;
+var operatorMap;
+var mapCreator;
+
+var pendingQuery;
 
 var changedFocus = null;
 
+//OperatorManager is a singleton
 var OperatorManager = function () {
 	if(OperatorManager.prototype._singletonInstance){
 		return OperatorManager.prototype._singletonInstance;
@@ -10,6 +15,29 @@ var OperatorManager = function () {
 
 	resultDatatype = {};
 	savedResult = {};
+	pendingQuery = [];
+	mapCreator = new MapCreator();
+	operatorMap = {
+		'number' : ['<', '<=', '>', '>=', '=', 'min', 'max', 'average', 'range', 'not'],
+
+		'string' : ['is', 'starts with', 'ends with', 'contains', 'not'],
+
+		'and' : ['or'],
+		'or' : ['and'],
+
+		'<' : ['not'],
+		'<=' : ['not'],
+		'>' : ['not'],
+		'>=' : ['not'],
+		'=' : ['not'],
+		//not min, max, avg...
+		'min' : ['not'],
+		'max' : ['not'],
+		'average' : ['not'],
+		'range' : ['not']
+
+
+	};
 
 	OperatorManager.prototype._singletonInstance = this;
 };
@@ -98,7 +126,7 @@ OperatorManager.prototype.queryResult = function(select, labelSelect, keySelect,
 							var index = $.inArray('?'+field, select);
 							resultDatatype[keySelect[index]] = {datatype : 'string'};
 						}
-						console.log('type : typed-literal, datatype:' +datatype);
+						//console.log('type : typed-literal, datatype:' +datatype);
 						break;
 				}
 
@@ -124,7 +152,7 @@ OperatorManager.prototype.queryResult = function(select, labelSelect, keySelect,
 					var index = $.inArray('?'+field, select);
 					resultDatatype[keySelect[index]] = {datatype : 'string'};
 				}
-				console.log('type:' +type);
+				//console.log('type:' +type);
 				break;
 
 		}
@@ -140,6 +168,26 @@ OperatorManager.prototype.queryResult = function(select, labelSelect, keySelect,
 	saveResults(select, keySelect, results);
 
 	//renderResult(select, labelSelect, results);
+}
+
+function ready(){
+	//update map
+}
+
+OperatorManager.prototype.selectedOperator = function(operator){
+	console.log('operator');
+	pendingQuery.push(operator);
+
+	//eventuale comunicazione con mapcreator
+	//isCompleted = true;
+}
+
+OperatorManager.prototype.isCompleted = function(){
+	return isCompleted;
+}
+
+OperatorManager.prototype.getResultToCompleteOperator = function(){
+
 }
 
 function saveResults(select, keySelect, results){
@@ -179,7 +227,15 @@ OperatorManager.prototype.changedFocus = function(onFocus, userChangeFocus){
 }
 
 function manageUpdateOperatorViewer(){
-	console.log(resultDatatype[changedFocus]);
+	//console.log(resultDatatype[changedFocus]);
+
+	if(changedFocus in operatorMap){
+		renderOperatorList(operatorMap[changedFocus]);
+	}else if(resultDatatype[changedFocus] in operatorMap){
+		renderOperatorList(operatorMap[resultDatatype[changedFocus]]);
+	}else{
+		renderOperatorList([]);
+	}
 	
 	changedFocus = null;
 }

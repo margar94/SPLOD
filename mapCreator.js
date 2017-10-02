@@ -101,6 +101,10 @@ MapCreator.prototype.selectedConcept = function(selectedUrl, selectedLabel) {
 	queryViewer.changeFocus(elementOnFocus);
 	*/
 
+	if(operatorManager == null)
+		operatorManager = new OperatorManager;
+	operatorManager.changedFocus(elementOnFocus, false);
+
 	if(queryVerbalizator == null)
 		queryVerbalizator = new QueryVerbalizator;
 	queryVerbalizator.updateQuery(rootQueryLogicMap, queryLogicMap, elementOnFocus);
@@ -108,10 +112,6 @@ MapCreator.prototype.selectedConcept = function(selectedUrl, selectedLabel) {
 	if(queryBuilder == null)
 		queryBuilder = new QueryBuilder;
 	queryBuilder.updateQuery(rootQueryLogicMap, queryLogicMap);
-
-	if(operatorManager == null)
-		operatorManager = new OperatorManager;
-	operatorManager.changedFocus(elementOnFocus, false);
 
 	//console.log(queryLogicMap);
 	//console.log(elementsList);
@@ -223,6 +223,9 @@ MapCreator.prototype.selectedPredicate = function(selectedUrl, selectedLabel, pr
 		queryViewer = new QueryViewer;
 	queryViewer.changeFocus(elementOnFocus);
 	*/
+	if(operatorManager == null)
+		operatorManager = new OperatorManager;
+	operatorManager.changedFocus(elementOnFocus, false);
 
 	if(queryVerbalizator == null)
 		queryVerbalizator = new QueryVerbalizator;
@@ -231,11 +234,6 @@ MapCreator.prototype.selectedPredicate = function(selectedUrl, selectedLabel, pr
 	if(queryBuilder == null)
 		queryBuilder = new QueryBuilder;
 	queryBuilder.updateQuery(rootQueryLogicMap, queryLogicMap);
-
-	if(operatorManager == null)
-		operatorManager = new OperatorManager;
-	operatorManager.changedFocus(elementOnFocus, false);
-
 
 	//console.log(queryLogicMap);
 
@@ -373,6 +371,10 @@ MapCreator.prototype.removeElement = function(key){
 		rootQueryLogicMap = null;
 	}
 
+	if(operatorManager == null)
+			operatorManager = new OperatorManager;
+	operatorManager.changedFocus(elementOnFocus, false);
+
 	if(queryVerbalizator == null)
 		queryVerbalizator = new QueryVerbalizator;
 	queryVerbalizator.updateQuery(rootQueryLogicMap, queryLogicMap, elementOnFocus);
@@ -380,9 +382,5 @@ MapCreator.prototype.removeElement = function(key){
 	if(queryBuilder == null)
 		queryBuilder = new QueryBuilder;
 	queryBuilder.updateQuery(rootQueryLogicMap, queryLogicMap);
-
-	if(operatorManager == null)
-			operatorManager = new OperatorManager;
-	operatorManager.changedFocus(elementOnFocus, false);
 
 }
