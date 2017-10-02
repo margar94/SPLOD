@@ -58,13 +58,13 @@
 			}
 
 			span.highlighted {
-				background-color: #ffee58 ;
+				background-color: #fff59d   ;
 				padding:3px;
 				border-radius: 4px;
 			}
 
 			span.highlightRemove {
-				background-color: #ffee58 ;
+				background-color: #fff59d   ;
 				padding:3px;
 				border-radius: 4px;
 			}
@@ -83,7 +83,7 @@
 				height: 10px;
 			}
 
-			li.indicator{
+			#myTabs>li.indicator{
 				display:none;
 			}
 
@@ -279,21 +279,34 @@
 		              	  <div class="card">
             				<div class=" valign-wrapper ">
 			            		<span class="input-field col s11 m11 l11 mySearch">
-					              	<input type="search" id="searchConceptsBox" 
-										onkeyup="filter('searchConceptsBox', 'conceptsListBox')" 
-										title="Type in a concept">
-									<label for="searchConceptsBox">Search for a concept</label>
+					              	<input type="search" id="searchPredicatesBox" 
+										onkeyup="filter('searchPredicatesBox', 'predicatesBox')" 
+										title="Type in a predicate">
+									<label for="searchPredicatesBox">Search for a predicate</label>
 								</span>
 								<span class="col s2 m2 l2 right">
 									<i class="material-icons"> search</i>
 								</span>
 							</div>
 						  </div>
-
-							<div id="predicatesListBox">
+						  	<ul class="tabs tabs-fixed-width" id="predicatesTab">
+						  		<li class="tab"><a class="active" href="#direct">Direct</a></li>
+				        		<li class="tab"><a href="#reverse">Reverse</a></li>
+						  	</ul>
+						  </div>
+			            <div id="direct">
+					      	<div id="predicatesListBox">
+					      		<ul id="directPredicatesList" class="collection"></ul>
+					      	</div> 
+					    </div>
+					      <div id="reverse">
+					      	<div id="predicatesListBox">
+					      		<ul id="reversePredicatesList" class="collection"></ul>
+					      	</div>
+					      </div>
+			            <!--<div id="predicatesListBox">
 								<ul id="predicatesList"></ul>
-							</div>
-			            </div>
+							</div>-->
 			          </div>
 
 					  <div id="operatorsBox" class="card col s12">
@@ -348,11 +361,15 @@
 		
 		$(document).ready(function(){
 
-			$('#conceptsBox').show();
 
 			$(document).ready(function(){
 			    // the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
 			    $('.modal').modal();
+			    $('ul.tabs').tabs({onShow: function(tab) {
+			    	if(tab[0].id == "predicatesBox"){
+			    		$('ul#predicatesTab').tabs();
+			    	}}
+			    });
 			});
 
 			initBoxViewer();
