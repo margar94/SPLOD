@@ -167,7 +167,7 @@ function renderPredicates(predicates){
 function renderDirectPredicates(directArray){
 
 	var li = $("<li/>")
-		.css('backgroundColor', 'orange')
+		.css('backgroundColor', '#7c4dff')
 		.text('Direct predicates')
 		.appendTo(predicatesList);
 
@@ -195,7 +195,7 @@ function renderDirectPredicates(directArray){
 function renderReversePredicates(reverseArray){
 
 	var li = $("<li/>")
-		.css('backgroundColor', 'orange')
+		.css('backgroundColor', '#7c4dff')
 		.text('Reverse predicates')
 		.appendTo(predicatesList);
 

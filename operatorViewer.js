@@ -46,8 +46,19 @@ function renderReusableResultList(reusableResults){
 	reusableResultList.empty();
 	reusableResultList.show();
 
-	$.each(reusableResults, function(index){
-		var element = reusableResults[index];
+	var blankNode = $("<li/>")
+		.attr('class', 'collection-item');
+
+	var input = $("<input/>")
+		.attr('type', reusableResults.blankNode)
+		.appendTo(blankNode);
+
+	blankNode.appendTo(reusableResultList);
+
+	console.log(resultDatatype);
+
+	$.each(reusableResults.results, function(index){
+		var element = reusableResults.results[index];
 
 		var li = $("<li/>")
 		.attr('class', 'collection-item')
