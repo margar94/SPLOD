@@ -40,13 +40,13 @@ var OperatorManager = function () {
 	operatorMap = {
 		'number' : ['<', '<=', '>', '>=', '=', 'min', 'max', 'average', 'range', 'not'],
 
-		'string' : ['is', 'starts with', 'ends with', 'contains', 'not'],
+		'string' : ['is_string', 'starts with', 'ends with', 'contains', 'not'],
 
-		'literal' : ['is', 'starts with', 'ends with', 'contains', 'not', 'lang'],
+		'literal' : ['is_string', 'starts with', 'ends with', 'contains', 'not', 'lang'],
 
-		'date' : ['is', '<', '>', 'range'],
+		'date' : ['is_string', '<', '>', 'range'],
 
-		'uri' : ['is'],
+		'uri' : ['is_url'],
 
 		'and' : ['or'],
 		'or' : ['and'],
@@ -193,10 +193,6 @@ OperatorManager.prototype.queryResult = function(select, labelSelect, keySelect,
 	saveResults(select, keySelect, results);
 
 	//renderResult(select, labelSelect, results);
-}
-
-function ready(){
-	//update map
 }
 
 OperatorManager.prototype.selectedReusableResult = function(result){

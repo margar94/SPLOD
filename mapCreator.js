@@ -384,3 +384,118 @@ MapCreator.prototype.removeElement = function(key){
 	queryBuilder.updateQuery(rootQueryLogicMap, queryLogicMap);
 
 }
+
+//pendingQuery : array of elements to add to map
+MapCreator.prototype.selectedOperator = function(pendingQuery){
+	var operator = pendingQuery[0];
+
+	switch(operator){
+		case 'is_string':
+		case 'is_url'
+		case 'starts with':
+		case 'ends with':
+		case 'contains':
+		case 'lang':
+		case '<':
+		case '<=':
+		case '>':
+		case '>=':
+		case '=':
+
+		case 'range':
+
+		case 'min':
+		case 'max':
+		case 'average':
+
+			var verbalization = languageManager.verbalizeOperator(operator);
+
+			if(!(operator in indexMap)){
+				indexMap[operator] = 1;
+			}
+			else{
+				indexMap[operator] += 1;
+			}
+			var index = indexMap[operator];
+			var key = operator + "_" + index;
+
+			var newLogicElement = {key: key, index: index,
+						   url: operator, label: operator, 
+						   type:'operator', direction: false,
+						   verbalization: verbalization, 
+						   parent:elementOnFocus, children: []};
+			queryLogicMap[key] = newLogicElement;	
+
+			queryLogicMap[elementOnFocus].children.push(key);				
+
+			for(var i=1; i<pendingQuery.length; i++){
+				var result = pendingQuery[i];
+				var verbalizationChildren = languageManager.verbalizeResult(result);
+
+				if(!(result in indexMap)){
+					indexMap[result] = 1;
+				}
+				else{
+					indexMap[result] += 1;
+				}
+
+				var indexChildren = indexMap[result];
+				var keyChildren = result + "_" + indexChildren;
+
+				var newLogicChildren = {key: keyChildren, index: indexChildren,
+							   url: result, label: result, 
+							   type:'result', direction: false,
+							   verbalization: verbalizationChildren, 
+							   parent:key, children: []};
+				queryLogicMap[keyChildren] = newLogicChildren;
+
+				newLogicElement.children.push(keyChildren);
+			}	
+
+			break;
+
+		case 'not':
+
+			var verbalization = languageManager.verbalizeOperator(operator);
+
+			if(!(operator in indexMap)){
+				indexMap[operator] = 1;
+			}
+			else{
+				indexMap[operator] += 1;
+			}
+
+			var index = indexMap[operator];
+			var key = operator + "_" + index;
+
+			var parent = queryLogicMap[elementOnFocus].parent;
+
+			var newLogicElement = {key: key, index: index,
+						   url: operator, label: operator, 
+						   type:'operator', direction: false,
+						   verbalization: verbalization, 
+						   parent:parent, children: [elementOnFocus]};
+			queryLogicMap[key] = newLogicElement;
+
+			var index = $.inArray(elementOnFocus, queryLogicMap[parent].children);
+			queryLogicMap[parent].children[index] = key;
+
+			queryLogicMap[elementOnFocus].parent = key;
+
+			break;
+
+		//case 'and':
+		//case 'or':
+
+	}
+
+	//console.log(queryLogicStructure);
+
+	if(queryVerbalizator == null)
+		queryVerbalizator = new QueryVerbalizator;
+	queryVerbalizator.updateQuery(rootQueryLogicMap, queryLogicMap, elementOnFocus);
+
+	if(queryBuilder == null)
+		queryBuilder = new QueryBuilder;
+	queryBuilder.updateQuery(rootQueryLogicMap, queryLogicMap);
+}

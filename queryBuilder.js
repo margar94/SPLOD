@@ -56,7 +56,7 @@ function buildQuery(){
 
 	executor.executeUserQuery(querySPARQL);
 
-	//console.log(querySPARQL);
+	console.log(querySPARQL);
 }
 
 function visitSPARQL(node){
@@ -66,17 +66,19 @@ function visitSPARQL(node){
 
 	// select management
 	if(!(node.type == 'predicate' && node.direction == 'reverse')){
+		if(node.type != 'operator' && node.type != 'result'){
 
-		if(($.inArray(node.variable, querySPARQL.select))<0){
-			querySPARQL.select.push(node.variable);
-			querySPARQL.labelSelect.push(node.label);
-			querySPARQL.keySelect.push(node.key);
+			if(($.inArray(node.variable, querySPARQL.select))<0){
+				querySPARQL.select.push(node.variable);
+				querySPARQL.labelSelect.push(node.label);
+				querySPARQL.keySelect.push(node.key);
+			}
+
+			if(node.parent==null)
+				parentVariable = "?_";
+			else
+				parentVariable = queryLogicStructure[node.parent].variable;
 		}
-
-		if(node.parent==null)
-			parentVariable = "?_";
-		else
-			parentVariable = queryLogicStructure[node.parent].variable;
 
 	}else{ // node is a reverse predicate
 		if(node.parent == null){
@@ -102,6 +104,30 @@ function visitSPARQL(node){
 		else{
 			querySPARQL.where += node.variable + " <" + node.url + "> " + parentVariable + ".\n";
 		}
+	}else if(node.type == 'operator'){
+
+		parentVariable = queryLogicStructure[node.parent].variable;
+
+		switch(node.label){
+			case 'is_url': querySPARQL.where += 'FILTER('+parentVariable+'=<'+queryLogicStructure[node.children[0]].label+'>)'; break;
+			case 'is_string': querySPARQL.where += 'FILTER('+parentVariable+'="'+queryLogicStructure[node.children[0]].label+'")'; break;
+			case 'contains': querySPARQL.where += 'FILTER(regex('+parentVariable+',"'+queryLogicStructure[node.children[0]].label+'","i"))'; break;
+			case 'starts with': querySPARQL.where +='FILTER(regex('+parentVariable+',"^'+queryLogicStructure[node.children[0]].label+'","i"))'; break;
+			case 'ends with': querySPARQL.where += 'FILTER(regex('+parentVariable+',"'+queryLogicStructure[node.children[0]].label+'$","i"))'; break;
+			case 'lang': querySPARQL.where += 'FILTER(LANG('+parentVariable+')="'+queryLogicStructure[node.children[0]].label+'")'; break;
+			case '<': 
+			case '<=':
+			case '>':
+			case '>=':
+			case '=':
+				querySPARQL.where += 'FILTER('+parentVariable+' '+node.label+' '+queryLogicStructure[node.children[0]].label+')';
+				break;
+			case 'range':
+				querySPARQL.where += 'FILTER('+parentVariable+' >= '+queryLogicStructure[node.children[0]].label+' && '+parentVariable+' <= '+queryLogicStructure[node.children[1]].label+')';
+				break;
+
+		}
+
 	}else{
 		// other node
 	}		
