@@ -137,24 +137,32 @@ LanguageManager.prototype.endsWithPreposition = function(label){
 LanguageManager.prototype.verbalizeOperator = function(operator){
 
 	verbalization = {
-		standard: [operator+' '],
-		current: [operator+' ']};
+		standard: ['that is '+operator+' '],
+		current: ['that is '+operator+' ']};
 
 	switch(operator){
 		case '<':
-			verbalization.standard = ['less than '];
+			verbalization.standard = ['that is less than '];
 			verbalization.current = verbalization.standard;
 			break;
 		case '<=':
-			verbalization.standard = ['less or equals than '];
+			verbalization.standard = ['that is less or equals than '];
 			verbalization.current = verbalization.standard;
 			break;
 		case '>':
-			verbalization.standard = ['more than '];
+			verbalization.standard = ['that is more than '];
 			verbalization.current = verbalization.standard;
 			break;
 		case '>=':
-			verbalization.standard = ['more or equals than '];
+			verbalization.standard = ['that is more or equals than '];
+			verbalization.current = verbalization.standard;
+			break;
+		case 'is':
+			verbalization.standard = ['that is '];
+			verbalization.current = verbalization.standard;
+			break;
+		case 'range':
+			verbalization.standard = ['that is between '];
 			verbalization.current = verbalization.standard;
 			break;
 	}
