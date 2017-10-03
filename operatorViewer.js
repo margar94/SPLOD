@@ -79,6 +79,10 @@ function renderReusableResultList(reusableResults){
 		li.appendTo(reusableResultList)
 			.on('click', function(){
 				operatorManager.selectedReusableResult($(this).attr('meta-value'));
+				if(operatorManager.isComplete()){
+					$('#reusableResultList').hide();
+					$('#operatorList').show();
+				}
 				//range to manage
 			});
 	});
