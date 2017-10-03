@@ -12,7 +12,6 @@ var queryVerbalizator = null;
 var operatorManager = null;
 
 var elementOnFocus;
-//var queryViewer = null;
 
 var MapCreator = function () {
 	if(MapCreator.prototype._singletonInstance){
@@ -66,6 +65,30 @@ MapCreator.prototype.selectedConcept = function(selectedUrl, selectedLabel) {
 
 		var precLogicElement = queryLogicMap[elementOnFocus];
 
+		if(precLogicElement.children.length>0){
+			var andOperator = 'and';
+			var andVerbalization = languageManager.verbalizeOperator(andOperator);
+
+			if(!(andOperator in indexMap)){
+				indexMap[andOperator] = 1;
+			}
+			else{
+				indexMap[andOperator] += 1;
+			}
+
+			var andIndex = indexMap[andOperator];
+			var andKey = andOperator + "_" + andIndex;
+
+			var andLogicElement = {key: andKey, index: andIndex,
+								   url: andOperator, label: andOperator, 
+								   type:'operator', direction: false, 
+								   verbalization: andVerbalization, 
+								   parent:precLogicElement.key, children: []};
+			queryLogicMap[andKey] = andLogicElement;
+
+			precLogicElement.children.push(andKey);
+		}
+
 		if(precLogicElement.type=='something'){ // replace something
 			
 			//update newLogicElement
@@ -88,19 +111,14 @@ MapCreator.prototype.selectedConcept = function(selectedUrl, selectedLabel) {
 			newLogicElement.parent = precLogicElement.key;
 			precLogicElement.children.push(newLogicElement.key);
 
-		}else if(precLogicElement.type=='operator'){
-			//TODO
+		}else{
+			//...
 		}
 
 	} 
 		
 	elementOnFocus = key;
-	/*
-	if(queryViewer == null)
-		queryViewer = new QueryViewer;
-	queryViewer.changeFocus(elementOnFocus);
-	*/
-
+	
 	if(operatorManager == null)
 		operatorManager = new OperatorManager;
 	operatorManager.changedFocus(elementOnFocus, false);
@@ -174,12 +192,39 @@ MapCreator.prototype.selectedPredicate = function(selectedUrl, selectedLabel, pr
 			newLogicElement.parent = everythingKey;
 		}
 		else
+			//set root
 			rootQueryLogicMap = key;
 
 	}else{ //there's a prec 
 
 		var precLogicElement = queryLogicMap[elementOnFocus];
 
+		//if i have sibling i put and before me
+		if(precLogicElement.children.length>0){
+			var andOperator = 'and';
+			var andVerbalization = languageManager.verbalizeOperator(andOperator);
+
+			if(!(andOperator in indexMap)){
+				indexMap[andOperator] = 1;
+			}
+			else{
+				indexMap[andOperator] += 1;
+			}
+
+			var andIndex = indexMap[andOperator];
+			var andKey = andOperator + "_" + andIndex;
+
+			var andLogicElement = {key: andKey, index: andIndex,
+								   url: andOperator, label: andOperator, 
+								   type:'operator', direction: false, 
+								   verbalization: andVerbalization, 
+								   parent:precLogicElement.key, children: []};
+			queryLogicMap[andKey] = andLogicElement;
+
+			precLogicElement.children.push(andKey);
+		}
+
+		// add me to parent's children list
 		precLogicElement.children.push(key);
 		newLogicElement.parent = precLogicElement.key;
 
@@ -189,6 +234,7 @@ MapCreator.prototype.selectedPredicate = function(selectedUrl, selectedLabel, pr
 		
 	if(predicateDirection=='reverse'){
 
+		// add something node to complete myself
 		var verbalization = languageManager.verbalizeSomething();
 
 		if(!indexMap.hasOwnProperty('something')){
@@ -200,7 +246,6 @@ MapCreator.prototype.selectedPredicate = function(selectedUrl, selectedLabel, pr
 		var somethingKey = 'something' + "_" + indexMap['something'];
 		var somethingIndex = indexMap['something'];
 
-		// new element in logic map
 		var somethingLogic = {key: somethingKey, index: somethingIndex,
 							  url: somethingKey, label:'thing', 
 							  type:'something', direction:false,
@@ -218,11 +263,7 @@ MapCreator.prototype.selectedPredicate = function(selectedUrl, selectedLabel, pr
 		elementOnFocus = key;
 
 	} 
-	/*
-	if(queryViewer == null)
-		queryViewer = new QueryViewer;
-	queryViewer.changeFocus(elementOnFocus);
-	*/
+	
 	if(operatorManager == null)
 		operatorManager = new OperatorManager;
 	operatorManager.changedFocus(elementOnFocus, false);
@@ -254,79 +295,23 @@ MapCreator.prototype.removeElement = function(key){
 	
 	var node = queryLogicMap[key];
 
-	// check if concept replaced something
-	if(node.type == 'concept' && 
-		node.parent!=null && 
-		queryLogicStructure[node.parent].type == 'predicate' && queryLogicStructure[node.parent].direction == 'reverse'){
-		
-		var somethingVerbalization = languageManager.verbalizeSomething();
-
-		if(!indexMap.hasOwnProperty('something')){
-			indexMap['something'] = 1;
-		}
-		else{
-			indexMap['something'] += 1;
-		}
-		var somethingKey = 'something' + "_" + indexMap['something'];
-		var somethingIndex = indexMap['something'];
-
-		/*
-			To inherite node.children list and update child's parent
-
-			// new element in logic map
-			var somethingLogic = {key: somethingKey, index: somethingIndex,
-								  url: somethingKey, label:'thing', 
-								  type:'something', direction:false,
-								  verbalization:somethingVerbalization,
-								  parent:node.parent, children:node.children};
-			queryLogicMap[somethingKey] = somethingLogic;
-
-			for(var i=0; i<node.children.length; i++)
-				queryLogicMap[node.children[i]].parent = somethingKey;
-		*/
-
-		// to remove all node.children element
-		// new element in logic map
-		var somethingLogic = {key: somethingKey, index: somethingIndex,
-								  url: somethingKey, label:'thing', 
-								  type:'something', direction:false,
-								  verbalization:somethingVerbalization,
-								  parent:node.parent, children:[]};
-		queryLogicMap[somethingKey] = somethingLogic;
-
-		for(var i=0; i<node.children.length; i++)
-			delete queryLogicMap[node.children[i]];
-
-		var index = $.inArray(node.key, queryLogicMap[node.parent].children);
-		queryLogicMap[node.parent].children[index] = somethingKey;
-		delete queryLogicMap[node.key];
-
+	if(node.type=='operator')
+		removeOperator(node);
+	else if(iReplaceASomethingNode(key)){// check if concept replaced something
+		var somethingKey = substituteMeWithSomethingNode(key);
 		elementOnFocus = somethingKey;
 	}
 	else{
 
 		elementOnFocus = node.parent;
-
-		// remove node and his children 
-		var visitStack = [];
-		visitStack.push(node);
-
-		while(visitStack.length != 0){
-			var currentNode = visitStack.pop();
-
-			for(var i = currentNode.children.length-1; i>=0; i--){
-				visitStack.push(queryLogicStructure[currentNode.children[i]]);
-			}
-
-			delete queryLogicMap[currentNode.key];
-
-		}
+		removeMeAndMyDescendents(node);
 
 		// update parent's children list
 		if(node.parent!=null){
-			var index = $.inArray(node.key, queryLogicMap[node.parent].children);
-			queryLogicMap[node.parent].children.splice(index, 1);
 
+			cleanMyParentList(node);
+			
+			//removed node is query's subject
 			if(queryLogicStructure[node.parent].type == 'everything'){
 
 				var everythingNode = queryLogicStructure[node.parent];
@@ -358,8 +343,7 @@ MapCreator.prototype.removeElement = function(key){
 
 		if(node.type == 'something'){
 			node = queryLogicMap[node.parent];
-			var index = $.inArray(node.key, queryLogicMap[node.parent].children);
-			queryLogicMap[node.parent].children.splice(index, 1);
+			cleanMyParentList(node);
 			delete queryLogicMap[node.key];
 
 			elementOnFocus = node.parent;
@@ -383,6 +367,165 @@ MapCreator.prototype.removeElement = function(key){
 		queryBuilder = new QueryBuilder;
 	queryBuilder.updateQuery(rootQueryLogicMap, queryLogicMap);
 
+}
+
+function iReplaceASomethingNode(key){
+	var node = queryLogicMap[key];
+	return node.type == 'concept' && 
+		node.parent!=null && 
+		queryLogicStructure[node.parent].type == 'predicate' && 
+			queryLogicStructure[node.parent].direction == 'reverse';
+}
+
+function substituteMeWithSomethingNode(key){
+	var somethingVerbalization = languageManager.verbalizeSomething();
+
+	if(!indexMap.hasOwnProperty('something')){
+		indexMap['something'] = 1;
+	}
+	else{
+		indexMap['something'] += 1;
+	}
+	var somethingKey = 'something' + "_" + indexMap['something'];
+	var somethingIndex = indexMap['something'];
+
+	/*
+		To inherite node.children list and update child's parent
+
+		// new element in logic map
+		var somethingLogic = {key: somethingKey, index: somethingIndex,
+							  url: somethingKey, label:'thing', 
+							  type:'something', direction:false,
+							  verbalization:somethingVerbalization,
+							  parent:node.parent, children:node.children};
+		queryLogicMap[somethingKey] = somethingLogic;
+
+		for(var i=0; i<node.children.length; i++)
+			queryLogicMap[node.children[i]].parent = somethingKey;
+	*/
+
+	// to remove all node.children element
+	// new element in logic map
+	var somethingLogic = {key: somethingKey, index: somethingIndex,
+							  url: somethingKey, label:'thing', 
+							  type:'something', direction:false,
+							  verbalization:somethingVerbalization,
+							  parent:node.parent, children:[]};
+	queryLogicMap[somethingKey] = somethingLogic;
+
+	for(var i=0; i<node.children.length; i++)
+		delete queryLogicMap[node.children[i]];
+
+	var index = $.inArray(node.key, queryLogicMap[node.parent].children);
+	queryLogicMap[node.parent].children[index] = somethingKey;
+	delete queryLogicMap[node.key];
+
+	return somethingKey;
+}
+
+function removeMeAndMyDescendents(node){
+	// remove node and his children 
+	var visitStack = [];
+	visitStack.push(node);
+
+	while(visitStack.length != 0){
+		var currentNode = visitStack.pop();
+
+		for(var i = currentNode.children.length-1; i>=0; i--){
+			visitStack.push(queryLogicStructure[currentNode.children[i]]);
+		}
+
+		delete queryLogicMap[currentNode.key];
+
+	}
+}
+
+//remove me and related conjunctions and/or from my parent's list
+function cleanMyParentList(node){
+	var childrenList = queryLogicMap[node.parent].children;
+	var index = $.inArray(node.key, childrenList);
+	if(childrenList.length>1){
+		if(index==0){
+			delete queryLogicMap[childrenList[index+1]];
+			childrenList.splice(index, 2);//removed me and 'and' after me
+		}
+		else{
+			delete queryLogicMap[childrenList[index-1]];
+			queryLogicMap[node.parent].children.splice(index-1, 2);//removed me and 'and' before me
+		}
+	}else{
+		queryLogicMap[node.parent].children.splice(index, 1);
+	}
+}
+
+function removeOperator(node){
+	var operator = node.label;
+
+	switch(operator){
+		case 'is_string':
+		case 'is_url'
+		case 'starts with':
+		case 'ends with':
+		case 'contains':
+		case 'lang':
+		case '<':
+		case '<=':
+		case '>':
+		case '>=':
+		case '=':
+
+		case 'range':
+
+		case 'min':
+		case 'max':
+		case 'average':
+
+			removeMeAndMyDescendents(node);	
+			break;
+
+		case 'not':
+
+			var child = queryLogicStructure[node.children[0]];
+			
+			child.parent = node.parent;	
+
+			var index = $.inArray(node.key, queryLogicMap[node.parent].children);
+			queryLogicMap[node.parent].children[index] = child.key;
+			
+			delete queryLogicMap[node.key];
+			break;
+
+		case 'and': //focus su or
+		case 'or': //focus su and
+			var conjunctionVerbalization = languageManager.verbalizeOperator(operator);
+
+			if(!(operator in indexMap)){
+				indexMap[operator] = 1;
+			}
+			else{
+				indexMap[operator] += 1;
+			}
+
+			var conjunctionIndex = indexMap[operator];
+			var conjunctionKey = operator + "_" + conjunctionIndex;
+
+			var conjunctionLogicElement = {key: conjunctionKey, index: conjunctionIndex,
+								   url: operator, label: operator, 
+								   type:'operator', direction: false, 
+								   verbalization: conjunctionVerbalization, 
+								   parent:node.parent, children: []};
+			queryLogicMap[conjunctionKey] = conjunctionLogicElement;
+
+			precLogicElement.children.push(conjunctionKey);
+
+			var index = $.inArray(node.key, queryLogicMap[node.parent].children);
+			queryLogicMap[node.parent].children[index] = conjunctionKey;
+			
+			delete queryLogicMap[node.key];
+
+			break;
+
+	}
 }
 
 //pendingQuery : array of elements to add to map
@@ -484,8 +627,35 @@ MapCreator.prototype.selectedOperator = function(pendingQuery){
 
 			break;
 
-		//case 'and':
-		//case 'or':
+		case 'and': //focus su or
+		case 'or': //focus su and
+			var conjunctionVerbalization = languageManager.verbalizeOperator(operator);
+
+			if(!(operator in indexMap)){
+				indexMap[operator] = 1;
+			}
+			else{
+				indexMap[operator] += 1;
+			}
+
+			var conjunctionIndex = indexMap[operator];
+			var conjunctionKey = operator + "_" + conjunctionIndex;
+
+			var conjunctionLogicElement = {key: conjunctionKey, index: conjunctionIndex,
+								   url: operator, label: operator, 
+								   type:'operator', direction: false, 
+								   verbalization: conjunctionVerbalization, 
+								   parent:node.parent, children: []};
+			queryLogicMap[conjunctionKey] = conjunctionLogicElement;
+
+			precLogicElement.children.push(conjunctionKey);
+
+			var index = $.inArray(node.key, queryLogicMap[node.parent].children);
+			queryLogicMap[node.parent].children[index] = conjunctionKey;
+			
+			delete queryLogicMap[node.key];
+
+			break;
 
 	}
 
