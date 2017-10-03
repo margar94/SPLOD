@@ -157,12 +157,24 @@ LanguageManager.prototype.verbalizeOperator = function(operator){
 			verbalization.standard = ['that is more or equals than '];
 			verbalization.current = verbalization.standard;
 			break;
-		case 'is':
+		case 'is_string':
+			verbalization.standard = ['that is '];
+			verbalization.current = verbalization.standard;
+			break;
+		case 'is_url':
 			verbalization.standard = ['that is '];
 			verbalization.current = verbalization.standard;
 			break;
 		case 'range':
 			verbalization.standard = ['that is between '];
+			verbalization.current = verbalization.standard;
+			break;
+		case 'and':	
+			verbalization.standard = ['and '];
+			verbalization.current = verbalization.standard;
+			break;
+		case 'or':	
+			verbalization.standard = ['or '];
 			verbalization.current = verbalization.standard;
 			break;
 	}

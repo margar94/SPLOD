@@ -24,16 +24,21 @@ function renderOperatorList(operators){
 
 		var li = $("<li/>")
 		.attr('class', 'collection-item')
-		.attr('meta-value', element)
-		.text(element)
-		.appendTo(operatorList)
-		.on('click', function(){
-			operatorManager.selectedOperator($(this).attr('meta-value'));
-			if(!operatorManager.isComplete()){
-				var reusableResults = operatorManager.getResultToCompleteOperator();
-				renderReusableResultList(reusableResults);
-			}
-		});
+		.attr('meta-value', element);
+
+		if(element == 'is_string' || element == "is_url")
+			li.text('is');
+		else
+			li.text(element);
+
+		li.appendTo(operatorList)
+			.on('click', function(){
+				operatorManager.selectedOperator($(this).attr('meta-value'));
+				if(!operatorManager.isComplete()){
+					var reusableResults = operatorManager.getResultToCompleteOperator();
+					renderReusableResultList(reusableResults);
+				}
+			});
 	});
 
 }

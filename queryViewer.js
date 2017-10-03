@@ -66,14 +66,9 @@ function renderQuery(){
 				visitStack.push({type: 'endSpan', verbalization:{current: ['</span>']}, children:[] });
 				visitStack.push(queryLogicStructure[currentNode.children[i]]);
 				visitStack.push({type: 'startSpan', verbalization:{current: ['<span>']}, children:[], focusReference: currentNode.key, removeReference: currentNode.children[i] });
-
+				
 				if(childrenNumber)
 					visitStack.push({type: 'startli', verbalization:{current: ['<li>']}, children:[] });
-
-				if(i != 0){
-					visitStack.push({type: 'newLine', verbalization:{current: ['<br>']}, children:[] });
-					//visitStack.push({type: 'newList', verbalization:{current: ['<ul>']}, children:[] });
-				}
 			}
 
 			if(childrenNumber){
@@ -124,8 +119,8 @@ function visitRenderer(node){
  		// to manage menu
 		queryString += '<span class="focusable" meta-removeReference="'+node.removeReference+'" meta-focusReference="'+node.focusReference+'">'; 
 
-	}else if(node.type == 'newLine'){
-
+	}else if(node.type == 'and' || node.type == 'or'){
+		queryString += '<span class="focusable" meta-removeReference="'+node.key+'" meta-focusReference="'+node.key+'">' + node.verbalization.current[1] + '</span>'; 
 	} else {
 		queryString += node.verbalization.current.join('');
 	}
