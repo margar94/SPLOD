@@ -483,6 +483,10 @@ function removeOperator(node){
 		case 'average':
 
 			removeMeAndMyDescendents(node);	
+
+			var index = $.inArray(node.key, queryLogicMap[node.parent].children);
+			queryLogicMap[node.parent].children.splice(index, 1);
+
 			break;
 
 		case 'not':
@@ -533,6 +537,9 @@ function removeOperator(node){
 
 //pendingQuery : array of elements to add to map
 MapCreator.prototype.selectedOperator = function(pendingQuery){
+
+	console.log(pendingQuery);
+
 	var operator = pendingQuery[0];
 
 	switch(operator){
