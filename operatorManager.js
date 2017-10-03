@@ -60,7 +60,14 @@ var OperatorManager = function () {
 		'min' : ['not'],
 		'max' : ['not'],
 		'average' : ['not'],
-		'range' : ['not']
+		'range' : ['not'],
+
+		'starts with': ['not'],
+		'ends with': ['not'],
+		'contains': ['not'],
+		'is_string': ['not'],
+		'is_url': ['not'],
+		'lang': ['not']
 
 
 	};
@@ -184,7 +191,7 @@ OperatorManager.prototype.queryResult = function(select, labelSelect, keySelect,
 
 	}
 
-	console.log(resultDatatype);
+	//console.log(resultDatatype);
 
 	if(changedFocus)
 		manageUpdateOperatorViewer();
@@ -282,7 +289,7 @@ function saveResults(select, keySelect, results){
 
 	});
 
-	console.log(literalLang);
+	//console.log(literalLang);
 	
 }
 
@@ -301,8 +308,8 @@ OperatorManager.prototype.changedFocus = function(onFocus, userChangeFocus){
 
 function manageUpdateOperatorViewer(){
 	
-	if(onFocus in operatorMap){
-		renderOperatorList(operatorMap[onFocus]);
+	if(onFocus.split('_')[0] in operatorMap){
+		renderOperatorList(operatorMap[onFocus.split('_')[0]]);
 	}else if(resultDatatype[onFocus].datatype in operatorMap){
 		renderOperatorList(operatorMap[resultDatatype[onFocus].datatype]);
 	}else{

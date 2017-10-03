@@ -60,14 +60,14 @@ function renderQuery(){
 
 			for(var i = currentNode.children.length-1; i>=0; i--){
 
-				if(childrenNumber && currentNode.label != 'and' && currentNode.label != 'or')
+				if(childrenNumber)
 					visitStack.push({type: 'endli', verbalization:{current: ['</li>']}, children:[] });
 
 				visitStack.push({type: 'endSpan', verbalization:{current: ['</span>']}, children:[] });
 				visitStack.push(queryLogicStructure[currentNode.children[i]]);
 				visitStack.push({type: 'startSpan', verbalization:{current: ['<span>']}, children:[], focusReference: currentNode.key, removeReference: currentNode.children[i] });
 				
-				if(childrenNumber && currentNode.label != 'and' && currentNode.label != 'or')
+				if(childrenNumber)
 					visitStack.push({type: 'startli', verbalization:{current: ['<li>']}, children:[] });
 			}
 
@@ -120,6 +120,7 @@ function visitRenderer(node){
 		queryString += '<span class="focusable" meta-removeReference="'+node.removeReference+'" meta-focusReference="'+node.focusReference+'">'; 
 
 	}else if(node.type == 'operator'){
+		console.log('operator');
 		queryString += '<span class="focusable" meta-removeReference="'+node.key+'" meta-focusReference="'+node.key+'">' + node.verbalization.current[0] + '</span>'; 
 	} else{
 		queryString += node.verbalization.current.join('');
@@ -144,7 +145,6 @@ function renderFocus(){
 		if(queryLogicStructure[onFocus].type == 'concept'){
 			updateBoxesFromConcept(queryLogicStructure[onFocus].url, queryLogicStructure[onFocus].label);
 		}else if(queryLogicStructure[onFocus].type == 'predicate'){
-			console.log(queryLogicStructure[onFocus]);
 			updateBoxesFromPredicate(queryLogicStructure[onFocus].url, queryLogicStructure[onFocus].label, queryLogicStructure[onFocus].direction);
 		}else if(queryLogicStructure[onFocus].type == 'something'){
 			var parent = queryLogicStructure[queryLogicStructure[onFocus].parent];

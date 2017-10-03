@@ -131,7 +131,7 @@ MapCreator.prototype.selectedConcept = function(selectedUrl, selectedLabel) {
 		queryBuilder = new QueryBuilder;
 	queryBuilder.updateQuery(rootQueryLogicMap, queryLogicMap);
 
-	//console.log(queryLogicMap);
+	console.log(queryLogicMap);
 	//console.log(elementsList);
 
 }
@@ -276,7 +276,7 @@ MapCreator.prototype.selectedPredicate = function(selectedUrl, selectedLabel, pr
 		queryBuilder = new QueryBuilder;
 	queryBuilder.updateQuery(rootQueryLogicMap, queryLogicMap);
 
-	//console.log(queryLogicMap);
+	console.log(queryLogicMap);
 
 }
 
@@ -312,9 +312,9 @@ MapCreator.prototype.removeElement = function(key){
 			cleanMyParentList(node);
 			
 			//removed node is query's subject
-			if(queryLogicStructure[node.parent].type == 'everything'){
+			if(queryLogicMap[node.parent].type == 'everything'){
 
-				var everythingNode = queryLogicStructure[node.parent];
+				var everythingNode = queryLogicMap[node.parent];
 
 				//update counter direct predicates
 				if(node.type == 'predicate' && node.direction == 'direct')
@@ -330,7 +330,7 @@ MapCreator.prototype.removeElement = function(key){
 				}else if(everythingNode.children.length==1 && everythingNode.counterDirectPredicatesChildren==0){
 					delete queryLogicMap[everythingNode.key];
 
-					queryLogicStructure[everythingNode.children[0]].parent = null;
+					queryLogicMap[everythingNode.children[0]].parent = null;
 					rootQueryLogicMap = everythingNode.children[0];
 					elementOnFocus = everythingNode.children[0];
 				}else{
@@ -367,14 +367,16 @@ MapCreator.prototype.removeElement = function(key){
 		queryBuilder = new QueryBuilder;
 	queryBuilder.updateQuery(rootQueryLogicMap, queryLogicMap);
 
+
+console.log(queryLogicMap);
 }
 
 function iReplaceASomethingNode(key){
 	var node = queryLogicMap[key];
 	return node.type == 'concept' && 
 		node.parent!=null && 
-		queryLogicStructure[node.parent].type == 'predicate' && 
-			queryLogicStructure[node.parent].direction == 'reverse';
+		queryLogicMap[node.parent].type == 'predicate' && 
+			queryLogicMap[node.parent].direction == 'reverse';
 }
 
 function substituteMeWithSomethingNode(key){
@@ -432,7 +434,7 @@ function removeMeAndMyDescendents(node){
 		var currentNode = visitStack.pop();
 
 		for(var i = currentNode.children.length-1; i>=0; i--){
-			visitStack.push(queryLogicStructure[currentNode.children[i]]);
+			visitStack.push(queryLogicMap[currentNode.children[i]]);
 		}
 
 		delete queryLogicMap[currentNode.key];
@@ -485,7 +487,7 @@ function removeOperator(node){
 
 		case 'not':
 
-			var child = queryLogicStructure[node.children[0]];
+			var child = queryLogicMap[node.children[0]];
 			
 			child.parent = node.parent;	
 
@@ -526,6 +528,7 @@ function removeOperator(node){
 			break;
 
 	}
+	console.log(queryLogicMap);
 }
 
 //pendingQuery : array of elements to add to map
@@ -659,7 +662,7 @@ MapCreator.prototype.selectedOperator = function(pendingQuery){
 
 	}
 
-	//console.log(queryLogicStructure);
+	//console.log(queryLogicMap);
 
 	if(queryVerbalizator == null)
 		queryVerbalizator = new QueryVerbalizator;
@@ -668,4 +671,8 @@ MapCreator.prototype.selectedOperator = function(pendingQuery){
 	if(queryBuilder == null)
 		queryBuilder = new QueryBuilder;
 	queryBuilder.updateQuery(rootQueryLogicMap, queryLogicMap);
+
+	
+		console.log(queryLogicMap);
+
 }

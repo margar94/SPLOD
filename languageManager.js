@@ -141,9 +141,9 @@ LanguageManager.prototype.endsWithPreposition = function(label){
 LanguageManager.prototype.verbalizeOperator = function(operator){
 
 	verbalization = {
-		standard: ['that is '+operator+' '],
+		standard: ['that '+operator+' '],
 		truncated: [operator+' '],
-		current: ['that is '+operator+' ']};
+		current: ['that '+operator+' ']};
 
 	switch(operator){
 		case '<':
