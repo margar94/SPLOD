@@ -120,9 +120,10 @@ function visitRenderer(node){
 		queryString += '<span class="focusable" meta-removeReference="'+node.removeReference+'" meta-focusReference="'+node.focusReference+'">'; 
 
 	}else if(node.type == 'operator'){
-		console.log('operator');
-		queryString += '<span class="focusable" meta-removeReference="'+node.key+'" meta-focusReference="'+node.key+'">' + node.verbalization.current[0] + '</span>'; 
-	} else{
+		queryString += '<span class="focusable" id="'+node.key+'" meta-removeReference="'+node.key+'" meta-focusReference="'+node.key+'">' + node.verbalization.current[0] + '</span>'; 
+	}else if(node.type == 'result'){
+		queryString += '<span class="focusable" id="'+node.key+'" meta-removeReference="'+node.parent+'" meta-focusReference="'+node.key+'">' + node.verbalization.current[0] + '</span>'; 
+	}else{
 		queryString += node.verbalization.current.join('');
 	}
 
