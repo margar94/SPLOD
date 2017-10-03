@@ -1,8 +1,6 @@
 var resultDatatype;
 var operatorMap;
-var unaryOperator;
-var binaryOperator;
-var ternaryOperator;
+var parameterNumberOperator;
 
 var savedResult;
 var literalLang;
@@ -14,15 +12,11 @@ var pendingQuery;
 var changedFocus;
 var onFocus;
 
-var isComplete;
-
 //OperatorManager is a singleton
 var OperatorManager = function () {
 	if(OperatorManager.prototype._singletonInstance){
 		return OperatorManager.prototype._singletonInstance;
 	}
-
-	isComplete = false;
 
 	resultDatatype = {};
 	savedResult = {};
@@ -33,9 +27,27 @@ var OperatorManager = function () {
 	changedFocus = false;
 	onFocus = null;
 
-	unaryOperator = ['and', 'or', 'not', 'min', 'max', 'average'];
-	binaryOperator = ['<', '<=', '>', '>=', '=', 'is', 'starts with', 'ends with', 'contains', 'lang'];
-	ternaryOperator = ['range'];
+	parameterNumberOperator = {
+		'and' : 1, 
+		'or' : 1,
+		'not' : 1,
+		'min' : 1,
+		'max' : 1,
+		'average' : 1,
+
+		'<' : 2,
+		'<=' : 2,
+		'>' : 2,
+		'>=' : 2,
+		'is_url' : 2,
+		'is_string' : 2,
+		'starts with' : 2,
+		'ends with' : 2,
+		'contains' : 2,
+		'lang' : 2,
+
+		'range' : 3,
+	};
 
 	operatorMap = {
 		'number' : ['<', '<=', '>', '>=', '=', 'min', 'max', 'average', 'range', 'not'],
@@ -204,35 +216,27 @@ OperatorManager.prototype.queryResult = function(select, labelSelect, keySelect,
 
 OperatorManager.prototype.selectedReusableResult = function(result){
 	pendingQuery.push(result);
-	var operator = pendingQuery[0];
 
-	var index = $.inArray(operator, binaryOperator);
-	if(index >= 0 && pendingQuery.length == 2){
+	if(OperatorManager.prototype.isComplete()){
 		mapCreator.selectedOperator(pendingQuery);
-		isComplete = true;
-	}else{
-		index = $.inArray(operator, ternaryOperator);
-		if(index >= 0 && pendingQuery.length == 3){
-			mapCreator.selectedOperator(pendingQuery);
-			isComplete = true;
-		}
+		pendingQuery = [];
 	}
-
 }
 
 OperatorManager.prototype.selectedOperator = function(operator){
+	pendingQuery = [];
 	pendingQuery.push(operator);
 
-	var index = $.inArray(operator, unaryOperator);
-	if(index >= 0 ){
+	if(OperatorManager.prototype.isComplete()){
 		mapCreator.selectedOperator(pendingQuery);
-		isComplete = true;
+		pendingQuery = [];
 	}
 
 }
 
 OperatorManager.prototype.isComplete = function(){
-	return isComplete;
+	var operator = pendingQuery[0];
+	return (parameterNumberOperator[operator]==pendingQuery.length);
 }
 
 OperatorManager.prototype.getResultToCompleteOperator = function(){
@@ -293,9 +297,9 @@ function saveResults(select, keySelect, results){
 	
 }
 
-OperatorManager.prototype.changedFocus = function(onFocus, userChangeFocus){
+OperatorManager.prototype.changedFocus = function(newOnFocus, userChangeFocus){
 	changedFocus = true;
-	this.onFocus = onFocus;
+	onFocus = newOnFocus;
 
 	if(onFocus!=null){
 		if(userChangeFocus){
@@ -308,10 +312,14 @@ OperatorManager.prototype.changedFocus = function(onFocus, userChangeFocus){
 
 function manageUpdateOperatorViewer(){
 	
-	if(onFocus.split('_')[0] in operatorMap){
-		renderOperatorList(operatorMap[onFocus.split('_')[0]]);
-	}else if(resultDatatype[onFocus].datatype in operatorMap){
-		renderOperatorList(operatorMap[resultDatatype[onFocus].datatype]);
+	if(onFocus!=null){
+		if(onFocus.split('_')[0] in operatorMap){
+			renderOperatorList(operatorMap[onFocus.split('_')[0]]);
+		}else if(resultDatatype[onFocus].datatype in operatorMap){
+			renderOperatorList(operatorMap[resultDatatype[onFocus].datatype]);
+		}else{
+			renderOperatorList([]);
+		}
 	}else{
 		renderOperatorList([]);
 	}

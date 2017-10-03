@@ -281,8 +281,8 @@ MapCreator.prototype.selectedPredicate = function(selectedUrl, selectedLabel, pr
 }
 
 //update focus
-MapCreator.prototype.changeFocus = function(keyElementOnFocus){
-	elementOnFocus = keyElementOnFocus;
+MapCreator.prototype.changeFocus = function(newElementOnFocus){
+	elementOnFocus = newElementOnFocus;
 
 	if(operatorManager == null)
 		operatorManager = new OperatorManager;
@@ -487,6 +487,11 @@ function removeOperator(node){
 			var index = $.inArray(node.key, queryLogicMap[node.parent].children);
 			queryLogicMap[node.parent].children.splice(index, 1);
 
+			elementOnFocus = node.parent;
+			if(operatorManager == null)
+				operatorManager = new OperatorManager;
+			operatorManager.changedFocus(elementOnFocus, false);
+
 			break;
 
 		case 'not':
@@ -499,6 +504,12 @@ function removeOperator(node){
 			queryLogicMap[node.parent].children[index] = child.key;
 			
 			delete queryLogicMap[node.key];
+
+			elementOnFocus = child.key;
+			if(operatorManager == null)
+				operatorManager = new OperatorManager;
+			operatorManager.changedFocus(elementOnFocus, false);
+
 			break;
 
 		case 'and': //focus su or
@@ -521,8 +532,6 @@ function removeOperator(node){
 								   verbalization: conjunctionVerbalization, 
 								   parent:node.parent, children: []};
 			queryLogicMap[conjunctionKey] = conjunctionLogicElement;
-
-			precLogicElement.children.push(conjunctionKey);
 
 			var index = $.inArray(node.key, queryLogicMap[node.parent].children);
 			queryLogicMap[node.parent].children[index] = conjunctionKey;
@@ -657,8 +666,6 @@ MapCreator.prototype.selectedOperator = function(pendingQuery){
 								   verbalization: conjunctionVerbalization, 
 								   parent:node.parent, children: []};
 			queryLogicMap[conjunctionKey] = conjunctionLogicElement;
-
-			precLogicElement.children.push(conjunctionKey);
 
 			var index = $.inArray(node.key, queryLogicMap[node.parent].children);
 			queryLogicMap[node.parent].children[index] = conjunctionKey;
