@@ -264,17 +264,16 @@ function saveResults(select, keySelect, results){
 		var element = results[index];
 
 		for(field in element){
-			//var cachedResult = {};
-			//cachedResult.value = element[field].value;
+			var cachedResult = {};
+			cachedResult.value = element[field].value;
 
-			/*var type = element[field].type;
-			if(type == 'uri')
+			var type = element[field].type;
+			if(type == 'uri'){
 				cachedResult.url = element[field].url;
-			*/
-
+			}
+				
 			var index = $.inArray('?'+field, select);
-			//savedResult[keySelect[index]].push(cachedResult);
-			savedResult[keySelect[index]].push(element[field].value);
+			savedResult[keySelect[index]].push(cachedResult);
 
 			var type = element[field].type;
 			if(type == 'literal'){

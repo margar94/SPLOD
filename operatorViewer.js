@@ -55,19 +55,26 @@ function renderReusableResultList(reusableResults){
 
 	blankNode.appendTo(reusableResultList);
 
-	console.log(resultDatatype);
-
 	$.each(reusableResults.results, function(index){
 		var element = reusableResults.results[index];
 
 		var li = $("<li/>")
 		.attr('class', 'collection-item')
-		.attr('meta-label', element)
-		.text(element)
-		.appendTo(reusableResultList)
-		.on('click', function(){
-			console.log("vmfdjbvjhfvb");
-		});
+		.attr('meta-label', element.value)
+		.attr('meta-value', element.value)
+		.text(element.value);
+
+
+		if('url' in element){
+			li.attr('meta-url', element.url)
+				.attr('meta-value', element.url)
+				.attr('title', element.url);
+		}
+
+		li.appendTo(reusableResultList)
+			.on('click', function(){
+				operatorManager.selectedReusableResult($(this).attr('meta-value'));
+			});
 	});
 
 }
