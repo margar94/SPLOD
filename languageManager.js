@@ -133,3 +133,42 @@ LanguageManager.prototype.getOrdinalNumber = function(cardinalNumber){
 LanguageManager.prototype.endsWithPreposition = function(label){
 	return label.match(/[On For From A Of As \son \sfor \sfrom \sa \sof \sas]$/);
 }
+
+LanguageManager.prototype.verbalizeOperator = function(operator){
+
+	verbalization = {
+		standard: [operator+' '],
+		current: [operator+' ']};
+
+	switch(operator){
+		case '<':
+			verbalization.standard = ['less than '];
+			verbalization.current = verbalization.standard;
+			break;
+		case '<=':
+			verbalization.standard = ['less or equals than '];
+			verbalization.current = verbalization.standard;
+			break;
+		case '>':
+			verbalization.standard = ['more than '];
+			verbalization.current = verbalization.standard;
+			break;
+		case '>=':
+			verbalization.standard = ['more or equals than '];
+			verbalization.current = verbalization.standard;
+			break;
+	}
+
+	return verbalization;
+
+}
+
+LanguageManager.prototype.verbalizeResult = function(result){
+
+	verbalization = {
+		standard: [result+' '],
+		current: [result+' ']};
+
+	return verbalization;
+
+}
