@@ -1,6 +1,8 @@
 var resultDatatype;
 var operatorMap;
 var unaryOperator;
+var binaryOperator;
+var ternaryOperator;
 
 var savedResult;
 var literalLang;
@@ -31,7 +33,10 @@ var OperatorManager = function () {
 	changedFocus = false;
 	onFocus = null;
 
-	unaryOperator = ['and', 'or', 'not', 'minimum', 'maximum', 'average'];
+	unaryOperator = ['and', 'or', 'not', 'min', 'max', 'average'];
+	binaryOperator = ['<', '<=', '>', '>=', '=', 'is', 'starts with', 'ends with', 'contains', 'lang'];
+	ternaryOperator = ['range'];
+
 	operatorMap = {
 		'number' : ['<', '<=', '>', '>=', '=', 'min', 'max', 'average', 'range', 'not'],
 
@@ -192,6 +197,24 @@ OperatorManager.prototype.queryResult = function(select, labelSelect, keySelect,
 
 function ready(){
 	//update map
+}
+
+OperatorManager.prototype.selectedReusableResult = function(result){
+	pendingQuery.push(result);
+	var operator = pendingQuery[0];
+
+	var index = $.inArray(operator, binaryOperator);
+	if(index >= 0 && pendingQuery.length == 2){
+		mapCreator.selectedOperator(pendingQuery);
+		isComplete = true;
+	}else{
+		index = $.inArray(operator, ternaryOperator);
+		if(index >= 0 && pendingQuery.length == 3){
+			mapCreator.selectedOperator(pendingQuery);
+			isComplete = true;
+		}
+	}
+
 }
 
 OperatorManager.prototype.selectedOperator = function(operator){
