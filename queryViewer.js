@@ -60,14 +60,14 @@ function renderQuery(){
 
 			for(var i = currentNode.children.length-1; i>=0; i--){
 
-				if(childrenNumber)
+				if(childrenNumber && currentNode.type != 'and' && currentNode.type != 'or')
 					visitStack.push({type: 'endli', verbalization:{current: ['</li>']}, children:[] });
 
 				visitStack.push({type: 'endSpan', verbalization:{current: ['</span>']}, children:[] });
 				visitStack.push(queryLogicStructure[currentNode.children[i]]);
 				visitStack.push({type: 'startSpan', verbalization:{current: ['<span>']}, children:[], focusReference: currentNode.key, removeReference: currentNode.children[i] });
 				
-				if(childrenNumber)
+				if(childrenNumber && currentNode.type != 'and' && currentNode.type != 'or')
 					visitStack.push({type: 'startli', verbalization:{current: ['<li>']}, children:[] });
 			}
 
