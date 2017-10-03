@@ -463,7 +463,7 @@ function removeOperator(node){
 
 	switch(operator){
 		case 'is_string':
-		case 'is_url'
+		case 'is_url':
 		case 'starts with':
 		case 'ends with':
 		case 'contains':
@@ -534,7 +534,7 @@ MapCreator.prototype.selectedOperator = function(pendingQuery){
 
 	switch(operator){
 		case 'is_string':
-		case 'is_url'
+		case 'is_url':
 		case 'starts with':
 		case 'ends with':
 		case 'contains':

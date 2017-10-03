@@ -119,9 +119,9 @@ function visitRenderer(node){
  		// to manage menu
 		queryString += '<span class="focusable" meta-removeReference="'+node.removeReference+'" meta-focusReference="'+node.focusReference+'">'; 
 
-	}else if(node.type == 'and' || node.type == 'or'){
-		queryString += '<span class="focusable" meta-removeReference="'+node.key+'" meta-focusReference="'+node.key+'">' + node.verbalization.current[1] + '</span>'; 
-	} else {
+	}else if(node.type == 'operator'){
+		queryString += '<span class="focusable" meta-removeReference="'+node.key+'" meta-focusReference="'+node.key+'">' + node.verbalization.current[0] + '</span>'; 
+	} else{
 		queryString += node.verbalization.current.join('');
 	}
 

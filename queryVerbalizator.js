@@ -70,7 +70,13 @@ function verbalizeQuery(){
 function visitVerbalizator(node){
 	if(node.parent == null) // root
 		node.verbalization.current = node.verbalization.first;
-	else if(node.type == 'concept'){
+	else if(queryLogicMap[node.parent].type == 'operator' && queryLogicMap[node.parent].label == 'not'){
+		if(node.type == 'predicate'){
+			node.verbalization.current = node.verbalization.negated;
+		}else if(node.type == 'operator'){
+			node.verbalization.current = node.verbalization.truncated;
+		}
+	}else if(node.type == 'concept'){
 		if(queryLogicMap[node.parent].type == 'concept')
 			node.verbalization.current = node.verbalization.modified;
 		else if(queryLogicMap[node.parent].type == 'predicate' && queryLogicMap[node.parent].direction == 'direct'){ 

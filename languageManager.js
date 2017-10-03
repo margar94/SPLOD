@@ -45,6 +45,7 @@ LanguageManager.prototype.verbalizePredicate = function(predicateLabel, predicat
 		standard: [],
 		modified: [],
 		truncated: [],
+		negated: [],
 		first: [],
 		current: []};
 
@@ -56,6 +57,9 @@ LanguageManager.prototype.verbalizePredicate = function(predicateLabel, predicat
 
 		verbalization.modified.push('whose ');
 		verbalization.modified.push(predicateLabel + ' ');
+
+		verbalization.negated.push('that has not ' + LanguageManager.prototype.getArticle(predicateLabel) + ' ');
+		verbalization.negated.push(predicateLabel + ' ');
 
 		verbalization.truncated.push('has ' + LanguageManager.prototype.getArticle(predicateLabel) + ' ');
 		verbalization.truncated.push(predicateLabel + ' ');
@@ -138,35 +142,43 @@ LanguageManager.prototype.verbalizeOperator = function(operator){
 
 	verbalization = {
 		standard: ['that is '+operator+' '],
+		truncated: [operator+' '],
 		current: ['that is '+operator+' ']};
 
 	switch(operator){
 		case '<':
 			verbalization.standard = ['that is less than '];
+			verbalization.truncated = ['less than '];
 			verbalization.current = verbalization.standard;
 			break;
 		case '<=':
 			verbalization.standard = ['that is less or equals than '];
+			verbalization.truncated = ['less or equals than '];
 			verbalization.current = verbalization.standard;
 			break;
 		case '>':
 			verbalization.standard = ['that is more than '];
+			verbalization.truncated = ['more than '];
 			verbalization.current = verbalization.standard;
 			break;
 		case '>=':
 			verbalization.standard = ['that is more or equals than '];
+			verbalization.truncated = ['more or equals than '];
 			verbalization.current = verbalization.standard;
 			break;
 		case 'is_string':
 			verbalization.standard = ['that is '];
+			verbalization.truncated = [''];
 			verbalization.current = verbalization.standard;
 			break;
 		case 'is_url':
 			verbalization.standard = ['that is '];
+			verbalization.truncated = [''];
 			verbalization.current = verbalization.standard;
 			break;
 		case 'range':
 			verbalization.standard = ['that is between '];
+			verbalization.truncated = ['between '];
 			verbalization.current = verbalization.standard;
 			break;
 		case 'and':	
