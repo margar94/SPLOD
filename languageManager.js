@@ -137,7 +137,13 @@ LanguageManager.prototype.getOrdinalNumber = function(cardinalNumber){
 }
 
 LanguageManager.prototype.endsWithPreposition = function(label){
-	return label.match(/[On For From A Of As \son \sfor \sfrom \sa \sof \sas]$/);
+	var preposition = ["On", "For", "From", "A", "Of", "As", "By", 
+		" by", " on", " for", "\sfrom", "\sa", "\sof", "\sas"]; 
+	for(var i=0; i<preposition.length; i++){
+		if(label.endsWith(preposition[i]))
+			return true;
+	}
+	return false;
 }
 
 LanguageManager.prototype.verbalizeOperator = function(operator){
