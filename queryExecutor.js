@@ -64,6 +64,7 @@ QueryExecutor.prototype.getAllEntities = function(callback) {
 	   	queryUrl = endpoint+"?query="+ encodeURIComponent(query) +"&format=json";
 	    $.ajax({
 	        url: queryUrl,
+	        method:'post',
 	        success: function( data ) {
 	        	manageClassHierarchy(data);
 				//callback(classHierarchyMapRoots, classHierarchyMap);
@@ -84,6 +85,7 @@ QueryExecutor.prototype.getAllEntities = function(callback) {
 			   	queryUrl2 = endpoint+"?query="+ encodeURIComponent(query2) +"&format=json";
 			    $.ajax({
 			        url: queryUrl2,
+			        method:'post',
 			        success: function( data ) {
 			        	addInstancesOccurenceClassHierarchy(data);
 			        	getClassHierarchyMapRoots();
@@ -114,32 +116,43 @@ QueryExecutor.prototype.getAllEntities = function(callback) {
 */
 
 /*
-	Tested query : 
-		prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-		prefix owl: <http://www.w3.org/2002/07/owl#> 
-		SELECT DISTINCT ?url ?label 
-		WHERE { 
-		GRAPH <http://dbpedia.org> { 
-		?s a owl:Thing.
-		?s ?url ?s2.
-		?url rdfs:label ?label. 
-		FILTER (lang(?label) = 'en') }  }
-		LIMIT 100
+	SELECT DISTINCT ?property
+	WHERE
+	{ 
+		?s ?property ?o. 
+		?o a ?c.
+		FILTER (?c = ?class){
+			SELECT ?class{
+				?class a owl:Class; rdfs:subClassOf ?super.
+			}
+			GROUP BY ?class
+			LIMIT 1
+		}
+		OPTIONAL {?property rdfs:label ?label. 
+		FILTER (lang(?label) = 'en')}
+	}
 */
 
 QueryExecutor.prototype.getAllDirectPredicates = function(limit, callback) {
-	
-	query = " prefix owl: <http://www.w3.org/2002/07/owl#> " +
+
+	query = " prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> " + 
+		" prefix owl: <http://www.w3.org/2002/07/owl#> " +
 			" SELECT DISTINCT ?url ?label " +
 			" WHERE { " + 
 				" GRAPH " + graph + " { " +
-					" ?s a owl:Thing. " +
-					" ?s ?url ?s2. " +
+					" ?s ?url ?o. " +
+					" ?s a ?c. " +
+					" FILTER (?c = ?class){ " +
+						" SELECT ?class{ " +
+							" ?class a owl:Class; rdfs:subClassOf ?super. " +
+						" } " +
+						" GROUP BY ?class " +
+						" LIMIT 1 " +
+					" } " +
 					" OPTIONAL {?url rdfs:label ?label. " +
 					" FILTER (lang(?label) = '" + language + "')} " +
 				" } " +
 			" } ";
-				
 				
 	if(limit)
 		query += "LIMIT " + limit;  
@@ -147,6 +160,7 @@ QueryExecutor.prototype.getAllDirectPredicates = function(limit, callback) {
    	queryUrl = endpoint+"?query="+ encodeURIComponent(query) +"&format=json";
     $.ajax({
         url: queryUrl,
+     	method:'post',
         success: function( data ) {
         	var result = getUrlAndLabelFromResult(data);
         	//console.log(result);
@@ -156,32 +170,25 @@ QueryExecutor.prototype.getAllDirectPredicates = function(limit, callback) {
 	
 }
 
-/*
-	Tested query : 
-		prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-		prefix owl: <http://www.w3.org/2002/07/owl#> 
-		SELECT DISTINCT ?url ?label 
-		WHERE { 
-		GRAPH <http://dbpedia.org> { 
-		?s a owl:Thing.
-		?s2 ?url ?s.
-		?url rdfs:label ?label. 
-		FILTER (lang(?label) = 'en') }  }
-		LIMIT 100
-*/
-
 QueryExecutor.prototype.getAllReversePredicates = function(limit, callback) {
-	query = " prefix owl: <http://www.w3.org/2002/07/owl#> " +
+	query = " prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> " + 
+		" prefix owl: <http://www.w3.org/2002/07/owl#> " +
 			" SELECT DISTINCT ?url ?label " +
 			" WHERE { " + 
 				" GRAPH " + graph + " { " +
-					" ?s a owl:Thing. " +
-					" ?s2 ?url ?s. " +
+					" ?s ?url ?o. " +
+					" ?o a ?c. " +
+					" FILTER (?c = ?class){ " +
+						" SELECT ?class{ " +
+							" ?class a owl:Class; rdfs:subClassOf ?super. " +
+						" } " +
+						" GROUP BY ?class " +
+						" LIMIT 1 " +
+					" } " +
 					" OPTIONAL {?url rdfs:label ?label. " +
 					" FILTER (lang(?label) = '" + language + "')} " +
 				" } " +
 			" } ";
-				
 				
 	if(limit)
 		query += "LIMIT " + limit;  
@@ -189,6 +196,7 @@ QueryExecutor.prototype.getAllReversePredicates = function(limit, callback) {
    	queryUrl = endpoint+"?query="+ encodeURIComponent(query) +"&format=json";
     $.ajax({
         url: queryUrl,
+        method:'post',
         success: function( data ) {
 			callback(getUrlAndLabelFromResult(data));
         }
@@ -231,6 +239,7 @@ QueryExecutor.prototype.getDirectPredicatesFromConcept = function(entity, limit,
    	queryUrl = endpoint+"?query="+ encodeURIComponent(query) +"&format=json";
     $.ajax({
         url: queryUrl,
+        method:'post',
         success: function( data ) {
 			callback(getUrlAndLabelFromResult(data));
         }
@@ -258,6 +267,7 @@ QueryExecutor.prototype.getReversePredicatesFromConcept = function(entity, limit
    	queryUrl = endpoint+"?query="+ encodeURIComponent(query) +"&format=json";
     $.ajax({
         url: queryUrl,
+        method:'post',
         success: function( data ) {
 			callback(getUrlAndLabelFromResult(data));
         }
@@ -272,8 +282,8 @@ QueryExecutor.prototype.getConceptsFromDirectPredicate = function(predicate, lim
 				" SELECT DISTINCT ?url ?label " +
 				" WHERE { " + 
 					" GRAPH " + graph + " { " +	
-						" ?subject <"+predicate+"> ?object. " +
-						" ?object a ?url. " +
+						" ?o a ?url. " +
+						" ?s  <"+predicate+"> ?o. " +
 						" OPTIONAL {?url rdfs:label ?label. " +
 						" FILTER (lang(?label) = '" + language + "')} " +
 					" } " +
@@ -284,6 +294,7 @@ QueryExecutor.prototype.getConceptsFromDirectPredicate = function(predicate, lim
    	queryUrl = endpoint+"?query="+ encodeURIComponent(query) +"&format=json";
     $.ajax({
         url: queryUrl,
+        method:'post',
         success: function( data ) {
         	var result = getResultMap(data);
 			callback(result.roots, result.map);
@@ -300,8 +311,8 @@ QueryExecutor.prototype.getConceptsFromReversePredicate = function(predicate, li
 				" SELECT DISTINCT ?url ?label " +
 				" WHERE { " + 
 					" GRAPH " + graph + " { " +
-						" ?s <"+predicate+"> ?o. " +
 						" ?o a ?url. " +
+						" ?s  <"+predicate+"> ?o. " +
 						" OPTIONAL {?url rdfs:label ?label. " +
 						" FILTER (lang(?label) = '" + language + "')} " +
 					" } " +
@@ -312,6 +323,7 @@ QueryExecutor.prototype.getConceptsFromReversePredicate = function(predicate, li
    	queryUrl = endpoint+"?query="+ encodeURIComponent(query) +"&format=json";
     $.ajax({
         url: queryUrl,
+        method:'post',
         success: function( data ) {
 			var result = getResultMap(data);
 			callback(result.roots, result.map);
@@ -340,8 +352,14 @@ QueryExecutor.prototype.getDirectPredicatesFromPredicate = function(predicate, l
 				" SELECT DISTINCT ?url ?label " +
 				" WHERE { " + 
 					" GRAPH " + graph + " { " +
-						" ?s <"+predicate+"> ?o. " +
 						" ?o ?url ?s2. " +
+						" FILTER (?o = ?obj){ " +
+							" SELECT ?obj{ " +
+								" ?s <"+predicate+"> ?obj. " +
+							" } " +
+							" GROUP BY ?obj " +
+							" LIMIT 1 " +
+						" } " +
 						" OPTIONAL {?url rdfs:label ?label. " +
 						" FILTER (lang(?label) = '" + language + "')} " +
 					" } " +
@@ -352,6 +370,7 @@ QueryExecutor.prototype.getDirectPredicatesFromPredicate = function(predicate, l
    	queryUrl = endpoint+"?query="+ encodeURIComponent(query) +"&format=json";
     $.ajax({
         url: queryUrl,
+        method:'post',
         success: function( data ) {
 			callback(getUrlAndLabelFromResult(data));
         }
@@ -364,8 +383,14 @@ QueryExecutor.prototype.getReversePredicatesFromPredicate = function(predicate, 
 				" SELECT DISTINCT ?url ?label " +
 				" WHERE { " + 
 					" GRAPH " + graph + " { " +
-						" ?s <"+predicate+"> ?o. " +
 						" ?s2 ?url ?o. " +
+						" FILTER (?o = ?obj){ " +
+							" SELECT ?obj{ " +
+								" ?s <"+predicate+"> ?obj. " +
+							" } " +
+							" GROUP BY ?obj " +
+							" LIMIT 1 " +
+						" } " +
 						" OPTIONAL {?url rdfs:label ?label. " +
 						" FILTER (lang(?label) = '" + language + "')} " +
 					" } " +
@@ -376,6 +401,7 @@ QueryExecutor.prototype.getReversePredicatesFromPredicate = function(predicate, 
    	queryUrl = endpoint+"?query="+ encodeURIComponent(query) +"&format=json";
     $.ajax({
         url: queryUrl,
+        method:'post',
         success: function( data ) {
 			callback(getUrlAndLabelFromResult(data));
         }
@@ -401,6 +427,7 @@ QueryExecutor.prototype.executeUserQuery = function(querySPARQL){
 	   	queryUrl = endpoint+"?query="+ encodeURIComponent(query) +"&format=json";
 	    $.ajax({
 	        url: queryUrl,
+	        method:'post',
 	        success: function( data ) {
 	        	console.log(data.results.bindings);
 				operatorManager.queryResult(querySPARQL.select, querySPARQL.labelSelect, querySPARQL.keySelect, data.results.bindings);
