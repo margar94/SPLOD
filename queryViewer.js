@@ -54,26 +54,26 @@ function renderQuery(){
 			(currentNode.children.length >= 2)?childrenNumber = true : childrenNumber = false;
 
 			if(childrenNumber){
-				visitStack.push({type: 'endSpan', verbalization:{current: ['</span>']}, children:[] });
+				//visitStack.push({type: 'endSpan', verbalization:{current: ['</span>']}, children:[] });
 				visitStack.push({type: 'endul', verbalization:{current: ['</ul>']}, children:[] });
 			}
 
 			for(var i = currentNode.children.length-1; i>=0; i--){
 
-				if(childrenNumber && (i==0 || (i%2)==0))
+				if(childrenNumber && (i==0 || ((i%2)==0)))
 					visitStack.push({type: 'endli', verbalization:{current: ['</li>']}, children:[] });
 
 				visitStack.push({type: 'endSpan', verbalization:{current: ['</span>']}, children:[] });
 				visitStack.push(queryLogicStructure[currentNode.children[i]]);
 				visitStack.push({type: 'startSpan', verbalization:{current: ['<span>']}, children:[], focusReference: currentNode.children[i], removeReference: currentNode.children[i] });
 				
-				if(childrenNumber && (i==0 || (i%2)==0))
+				if(childrenNumber && (i==0 || (((i%2)==1) && (i!=currentNode.children.length-1))))
 					visitStack.push({type: 'startli', verbalization:{current: ['<li>']}, children:[] });
 			}
 
 			if(childrenNumber){
 				visitStack.push({type: 'startul', verbalization:{current: ['<ul>']}, children:[] });
-				visitStack.push({type: 'startSpan', verbalization:{current: ['<span>']}, children:[] });
+				//visitStack.push({type: 'startSpan', verbalization:{current: ['<span>']}, children:[] });
 			}
 		}
 
