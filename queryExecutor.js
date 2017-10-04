@@ -231,8 +231,10 @@ QueryExecutor.prototype.getDirectPredicatesFromConcept = function(entity, limit,
 				" SELECT DISTINCT ?url ?label " +
 				" WHERE { " + 
 					" GRAPH " + graph + " { " +
-						" ?s a <"+entity+">. " +
 						" ?s ?url ?s2. " +
+							"{ SELECT ?s {" +
+								" ?s a <"+entity+">. " +
+							" } LIMIT 20000 }" +
 						" OPTIONAL {?url rdfs:label ?label. " +
 						" FILTER (lang(?label) = '" + language + "')} " +
 					" } " +
@@ -263,8 +265,10 @@ QueryExecutor.prototype.getReversePredicatesFromConcept = function(entity, limit
 				" SELECT DISTINCT ?url ?label " +
 				" WHERE { " + 
 					" GRAPH " + graph + " { " +
-						" ?s a <"+entity+">. " +
 						" ?s2 ?url ?s. " +
+							"{ SELECT ?s {" +
+								" ?s a <"+entity+">. " +
+							" } LIMIT 20000 }" +
 						" OPTIONAL {?url rdfs:label ?label. " +
 						" FILTER (lang(?label) = '" + language + "')} " +
 					" } " +

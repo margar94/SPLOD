@@ -380,6 +380,8 @@ function iReplaceASomethingNode(key){
 }
 
 function substituteMeWithSomethingNode(key){
+	var node = queryLogicMap[key];
+
 	var somethingVerbalization = languageManager.verbalizeSomething();
 
 	if(!indexMap.hasOwnProperty('something')){
@@ -514,6 +516,7 @@ function removeOperator(node){
 
 		case 'and': //focus su or
 		case 'or': //focus su and
+			operator = (operator == 'and' ? 'or' : 'and');
 			var conjunctionVerbalization = languageManager.verbalizeOperator(operator);
 
 			if(!(operator in indexMap)){
@@ -537,6 +540,8 @@ function removeOperator(node){
 			queryLogicMap[node.parent].children[index] = conjunctionKey;
 			
 			delete queryLogicMap[node.key];
+
+			MapCreator.prototype.changeFocus(conjunctionKey);
 
 			break;
 

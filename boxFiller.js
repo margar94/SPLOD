@@ -69,7 +69,7 @@ BoxFiller.prototype.updateConceptsFromConcept = function(entityUrl, entityLabel,
 
 BoxFiller.prototype.updatePredicatesFromConcept = function(predUrl, predLabel, predicateDirection, callback){
 	
-	var limit = 20;
+	var limit = 100;
 	
 	var directData;
 	var reverseData;
@@ -130,7 +130,7 @@ BoxFiller.prototype.updateConceptsFromReversePredicate = function(predUrl, predL
 
 BoxFiller.prototype.updatePredicatesFromPredicate = function(predUrl, predLabel, predicateDirection, callback){
 	
-	var limit = 20;
+	var limit = 100;
 	
 	var directData;
 	var reverseData;
