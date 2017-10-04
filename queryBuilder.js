@@ -109,11 +109,11 @@ function visitSPARQL(node){
 		parentVariable = queryLogicStructure[node.parent].variable;
 
 		switch(node.label){
-			case 'is_url': querySPARQL.where += 'FILTER('+parentVariable+'=<'+queryLogicStructure[node.children[0]].label+'>)'; break;
-			case 'is_string': querySPARQL.where += 'FILTER('+parentVariable+'="'+queryLogicStructure[node.children[0]].label+'")'; break;
-			case 'contains': querySPARQL.where += 'FILTER(regex('+parentVariable+',"'+queryLogicStructure[node.children[0]].label+'","i"))'; break;
-			case 'starts with': querySPARQL.where +='FILTER(regex('+parentVariable+',"^'+queryLogicStructure[node.children[0]].label+'","i"))'; break;
-			case 'ends with': querySPARQL.where += 'FILTER(regex('+parentVariable+',"'+queryLogicStructure[node.children[0]].label+'$","i"))'; break;
+			case 'is url': querySPARQL.where += 'FILTER('+parentVariable+'=<'+queryLogicStructure[node.children[0]].label+'>)'; break;
+			case 'is string': querySPARQL.where += 'FILTER('+parentVariable+'="'+queryLogicStructure[node.children[0]].label+'")'; break;
+			case 'contains': querySPARQL.where += 'FILTER(contains(lcase('+parentVariable+'),lcase("'+queryLogicStructure[node.children[0]].label+'")))'; break;
+			case 'starts with': querySPARQL.where +='FILTER(strStarts(lcase('+parentVariable+'),lcase("'+queryLogicStructure[node.children[0]].label+'")))'; break;
+			case 'ends with': querySPARQL.where += 'FILTER(strEnds(lcase('+parentVariable+'),lcase("'+queryLogicStructure[node.children[0]].label+'")))'; break;
 			case 'lang': querySPARQL.where += 'FILTER(LANG('+parentVariable+')="'+queryLogicStructure[node.children[0]].label+'")'; break;
 			case '<': 
 			case '<=':
