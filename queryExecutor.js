@@ -14,6 +14,8 @@ var operatorManager;
 var classHierarchyMap;
 var classHierarchyMapRoots;
 
+var activeAjaxRequest;
+
 var QueryExecutor = function (selectedEndpoint, selectedGraph) {
 	if(QueryExecutor.prototype._singletonInstance){
 		return QueryExecutor.prototype._singletonInstance;
@@ -37,6 +39,8 @@ var QueryExecutor = function (selectedEndpoint, selectedGraph) {
 
 	classHierarchyMap = {};
 	classHierarchyMapRoots = [];
+
+	activeAjaxRequest = [];
 
 	operatorManager = new OperatorManager();
 
@@ -237,13 +241,17 @@ QueryExecutor.prototype.getDirectPredicatesFromConcept = function(entity, limit,
 		query += "LIMIT " + limit;  
 	
    	queryUrl = endpoint+"?query="+ encodeURIComponent(query) +"&format=json";
-    $.ajax({
-        url: queryUrl,
-        method:'post',
-        success: function( data ) {
-			callback(getUrlAndLabelFromResult(data));
-        }
-    });	
+    var xhr = $.ajax({
+		        url: queryUrl,
+		        method:'post',
+		        success: function( data, textStatus, jqXHR ) {
+		        	var index = $.inArray(jqXHR, activeAjaxRequest);
+		        	if(index != -1)
+		        		activeAjaxRequest.splice(index, 1);
+					callback(getUrlAndLabelFromResult(data));
+		        }
+		    });	
+    activeAjaxRequest.push(xhr);
 }
 
 /*
@@ -265,13 +273,18 @@ QueryExecutor.prototype.getReversePredicatesFromConcept = function(entity, limit
 		query += "LIMIT " + limit;  
 	
    	queryUrl = endpoint+"?query="+ encodeURIComponent(query) +"&format=json";
-    $.ajax({
-        url: queryUrl,
-        method:'post',
-        success: function( data ) {
-			callback(getUrlAndLabelFromResult(data));
-        }
-    });	
+    var xhr = $.ajax({
+		        url: queryUrl,
+		        method:'post',
+		        success: function( data, textStatus, jqXHR ) {
+		        	var index = $.inArray(jqXHR, activeAjaxRequest);
+		        	if(index != -1)
+		        		activeAjaxRequest.splice(index, 1);
+					callback(getUrlAndLabelFromResult(data));
+		        }
+		    });	
+
+    activeAjaxRequest.push(xhr);
 }
 
 /*
@@ -292,14 +305,20 @@ QueryExecutor.prototype.getConceptsFromDirectPredicate = function(predicate, lim
 		query += "LIMIT " + limit;  
 	
    	queryUrl = endpoint+"?query="+ encodeURIComponent(query) +"&format=json";
-    $.ajax({
-        url: queryUrl,
-        method:'post',
-        success: function( data ) {
-        	var result = getResultMap(data);
-			callback(result.roots, result.map);
-        }
-    });	
+    var xhr = $.ajax({
+		        url: queryUrl,
+		        method:'post',
+		        success: function(data, textStatus, jqXHR ) {
+		        	var index = $.inArray(jqXHR, activeAjaxRequest);
+		        	if(index != -1)
+		        		activeAjaxRequest.splice(index, 1);
+
+		        	var result = getResultMap(data);
+					callback(result.roots, result.map);
+		        }
+		    });	
+
+    activeAjaxRequest.push(xhr);
 }
 
 /*
@@ -321,14 +340,19 @@ QueryExecutor.prototype.getConceptsFromReversePredicate = function(predicate, li
 		query += "LIMIT " + limit;  
 	
    	queryUrl = endpoint+"?query="+ encodeURIComponent(query) +"&format=json";
-    $.ajax({
+    var xhr = $.ajax({
         url: queryUrl,
         method:'post',
-        success: function( data ) {
-			var result = getResultMap(data);
-			callback(result.roots, result.map);
+        success: function( data, textStatus, jqXHR ) {
+		        	var index = $.inArray(jqXHR, activeAjaxRequest);
+		        	if(index != -1)
+		        		activeAjaxRequest.splice(index, 1);
+
+					var result = getResultMap(data);
+					callback(result.roots, result.map);
         }
     });	
+    activeAjaxRequest.push(xhr);
 }
 /*
 	Tested query 
@@ -368,13 +392,18 @@ QueryExecutor.prototype.getDirectPredicatesFromPredicate = function(predicate, l
 		query += "LIMIT " + limit;  
 	
    	queryUrl = endpoint+"?query="+ encodeURIComponent(query) +"&format=json";
-    $.ajax({
+    var xhr = $.ajax({
         url: queryUrl,
         method:'post',
-        success: function( data ) {
-			callback(getUrlAndLabelFromResult(data));
+        success: function( data, textStatus, jqXHR ) {
+		        	var index = $.inArray(jqXHR, activeAjaxRequest);
+		        	if(index != -1)
+		        		activeAjaxRequest.splice(index, 1);
+					callback(getUrlAndLabelFromResult(data));
         }
     });	
+
+    activeAjaxRequest.push(xhr);
 }
 
 QueryExecutor.prototype.getReversePredicatesFromPredicate = function(predicate, limit, callback) {
@@ -399,13 +428,17 @@ QueryExecutor.prototype.getReversePredicatesFromPredicate = function(predicate, 
 		query += "LIMIT " + limit;  
 	
    	queryUrl = endpoint+"?query="+ encodeURIComponent(query) +"&format=json";
-    $.ajax({
+   var xhr = $.ajax({
         url: queryUrl,
         method:'post',
-        success: function( data ) {
-			callback(getUrlAndLabelFromResult(data));
+        success: function( data, textStatus, jqXHR ) {
+		        	var index = $.inArray(jqXHR, activeAjaxRequest);
+		        	if(index != -1)
+		        		activeAjaxRequest.splice(index, 1);
+					callback(getUrlAndLabelFromResult(data));
         }
     });	
+   activeAjaxRequest.push(xhr);
 }
 
 //querySPARQL = {select:[], labelSelect:[], keySelect:[], where: ' ', limit}
@@ -425,15 +458,20 @@ QueryExecutor.prototype.executeUserQuery = function(querySPARQL){
 			query += "LIMIT " + querySPARQL.limit;  
 		
 	   	queryUrl = endpoint+"?query="+ encodeURIComponent(query) +"&format=json";
-	    $.ajax({
+	    var xhr = $.ajax({
 	        url: queryUrl,
 	        method:'post',
-	        success: function( data ) {
-	        	console.log(data.results.bindings);
-				operatorManager.queryResult(querySPARQL.select, querySPARQL.labelSelect, querySPARQL.keySelect, data.results.bindings);
-	        	renderResultTable(querySPARQL.select, querySPARQL.labelSelect, data.results.bindings);
+	        success: function( data, textStatus, jqXHR ) {
+		        	var index = $.inArray(jqXHR, activeAjaxRequest);
+		        	if(index != -1)
+		        		activeAjaxRequest.splice(index, 1);
+
+		        	console.log(data.results.bindings);
+					operatorManager.queryResult(querySPARQL.select, querySPARQL.labelSelect, querySPARQL.keySelect, data.results.bindings);
+		        	renderResultTable(querySPARQL.select, querySPARQL.labelSelect, data.results.bindings);
 	        }
 	    });
+	    activeAjaxRequest.push(xhr);
 	}
 	
 }

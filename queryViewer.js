@@ -143,6 +143,15 @@ function renderFocus(){
 		$('#focus').text(' ' + label);
 		//mapCreator.changeFocus(onFocus);
 
+		var size = activeAjaxRequest.length;
+		if(size != 0){
+			for(var i=0; i<size;i++){
+				activeAjaxRequest[i].abort();
+			}
+			activeAjaxRequest = [];
+		}
+
+
 		if(queryLogicStructure[onFocus].type == 'concept'){
 			updateBoxesFromConcept(queryLogicStructure[onFocus].url, queryLogicStructure[onFocus].label);
 		}else if(queryLogicStructure[onFocus].type == 'predicate'){
@@ -157,6 +166,14 @@ function renderFocus(){
 		
 	}
 	else{
+
+		var size = activeAjaxRequest.length;
+		if(size != 0){
+			for(var i=0; i<size;i++){
+				activeAjaxRequest[i].abort();
+			}
+			activeAjaxRequest = [];
+		}
 
 		fillConcepts();
 		fillPredicates();
@@ -183,6 +200,14 @@ function attachEvents(){
 
 		$('#focus').text(' ' + label);
 		mapCreator.changeFocus(onFocus);
+
+		var size = activeAjaxRequest.length;
+		if(size != 0){
+			for(var i=0; i<size;i++){
+				activeAjaxRequest[i].abort();
+			}
+			activeAjaxRequest = [];
+		}
 
 		if(queryLogicStructure[onFocus].type == 'concept'){
 
