@@ -90,11 +90,16 @@ function visitRenderer(node){
 	
 	var parent = queryLogicStructure[node.parent];
 
+	//two special cases: predicate and is negated
 	if(node.type == 'predicate' && node != queryLogicStructure[queryLogicStructureRoot] && parent.type == 'operator' && parent.label == 'not'){
 		queryString += node.verbalization.current[0];
-		queryString += '<span class="operator focusable" meta-removeReference="'+parent.key+'" meta-focusReference="'+parent.key+'" id="'+parent.key+'">'+node.verbalization.current[1]+'</span>';
+		queryString += '<span><span class="operator focusable" meta-removeReference="'+parent.key+'" meta-focusReference="'+parent.key+'" id="'+parent.key+'">'+node.verbalization.current[1]+'</span></span>';
 		queryString += node.verbalization.current[2];
 		queryString += '<span class="predicate focusable" '+utils+' >' + node.verbalization.current[3] + '</span>';
+	}else if((node.type == 'operator' && (node.label == 'is url' || node.label == 'is string')) && node != queryLogicStructure[queryLogicStructureRoot] && parent.type == 'operator' && parent.label == 'not'){
+		queryString += '<span class="operator focusable" '+utils+' >' + node.verbalization.current[0];
+		queryString += '<span><span class="operator focusable" meta-removeReference="'+parent.key+'" meta-focusReference="'+parent.key+'" id="'+parent.key+'">'+node.verbalization.current[1]+'</span></span>';
+		queryString += '</span>';
 	}else{
 		if(node.type == 'something'){
 			utils = 'meta-removeReference="'+ node.parent +'" meta-focusReference="'+node.key+'" id="'+node.key+'" title="'+node.url+'"';
@@ -128,7 +133,7 @@ function visitRenderer(node){
 			queryString += '<span class="focusable" meta-removeReference="'+node.removeReference+'" meta-focusReference="'+node.focusReference+'">'; 
 
 		}else if(node.type == 'operator'){
-			if(!(node.label == 'not' && queryLogicStructure[node.children[0]].type == 'predicate'))
+			if(!(node.label == 'not' && (queryLogicStructure[node.children[0]].type == 'predicate' || queryLogicStructure[node.children[0]].label == 'is url' || queryLogicStructure[node.children[0]].label == 'is string')))
 			queryString += '<span class="focusable operator" id="'+node.key+'" meta-removeReference="'+node.key+'" meta-focusReference="'+node.key+'">' + node.verbalization.current[0] + '</span>'; 
 		}else if(node.type == 'result'){
 			queryString += '<span class="focusable reusableResult" id="'+node.key+'" meta-removeReference="'+node.parent+'" meta-focusReference="'+node.key+'">' + node.verbalization.current[0] + '</span>'; 

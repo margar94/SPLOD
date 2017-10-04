@@ -177,11 +177,13 @@ LanguageManager.prototype.verbalizeOperator = function(operator){
 		case 'is string':
 			verbalization.standard = ['that is '];
 			verbalization.truncated = [''];
+			verbalization.negated = ['that is ', 'not '];
 			verbalization.current = verbalization.standard;
 			break;
 		case 'is url':
 			verbalization.standard = ['that is '];
 			verbalization.truncated = [''];
+			verbalization.negated = ['that is ', 'not '];
 			verbalization.current = verbalization.standard;
 			break;
 		case 'range':

@@ -71,7 +71,7 @@ function visitVerbalizator(node){
 	if(node.parent == null) // root
 		node.verbalization.current = node.verbalization.first;
 	else if(queryLogicMap[node.parent].type == 'operator' && queryLogicMap[node.parent].label == 'not'){
-		if(node.type == 'predicate'){
+		if(node.type == 'predicate' || node.label == 'is url' || node.label == 'is string'){
 			node.verbalization.current = node.verbalization.negated;
 		}else if(node.type == 'operator'){
 			node.verbalization.current = node.verbalization.truncated;
