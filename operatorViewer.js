@@ -26,7 +26,7 @@ function renderOperatorList(operators){
 		.attr('class', 'collection-item')
 		.attr('meta-value', element);
 
-		if(element == 'is_string' || element == "is_url")
+		if(element == 'is string' || element == "is url")
 			li.text('is');
 		else
 			li.text(element);
