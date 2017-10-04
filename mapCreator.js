@@ -116,12 +116,8 @@ MapCreator.prototype.selectedConcept = function(selectedUrl, selectedLabel) {
 		}
 
 	} 
-		
-	elementOnFocus = key;
 	
-	if(operatorManager == null)
-		operatorManager = new OperatorManager;
-	operatorManager.changedFocus(elementOnFocus, false);
+	updateAndNotifyFocus(key);	
 
 	if(queryVerbalizator == null)
 		queryVerbalizator = new QueryVerbalizator;
@@ -264,10 +260,8 @@ MapCreator.prototype.selectedPredicate = function(selectedUrl, selectedLabel, pr
 
 	} 
 	
-	if(operatorManager == null)
-		operatorManager = new OperatorManager;
-	operatorManager.changedFocus(elementOnFocus, false);
-
+	updateAndNotifyFocus(elementOnFocus);
+	
 	if(queryVerbalizator == null)
 		queryVerbalizator = new QueryVerbalizator;
 	queryVerbalizator.updateQuery(rootQueryLogicMap, queryLogicMap, elementOnFocus);
@@ -288,6 +282,14 @@ MapCreator.prototype.changeFocus = function(newElementOnFocus){
 		operatorManager = new OperatorManager;
 	operatorManager.changedFocus(elementOnFocus, true);
 
+}
+
+function updateAndNotifyFocus(key){
+	elementOnFocus = key;
+
+	if(operatorManager == null)
+		operatorManager = new OperatorManager;
+	operatorManager.changedFocus(elementOnFocus, false);
 }
 
 // remove element in map
@@ -355,9 +357,10 @@ MapCreator.prototype.removeElement = function(key){
 		rootQueryLogicMap = null;
 	}
 
-	if(operatorManager == null)
-			operatorManager = new OperatorManager;
-	operatorManager.changedFocus(elementOnFocus, false);
+	updateAndNotifyFocus(elementOnFocus);
+
+	if(elementOnFocus == null)
+		indexMap = {};
 
 	if(queryVerbalizator == null)
 		queryVerbalizator = new QueryVerbalizator;
@@ -489,10 +492,7 @@ function removeOperator(node){
 			var index = $.inArray(node.key, queryLogicMap[node.parent].children);
 			queryLogicMap[node.parent].children.splice(index, 1);
 
-			elementOnFocus = node.parent;
-			if(operatorManager == null)
-				operatorManager = new OperatorManager;
-			operatorManager.changedFocus(elementOnFocus, false);
+			updateAndNotifyFocus(node.parent);
 
 			break;
 
@@ -507,11 +507,8 @@ function removeOperator(node){
 			
 			delete queryLogicMap[node.key];
 
-			elementOnFocus = child.key;
-			if(operatorManager == null)
-				operatorManager = new OperatorManager;
-			operatorManager.changedFocus(elementOnFocus, false);
-
+			updateAndNotifyFocus(child.key);
+			
 			break;
 
 		case 'and': //focus su or
@@ -541,7 +538,7 @@ function removeOperator(node){
 			
 			delete queryLogicMap[node.key];
 
-			MapCreator.prototype.changeFocus(conjunctionKey);
+			updateAndNotifyFocus(conjunctionKey);
 
 			break;
 
@@ -649,7 +646,7 @@ MapCreator.prototype.selectedOperator = function(pendingQuery){
 
 			queryLogicMap[elementOnFocus].parent = key;
 
-			MapCreator.prototype.changeFocus(key);
+			updateAndNotifyFocus(key);
 
 			break;
 
