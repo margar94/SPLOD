@@ -648,6 +648,8 @@ MapCreator.prototype.selectedOperator = function(pendingQuery){
 
 		case 'and': //focus su or
 		case 'or': //focus su and
+
+			var elementOnFocusNode = queryLogicMap[elementOnFocus];
 			var conjunctionVerbalization = languageManager.verbalizeOperator(operator);
 
 			if(!(operator in indexMap)){
@@ -664,13 +666,13 @@ MapCreator.prototype.selectedOperator = function(pendingQuery){
 								   url: operator, label: operator, 
 								   type:'operator', direction: false, 
 								   verbalization: conjunctionVerbalization, 
-								   parent:node.parent, children: []};
+								   parent:elementOnFocusNode.parent, children: []};
 			queryLogicMap[conjunctionKey] = conjunctionLogicElement;
 
-			var index = $.inArray(node.key, queryLogicMap[node.parent].children);
-			queryLogicMap[node.parent].children[index] = conjunctionKey;
+			var index = $.inArray(elementOnFocus, queryLogicMap[elementOnFocusNode.parent].children);
+			queryLogicMap[elementOnFocusNode.parent].children[index] = conjunctionKey;
 			
-			delete queryLogicMap[node.key];
+			delete queryLogicMap[elementOnFocus];
 
 			break;
 
