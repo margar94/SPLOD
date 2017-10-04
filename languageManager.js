@@ -58,7 +58,9 @@ LanguageManager.prototype.verbalizePredicate = function(predicateLabel, predicat
 		verbalization.modified.push('whose ');
 		verbalization.modified.push(predicateLabel + ' ');
 
-		verbalization.negated.push('that has not ' + LanguageManager.prototype.getArticle(predicateLabel) + ' ');
+		verbalization.negated.push('that has ');
+		verbalization.negated.push('not ');
+		verbalization.negated.push(LanguageManager.prototype.getArticle(predicateLabel) + ' ');
 		verbalization.negated.push(predicateLabel + ' ');
 
 		verbalization.truncated.push('has ' + LanguageManager.prototype.getArticle(predicateLabel) + ' ');
