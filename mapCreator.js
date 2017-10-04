@@ -649,6 +649,8 @@ MapCreator.prototype.selectedOperator = function(pendingQuery){
 
 			queryLogicMap[elementOnFocus].parent = key;
 
+			MapCreator.prototype.changeFocus(key);
+
 			break;
 
 		case 'and': //focus su or
