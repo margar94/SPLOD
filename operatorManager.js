@@ -39,8 +39,8 @@ var OperatorManager = function () {
 		'<=' : 2,
 		'>' : 2,
 		'>=' : 2,
-		'is_url' : 2,
-		'is_string' : 2,
+		'is url' : 2,
+		'is string' : 2,
 		'starts with' : 2,
 		'ends with' : 2,
 		'contains' : 2,
@@ -52,13 +52,13 @@ var OperatorManager = function () {
 	operatorMap = {
 		'number' : ['<', '<=', '>', '>=', '=', 'min', 'max', 'average', 'range', 'not'],
 
-		'string' : ['is_string', 'starts with', 'ends with', 'contains', 'not'],
+		'string' : ['is string', 'starts with', 'ends with', 'contains', 'not'],
 
-		'literal' : ['is_string', 'starts with', 'ends with', 'contains', 'not', 'lang'],
+		'literal' : ['is string', 'starts with', 'ends with', 'contains', 'not', 'lang'],
 
-		'date' : ['is_string', '<', '>', 'range'],
+		'date' : ['is string', '<', '>', 'range'],
 
-		'uri' : ['is_url'],
+		'uri' : ['is url'],
 
 		'and' : ['or'],
 		'or' : ['and'],
@@ -77,8 +77,8 @@ var OperatorManager = function () {
 		'starts with': ['not'],
 		'ends with': ['not'],
 		'contains': ['not'],
-		'is_string': ['not'],
-		'is_url': ['not'],
+		'is string': ['not'],
+		'is url': ['not'],
 		'lang': ['not']
 
 
@@ -315,7 +315,7 @@ function manageUpdateOperatorViewer(){
 	if(onFocus!=null){
 		if(onFocus.split('_')[0] in operatorMap){
 			renderOperatorList(operatorMap[onFocus.split('_')[0]]);
-		}else if(resultDatatype[onFocus].datatype in operatorMap){
+		}else if((onFocus in resultDatatype) && (resultDatatype[onFocus].datatype in operatorMap)){
 			renderOperatorList(operatorMap[resultDatatype[onFocus].datatype]);
 		}else{
 			renderOperatorList([]);
