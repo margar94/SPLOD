@@ -172,6 +172,15 @@
 				display: none;
 			}
 /*
+			#overlay{
+				height: -webkit-fill-available;
+				width: -webkit-fill-available;
+			    background-color: black;
+			    z-index: 10;
+			    position: fixed;
+			    opacity: 0.3;
+			}*/
+/*
 			span.mySearch:not(browser-default):active.not([readonly])+label{
 				color:red;
 			}
@@ -186,6 +195,8 @@
 
 	</head>
 	<body>
+		<!--<div id="overlay">
+		</div>-->
 		<div class="container">
 		  	<div class="row">
 				<div id="queryBox" class="col s12">	
@@ -364,6 +375,7 @@
 
 			$(document).ready(function(){
 			    // the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
+			    $('#overlay').hide();
 			    $('.modal').modal();
 			    $('ul.tabs').tabs({onShow: function(tab) {
 			    	if(tab[0].id == "predicatesBox"){

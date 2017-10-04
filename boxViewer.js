@@ -88,7 +88,6 @@ function iterativePreorderVisit(concept, concepts, toAppend){
 		.text(concepts[concept].label)
 		.appendTo(collapsibleheader)
 		.on('click', function(){
-			updateBoxesFromConcept($(this).attr('meta-url'), $(this).attr('meta-label'));
 			mapCreator.selectedConcept($(this).attr('meta-url'), $(this).attr('meta-label'));
 		});
 		
@@ -150,7 +149,6 @@ function renderDirectPredicates(directArray){
 			.text(element.verb +" "+ article +" "+ element.label)
 			.appendTo(directPredicatesList)
 			.on('click', function(){
-				updateBoxesFromPredicate($(this).attr('meta-url'), $(this).attr('meta-label'), $(this).attr('meta-predicateDirection'));
 				mapCreator.selectedPredicate($(this).attr('meta-url'), $(this).attr('meta-label'), $(this).attr('meta-predicateDirection'));
 			});
 	});
@@ -181,35 +179,7 @@ function renderReversePredicates(reverseArray){
 			.text(element.verb +" "+ article +" "+ element.label)
 			.appendTo(reversePredicatesList)
 			.on('click', function(){
-				updateBoxesFromPredicate($(this).attr('meta-url'), $(this).attr('meta-label'), $(this).attr('meta-predicateDirection'));
 				mapCreator.selectedPredicate($(this).attr('meta-url'), $(this).attr('meta-label'), $(this).attr('meta-predicateDirection'));
 			});
 	});
 }
-/*
-function renderAttributes(attributesArray){
-
-	var li = $("<li/>")
-		.css('backgroundColor', 'orange')
-		.text('Attributes')
-		.appendTo(predicatesList);
-
-	$.each(attributesArray, function(index){
-		element = attributesArray[index];
-		article = "";
-		article = languageManager.getArticle(element.label);
-
-		var li = $("<li/>")
-			.attr('title', element.url)
-			.attr('meta-url', element.url)
-			.attr('meta-label', element.label)
-			.text(element.label)
-			.appendTo(predicatesList)
-			.on('click', function(){
-				boxFiller.selectedAttribute($(this).attr('meta-url'), $(this).attr('meta-label'));
-			});
-	});
-}*/
-
-
-
