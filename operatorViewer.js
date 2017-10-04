@@ -69,7 +69,6 @@ function renderReusableResultList(reusableResults){
 		.attr('meta-value', element.value)
 		.text(element.value);
 
-
 		if('url' in element){
 			li.attr('meta-url', element.url)
 				.attr('meta-value', element.url)

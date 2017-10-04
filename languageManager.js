@@ -166,12 +166,12 @@ LanguageManager.prototype.verbalizeOperator = function(operator){
 			verbalization.truncated = ['more or equals than '];
 			verbalization.current = verbalization.standard;
 			break;
-		case 'is_string':
+		case 'is string':
 			verbalization.standard = ['that is '];
 			verbalization.truncated = [''];
 			verbalization.current = verbalization.standard;
 			break;
-		case 'is_url':
+		case 'is url':
 			verbalization.standard = ['that is '];
 			verbalization.truncated = [''];
 			verbalization.current = verbalization.standard;
@@ -187,6 +187,10 @@ LanguageManager.prototype.verbalizeOperator = function(operator){
 			break;
 		case 'or':	
 			verbalization.standard = ['or '];
+			verbalization.current = verbalization.standard;
+			break;
+		case 'not':
+			verbalization.standard = ['that is not '];
 			verbalization.current = verbalization.standard;
 			break;
 	}

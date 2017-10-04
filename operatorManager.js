@@ -282,11 +282,12 @@ function saveResults(select, keySelect, results){
 			var index = $.inArray('?'+field, select);
 			savedResult[keySelect[index]].push(cachedResult);
 
-			var type = element[field].type;
 			if(type == 'literal'){
-				if($.inArray((element[field])['xml:lang'], literalLang[keySelect[index]])<0){
-					literalLang[keySelect[index]].push((element[field])['xml:lang']);
-				}
+				var newLang = {value:(element[field])['xml:lang']};
+
+				if(!objInArray(newLang, literalLang[keySelect[index]]))
+					literalLang[keySelect[index]].push(newLang);
+				
 			}
 
 		}
@@ -295,6 +296,14 @@ function saveResults(select, keySelect, results){
 
 	//console.log(literalLang);
 	
+}
+
+function objInArray(obj, arr){
+
+	if($.inArray(JSON.stringify(obj),$.map(arr, JSON.stringify))>=0)
+		return true;
+
+	return false;
 }
 
 OperatorManager.prototype.changedFocus = function(newOnFocus, userChangeFocus){
