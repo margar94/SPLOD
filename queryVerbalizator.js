@@ -71,11 +71,13 @@ function visitVerbalizator(node){
 	if(node.parent == null) // root
 		node.verbalization.current = node.verbalization.first;
 	else if(queryLogicMap[node.parent].type == 'operator' && queryLogicMap[node.parent].label == 'not'){
-		if(node.type == 'predicate' || node.label == 'is url' || node.label == 'is string'){
+		//not operator changes all his children verbalization
+		node.verbalization.current = node.verbalization.negated;
+		/*if(node.type == 'predicate' || node.label == 'is url' || node.label == 'is string'){
 			node.verbalization.current = node.verbalization.negated;
 		}else if(node.type == 'operator'){
 			node.verbalization.current = node.verbalization.truncated;
-		}
+		}*/
 	}else if(node.type == 'concept'){
 		if(queryLogicMap[node.parent].type == 'concept')
 			node.verbalization.current = node.verbalization.modified;

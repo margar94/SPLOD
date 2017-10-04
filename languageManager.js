@@ -151,27 +151,32 @@ LanguageManager.prototype.verbalizeOperator = function(operator){
 	verbalization = {
 		standard: ['that '+operator+' '],
 		truncated: [operator+' '],
+		negated: ['that is ', 'not ', operator+' '],
 		current: ['that '+operator+' ']};
 
 	switch(operator){
 		case '<':
 			verbalization.standard = ['that is less than '];
 			verbalization.truncated = ['less than '];
+			verbalization.negated = ['that is ', 'not ', 'less than '];
 			verbalization.current = verbalization.standard;
 			break;
 		case '<=':
 			verbalization.standard = ['that is less or equals than '];
 			verbalization.truncated = ['less or equals than '];
+			verbalization.negated = ['that is ', 'not ', 'less or equals than '];
 			verbalization.current = verbalization.standard;
 			break;
 		case '>':
 			verbalization.standard = ['that is more than '];
 			verbalization.truncated = ['more than '];
+			verbalization.negated = ['that is ', 'not ', 'more than '];
 			verbalization.current = verbalization.standard;
 			break;
 		case '>=':
 			verbalization.standard = ['that is more or equals than '];
 			verbalization.truncated = ['more or equals than '];
+			verbalization.negated = ['that is ', 'not ', 'more or equals than '];
 			verbalization.current = verbalization.standard;
 			break;
 		case 'is string':
@@ -189,6 +194,7 @@ LanguageManager.prototype.verbalizeOperator = function(operator){
 		case 'range':
 			verbalization.standard = ['that is between '];
 			verbalization.truncated = ['between '];
+			verbalization.negated = ['that is ', 'not ', 'between '];
 			verbalization.current = verbalization.standard;
 			break;
 		case 'and':	
