@@ -243,20 +243,24 @@ OperatorManager.prototype.getResultToCompleteOperator = function(){
 	var results;
 	var blankNode;
 
-	if(resultDatatype[onFocus].datatype=='literal' && pendingQuery[0] == 'lang'){
+	if(onFocus in resultDatatype && resultDatatype[onFocus].datatype=='literal' && pendingQuery[0] == 'lang'){
 		results = literalLang[onFocus];
 	}
 	else{
 		results = savedResult[onFocus];
 	}
 
-	if(resultDatatype[onFocus].datatype=='literal' || resultDatatype[onFocus].datatype=='string'){
-		blankNode = 'text';
+	if(onFocus in resultDatatype &&  
+		(resultDatatype[onFocus].datatype=='literal' || resultDatatype[onFocus].datatype=='string')){
+			blankNode = 'text';
 	}else{
-		blankNode = resultDatatype[onFocus].datatype;
+			blankNode = resultDatatype[onFocus].datatype;
 	}
 
 	return {blankNode : blankNode, results: results};
+	
+	
+
 }
 
 function saveResults(select, keySelect, results){
