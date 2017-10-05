@@ -678,6 +678,8 @@ MapCreator.prototype.selectedOperator = function(pendingQuery){
 			
 			delete queryLogicMap[elementOnFocus];
 
+			updateAndNotifyFocus(conjunctionKey);
+
 			break;
 
 	}

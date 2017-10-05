@@ -9,6 +9,7 @@ function renderResultTable(select, labelSelect, results){
 }
 
 function createTable(select, labelSelect, results){
+	console.log(results);
 
 	var resultsTable = $('#resultsTable');
 	resultsTable.empty();
@@ -29,30 +30,36 @@ function createTable(select, labelSelect, results){
 		var element = results[index];
 		var tr = $("<tr/>");
 
-		for(field in element) {
-			var td = $("<td/>")
-				.text(element[field].value)
-				.appendTo(tr);
-				
-			if(element[field].type == 'uri'){
-				td.attr('title', element[field].url);
+		for(var i=0; i<select.length; i++) {
+			var field = select[i].substring(1);
+			
+			if(field in element){
+				var td = $("<td/>")
+					.text(element[field].value)
+					.appendTo(tr);
+					
+				if(element[field].type == 'uri'){
+					td.attr('title', element[field].url);
 
-				var a = $("<a/>")
-					.attr('href', element[field].url)
-					.appendTo(td);
+					var a = $("<a/>")
+						.attr('href', element[field].url)
+						.appendTo(td);
 
-				/*var img = $("<img/>")
-					.attr('src', 'img/ic_open_in_new_black_24dp_2x.png')
-					.attr('class', 'imgResult')
-					.appendTo(a);*/
+					/*var img = $("<img/>")
+						.attr('src', 'img/ic_open_in_new_black_24dp_2x.png')
+						.attr('class', 'imgResult')
+						.appendTo(a);*/
 
-				var icon = $("<i class='material-icons tiny red-text'>")
-					.text('open_in_new')
-					//.attr('class', 'imgResult')
-					.appendTo(a);
+					var icon = $("<i class='material-icons tiny red-text'>")
+						.text('open_in_new')
+						//.attr('class', 'imgResult')
+						.appendTo(a);
+				}
+			}else{
+				var td = $("<td/>")
+					.text("")
+					.appendTo(tr);
 			}
-
-
 		}
 		tr.appendTo(tbody);
 	});

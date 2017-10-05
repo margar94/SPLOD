@@ -445,21 +445,27 @@ QueryExecutor.prototype.getReversePredicatesFromPredicate = function(predicate, 
    activeAjaxRequest.push(xhr);
 }
 
-//querySPARQL = {select:[], labelSelect:[], keySelect:[], where: ' ', limit}
+//querySPARQL = {select:[], labelSelect:[], keySelect:[], where: [], limit}
 QueryExecutor.prototype.executeUserQuery = function(querySPARQL){
 
 	if(querySPARQL.select.length == 0)
 		operatorManager.queryResult(querySPARQL.select, querySPARQL.labelSelect, querySPARQL.keySelect, []);
 	else{
+		console.log(querySPARQL.where);
+		$.each(querySPARQL.where, function(index){
+			querySPARQL.where[index] = querySPARQL.where[index].join(' ')
+		});
 		query = " prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
 					" SELECT " + querySPARQL.select.join(' ') +
 					" WHERE { " + 
 						" GRAPH " + graph + " { " +
-							querySPARQL.where +
+							querySPARQL.where.join(' ') +
 						" } " +
 					" } ";
 		if(querySPARQL.limit)
 			query += "LIMIT " + querySPARQL.limit;  
+
+		console.log(query);
 		
 	   	queryUrl = endpoint+"?query="+ encodeURIComponent(query) +"&format=json";
 	    var xhr = $.ajax({
