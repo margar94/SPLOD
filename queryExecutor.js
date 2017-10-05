@@ -16,6 +16,8 @@ var classHierarchyMapRoots;
 
 var activeAjaxRequest;
 
+var resultLimit;
+
 var QueryExecutor = function (selectedEndpoint, selectedGraph) {
 	if(QueryExecutor.prototype._singletonInstance){
 		return QueryExecutor.prototype._singletonInstance;
@@ -41,6 +43,8 @@ var QueryExecutor = function (selectedEndpoint, selectedGraph) {
 	classHierarchyMapRoots = [];
 
 	activeAjaxRequest = [];
+
+	resultLimit = false;
 
 	operatorManager = new OperatorManager();
 

@@ -133,7 +133,13 @@ function visitRenderer(node){
 
 		}else if(node.type == 'concept'){
 
-			queryString += node.verbalization.current[0];
+			if(node.parent == null){
+				if(resultLimit == false)
+					queryString += '<span class="focusable operator" id="firstSpan" meta-focusReference="firstSpan">'+node.verbalization.current[0]+'</span>';
+				else 
+					queryString += '<span class="focusable operator" id="firstSpan" meta-focusReference="firstSpan">'+resultLimit+' </span>';
+			}else 
+				node.verbalization.current[0];
 			queryString += '<span class="concept focusable" '+utils+' >' + node.verbalization.current[1] + '</span>';
 
 		}else if(node.type == 'predicate'){
@@ -238,7 +244,7 @@ function renderFocus(){
 
 function attachEvents(){
 
-	$('.focusable').click(function(e){
+	$('.focusable:not(#firstSpan)').click(function(e){
 		e.stopPropagation();
 		$('.highlighted').removeClass('highlighted');
 		$(this).addClass('highlighted');
@@ -279,6 +285,20 @@ function attachEvents(){
 			
 		}
 		
+
+	});
+
+	$('#firstSpan').click(function(e){
+		e.stopPropagation();
+		//svuota i box
+		$('.highlighted').removeClass('highlighted');
+		$(this).addClass('highlighted');
+
+		//changeFocus notification
+		onFocus = $(this).attr('meta-focusReference');
+
+		$('#focus').text($(this).text());
+		mapCreator.changeFocus('every');
 
 	});
 
