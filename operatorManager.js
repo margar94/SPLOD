@@ -60,6 +60,8 @@ var OperatorManager = function () {
 
 		'uri' : ['is url'],
 
+		'img' : ['not'],
+
 		'and' : ['or'],
 		'or' : ['and'],
 
