@@ -34,6 +34,7 @@ var OperatorManager = function () {
 		'min' : 1,
 		'max' : 1,
 		'average' : 1,
+		'limit' :1,
 
 		'<' : 2,
 		'<=' : 2,
@@ -81,8 +82,9 @@ var OperatorManager = function () {
 		'contains': ['not'],
 		'is string': ['not'],
 		'is url': ['not'],
-		'lang': ['not']
+		'lang': ['not'],
 
+		'every': ['limit']
 
 	};
 
@@ -245,14 +247,22 @@ OperatorManager.prototype.getResultToCompleteOperator = function(){
 	var results;
 	var blankNode;
 
-	if(onFocus in resultDatatype && resultDatatype[onFocus].datatype=='literal' && pendingQuery[0] == 'lang'){
+	var operator = pendingQuery[0];
+
+	if(operator == 'limit'){
+		results = [];
+	}
+	else if(onFocus in resultDatatype && resultDatatype[onFocus].datatype=='literal' && operator == 'lang'){
 		results = literalLang[onFocus];
 	}
 	else{
 		results = savedResult[onFocus];
 	}
 
-	if(onFocus in resultDatatype &&  
+	if(operator == 'limit'){
+		blankNode = 'number';
+	}
+	else if(onFocus in resultDatatype &&  
 		(resultDatatype[onFocus].datatype=='literal' || resultDatatype[onFocus].datatype=='string')){
 			blankNode = 'text';
 	}else{
