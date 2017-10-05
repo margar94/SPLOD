@@ -113,7 +113,8 @@ function visitRenderer(node){
 	}else if(node.type == 'operator' && node != queryLogicStructure[queryLogicStructureRoot] && parent.type == 'operator' && parent.label == 'not'){
 		queryString += '<span class="operator focusable" '+utils+' >' + node.verbalization.current[0];
 		queryString += '<span><span class="operator focusable" meta-removeReference="'+parent.key+'" meta-focusReference="'+parent.key+'" id="'+parent.key+'">'+node.verbalization.current[1]+'</span></span>';
-		queryString += node.verbalization.current[2]+' ';
+		if(node.verbalization.current[2] != undefined)
+			queryString += node.verbalization.current[2]+' ';
 		if(node.label == 'range'){
 			firstChild = queryLogicStructure[node.children[0]];
 			secondChild = queryLogicStructure[node.children[1]];

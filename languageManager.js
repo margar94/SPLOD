@@ -209,6 +209,10 @@ LanguageManager.prototype.verbalizeOperator = function(operator){
 			verbalization.standard = ['that is not '];
 			verbalization.current = verbalization.standard;
 			break;
+		case 'lang':
+			verbalization.standard = ['whose lang is '];
+			verbalization.negated = ['whose lang is ', 'not '];
+			verbalization.current = verbalization.standard;
 	}
 
 	return verbalization;
