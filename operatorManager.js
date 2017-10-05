@@ -311,16 +311,20 @@ function saveResults(select, keySelect, results){
 	});
 
 	for(var i=0; i<keySelect.length; i++){
-		savedResult[keySelect[i]].sort(function(a,b) {
-		    return (a.value - b.value);
-		});
-		literalLang[keySelect[i]].sort(function(a,b) {
-		    return (a.value - b.value);
-		});
+		savedResult[keySelect[i]].sort(compare);
+		literalLang[keySelect[i]].sort(compare);
 	}
 
 	//console.log(literalLang);
 	
+}
+
+function compare(a,b) {
+  if (a.value < b.value)
+    return -1;
+  if (a.value > b.value)
+    return 1;
+  return 0;
 }
 
 function objInArray(obj, arr){
