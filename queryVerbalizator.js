@@ -70,7 +70,7 @@ function verbalizeQuery(){
 function visitVerbalizator(node){
 	if(node.parent == null) // root
 		node.verbalization.current = node.verbalization.first;
-	else if(queryLogicMap[node.parent].type == 'operator' && queryLogicMap[node.parent].label == 'not'){
+	else if(queryLogicStructure[node.parent].type == 'operator' && queryLogicStructure[node.parent].label == 'not'){
 		//not operator changes all his children verbalization
 		node.verbalization.current = node.verbalization.negated;
 		/*if(node.type == 'predicate' || node.label == 'is url' || node.label == 'is string'){
@@ -79,19 +79,19 @@ function visitVerbalizator(node){
 			node.verbalization.current = node.verbalization.truncated;
 		}*/
 	}else if(node.type == 'concept'){
-		if(queryLogicMap[node.parent].type == 'concept')
+		if(queryLogicStructure[node.parent].type == 'concept')
 			node.verbalization.current = node.verbalization.modified;
-		else if(queryLogicMap[node.parent].type == 'predicate' && queryLogicMap[node.parent].direction == 'direct'){ 
+		else if(queryLogicStructure[node.parent].type == 'predicate' && queryLogicStructure[node.parent].direction == 'direct'){ 
 			node.verbalization.current = node.verbalization.truncated;
 			if(node.predicatesCounter%2 == 0){
-				queryLogicMap[node.parent].verbalization.current = queryLogicMap[node.parent].verbalization.modified;
+				queryLogicStructure[node.parent].verbalization.current = queryLogicStructure[node.parent].verbalization.modified;
 			}
 		}
 	}
 	else if(node.type == 'predicate'){
-		if(queryLogicMap[node.parent].type == 'predicate' && queryLogicMap[node.parent].direction == 'direct'){
+		if(queryLogicStructure[node.parent].type == 'predicate' && queryLogicStructure[node.parent].direction == 'direct'){
 			if(node.predicatesCounter%2 == 0){
-				queryLogicMap[node.parent].verbalization.current = queryLogicMap[node.parent].verbalization.modified;
+				queryLogicStructure[node.parent].verbalization.current = queryLogicStructure[node.parent].verbalization.modified;
 				node.verbalization.current = node.verbalization.truncated;
 			}
 		}

@@ -466,8 +466,11 @@ QueryExecutor.prototype.executeUserQuery = function(querySPARQL){
 							querySPARQL.where.join(' ') +
 						" } " +
 					" } ";
-		if(querySPARQL.limit)
-			query += "LIMIT " + querySPARQL.limit;  
+		if(resultLimit)
+			query += "LIMIT " + resultLimit; 
+		else{
+			query += "LIMIT 100"; 
+		} 
 
 		console.log(query);
 		

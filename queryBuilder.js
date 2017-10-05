@@ -65,7 +65,7 @@ function buildQuery(){
 
 			visitSPARQL(currentNode);
 		}
-		querySPARQL.limit = false;
+		//querySPARQL.limit = false;
 	}
 
 	executor.executeUserQuery(querySPARQL);

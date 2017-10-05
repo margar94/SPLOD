@@ -34,8 +34,8 @@ var OperatorManager = function () {
 		'min' : 1,
 		'max' : 1,
 		'average' : 1,
-		'limit' :1,
-
+		
+		'limit' :2,
 		'<' : 2,
 		'<=' : 2,
 		'>' : 2,
@@ -309,6 +309,15 @@ function saveResults(select, keySelect, results){
 		}
 
 	});
+
+	for(var i=0; i<keySelect.length; i++){
+		savedResult[keySelect[i]].sort(function(a,b) {
+		    return (a.value - b.value);
+		});
+		literalLang[keySelect[i]].sort(function(a,b) {
+		    return (a.value - b.value);
+		});
+	}
 
 	//console.log(literalLang);
 	
