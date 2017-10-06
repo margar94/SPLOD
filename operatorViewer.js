@@ -60,8 +60,7 @@ function renderReusableResultList(reusableResults){
 		var input = $("<input/>")
 			.attr('type', reusableResults.blankNode)
 			.on('keyup', function(){
-				resultLimit = this.value;
-				console.log(resultLimit);
+				operatorManager.selectedReusableResult(this.value);
 			})
 			.appendTo(blankNode);
 

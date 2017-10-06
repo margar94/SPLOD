@@ -274,7 +274,7 @@ MapCreator.prototype.selectedPredicate = function(selectedUrl, selectedLabel, pr
 
 }
 
-//update focus
+//update focus and notify operatorManager when USER change focus
 MapCreator.prototype.changeFocus = function(newElementOnFocus){
 	elementOnFocus = newElementOnFocus;
 
@@ -310,14 +310,11 @@ MapCreator.prototype.getTopElement = function(key){
 	return node.key;
 }
 
-
-
 function updateAndNotifyFocus(key){
 	elementOnFocus = key;
 
 	if(operatorManager == null)
 		operatorManager = new OperatorManager;
-
 	operatorManager.changedFocus(elementOnFocus, false);
 }
 
@@ -709,6 +706,22 @@ MapCreator.prototype.selectedOperator = function(pendingQuery){
 
 			updateAndNotifyFocus(conjunctionKey);
 
+			break;
+
+		case 'limit':
+			resultLimit = pendingQuery[1];
+
+			if(operatorManager == null)
+				operatorManager = new OperatorManager;
+			operatorManager.changedFocus(elementOnFocus, false);
+
+			if(queryVerbalizator == null)
+				queryVerbalizator = new QueryVerbalizator;
+			queryVerbalizator.updateQuery(rootQueryLogicMap, queryLogicMap, elementOnFocus);
+
+			if(queryBuilder == null)
+				queryBuilder = new QueryBuilder;
+			queryBuilder.updateQuery(rootQueryLogicMap, queryLogicMap);
 			break;
 
 	}

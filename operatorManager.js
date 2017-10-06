@@ -84,7 +84,7 @@ var OperatorManager = function () {
 		'is url': ['not'],
 		'lang': ['not'],
 
-		'every': ['limit']
+		'limit': ['limit']
 
 	};
 
@@ -343,7 +343,6 @@ function saveResults(select, keySelect, results){
 					originalArray[k].value == current.value && originalArray[k].url == current.url){
 				occurrences++;
 				k++;
-				console.log('match');
 			}
 			j=k;
 			current.occurrences = occurrences;
@@ -353,12 +352,9 @@ function saveResults(select, keySelect, results){
 		savedResult[keySelect[i]]=newArray;
 	}
 
-	console.log(savedResult);
-
 }
 
 function sort(arr, datatype){
-	console.log(datatype);
 	if(datatype == 'number')
 		arr.sort(compareNumber);
 	else

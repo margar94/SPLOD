@@ -196,12 +196,6 @@ function renderFocus(){
 	if(onFocus!=null){
 		document.getElementById(onFocus).className +=' highlighted';
 
-		var number = queryLogicStructure[onFocus].index; 
-		var label = languageManager.getOrdinalNumber(number) + " " + queryLogicStructure[onFocus].label;
-
-		$('#focus').text(' ' + label);
-		//mapCreator.changeFocus(onFocus);
-
 		var size = activeAjaxRequest.length;
 		if(size != 0){
 			for(var i=0; i<size;i++){
@@ -210,17 +204,30 @@ function renderFocus(){
 			activeAjaxRequest = [];
 		}
 
+		if(onFocus=='limit'){
+			$('#focus').text(' ' + $('#limit').text());
+			//gestione box per il limit
+		}else{
 
-		if(queryLogicStructure[onFocus].type == 'concept'){
-			updateBoxesFromConcept(queryLogicStructure[onFocus].url, queryLogicStructure[onFocus].label);
-		}else if(queryLogicStructure[onFocus].type == 'predicate'){
-			updateBoxesFromPredicate(queryLogicStructure[onFocus].url, queryLogicStructure[onFocus].label, queryLogicStructure[onFocus].direction);
-		}else if(queryLogicStructure[onFocus].type == 'something'){
-			var parent = queryLogicStructure[queryLogicStructure[onFocus].parent];
-			updateBoxesFromPredicate(parent.url, parent.label, parent.direction);
-		}else if(queryLogicStructure[onFocus].type == 'everything'){
-			fillConcepts();
-			fillPredicates();
+			var number = queryLogicStructure[onFocus].index; 
+			var label = languageManager.getOrdinalNumber(number) + " " + queryLogicStructure[onFocus].label;
+
+			$('#focus').text(' ' + label);
+			//mapCreator.changeFocus(onFocus);
+
+			if(queryLogicStructure[onFocus].type == 'concept'){
+				updateBoxesFromConcept(queryLogicStructure[onFocus].url, queryLogicStructure[onFocus].label);
+			}else if(queryLogicStructure[onFocus].type == 'predicate'){
+				updateBoxesFromPredicate(queryLogicStructure[onFocus].url, queryLogicStructure[onFocus].label, queryLogicStructure[onFocus].direction);
+			}else if(queryLogicStructure[onFocus].type == 'something'){
+				var parent = queryLogicStructure[queryLogicStructure[onFocus].parent];
+				updateBoxesFromPredicate(parent.url, parent.label, parent.direction);
+			}else if(queryLogicStructure[onFocus].type == 'everything'){
+				fillConcepts();
+				fillPredicates();
+			}else if(queryLogicStructure[onFocus].type == 'operator'){
+				//gestione box operatori
+			}
 		}
 		
 	}
@@ -246,7 +253,7 @@ function renderFocus(){
 
 function attachEvents(){
 
-	$('.focusable:not(#firstSpan)').click(function(e){
+	$('.focusable:not(#limit)').click(function(e){
 		e.stopPropagation();
 		$('.highlighted').removeClass('highlighted');
 		$(this).addClass('highlighted');
@@ -290,7 +297,7 @@ function attachEvents(){
 
 	});
 
-	$('#firstSpan').click(function(e){
+	$('#limit').click(function(e){
 		e.stopPropagation();
 		//svuota i box
 		$('.highlighted').removeClass('highlighted');
@@ -300,7 +307,7 @@ function attachEvents(){
 		onFocus = $(this).attr('meta-focusReference');
 
 		$('#focus').text($(this).text());
-		mapCreator.changeFocus('every');
+		mapCreator.changeFocus('limit');
 
 	});
 
