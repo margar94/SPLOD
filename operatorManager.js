@@ -338,15 +338,15 @@ function saveResults(select, keySelect, results){
 		while(j<originalArray.length){
 			current = originalArray[j];
 			var k=j+1;
-			var occorrences = 1;
+			var occurrences = 1;
 			while(k<originalArray.length && 
 					originalArray[k].value == current.value && originalArray[k].url == current.url){
-				occorrences++;
+				occurrences++;
 				k++;
 				console.log('match');
 			}
 			j=k;
-			current.occorrences = occorrences;
+			current.occurrences = occurrences;
 			newArray.push(current);
 		}
 
