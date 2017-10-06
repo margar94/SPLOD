@@ -136,9 +136,9 @@ function visitRenderer(node){
 
 			if(node.parent == null){
 				if(resultLimit == false)
-					queryString += '<span class="focusable operator" id="firstSpan" meta-focusReference="firstSpan">'+node.verbalization.current[0]+'</span>';
+					queryString += '<span class="focusable operator" id="limit" meta-focusReference="limit">'+node.verbalization.current[0]+'</span>';
 				else 
-					queryString += '<span class="focusable operator" id="firstSpan" meta-focusReference="firstSpan">'+resultLimit+' </span>';
+					queryString += '<span class="focusable operator" id="limit" meta-focusReference="limit">'+resultLimit+' </span>';
 			}else
 				queryString += node.verbalization.current[0];
 			
