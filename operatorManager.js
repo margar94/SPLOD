@@ -93,119 +93,125 @@ var OperatorManager = function () {
 
 OperatorManager.prototype.queryResult = function(select, labelSelect, keySelect, results){
 
+	var result = results[0];
+
+	for(field in result){
+		var arrayIndex = $.inArray('?'+field, select);
+		resultDatatype[keySelect[arrayIndex]] = {}; 
+		resultDatatype[keySelect[arrayIndex]].datatype = []; 
+	}
+
 	//console.log(results);
 	$.each(results, function(index){
 
-		var element = results[index];
+		var result = results[index];
 
-		for(field in element){
+		for(field in result){
 
-			var type = element[field].type;
+			var type = result[field].type;
 			// from uri to label for better user experience
 			if(type == 'uri'){
-				element[field].url = element[field].value;
-				element[field].value = createLabel(element[field].value);
+				result[field].url = result[field].value;
+				result[field].value = createLabel(result[field].value);
 			}
+
+			var arrayIndex = $.inArray('?'+field, select);
+			switch(type){
+				case 'uri' : 
+				case 'anyURI':
+					var url = result[field].url;
+					if(url.match(/^https?:\/\/(?:[a-z\-]+\.)+[a-z]{2,6}(?:\/[^\/#?]+)+\.(?:jpe?g|gif|png)/)!=null){
+						if($.inArray('img', resultDatatype[keySelect[arrayIndex]].datatype)<0)
+							resultDatatype[keySelect[arrayIndex]].datatype.push('img');
+					}
+					else{
+						if($.inArray('uri', resultDatatype[keySelect[arrayIndex]].datatype)<0)
+							resultDatatype[keySelect[arrayIndex]].datatype.push('uri');
+					}
+					break;
+				
+				case 'typed-literal' : 
+					var datatype = createLabel(result[field].datatype);
+
+					switch(datatype){
+						/*case 'integer':
+						case 'nonNegativeInteger':
+						case 'negativeInteger':
+						case 'nonPositiveInteger':
+						case 'positiveInteger':
+						case 'year':
+						case 'gYear':
+						case 'gMonth':
+						case 'gDay':
+						case 'gMonthDay':
+						case 'gYearMonth':
+						case 'kilometre':
+						case 'kilogramPerCubicMetre':
+						case 'klometrePerSecond':
+						case 'day':
+						case 'double':
+						case 'float':
+							var index = $.inArray('?'+field, select);
+							resultDatatype[keySelect[index]] = {datatype : 'number'};
+							break;			
+						*/
+						case 'date':
+						case 'dateTime':
+						case 'time':
+							if($.inArray('date', resultDatatype[keySelect[arrayIndex]].datatype)<0)
+								resultDatatype[keySelect[arrayIndex]].datatype.push('date');
+							break;
+						case 'langString':
+							if($.inArray('string', resultDatatype[keySelect[arrayIndex]].datatype)<0)
+								resultDatatype[keySelect[arrayIndex]].datatype.push('string');
+							break;
+						default : 
+							if($.isNumeric(result[field].value)){
+								if($.inArray('number', resultDatatype[keySelect[arrayIndex]].datatype)<0)
+									resultDatatype[keySelect[arrayIndex]].datatype.push('number');
+							}
+							else{
+								if($.inArray('string', resultDatatype[keySelect[arrayIndex]].datatype)<0)
+									resultDatatype[keySelect[arrayIndex]].datatype.push('string');
+							}
+							//console.log('type : typed-literal, datatype:' +datatype);
+							break;
+					}
+
+					break;
+
+				case 'literal':
+					if($.inArray('literal', resultDatatype[keySelect[arrayIndex]].datatype)<0)
+						resultDatatype[keySelect[arrayIndex]].datatype.push('literal');
+					break;
+
+				case 'boolean': 
+					if($.inArray('boolean', resultDatatype[keySelect[arrayIndex]].datatype)<0)
+						resultDatatype[keySelect[arrayIndex]].datatype.push('boolean');
+					break;
+
+				default : 
+					if($.isNumeric(result[field].value)){
+						if($.inArray('number', resultDatatype[keySelect[arrayIndex]].datatype)<0)
+							resultDatatype[keySelect[arrayIndex]].datatype.push('number');
+					}
+					else{
+						if($.inArray('string', resultDatatype[keySelect[arrayIndex]].datatype)<0)
+							resultDatatype[keySelect[arrayIndex]].datatype.push('string');
+					}
+					//console.log('type:' +type);
+					break;
+
+			}
+
+
+
 
 		}
 
 	});
 
-	var result = results[0];
-
-	for(field in result){
-
-		var type = result[field].type;
-
-		switch(type){
-			case 'uri' : 
-			case 'anyURI':
-				var url = result[field].url;
-				if(url.match(/^https?:\/\/(?:[a-z\-]+\.)+[a-z]{2,6}(?:\/[^\/#?]+)+\.(?:jpe?g|gif|png)/)!=null){
-					var index = $.inArray('?'+field, select);
-					resultDatatype[keySelect[index]] = {datatype : 'img'};
-				}
-				else{
-					var index = $.inArray('?'+field, select);
-					resultDatatype[keySelect[index]] = {datatype : 'uri'};	
-				}
-				break;
-			
-			case 'typed-literal' : 
-				var datatype = createLabel(result[field].datatype);
-
-				switch(datatype){
-					/*case 'integer':
-					case 'nonNegativeInteger':
-					case 'negativeInteger':
-					case 'nonPositiveInteger':
-					case 'positiveInteger':
-					case 'year':
-					case 'gYear':
-					case 'gMonth':
-					case 'gDay':
-					case 'gMonthDay':
-					case 'gYearMonth':
-					case 'kilometre':
-					case 'kilogramPerCubicMetre':
-					case 'klometrePerSecond':
-					case 'day':
-					case 'double':
-					case 'float':
-						var index = $.inArray('?'+field, select);
-						resultDatatype[keySelect[index]] = {datatype : 'number'};
-						break;			
-					*/
-					case 'date':
-					case 'dateTime':
-					case 'time':
-						var index = $.inArray('?'+field, select);
-						resultDatatype[keySelect[index]] = {datatype : 'date'};
-						break;
-					case 'langString':
-						var index = $.inArray('?'+field, select);
-						resultDatatype[keySelect[index]] = {datatype : 'string'};
-						break;
-					default : 
-						if($.isNumeric(result[field].value)){
-							var index = $.inArray('?'+field, select);
-							resultDatatype[keySelect[index]] = {datatype : 'number'};
-						}
-						else{
-							var index = $.inArray('?'+field, select);
-							resultDatatype[keySelect[index]] = {datatype : 'string'};
-						}
-						//console.log('type : typed-literal, datatype:' +datatype);
-						break;
-				}
-
-				break;
-
-			case 'literal':
-				var index = $.inArray('?'+field, select);
-				resultDatatype[keySelect[index]] = {datatype : 'literal'};
-				break;
-
-			case 'boolean': 
-				var index = $.inArray('?'+field, select);
-				resultDatatype[keySelect[index]] = {datatype : 'string'};
-				break;
-
-			default : 
-				if($.isNumeric(result[field].value)){
-					var index = $.inArray('?'+field, select);
-					resultDatatype[keySelect[index]] = {datatype : 'number'};
-				}
-				else{
-					var index = $.inArray('?'+field, select);
-					resultDatatype[keySelect[index]] = {datatype : 'string'};
-				}
-				//console.log('type:' +type);
-				break;
-
-		}
-
-	}
+	
 
 	//console.log(resultDatatype);
 
@@ -249,7 +255,6 @@ OperatorManager.prototype.getResultToCompleteOperator = function(){
 
 	var operator = pendingQuery[0];
 
-console.log(onFocus);
 	if(operator == 'limit'){
 		results = [];
 	}else if(onFocus in resultDatatype){ 
@@ -319,8 +324,7 @@ function saveResults(select, keySelect, results){
 		literalLang[keySelect[i]].sort(compare);
 	}
 
-	//console.log(literalLang);
-	
+		
 }
 
 function compare(a,b) {
@@ -361,11 +365,19 @@ function manageUpdateOperatorViewer(){
 
 		if(onFocus.split('_')[0] in operatorMap){
 			renderOperatorList(operatorMap[onFocus.split('_')[0]]);
-		}else if((onFocus in resultDatatype) && (resultDatatype[onFocus].datatype in operatorMap)){
-			renderOperatorList(operatorMap[resultDatatype[onFocus].datatype]);
+		}else if(onFocus in resultDatatype){
+			var listOperator = [];
+			var listDatatype = resultDatatype[onFocus].datatype;
+			for(var i=0; i<listDatatype.length; i++){
+				if(listDatatype[i] in operatorMap){
+					listOperator = listOperator.concat(operatorMap[listDatatype[i]]);
+				}
+			}
+			renderOperatorList(listOperator); 
 		}else{
 			renderOperatorList([]);
 		}
+
 	}else{
 		renderOperatorList([]);
 	}
