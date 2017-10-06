@@ -139,10 +139,11 @@ function visitRenderer(node){
 					queryString += '<span class="focusable operator" id="firstSpan" meta-focusReference="firstSpan">'+node.verbalization.current[0]+'</span>';
 				else 
 					queryString += '<span class="focusable operator" id="firstSpan" meta-focusReference="firstSpan">'+resultLimit+' </span>';
-			}else 
-				node.verbalization.current[0];
+			}else
+				queryString += node.verbalization.current[0];
+			
 			queryString += '<span class="concept focusable" '+utils+' >' + node.verbalization.current[1] + '</span>';
-
+			
 		}else if(node.type == 'predicate'){
 			
 			queryString += node.verbalization.current[0];
