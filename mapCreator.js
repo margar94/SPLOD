@@ -286,6 +286,9 @@ MapCreator.prototype.changeFocus = function(newElementOnFocus){
 
 MapCreator.prototype.isRefinement = function(key){
 	var node = queryLogicMap[key];
+	if(node.parent == null)
+		return false;
+
 	var parent = queryLogicMap[node.parent];
 
 	if(node.type == 'concept' && (parent.type == 'concept' || (parent.type == 'predicate' && parent.direction == 'direct'))){
@@ -299,7 +302,7 @@ MapCreator.prototype.getTopElement = function(key){
 	var node = queryLogicMap[key];
 	var parent = queryLogicMap[node.parent];
 
-	while(parent == null || (node.type == 'concept' && (parent.type == 'concept' || (parent.type == 'predicate' && parent.direction == 'direct')))){
+	while(node.type == 'concept' && (parent != undefined && (parent.type == 'concept' || (parent.type == 'predicate' && parent.direction == 'direct')))){
 		node = parent;
 		parent = queryLogicMap[node.parent];
 	}

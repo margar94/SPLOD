@@ -249,22 +249,15 @@ OperatorManager.prototype.getResultToCompleteOperator = function(){
 
 	var operator = pendingQuery[0];
 
+console.log(onFocus);
 	if(operator == 'limit'){
 		results = [];
-	}
-	else if(onFocus in resultDatatype && resultDatatype[onFocus].datatype=='literal' && operator == 'lang'){
-		results = literalLang[onFocus];
-	}
-	else{
-		if(mapCreator.isRefinement(onFocus)){
-			onFocus = mapCreator.getTopElement(onFocus);
-			console.log(onFocus);
-			if(onFocus in resultDatatype&& resultDatatype[onFocus].datatype=='literal' && operator == 'lang'){
-				results = literalLang[onFocus];
-			}else if(onFocus in savedResult)
-				results = savedResult[onFocus];
-			else results = [];
-		}
+	}else if(onFocus in resultDatatype){ 
+		if(resultDatatype[onFocus].datatype=='literal' && operator == 'lang')
+			results = literalLang[onFocus];
+		else results = savedResult[onFocus];
+	}else{
+		results = [];
 	}
 
 	if(operator == 'limit'){
@@ -362,6 +355,10 @@ OperatorManager.prototype.changedFocus = function(newOnFocus, userChangeFocus){
 function manageUpdateOperatorViewer(){
 	
 	if(onFocus!=null){
+
+		if(mapCreator.isRefinement(onFocus))
+			onFocus = mapCreator.getTopElement(onFocus);
+
 		if(onFocus.split('_')[0] in operatorMap){
 			renderOperatorList(operatorMap[onFocus.split('_')[0]]);
 		}else if((onFocus in resultDatatype) && (resultDatatype[onFocus].datatype in operatorMap)){
