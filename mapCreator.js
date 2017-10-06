@@ -644,7 +644,7 @@ MapCreator.prototype.selectedOperator = function(pendingQuery){
 
 				newLogicElement.children.push(keyChildren);
 			}	
-
+			updateAndNotifyFocus(elementOnFocus);
 			break;
 
 		case 'not':
