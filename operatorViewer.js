@@ -33,12 +33,6 @@ function renderOperatorList(operators){
 		else
 			li.text(element);
 
-	var badge = $("<span/>")
-		.attr('class', 'new badge')
-		.attr('data-badge-caption', '')
-		.text(element[occurences])
-		.appendTo(li);
-
 		li.appendTo(operatorList)
 			.on('click', function(){
 				operatorManager.selectedOperator($(this).attr('meta-value'));
@@ -83,11 +77,18 @@ function renderReusableResultList(reusableResults){
 		.attr('meta-value', element.value)
 		.text(element.value);
 
+
 		if('url' in element){
 			li.attr('meta-url', element.url)
 				.attr('meta-value', element.url)
 				.attr('title', element.url);
 		}
+
+		var badge = $("<span/>")
+			.attr('class', 'new badge')
+			.attr('data-badge-caption', '')
+			.text(element.occurrences)
+			.appendTo(li);
 
 		li.appendTo(reusableResultList)
 			.on('click', function(){
