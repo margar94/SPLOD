@@ -66,7 +66,8 @@ LanguageManager.prototype.verbalizePredicate = function(predicateLabel, predicat
 		verbalization.truncated.push('has ' + LanguageManager.prototype.getArticle(predicateLabel) + ' ');
 		verbalization.truncated.push(predicateLabel + ' ');
 
-		verbalization.first.push('everything that has ');
+		verbalization.first.push('every ');
+		verbalization.first.push('thing that has ');
 		verbalization.first.push(predicateLabel + ' ');
 
 	}else if(predicateDirection == 'reverse'){
@@ -86,7 +87,8 @@ LanguageManager.prototype.verbalizePredicate = function(predicateLabel, predicat
 		verbalization.truncated.push(predicateLabel + ' ');
 		verbalization.truncated.push(postLabel);
 
-		verbalization.first.push('the ');
+		verbalization.first.push('everything ');
+		verbalization.first.push('that is the ');
 		verbalization.first.push(predicateLabel + ' ');
 		verbalization.first.push(postLabel);
 	}
@@ -113,11 +115,11 @@ LanguageManager.prototype.verbalizeSomething = function(){
 LanguageManager.prototype.verbalizeEverything = function(){
 
 	verbalization = {
-		standard: ['everything '],
+		standard: ['thing '],
 		modified: [],
 		truncated: [],
-		first: ['everything '],
-		current: ['everything ']};
+		first: ['thing '],
+		current: ['thing ']};
 
 	return verbalization;
 

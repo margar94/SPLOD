@@ -126,7 +126,17 @@ function visitRenderer(node){
 
 		}else if(node.type == 'everything'){
 
-			queryString += '<span class="focusable" '+utils+' >' + node.verbalization.current[0] + '</span>';
+			if(resultLimit == false){
+				queryString += '<span class="focusable operator" id="limit" meta-focusReference="limit">every </span>';
+				queryString += '<span class="focusable" '+utils+' >' + node.verbalization.current[0] + '</span>';
+			}
+			else {
+				queryString += '<span class="focusable operator" id="limit" meta-focusReference="limit">'+resultLimit+' </span>';
+				queryString += '<span class="focusable" '+utils+' >things </span>';
+			}
+			
+
+			
 
 		}else if(node.type == 'concept'){
 
@@ -142,13 +152,29 @@ function visitRenderer(node){
 			
 		}else if(node.type == 'predicate'){
 			
-			queryString += node.verbalization.current[0];
+			if(node.parent == null){
+				if(resultLimit == false)
+					queryString += '<span class="focusable operator" id="limit" meta-focusReference="limit">'+node.verbalization.current[0]+'</span>';
+				else 
+					queryString += '<span class="focusable operator" id="limit" meta-focusReference="limit">'+resultLimit+' things </span>';
+				
+				queryString += node.verbalization.current[1];
+				if(node.direction == 'reverse')
+					utils = 'meta-removeReference="'+ node.key +'" meta-focusReference="'+node.children[0]+'" id="'+node.key+'" title="'+node.url+'"';
+				
+				queryString += '<span class="predicate focusable" '+utils+' >' + node.verbalization.current[2] + '</span>';
+				if(node.direction == 'reverse')
+					queryString += node.verbalization.current[3];
+			}else{
+				queryString += node.verbalization.current[0];
 
-			if(node.direction == 'reverse')
-				utils = 'meta-removeReference="'+ node.key +'" meta-focusReference="'+node.children[0]+'" id="'+node.key+'" title="'+node.url+'"';
-			queryString += '<span class="predicate focusable" '+utils+' >' + node.verbalization.current[1] + '</span>';
-			if(node.direction == 'reverse')
-				queryString += node.verbalization.current[2];
+				if(node.direction == 'reverse')
+					utils = 'meta-removeReference="'+ node.key +'" meta-focusReference="'+node.children[0]+'" id="'+node.key+'" title="'+node.url+'"';
+				
+				queryString += '<span class="predicate focusable" '+utils+' >' + node.verbalization.current[1] + '</span>';
+				if(node.direction == 'reverse')
+					queryString += node.verbalization.current[2];
+			}
 
 		}else if(node.type == 'startSpan'){
 
