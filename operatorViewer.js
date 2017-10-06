@@ -33,6 +33,12 @@ function renderOperatorList(operators){
 		else
 			li.text(element);
 
+	var badge = $("<span/>")
+		.attr('class', 'new badge')
+		.attr('data-badge-caption', '')
+		.text(element[occurences])
+		.appendTo(li);
+
 		li.appendTo(operatorList)
 			.on('click', function(){
 				operatorManager.selectedOperator($(this).attr('meta-value'));
