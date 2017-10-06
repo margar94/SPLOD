@@ -406,12 +406,13 @@ function manageUpdateOperatorViewer(){
 	
 	if(onFocus!=null){
 
-		if(mapCreator.isRefinement(onFocus))
-			onFocus = mapCreator.getTopElement(onFocus);
-
-		if(onFocus.split('_')[0] in operatorMap){
+		if(onFocus.split('_')[0] in operatorMap){ //onFocus is an operator
 			renderOperatorList(operatorMap[onFocus.split('_')[0]]);
-		}else if(onFocus in resultDatatype){
+		}else{ 
+			if(mapCreator.isRefinement(onFocus))
+				onFocus = mapCreator.getTopElement(onFocus);
+			
+			if(onFocus in resultDatatype){
 			/*var listOperator = [];
 			var listDatatype = resultDatatype[onFocus].datatype;
 			
@@ -421,12 +422,13 @@ function manageUpdateOperatorViewer(){
 				}
 			}
 			renderOperatorList(listOperator); */
-			if(resultDatatype[onFocus].datatype.length>1)
-				renderOperatorList(operatorMap['string']); 
-			else		
-				renderOperatorList(operatorMap[resultDatatype[onFocus].datatype[0]]); 
-		}else{
-			renderOperatorList([]);
+				if(resultDatatype[onFocus].datatype.length>1)
+					renderOperatorList(operatorMap['string']); 
+				else		
+					renderOperatorList(operatorMap[resultDatatype[onFocus].datatype[0]]); 
+			}else{
+				renderOperatorList([]);
+			}
 		}
 
 	}else{
