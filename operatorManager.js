@@ -320,19 +320,65 @@ function saveResults(select, keySelect, results){
 	});
 
 	for(var i=0; i<keySelect.length; i++){
-		savedResult[keySelect[i]].sort(compare);
-		literalLang[keySelect[i]].sort(compare);
+		var datatype;
+		if(resultDatatype[keySelect[i]].datatype.length>1)
+			datatype = 'string';
+		else
+			datatype = resultDatatype[keySelect[i]].datatype[0];
+		sort(savedResult[keySelect[i]], datatype);
+		sort(literalLang[keySelect[i]], 'string');
 	}
 
-		
+	for(var i=0; i<keySelect.length; i++){
+		var originalArray = savedResult[keySelect[i]];
+		var newArray = [];
+
+		var current;
+		var j=0;
+		while(j<originalArray.length){
+			current = originalArray[j];
+			var k=j+1;
+			var occorrences = 1;
+			while(k<originalArray.length && 
+					originalArray[k].value == current.value && originalArray[k].url == current.url){
+				occorrences++;
+				k++;
+				console.log('match');
+			}
+			j=k;
+			current.occorrences = occorrences;
+			newArray.push(current);
+		}
+
+		savedResult[keySelect[i]]=newArray;
+	}
+
+	console.log(savedResult);
+
 }
 
-function compare(a,b) {
-  if (a.value < b.value)
-    return -1;
-  if (a.value > b.value)
-    return 1;
-  return 0;
+function sort(arr, datatype){
+	console.log(datatype);
+	if(datatype == 'number')
+		arr.sort(compareNumber);
+	else
+		arr.sort(compareString);
+}
+
+function compareString(a,b) {
+	if (a.value < b.value)
+		return -1;
+	if (a.value > b.value)
+	    return 1;
+	return 0;
+}
+
+function compareNumber(a,b){
+	if ((a.value - b.value)<0)
+	    return -1;
+	if ((a.value - b.value)>0)
+		return 1;
+	return 0;
 }
 
 function objInArray(obj, arr){
@@ -366,14 +412,19 @@ function manageUpdateOperatorViewer(){
 		if(onFocus.split('_')[0] in operatorMap){
 			renderOperatorList(operatorMap[onFocus.split('_')[0]]);
 		}else if(onFocus in resultDatatype){
-			var listOperator = [];
+			/*var listOperator = [];
 			var listDatatype = resultDatatype[onFocus].datatype;
+			
 			for(var i=0; i<listDatatype.length; i++){
 				if(listDatatype[i] in operatorMap){
 					listOperator = listOperator.concat(operatorMap[listDatatype[i]]);
 				}
 			}
-			renderOperatorList(listOperator); 
+			renderOperatorList(listOperator); */
+			if(resultDatatype[onFocus].datatype.length>1)
+				renderOperatorList(operatorMap['string']); 
+			else		
+				renderOperatorList(operatorMap[resultDatatype[onFocus].datatype[0]]); 
 		}else{
 			renderOperatorList([]);
 		}

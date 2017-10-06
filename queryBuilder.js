@@ -171,21 +171,21 @@ function visitSPARQL(node){
 			case 'contains': 
 				claus.push('FILTER(');
 				claus.push(notLabel);
-				claus.push('contains('+parentVariable+',"'+queryLogicStructure[node.children[0]].label+'")');
+				claus.push('contains(xsd:string('+parentVariable+'),"'+queryLogicStructure[node.children[0]].label+'")');
 				claus.push(')');
 				break;
 
 			case 'starts with': 
 				claus.push('FILTER(');
 				claus.push(notLabel);
-				claus.push('strStarts('+parentVariable+',"'+queryLogicStructure[node.children[0]].label+'")');
+				claus.push('strStarts(xsd:string('+parentVariable+'),"'+queryLogicStructure[node.children[0]].label+'")');
 				claus.push(')');
 				break;
 
 			case 'ends with': 
 				claus.push('FILTER(');
 				claus.push(notLabel);
-				claus.push('strEnds('+parentVariable+',"'+queryLogicStructure[node.children[0]].label+'")');
+				claus.push('strEnds(xsd:string('+parentVariable+'),"'+queryLogicStructure[node.children[0]].label+'")');
 				claus.push(')');
 				break;
 
