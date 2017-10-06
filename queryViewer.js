@@ -8,11 +8,7 @@ var mapCreator;
 
 var onFocus;
 
-function initQueryViewer(){
-	/*boxFiller = new BoxFiller();
-	queryVerbalizator = new QueryVerbalizator();
-	languageManager = new LanguageManager();*/
-}
+function initQueryViewer(){}
 
 var QueryViewer= function () {
 	if(QueryViewer.prototype._singletonInstance){
@@ -206,7 +202,7 @@ function renderFocus(){
 
 		if(onFocus=='limit'){
 			$('#focus').text(' ' + $('#limit').text());
-			//gestione box per il limit
+			updateBoxesFromOperator('limit');
 		}else{
 
 			var number = queryLogicStructure[onFocus].index; 
@@ -226,7 +222,7 @@ function renderFocus(){
 				fillConcepts();
 				fillPredicates();
 			}else if(queryLogicStructure[onFocus].type == 'operator'){
-				//gestione box operatori
+				updateBoxesFromOperator(queryLogicStructure[onFocus].label);
 			}
 		}
 		
@@ -292,6 +288,10 @@ function attachEvents(){
 			fillConcepts();
 			fillPredicates();
 			
+		}else if(queryLogicStructure[onFocus].type == 'operator'){
+			
+			updateBoxesFromOperator(queryLogicStructure[onFocus].label);
+
 		}
 		
 
@@ -299,7 +299,9 @@ function attachEvents(){
 
 	$('#limit').click(function(e){
 		e.stopPropagation();
-		//svuota i box
+
+		updateBoxesFromOperator('limit');
+
 		$('.highlighted').removeClass('highlighted');
 		$(this).addClass('highlighted');
 

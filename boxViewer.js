@@ -183,3 +183,9 @@ function renderReversePredicates(reverseArray){
 			});
 	});
 }
+
+function updateBoxesFromOperator(operator){
+	$("#conceptsList").empty();
+	$("#directPredicatesList").empty();	
+	$("#reversePredicatesList").empty();	
+}

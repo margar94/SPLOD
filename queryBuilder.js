@@ -117,7 +117,7 @@ function visitSPARQL(node){
 	}else if(node.type == 'predicate'){
 		
 		var addNot = false;
-		if(queryLogicStructure[node.parent].type == 'operator' && queryLogicStructure[node.parent].label == 'not')
+		if(node.parent!=null && queryLogicStructure[node.parent].type == 'operator' && queryLogicStructure[node.parent].label == 'not')
 			addNot = true;
 
 		if(addNot){

@@ -170,16 +170,3 @@ BoxFiller.prototype.updatePredicatesFromPredicate = function(predUrl, predLabel,
 	
 }
 
-
-
-
-BoxFiller.prototype.selectedAttribute = function(attributeUrl, attributeLabel){
-	//mapCreator.selectedPredicate(attributeUrl, attributeLabel, 'none');
-}
-
-
-
-
-/*
-	aggiungere operatori
-*/
