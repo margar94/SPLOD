@@ -51,19 +51,21 @@ function renderReusableResultList(reusableResults){
 	reusableResultList.empty();
 	reusableResultList.show();
 
-	var blankNode = $("<li/>")
-		.attr('class', 'collection-item');
+	if(reusableResults.blankNode != null){
+		var blankNode = $("<li/>")
+			.attr('class', 'collection-item');
 
-	var input = $("<input/>")
-		.attr('type', reusableResults.blankNode)
-		.on('keyup', function(){
-			resultLimit = this.value;
-			console.log(resultLimit);
-		})
-		.appendTo(blankNode);
+		var input = $("<input/>")
+			.attr('type', reusableResults.blankNode)
+			.on('keyup', function(){
+				resultLimit = this.value;
+				console.log(resultLimit);
+			})
+			.appendTo(blankNode);
 
-	blankNode.appendTo(reusableResultList);
-
+		blankNode.appendTo(reusableResultList);
+	}
+	
 	$.each(reusableResults.results, function(index){
 		var element = reusableResults.results[index];
 

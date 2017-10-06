@@ -256,17 +256,28 @@ OperatorManager.prototype.getResultToCompleteOperator = function(){
 		results = literalLang[onFocus];
 	}
 	else{
-		results = savedResult[onFocus];
+		if(mapCreator.isRefinement(onFocus)){
+			onFocus = mapCreator.getTopElement(onFocus);
+			console.log(onFocus);
+			if(onFocus in resultDatatype&& resultDatatype[onFocus].datatype=='literal' && operator == 'lang'){
+				results = literalLang[onFocus];
+			}else if(onFocus in savedResult)
+				results = savedResult[onFocus];
+			else results = [];
+		}
 	}
 
 	if(operator == 'limit'){
 		blankNode = 'number';
 	}
-	else if(onFocus in resultDatatype &&  
-		(resultDatatype[onFocus].datatype=='literal' || resultDatatype[onFocus].datatype=='string')){
+	else if(onFocus in resultDatatype){
+		if(resultDatatype[onFocus].datatype=='literal' || resultDatatype[onFocus].datatype=='string'){
 			blankNode = 'text';
-	}else{
+		}else{
 			blankNode = resultDatatype[onFocus].datatype;
+		}
+	}else{
+		blankNode = null;
 	}
 
 	return {blankNode : blankNode, results: results};

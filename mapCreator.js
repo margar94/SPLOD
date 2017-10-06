@@ -284,11 +284,37 @@ MapCreator.prototype.changeFocus = function(newElementOnFocus){
 
 }
 
+MapCreator.prototype.isRefinement = function(key){
+	var node = queryLogicMap[key];
+	var parent = queryLogicMap[node.parent];
+
+	if(node.type == 'concept' && (parent.type == 'concept' || (parent.type == 'predicate' && parent.direction == 'direct'))){
+		return true;
+	}
+
+	return false;
+}
+
+MapCreator.prototype.getTopElement = function(key){
+	var node = queryLogicMap[key];
+	var parent = queryLogicMap[node.parent];
+
+	while(parent == null || (node.type == 'concept' && (parent.type == 'concept' || (parent.type == 'predicate' && parent.direction == 'direct')))){
+		node = parent;
+		parent = queryLogicMap[node.parent];
+	}
+
+	return node.key;
+}
+
+
+
 function updateAndNotifyFocus(key){
 	elementOnFocus = key;
 
 	if(operatorManager == null)
 		operatorManager = new OperatorManager;
+
 	operatorManager.changedFocus(elementOnFocus, false);
 }
 
