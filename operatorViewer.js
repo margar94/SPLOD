@@ -14,7 +14,6 @@ function renderResult(select, labelSelect, results){
 }
 
 function renderOperatorList(operators){
-	console.log(operators);
 
 	var operatorList = $('#operatorList');
 	operatorList.empty();

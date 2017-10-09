@@ -9,7 +9,7 @@ function renderResultTable(select, labelSelect, results){
 }
 
 function createTable(select, labelSelect, results){
-	console.log(results);
+	//console.log(results);
 
 	var resultsTable = $('#resultsTable');
 	resultsTable.empty();

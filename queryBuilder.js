@@ -76,14 +76,44 @@ function visitSPARQL(key){
 			}
 
 			var child;
-			for(var i=1; i<node.children.length; i+2){ //only 'and' and 'or' nodes
+			for(var i=1; i<node.children.length; i = i+2){ //only 'and' and 'or' nodes
 				child = queryLogicStructure[node.children[i]];
 				if(child.type=='operator' && child.label=='and'){
 					nodeWhere = nodeWhere.concat(childWhere[i-1], childWhere[i+1]);
-				}else if(child.type=='operator' && child.label=='or'){//or exclusive
+				}else if(child.type=='operator' && child.label=='xor'){//or exclusive
 					nodeWhere = nodeWhere.concat(['{'], childWhere[i-1],['} UNION {'], childWhere[i+1],['}']);
+				}else if(child.type=='operator' && child.label=='or'){//or inclusive
+					var j = i + 2;
+					var block = [];
+					block.push(childWhere[i-1]);
+					block.push(childWhere[i+1]);
+
+					while((j < node.children.length) && queryLogicStructure[node.children[j]].type == 'operator' && queryLogicStructure[node.children[j]].label == 'or'){
+						block.push(childWhere[j+1]);
+						j = j + 2;
+					}
+					i = j - 2;
+					
+					for(var z = 0; z < block.length; z++){
+
+						var fixedBlock = block.splice(0,1)[0];
+						nodeWhere = nodeWhere.concat(['{'],fixedBlock);
+
+						block.splice(block.length,0,fixedBlock);
+
+						for(var numberOfOptional = 0; numberOfOptional < block.length-1; numberOfOptional++){
+							var optionalBlock = block.splice(0,1)[0];
+							nodeWhere = nodeWhere.concat(['OPTIONAL{'],optionalBlock, ['}']);
+							block.splice(block.length, 0, optionalBlock);
+						}
+
+						block.splice(block.length,0,(block.splice(0,1)[0]));
+
+						nodeWhere = nodeWhere.concat(['}']);
+						if(z != block.length-1)
+							nodeWhere = nodeWhere.concat(['UNION']);
+					}
 				}
-				//manage or inclusive
 			}
 
 			break;
@@ -118,7 +148,8 @@ function visitSPARQL(key){
 			nodeWhere = nodeWhere.concat([node.variable, ' a', ' <'+node.url+'>.']);
 
 			for(var i=0; i<node.children.length; i++){ 
-				childQuery = visitSPARQL(node.children[i]); 
+				childQuery = visitSPARQL(node.children[i]);
+				console.log(childQuery); 
 
 				nodeSelect = nodeSelect.concat(childQuery.select);
 				nodeLabelSelect = nodeLabelSelect.concat(childQuery.labelSelect);
@@ -132,16 +163,46 @@ function visitSPARQL(key){
 			}
 
 			var child;
-			for(var i=1; i<node.children.length; i+2){ //only 'and' and 'or' nodes
+			for(var i=1; i<node.children.length; i = i+2){ //only 'and' and 'or' nodes
 				child = queryLogicStructure[node.children[i]];
+			console.log(child);
 				if(child.type=='operator' && child.label=='and'){
 					nodeWhere = nodeWhere.concat(childWhere[i-1], childWhere[i+1]);
-				}else if(child.type=='operator' && child.label=='or'){//or exclusive
+				}else if(child.type=='operator' && child.label=='xor'){//or exclusive
 					nodeWhere = nodeWhere.concat(['{'], childWhere[i-1],['} UNION {'], childWhere[i+1],['}']);
+				}else if(child.type=='operator' && child.label=='or'){//or inclusive
+					var j = i + 2;
+					var block = [];
+					block.push(childWhere[i-1]);
+					block.push(childWhere[i+1]);
+
+					while((j < node.children.length) && queryLogicStructure[node.children[j]].type == 'operator' && queryLogicStructure[node.children[j]].label == 'or'){
+						block.push(childWhere[j+1]);
+						j = j + 2;
+					}
+					i = j - 2;
+					
+					for(var z = 0; z < block.length; z++){
+
+						var fixedBlock = block.splice(0,1)[0];
+						nodeWhere = nodeWhere.concat(['{'],fixedBlock);
+
+						block.splice(block.length,0,fixedBlock);
+
+						for(var numberOfOptional = 0; numberOfOptional < block.length-1; numberOfOptional++){
+							var optionalBlock = block.splice(0,1)[0];
+							nodeWhere = nodeWhere.concat(['OPTIONAL{'],optionalBlock, ['}']);
+							block.splice(block.length, 0, optionalBlock);
+						}
+
+						block.splice(block.length,0,(block.splice(0,1)[0]));
+
+						nodeWhere = nodeWhere.concat(['}']);
+						if(z != block.length-1)
+							nodeWhere = nodeWhere.concat(['UNION']);
+					}
 				}
-				//manage or inclusive
 			}
-			
 			break;
 		case 'predicate' :
 			if(node.direction == 'direct'){
@@ -174,14 +235,44 @@ function visitSPARQL(key){
 					}
 
 					var child;
-					for(var i=1; i<node.children.length; i+2){ //only 'and' and 'or' nodes
+					for(var i=1; i<node.children.length; i = i+2){ //only 'and' and 'or' nodes
 						child = queryLogicStructure[node.children[i]];
 						if(child.type=='operator' && child.label=='and'){
 							nodeWhere = nodeWhere.concat(childWhere[i-1], childWhere[i+1]);
-						}else if(child.type=='operator' && child.label=='or'){//or exclusive
+						}else if(child.type=='operator' && child.label=='xor'){//or exclusive
 							nodeWhere = nodeWhere.concat(['{'], childWhere[i-1],['} UNION {'], childWhere[i+1],['}']);
+						}else if(child.type=='operator' && child.label=='or'){//or inclusive
+							var j = i + 2;
+							var block = [];
+							block.push(childWhere[i-1]);
+							block.push(childWhere[i+1]);
+
+							while((j < node.children.length) && queryLogicStructure[node.children[j]].type == 'operator' && queryLogicStructure[node.children[j]].label == 'or'){
+								block.push(childWhere[j+1]);
+								j = j + 2;
+							}
+							i = j - 2;
+							
+							for(var z = 0; z < block.length; z++){
+
+								var fixedBlock = block.splice(0,1)[0];
+								nodeWhere = nodeWhere.concat(['{'],fixedBlock);
+
+								block.splice(block.length,0,fixedBlock);
+
+								for(var numberOfOptional = 0; numberOfOptional < block.length-1; numberOfOptional++){
+									var optionalBlock = block.splice(0,1)[0];
+									nodeWhere = nodeWhere.concat(['OPTIONAL{'],optionalBlock, ['}']);
+									block.splice(block.length, 0, optionalBlock);
+								}
+
+								block.splice(block.length,0,(block.splice(0,1)[0]));
+
+								nodeWhere = nodeWhere.concat(['}']);
+								if(z != block.length-1)
+									nodeWhere = nodeWhere.concat(['UNION']);
+							}
 						}
-						//manage or inclusive
 					}
 				}   
 
@@ -222,14 +313,44 @@ function visitSPARQL(key){
 				}
 
 				var child;
-				for(var i=1; i<node.children.length; i+2){ //only 'and' and 'or' nodes
+				for(var i=1; i<node.children.length; i = i+2){ //only 'and' and 'or' nodes
 					child = queryLogicStructure[node.children[i]];
 					if(child.type=='operator' && child.label=='and'){
 						nodeWhere = nodeWhere.concat(childWhere[i-1], childWhere[i+1]);
-					}else if(child.type=='operator' && child.label=='or'){//or exclusive
+					}else if(child.type=='operator' && child.label=='xor'){//or exclusive
 						nodeWhere = nodeWhere.concat(['{'], childWhere[i-1],['} UNION {'], childWhere[i+1],['}']);
+					}else if(child.type=='operator' && child.label=='or'){//or inclusive
+						var j = i + 2;
+						var block = [];
+						block.push(childWhere[i-1]);
+						block.push(childWhere[i+1]);
+
+						while((j < node.children.length) && queryLogicStructure[node.children[j]].type == 'operator' && queryLogicStructure[node.children[j]].label == 'or'){
+							block.push(childWhere[j+1]);
+							j = j + 2;
+						}
+						i = j - 2;
+						
+						for(var z = 0; z < block.length; z++){
+
+							var fixedBlock = block.splice(0,1)[0];
+							nodeWhere = nodeWhere.concat(['{'],fixedBlock);
+
+							block.splice(block.length,0,fixedBlock);
+
+							for(var numberOfOptional = 0; numberOfOptional < block.length-1; numberOfOptional++){
+								var optionalBlock = block.splice(0,1)[0];
+								nodeWhere = nodeWhere.concat(['OPTIONAL{'],optionalBlock, ['}']);
+								block.splice(block.length, 0, optionalBlock);
+							}
+
+							block.splice(block.length,0,(block.splice(0,1)[0]));
+
+							nodeWhere = nodeWhere.concat(['}']);
+							if(z != block.length-1)
+								nodeWhere = nodeWhere.concat(['UNION']);
+						}
 					}
-					//manage or inclusive
 				}
 
 			}
@@ -254,14 +375,44 @@ function visitSPARQL(key){
 			}
 
 			var child;
-			for(var i=1; i<node.children.length; i+2){ //only 'and' and 'or' nodes
+			for(var i=1; i<node.children.length; i = i+2){ //only 'and' and 'or' nodes
 				child = queryLogicStructure[node.children[i]];
 				if(child.type=='operator' && child.label=='and'){
 					nodeWhere = nodeWhere.concat(childWhere[i-1], childWhere[i+1]);
-				}else if(child.type=='operator' && child.label=='or'){//or exclusive
+				}else if(child.type=='operator' && child.label=='xor'){//or exclusive
 					nodeWhere = nodeWhere.concat(['{'], childWhere[i-1],['} UNION {'], childWhere[i+1],['}']);
+				}else if(child.type=='operator' && child.label=='or'){//or inclusive
+					var j = i + 2;
+					var block = [];
+					block.push(childWhere[i-1]);
+					block.push(childWhere[i+1]);
+
+					while((j < node.children.length) && queryLogicStructure[node.children[j]].type == 'operator' && queryLogicStructure[node.children[j]].label == 'or'){
+						block.push(childWhere[j+1]);
+						j = j + 2;
+					}
+					i = j - 2;
+					
+					for(var z = 0; z < block.length; z++){
+
+						var fixedBlock = block.splice(0,1)[0];
+						nodeWhere = nodeWhere.concat(['{'],fixedBlock);
+
+						block.splice(block.length,0,fixedBlock);
+
+						for(var numberOfOptional = 0; numberOfOptional < block.length-1; numberOfOptional++){
+							var optionalBlock = block.splice(0,1)[0];
+							nodeWhere = nodeWhere.concat(['OPTIONAL{'],optionalBlock, ['}']);
+							block.splice(block.length, 0, optionalBlock);
+						}
+
+						block.splice(block.length,0,(block.splice(0,1)[0]));
+
+						nodeWhere = nodeWhere.concat(['}']);
+						if(z != block.length-1)
+							nodeWhere = nodeWhere.concat(['UNION']);
+					}
 				}
-				//manage or inclusive
 			}
 
 			break;
@@ -364,6 +515,8 @@ function visitSPARQL(key){
 
 				case 'or':
 					break;
+				case 'xor':
+					break;
 				case 'and':
 					break;
 
@@ -386,14 +539,44 @@ function visitSPARQL(key){
 					}
 
 					var child;
-					for(var i=1; i<node.children.length; i+2){ //only 'and' and 'or' nodes
+					for(var i=1; i<node.children.length; i = i+2){ //only 'and' and 'or' nodes
 						child = queryLogicStructure[node.children[i]];
 						if(child.type=='operator' && child.label=='and'){
 							nodeWhere = nodeWhere.concat(childWhere[i-1], childWhere[i+1]);
-						}else if(child.type=='operator' && child.label=='or'){//or exclusive
+						}else if(child.type=='operator' && child.label=='xor'){//or exclusive
 							nodeWhere = nodeWhere.concat(['{'], childWhere[i-1],['} UNION {'], childWhere[i+1],['}']);
+						}else if(child.type=='operator' && child.label=='or'){//or inclusive
+							var j = i + 2;
+							var block = [];
+							block.push(childWhere[i-1]);
+							block.push(childWhere[i+1]);
+
+							while((j < node.children.length) && queryLogicStructure[node.children[j]].type == 'operator' && queryLogicStructure[node.children[j]].label == 'or'){
+								block.push(childWhere[j+1]);
+								j = j + 2;
+							}
+							i = j - 2;
+							
+							for(var z = 0; z < block.length; z++){
+
+								var fixedBlock = block.splice(0,1)[0];
+								nodeWhere = nodeWhere.concat(['{'],fixedBlock);
+
+								block.splice(block.length,0,fixedBlock);
+
+								for(var numberOfOptional = 0; numberOfOptional < block.length-1; numberOfOptional++){
+									var optionalBlock = block.splice(0,1)[0];
+									nodeWhere = nodeWhere.concat(['OPTIONAL{'],optionalBlock, ['}']);
+									block.splice(block.length, 0, optionalBlock);
+								}
+
+								block.splice(block.length,0,(block.splice(0,1)[0]));
+
+								nodeWhere = nodeWhere.concat(['}']);
+								if(z != block.length-1)
+									nodeWhere = nodeWhere.concat(['UNION']);
+							}
 						}
-						//manage or inclusive
 					}
 					break;
 
