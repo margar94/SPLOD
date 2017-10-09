@@ -18,6 +18,7 @@ function createTable(select, labelSelect, results){
 	var tr = $("<tr/>");
 	for(field in labelSelect){
 		var th = $("<th/>")
+			//.css('text-align', 'center')
 			.text(labelSelect[field])
 			.appendTo(tr);
 	}
@@ -25,7 +26,7 @@ function createTable(select, labelSelect, results){
 	thead.appendTo(resultsTable);
 
 	var tbody = $("<tbody/>");
-
+	
 	$.each(results, function(index){
 		var element = results[index];
 		var tr = $("<tr/>");
@@ -40,20 +41,28 @@ function createTable(select, labelSelect, results){
 					
 				if(element[field].type == 'uri'){
 					td.attr('title', element[field].url);
+					if(isImage(element[field].url)){
+						td.text(' ');
+						var img = $("<img/>")
+							.attr('width', '200px')
+							.attr('src', element[field].url)
+							.appendTo(td);
+					}
+					else{
+						var a = $("<a/>")
+							.attr('href', element[field].url)
+							.appendTo(td);
 
-					var a = $("<a/>")
-						.attr('href', element[field].url)
-						.appendTo(td);
+						/*var img = $("<img/>")
+							.attr('src', 'img/ic_open_in_new_black_24dp_2x.png')
+							.attr('class', 'imgResult')
+							.appendTo(a);*/
 
-					/*var img = $("<img/>")
-						.attr('src', 'img/ic_open_in_new_black_24dp_2x.png')
-						.attr('class', 'imgResult')
-						.appendTo(a);*/
-
-					var icon = $("<i class='material-icons tiny red-text'>")
-						.text('open_in_new')
-						//.attr('class', 'imgResult')
-						.appendTo(a);
+						var icon = $("<i class='material-icons tiny red-text'>")
+							.text('open_in_new')
+							//.attr('class', 'imgResult')
+							.appendTo(a);
+					}
 				}
 			}else{
 				var td = $("<td/>")

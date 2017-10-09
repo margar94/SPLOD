@@ -52,10 +52,10 @@
 			    overflow: auto;
 			}
 
-			div#resultsTableBox {
+			/*div#resultsTableBox {
 			    height: 500px;
 			    overflow: scroll;
-			}
+			}*/
 
 			span.highlighted {
 				background-color: #fff59d   ;
@@ -202,6 +202,30 @@
 				
 			}*/
 
+			.scrollableTableContent thead tr:after{
+				display : block;
+				width:100%;
+				overflow-y: scroll;
+				visibility:hidden;
+				height:0;
+			}
+			.scrollableTableContent thead th{
+				flex:1;
+				display:block;
+			}
+			.scrollableTableContent tbody{
+				display : block;
+				height: 400px;
+				overflow-y: auto;
+				width:100%;
+			}
+			.scrollableTableContent tr{
+				width:100%;
+				display:flex;	
+			}
+			.scrollableTableContent td{
+				flex:1;
+			}
 
 		</style>
 
@@ -357,10 +381,10 @@
 	    <!--start result table-->
 		<div class="row">
 			<div class="container">
-				<div id="resultsTableBox" class="card col s12">
+				<div id="resultsTableBox" class="card col s12 scrollableTableContent">
 					<div class="card-content ">
 			              <span class="card-title">Results</span>
-			              <table id="resultsTable" class="striped">
+			              <table id="resultsTable" class="striped centered">
 						</table>
 			              	  
 			        </div>				

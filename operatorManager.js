@@ -121,7 +121,7 @@ OperatorManager.prototype.queryResult = function(select, labelSelect, keySelect,
 				case 'uri' : 
 				case 'anyURI':
 					var url = result[field].url;
-					if(url.match(/^https?:\/\/(?:[a-z\-]+\.)+[a-z]{2,6}(?:\/[^\/#?]+)+\.(?:jpe?g|gif|png)/)!=null){
+					if((url.toLowerCase()).match(/^https?:\/\/(?:[a-z\-]+\.)+[a-z]{2,6}(?:\/[^\/#?]+)+\.(?:jpe?g|gif|png|svg)/)!=null){
 						if($.inArray('img', resultDatatype[keySelect[arrayIndex]].datatype)<0)
 							resultDatatype[keySelect[arrayIndex]].datatype.push('img');
 					}
