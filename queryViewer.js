@@ -347,7 +347,7 @@ function attachEvents(){
 
 function removeFocusable(){
 	var focusable = $('.barred .focusable');
-	console.log(focusable);
+	
 	$.each(focusable, function(index){
 		focusable[index].classList.remove("focusable");
 	});

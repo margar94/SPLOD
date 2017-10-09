@@ -127,7 +127,7 @@ MapCreator.prototype.selectedConcept = function(selectedUrl, selectedLabel) {
 		queryBuilder = new QueryBuilder;
 	queryBuilder.updateQuery(rootQueryLogicMap, queryLogicMap);
 
-	console.log(queryLogicMap);
+	//console.log(queryLogicMap);
 	//console.log(elementsList);
 
 }
@@ -270,7 +270,7 @@ MapCreator.prototype.selectedPredicate = function(selectedUrl, selectedLabel, pr
 		queryBuilder = new QueryBuilder;
 	queryBuilder.updateQuery(rootQueryLogicMap, queryLogicMap);
 
-	console.log(queryLogicMap);
+	//console.log(queryLogicMap);
 
 }
 
@@ -397,7 +397,7 @@ MapCreator.prototype.removeElement = function(key){
 	queryBuilder.updateQuery(rootQueryLogicMap, queryLogicMap);
 
 
-console.log(queryLogicMap);
+//console.log(queryLogicMap);
 }
 
 function iReplaceASomethingNode(key){
@@ -569,13 +569,13 @@ function removeOperator(node){
 			break;
 
 	}
-	console.log(queryLogicMap);
+	//console.log(queryLogicMap);
 }
 
 //pendingQuery : array of elements to add to map
 MapCreator.prototype.selectedOperator = function(pendingQuery){
 
-	console.log(pendingQuery);
+	//console.log(pendingQuery);
 
 	var operator = pendingQuery[0];
 
@@ -737,6 +737,6 @@ MapCreator.prototype.selectedOperator = function(pendingQuery){
 	queryBuilder.updateQuery(rootQueryLogicMap, queryLogicMap);
 
 	
-		console.log(queryLogicMap);
+		//console.log(queryLogicMap);
 
 }

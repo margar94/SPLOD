@@ -455,7 +455,7 @@ QueryExecutor.prototype.executeUserQuery = function(querySPARQL){
 	if(querySPARQL.select.length == 0)
 		operatorManager.queryResult(querySPARQL.select, querySPARQL.labelSelect, querySPARQL.keySelect, []);
 	else{
-		console.log(querySPARQL.where);
+		//console.log(querySPARQL.where);
 		/*$.each(querySPARQL.where, function(index){
 			querySPARQL.where[index] = querySPARQL.where[index].join(' ')
 		});*/
@@ -484,7 +484,7 @@ QueryExecutor.prototype.executeUserQuery = function(querySPARQL){
 		        	if(index != -1)
 		        		activeAjaxRequest.splice(index, 1);
 
-		        	console.log(data.results.bindings);
+		        	//console.log(data.results.bindings);
 					operatorManager.queryResult(querySPARQL.select, querySPARQL.labelSelect, querySPARQL.keySelect, data.results.bindings);
 		        	renderResultTable(querySPARQL.select, querySPARQL.labelSelect, data.results.bindings);
 	        }
