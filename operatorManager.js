@@ -30,6 +30,7 @@ var OperatorManager = function () {
 	parameterNumberOperator = {
 		'and' : 1, 
 		'or' : 1,
+		'xor' : 1,
 		'not' : 1,
 		'min' : 1,
 		'max' : 1,
@@ -63,8 +64,8 @@ var OperatorManager = function () {
 
 		'img' : ['not'],
 
-		'and' : ['or'],
-		'or' : ['and'],
+		'and' : ['or', 'xor'],
+		'or' : ['and', 'xor'],
 
 		'<' : ['not'],
 		'<=' : ['not'],
