@@ -456,9 +456,10 @@ QueryExecutor.prototype.executeUserQuery = function(querySPARQL){
 		operatorManager.queryResult(querySPARQL.select, querySPARQL.labelSelect, querySPARQL.keySelect, []);
 	else{
 		console.log(querySPARQL.where);
-		$.each(querySPARQL.where, function(index){
+		/*$.each(querySPARQL.where, function(index){
 			querySPARQL.where[index] = querySPARQL.where[index].join(' ')
-		});
+		});*/
+		querySPARQL.where.join(' ');
 		query = " prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
 					" SELECT " + querySPARQL.select.join(' ') +
 					" WHERE { " + 

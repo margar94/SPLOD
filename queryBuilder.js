@@ -6,13 +6,15 @@ var querySPARQL;
 
 var executor;
 
+var addNot;
+
 var QueryBuilder = function () {
 	if(QueryBuilder.prototype._singletonInstance){
 		return QueryBuilder.prototype._singletonInstance;
 	}
 	
-	counter = 1;
 	executor = new QueryExecutor();
+	addNot = false;
 
 	QueryBuilder.prototype._singletonInstance = this;
 };
@@ -25,8 +27,385 @@ QueryBuilder.prototype.updateQuery = function(queryLogicRoot, queryLogicMap){
 	buildQuery();
 }
 
-
 function buildQuery(){
+	if(queryLogicStructureRoot != null){
+		createAllVariable();
+		querySPARQL = visitSPARQL(queryLogicStructureRoot);
+	}
+	executor.executeUserQuery(querySPARQL);
+}
+
+function createAllVariable(){
+	for(key in queryLogicStructure){
+		var node = queryLogicStructure[key];
+		node.variable = "?"+createVariableFromLabel(node.label, node.index);
+	}
+}
+
+function visitSPARQL(key){
+	var node = queryLogicStructure[key];
+
+	var nodeSelect = [];
+	var nodeLabelSelect = [];
+	var nodeKeySelect = [];
+	var nodeWhere = [];
+
+	var childWhere = [];	
+
+	var nodeQuery = {};
+	var childQuery = {};
+
+	switch(node.type){
+		case 'everything' : 
+			nodeSelect.push(node.variable);
+			nodeLabelSelect.push(node.label);
+			nodeKeySelect.push(node.key);
+
+			for(var i=0; i<node.children.length; i++){ 
+				childQuery = visitSPARQL(node.children[i]); 
+
+				nodeSelect = nodeSelect.concat(childQuery.select);
+				nodeLabelSelect = nodeLabelSelect.concat(childQuery.labelSelect);
+				nodeKeySelect = nodeKeySelect.concat(childQuery.keySelect);
+
+				childWhere.push(childQuery.where);
+			}
+
+			if(node.children.length==1){
+				nodeWhere = nodeWhere.concat(childWhere[0]);
+			}
+
+			for(var i=1; i<node.children.length; i+2){ //only 'and' and 'or' nodes
+				if(node.type=='operator' && node.label=='and'){
+					nodeWhere = nodeWhere.concat(childWhere[i-1], childWhere[i+1]);
+				}else if(node.type=='operator' && node.label=='or'){//or exclusive
+					nodeWhere = nodeWhere.concat(['{'], childWhere[i-1],['} UNION {'], childWhere[i+1],['}']);
+				}
+				//manage or inclusive
+			}
+
+			break;
+		case 'concept' :
+			//eventually change of variable and select management
+			var parentNode = queryLogicStructure[node.parent];
+			if(parentNode!=undefined){
+				switch(parentNode.type){
+					case 'everything': 
+					case 'concept' : 
+							node.variable = parentNode.variable;
+						break;
+					case 'predicate':
+						if(parentNode.direction == 'direct'){
+							node.variable = parentNode.variable;
+						}
+						break; 
+
+					default : //only reverse predicate is permitted
+						nodeSelect.push(node.variable);
+						nodeLabelSelect.push(node.label);
+						nodeKeySelect.push(node.key);
+						break;
+				} 
+			}else{
+				nodeSelect.push(node.variable);
+				nodeLabelSelect.push(node.label);
+				nodeKeySelect.push(node.key);
+			}
+
+			//where management
+			nodeWhere = nodeWhere.concat([node.variable, ' a', ' <'+node.url+'>.']);
+			console.log(nodeWhere);
+
+			for(var i=0; i<node.children.length; i++){ 
+				childQuery = visitSPARQL(node.children[i]); 
+
+				nodeSelect = nodeSelect.concat(childQuery.select);
+				nodeLabelSelect = nodeLabelSelect.concat(childQuery.labelSelect);
+				nodeKeySelect = nodeKeySelect.concat(childQuery.keySelect);
+
+				childWhere.push(childQuery.where);
+			}
+
+			if(node.children.length==1){
+				nodeWhere = nodeWhere.concat(childWhere[0]);
+			}
+
+			for(var i=1; i<node.children.length; i+2){ //only 'and' and 'or' nodes
+				if(node.type=='operator' && node.label=='and'){
+					nodeWhere = nodeWhere.concat(childWhere[i-1], childWhere[i+1]);
+				}else if(node.type=='operator' && node.label=='or'){//or exclusive
+					nodeWhere = nodeWhere.concat(['{'], childWhere[i-1],['} UNION {'], childWhere[i+1],['}']);
+				}
+				//manage or inclusive
+			}
+			console.log(childQuery);
+			
+			break;
+		case 'predicate' :
+			if(node.direction == 'direct'){
+				if(!addNot){
+					nodeSelect.push(node.variable);
+					nodeLabelSelect.push(node.label);
+					nodeKeySelect.push(node.key);
+				}
+
+				//where management
+				var parentVariable = queryLogicStructure[node.parent].variable;
+
+				if(addNot)
+					nodeWhere = nodeWhere.concat('FILTER(!EXISTS{');	
+				nodeWhere = nodeWhere.concat([parentVariable, ' <'+node.url+'> ', node.variable+'.']);
+
+				if(!addNot){
+					for(var i=0; i<node.children.length; i++){ 
+						childQuery = visitSPARQL(node.children[i]); 
+
+						nodeSelect = nodeSelect.concat(childQuery.select);
+						nodeLabelSelect = nodeLabelSelect.concat(childQuery.labelSelect);
+						nodeKeySelect = nodeKeySelect.concat(childQuery.keySelect);
+
+						childWhere.push(childQuery.where);
+					}
+
+					if(node.children.length==1){
+						nodeWhere = nodeWhere.concat(childWhere[0]);
+					}
+
+					for(var i=1; i<node.children.length; i+2){ //only 'and' and 'or' nodes
+						if(node.type=='operator' && node.label=='and'){
+							nodeWhere = nodeWhere.concat(childWhere[i-1], childWhere[i+1]);
+						}else if(node.type=='operator' && node.label=='or'){//or exclusive
+							nodeWhere = nodeWhere.concat(['{'], childWhere[i-1],['} UNION {'], childWhere[i+1],['}']);
+						}
+						//manage or inclusive
+					}
+				}
+
+				if(addNot){
+					nodeWhere = nodeWhere.concat(['})']);
+					addNot = false;
+				}
+
+			}else if(node.direction == 'reverse'){
+				var parentVariable;
+
+				if(node.parent == null){
+					nodeSelect.push(node.variable);
+					nodeLabelSelect.push(node.label);
+					nodeKeySelect.push(node.key);
+
+					parentVariable = node.variable;
+				}else{
+					node.variable = queryLogicStructure[node.children[0]].variable;
+
+					parentVariable = queryLogicStructure[node.parent].variable;
+				}
+
+				nodeWhere = nodeWhere.concat([node.variable, ' <'+node.url+'> ', parentVariable+'.']);
+
+				for(var i=0; i<node.children.length; i++){ 
+					childQuery = visitSPARQL(node.children[i]); 
+
+					nodeSelect = nodeSelect.concat(childQuery.select);
+					nodeLabelSelect = nodeLabelSelect.concat(childQuery.labelSelect);
+					nodeKeySelect = nodeKeySelect.concat(childQuery.keySelect);
+
+					childWhere.push(childQuery.where);
+				}
+
+				if(node.children.length==1){
+					nodeWhere = nodeWhere.concat(childWhere[0]);
+				}
+
+				for(var i=1; i<node.children.length; i+2){ //only 'and' and 'or' nodes
+					if(node.type=='operator' && node.label=='and'){
+						nodeWhere = nodeWhere.concat(childWhere[i-1], childWhere[i+1]);
+					}else if(node.type=='operator' && node.label=='or'){//or exclusive
+						nodeWhere = nodeWhere.concat(['{'], childWhere[i-1],['} UNION {'], childWhere[i+1],['}']);
+					}
+					//manage or inclusive
+				}
+
+			}
+			break;
+		case 'something' : 
+			nodeSelect.push(node.variable);
+			nodeLabelSelect.push(node.label);
+			nodeKeySelect.push(node.key);
+
+			for(var i=0; i<node.children.length; i++){ 
+				childQuery = visitSPARQL(node.children[i]); 
+
+				nodeSelect = nodeSelect.concat(childQuery.select);
+				nodeLabelSelect = nodeLabelSelect.concat(childQuery.labelSelect);
+				nodeKeySelect = nodeKeySelect.concat(childQuery.keySelect);
+
+				childWhere.push(childQuery.where);
+			}
+
+			if(node.children.length==1){
+				nodeWhere = nodeWhere.concat(childWhere[0]);
+			}
+
+			for(var i=1; i<node.children.length; i+2){ //only 'and' and 'or' nodes
+				if(node.type=='operator' && node.label=='and'){
+					nodeWhere = nodeWhere.concat(childWhere[i-1], childWhere[i+1]);
+				}else if(node.type=='operator' && node.label=='or'){//or exclusive
+					nodeWhere = nodeWhere.concat(['{'], childWhere[i-1],['} UNION {'], childWhere[i+1],['}']);
+				}
+				//manage or inclusive
+			}
+
+			break;
+		case 'operator': 
+			var parentVariable = queryLogicStructure[node.parent].variable;
+
+			var notLabel = "";
+			if(addNot){
+				notLabel = "!";
+				addNot=false;
+			}
+
+			var claus = [];
+			var operatorLabel = node.label;
+
+			switch(node.label){
+				case 'is url': 
+					nodeWhere.push('FILTER(');
+					nodeWhere.push(parentVariable);
+					nodeWhere.push(notLabel);
+					nodeWhere.push('=');
+					nodeWhere.push('<'+queryLogicStructure[node.children[0]].label+'>');
+					nodeWhere.push(')');
+
+					break;
+				
+				case 'is string': 
+					nodeWhere.push('FILTER(');
+					nodeWhere.push(parentVariable);
+					nodeWhere.push(notLabel);
+					nodeWhere.push('=');
+					nodeWhere.push('"'+queryLogicStructure[node.children[0]].label+'"');
+					nodeWhere.push(')');
+					break;
+
+				case 'contains': 
+					nodeWhere.push('FILTER(');
+					nodeWhere.push(notLabel);
+					nodeWhere.push('contains(xsd:string('+parentVariable+'),"'+queryLogicStructure[node.children[0]].label+'")');
+					nodeWhere.push(')');
+					break;
+
+				case 'starts with': 
+					nodeWhere.push('FILTER(');
+					nodeWhere.push(notLabel);
+					nodeWhere.push('strStarts(xsd:string('+parentVariable+'),"'+queryLogicStructure[node.children[0]].label+'")');
+					nodeWhere.push(')');
+					break;
+
+				case 'ends with': 
+					nodeWhere.push('FILTER(');
+					nodeWhere.push(notLabel);
+					nodeWhere.push('strEnds(xsd:string('+parentVariable+'),"'+queryLogicStructure[node.children[0]].label+'")');
+					nodeWhere.push(')');
+					break;
+
+				case 'lang': 
+					nodeWhere.push('FILTER(');
+					nodeWhere.push(notLabel);
+					nodeWhere.push('LANG('+parentVariable+')="'+queryLogicStructure[node.children[0]].label+'"');
+					nodeWhere.push(')');
+					break;
+				
+				case '<': 
+					if(queryLogicStructure[node.parent].type == 'operator' && queryLogicStructure[node.parent].label == 'not')
+						operatorLabel = ">=";
+					//se padre not operatorLabel = '>='; 
+				case '<=':
+					if(queryLogicStructure[node.parent].type == 'operator' && queryLogicStructure[node.parent].label == 'not')
+						operatorLabel = ">";
+					//se padre not operatorLabel = '>'; 
+				case '>':
+					if(queryLogicStructure[node.parent].type == 'operator' && queryLogicStructure[node.parent].label == 'not')
+						operatorLabel = "<=";
+					//se padre not operatorLabel = '<='; 
+				case '>=':
+					if(queryLogicStructure[node.parent].type == 'operator' && queryLogicStructure[node.parent].label == 'not')
+						operatorLabel = "<";
+					//se padre not operatorLabel = '<'; 
+				case '=':
+					if(queryLogicStructure[node.parent].type == 'operator' && queryLogicStructure[node.parent].label == 'not')
+						operatorLabel = "!=";
+					//se padre not operatorLabel = '!='; 
+					nodeWhere.push('FILTER(');
+					nodeWhere.push(parentVariable+' '+operatorLabel+' '+queryLogicStructure[node.children[0]].label);
+					nodeWhere.push(')');
+					break;
+				case 'range':
+					//se padre not riscriviamo query else
+					if(queryLogicStructure[node.parent].type == 'operator' && queryLogicStructure[node.parent].label == 'not'){
+						nodeWhere.push('FILTER(');
+						nodeWhere.push(parentVariable+' < '+queryLogicStructure[node.children[0]].label+' || '+parentVariable+' > '+queryLogicStructure[node.children[1]].label);
+						nodeWhere.push(')');
+					}else{
+						nodeWhere.push('FILTER(');
+						nodeWhere.push(parentVariable+' >= '+queryLogicStructure[node.children[0]].label+' && '+parentVariable+' <= '+queryLogicStructure[node.children[1]].label);
+						nodeWhere.push(')');
+					}	
+					break;
+
+				case 'or':
+					break;
+				case 'and':
+					break;
+
+				case 'not':
+					addNot = true;
+					node.variable = parentVariable;
+
+					for(var i=0; i<node.children.length; i++){ 
+						childQuery = visitSPARQL(node.children[i]); 
+
+						nodeSelect = nodeSelect.concat(childQuery.select);
+						nodeLabelSelect = nodeLabelSelect.concat(childQuery.labelSelect);
+						nodeKeySelect = nodeKeySelect.concat(childQuery.keySelect);
+
+						childWhere.push(childQuery.where);
+					}
+
+					if(node.children.length==1){
+						nodeWhere = nodeWhere.concat(childWhere[0]);
+					}
+
+					for(var i=1; i<node.children.length; i+2){ //only 'and' and 'or' nodes
+						if(node.type=='operator' && node.label=='and'){
+							nodeWhere = nodeWhere.concat(childWhere[i-1], childWhere[i+1]);
+						}else if(node.type=='operator' && node.label=='or'){//or exclusive
+							nodeWhere = nodeWhere.concat(['{'], childWhere[i-1],['} UNION {'], childWhere[i+1],['}']);
+						}
+						//manage or inclusive
+					}
+					break;
+
+			}
+
+			break;
+		case 'result' : 
+			break;
+	}
+
+	nodeQuery.select = nodeSelect;
+	nodeQuery.labelSelect = nodeLabelSelect;
+	nodeQuery.keySelect = nodeKeySelect;
+	nodeQuery.where = nodeWhere;
+
+	console.log(nodeQuery);
+
+	return nodeQuery;
+
+}
+
+function oldbuildQuery(){
 	//visit query implicit tree 
 	if(queryLogicStructureRoot != null){
 		
@@ -73,7 +452,7 @@ function buildQuery(){
 	console.log(querySPARQL);
 }
 
-function visitSPARQL(node){
+function oldvisitSPARQL(node){
 
 	//it is used only by predicates
 	var parentVariable;
@@ -121,7 +500,7 @@ function visitSPARQL(node){
 			addNot = true;
 
 		if(addNot){
-			claus.push('FILTER(!EXISTS(');
+			claus.push('FILTER(!EXISTS{');
 		}
 
 		if(node.direction == 'direct'){
@@ -136,7 +515,7 @@ function visitSPARQL(node){
 		}
 
 		if(addNot){
-			claus.push('))');
+			claus.push('})');
 		}
 
 	}else if(node.type == 'operator'){
