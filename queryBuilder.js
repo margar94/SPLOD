@@ -183,7 +183,7 @@ function visitSPARQL(key){
 						}
 						//manage or inclusive
 					}
-				}
+				}   
 
 				if(addNot){
 					nodeWhere = nodeWhere.concat(['})']);
