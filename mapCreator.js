@@ -581,7 +581,7 @@ MapCreator.prototype.selectedOperator = function(pendingQuery){
 
 	//console.log(pendingQuery);
 
-	var operator = pendingQuery[0];
+	var operator = pendingQuery[0].value;
 
 	switch(operator){
 		case 'is string':
@@ -623,24 +623,25 @@ MapCreator.prototype.selectedOperator = function(pendingQuery){
 			queryLogicMap[elementOnFocus].children.push(key);				
 
 			for(var i=1; i<pendingQuery.length; i++){
-				var result = pendingQuery[i];
-				var verbalizationChildren = languageManager.verbalizeResult(result);
+				var resultValue = pendingQuery[i].value;
+				var resultDatatype = pendingQuery[i].datatype;
+				var verbalizationChildren = languageManager.verbalizeResult(resultValue);
 
-				if(!(result in indexMap)){
-					indexMap[result] = 1;
+				if(!(resultValue in indexMap)){
+					indexMap[resultValue] = 1;
 				}
 				else{
-					indexMap[result] += 1;
+					indexMap[resultValue] += 1;
 				}
 
-				var indexChildren = indexMap[result];
-				var keyChildren = result + "_" + indexChildren;
+				var indexChildren = indexMap[resultValue];
+				var keyChildren = resultValue + "_" + indexChildren;
 
 				var newLogicChildren = {key: keyChildren, index: indexChildren,
-							   url: result, label: result, 
+							   url: resultValue, label: resultValue, 
 							   type:'result', direction: false,
 							   verbalization: verbalizationChildren, 
-							   parent:key, children: []};
+							   parent:key, children: [], datatype: resultDatatype};
 				queryLogicMap[keyChildren] = newLogicChildren;
 
 				newLogicElement.children.push(keyChildren);
@@ -713,7 +714,7 @@ MapCreator.prototype.selectedOperator = function(pendingQuery){
 			break;
 
 		case 'limit':
-			resultLimit = pendingQuery[1];
+			resultLimit = pendingQuery[1].value;
 
 			if(operatorManager == null)
 				operatorManager = new OperatorManager;
