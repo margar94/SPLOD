@@ -199,7 +199,19 @@ LanguageManager.prototype.verbalizeOperator = function(operator){
 			verbalization.negated = ['that is ', 'not '];
 			verbalization.current = verbalization.standard;
 			break;
+		case 'is date':
+			verbalization.standard = ['that is '];
+			verbalization.truncated = [''];
+			verbalization.negated = ['that is ', 'not '];
+			verbalization.current = verbalization.standard;
+			break;
 		case 'range':
+			verbalization.standard = ['that is between '];
+			verbalization.truncated = ['between '];
+			verbalization.negated = ['that is ', 'not ', 'between '];
+			verbalization.current = verbalization.standard;
+			break;
+		case 'range date':
 			verbalization.standard = ['that is between '];
 			verbalization.truncated = ['between '];
 			verbalization.negated = ['that is ', 'not ', 'between '];
@@ -221,6 +233,19 @@ LanguageManager.prototype.verbalizeOperator = function(operator){
 			verbalization.standard = ['whose lang is '];
 			verbalization.negated = ['whose lang is ', 'not '];
 			verbalization.current = verbalization.standard;
+			break;
+		case 'before':
+			verbalization.standard = ['that is before '];
+			verbalization.truncated = ['before '];
+			verbalization.negated = ['that is ', 'not ', 'before '];
+			verbalization.current = verbalization.standard;
+			break;
+		case 'after':
+			verbalization.standard = ['that is after '];
+			verbalization.truncated = ['after '];
+			verbalization.negated = ['that is ', 'not ', 'after '];
+			verbalization.current = verbalization.standard;
+			break;
 	}
 
 	return verbalization;
@@ -244,6 +269,12 @@ LanguageManager.prototype.getOperatorStandardVerbalization = function(operator){
 	var verbalization;	
 
 	switch(operator){
+		case 'before':
+			verbalization = ['that is before '];
+			break;
+		case 'after':
+			verbalization = ['that is after '];
+			break;
 		case '<':
 			verbalization = ['that is less than '];
 			break;
@@ -260,6 +291,9 @@ LanguageManager.prototype.getOperatorStandardVerbalization = function(operator){
 			verbalization = ['that is '];
 			break;
 		case 'is url':
+			verbalization = ['that is '];
+			break;
+		case 'is date':
 			verbalization = ['that is '];
 			break;
 		case '=':
@@ -279,6 +313,9 @@ LanguageManager.prototype.getOperatorStandardVerbalization = function(operator){
 			break;
 		case 'lang':
 			verbalization = ['whose lang is '];
+			break;
+		case 'range date':
+			verbalization = ['that is between '];
 			break;
 		default:
 			verbalization = ['that '+operator+' '];

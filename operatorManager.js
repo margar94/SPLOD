@@ -48,8 +48,12 @@ var OperatorManager = function () {
 		'ends with' : 2,
 		'contains' : 2,
 		'lang' : 2,
+		'is date' : 2,
+		'before' : 2,
+		'after' : 2,
 
 		'range' : 3,
+		'range date' : 3
 	};
 
 	operatorMap = {
@@ -59,9 +63,11 @@ var OperatorManager = function () {
 
 		'literal' : ['is string', 'starts with', 'ends with', 'contains', 'not', 'lang'],
 
-		'date' : ['is string', '<', '>', 'range'],
+		'date' : ['is date', 'before', 'after', 'range date'],
 
 		'uri' : ['is url'],
+
+		'boolean' : ['is string'],
 
 		'img' : ['not'],
 
@@ -85,6 +91,10 @@ var OperatorManager = function () {
 		'is string': ['not'],
 		'is url': ['not'],
 		'lang': ['not'],
+		'is date': ['not'],
+		'before': ['not'],
+		'after': ['not'],
+		'range date': ['not'],
 
 		'limit': ['limit']
 
@@ -103,7 +113,7 @@ OperatorManager.prototype.queryResult = function(select, labelSelect, keySelect,
 		resultDatatype[keySelect[arrayIndex]].datatype = []; 
 	}
 
-	//console.log(results);
+console.log(results);
 	$.each(results, function(index){
 
 		var result = results[index];
@@ -140,23 +150,23 @@ OperatorManager.prototype.queryResult = function(select, labelSelect, keySelect,
 						case 'nonNegativeInteger':
 						case 'negativeInteger':
 						case 'nonPositiveInteger':
-						case 'positiveInteger':
-						case 'year':
-						case 'gYear':
-						case 'gMonth':
-						case 'gDay':
-						case 'gMonthDay':
-						case 'gYearMonth':
+						case 'positiveInteger':					
 						case 'kilometre':
 						case 'kilogramPerCubicMetre':
 						case 'klometrePerSecond':
-						case 'day':
 						case 'double':
 						case 'float':
 							var index = $.inArray('?'+field, select);
 							resultDatatype[keySelect[index]] = {datatype : 'number'};
 							break;			
 						*/
+						case 'day':
+						case 'year':
+						case 'gYear':
+						case 'gMonth':
+						case 'gDay':
+						case 'gMonthDay':
+						case 'gYearMonth':
 						case 'date':
 						case 'dateTime':
 						case 'time':
@@ -166,6 +176,10 @@ OperatorManager.prototype.queryResult = function(select, labelSelect, keySelect,
 						case 'langString':
 							if($.inArray('string', resultDatatype[keySelect[arrayIndex]].datatype)<0)
 								resultDatatype[keySelect[arrayIndex]].datatype.push('string');
+							break;
+						case 'boolean':
+							if($.inArray('boolean', resultDatatype[keySelect[arrayIndex]].datatype)<0)
+								resultDatatype[keySelect[arrayIndex]].datatype.push('boolean');
 							break;
 						default : 
 							if($.isNumeric(result[field].value)){
@@ -289,7 +303,7 @@ OperatorManager.prototype.getResultToCompleteOperator = function(){
 	}else{
 		type = null;
 	}
-
+console.log(type);
 	return {type : type, results: results};
 	
 	

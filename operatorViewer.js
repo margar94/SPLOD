@@ -100,7 +100,6 @@ function renderReusableResultList(reusableResults){
 					$('#operatorList').show();
 					$('#pendingQuerySpan').empty();
 				}else{
-					console.log('not complete');
 					renderPendingQuery();
 				}
 			});
@@ -117,7 +116,7 @@ function renderPendingQuery(){
 	var pendingQuery = $("<span/>");
 
 	pendingQueryFields[1] = languageManager.getOperatorStandardVerbalization(pendingQueryFields[1])[0];
-	console.log(pendingQueryFields);
+
 	for(var i = 0; i<pendingQueryFields.length; i++){
 		if(pendingQueryFields[i] != ' ')
 			pendingQuery.html(pendingQuery.html()+pendingQueryFields[i]+' ');
