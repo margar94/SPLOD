@@ -284,6 +284,10 @@ MapCreator.prototype.changeFocus = function(newElementOnFocus){
 
 }
 
+MapCreator.prototype.getNodeByKey = function(key){
+	return queryLogicMap[key];
+}
+
 MapCreator.prototype.isRefinement = function(key){
 	var node = queryLogicMap[key];
 	if(node.parent == null)

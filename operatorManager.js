@@ -252,7 +252,7 @@ OperatorManager.prototype.isComplete = function(){
 
 OperatorManager.prototype.getResultToCompleteOperator = function(){
 	var results;
-	var blankNode;
+	var type;
 
 	var operator = pendingQuery[0];
 
@@ -267,22 +267,43 @@ OperatorManager.prototype.getResultToCompleteOperator = function(){
 	}
 
 	if(operator == 'limit'){
-		blankNode = 'number';
+		type = 'number';
 	}
 	else if(onFocus in resultDatatype){
 		if(resultDatatype[onFocus].datatype=='literal' || resultDatatype[onFocus].datatype=='string'){
-			blankNode = 'text';
+			type = 'text';
 		}else{
-			blankNode = resultDatatype[onFocus].datatype;
+			type = resultDatatype[onFocus].datatype;
 		}
 	}else{
-		blankNode = null;
+		type = null;
 	}
 
-	return {blankNode : blankNode, results: results};
+	return {type : type, results: results};
 	
 	
 
+}
+
+OperatorManager.prototype.getPendingQueryFields = function(){
+	var pendingQueryFields = [];
+
+	//concepts or predicates that fire operator's inserting
+	var nodeOnFocus = mapCreator.getNodeByKey(onFocus);
+	pendingQueryFields.push(nodeOnFocus.label);
+
+	//selected operator and, eventually, selected parameters
+	for(var i=0; i<pendingQuery.length; i++){
+		pendingQueryFields.push(pendingQuery[i]);
+	}
+
+	//fields to fill
+	var operator = pendingQuery[0];
+	for(var i=pendingQuery.length-1; i<parameterNumberOperator[operator]; i++){
+		pendingQueryFields.push(' ');	
+	}
+
+	return pendingQueryFields;
 }
 
 function saveResults(select, keySelect, results){
