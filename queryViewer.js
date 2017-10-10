@@ -132,11 +132,11 @@ function visitRenderer(node){
 		}else if(node.type == 'everything'){
 
 			if(resultLimit == false){
-				queryString += '<span class="focusable operator" id="limit" meta-focusReference="limit">every </span>';
+				queryString += '<span class="focusable operator" id="limit" meta-focusReference="limit" meta-removeReference="limit">every </span>';
 				queryString += '<span class="focusable" '+utils+' >' + node.verbalization.current[0] + '</span>';
 			}
 			else {
-				queryString += '<span class="focusable operator" id="limit" meta-focusReference="limit">'+resultLimit+' </span>';
+				queryString += '<span class="focusable operator" id="limit" meta-focusReference="limit" meta-removeReference="limit">'+resultLimit+' </span>';
 				queryString += '<span class="focusable" '+utils+' >things </span>';
 			}
 			
@@ -147,9 +147,9 @@ function visitRenderer(node){
 
 			if(node.parent == null){
 				if(resultLimit == false)
-					queryString += '<span class="focusable operator" id="limit" meta-focusReference="limit">'+node.verbalization.current[0]+'</span>';
+					queryString += '<span class="focusable operator" id="limit" meta-focusReference="limit" meta-removeReference="limit">'+node.verbalization.current[0]+'</span>';
 				else 
-					queryString += '<span class="focusable operator" id="limit" meta-focusReference="limit">'+resultLimit+' </span>';
+					queryString += '<span class="focusable operator" id="limit" meta-focusReference="limit" meta-removeReference="limit">'+resultLimit+' </span>';
 			}else
 				queryString += node.verbalization.current[0];
 			
@@ -159,9 +159,9 @@ function visitRenderer(node){
 			
 			if(node.parent == null){
 				if(resultLimit == false)
-					queryString += '<span class="focusable operator" id="limit" meta-focusReference="limit">'+node.verbalization.current[0]+'</span>';
+					queryString += '<span class="focusable operator" id="limit" meta-focusReference="limit" meta-removeReference="limit">'+node.verbalization.current[0]+'</span>';
 				else 
-					queryString += '<span class="focusable operator" id="limit" meta-focusReference="limit">'+resultLimit+' things </span>';
+					queryString += '<span class="focusable operator" id="limit" meta-focusReference="limit" meta-removeReference="limit">'+resultLimit+' things </span>';
 				
 				queryString += node.verbalization.current[1];
 				if(node.direction == 'reverse')
