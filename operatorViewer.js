@@ -117,17 +117,15 @@ function renderPendingQuery(){
 	var pendingQuery = $("<span/>");
 
 	pendingQueryFields[1] = languageManager.getOperatorStandardVerbalization(pendingQueryFields[1])[0];
-
+	console.log(pendingQueryFields);
 	for(var i = 0; i<pendingQueryFields.length; i++){
 		if(pendingQueryFields[i] != ' ')
 			pendingQuery.html(pendingQuery.html()+pendingQueryFields[i]+' ');
 		else{
 			var toComplete = $("<span/>")
-				.text('input')
+				.text('_____________')
 				.attr('class', 'fieldToComplete');
 			toComplete.appendTo(pendingQuery);
-			if(i != pendingQueryFields.length-1)
-				pendingQuery.html(pendingQuery.html()+' and ');
 		}
 	}
 

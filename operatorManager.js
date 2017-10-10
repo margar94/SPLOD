@@ -310,8 +310,15 @@ OperatorManager.prototype.getPendingQueryFields = function(){
 
 	//fields to fill
 	var operator = pendingQuery[0];
-	for(var i=pendingQuery.length; i<parameterNumberOperator[operator]; i++){
+	var numParameterOperator = parameterNumberOperator[operator];
+	for(var i=pendingQuery.length; i<numParameterOperator; i++){
 		pendingQueryFields.push(' ');	
+	}
+
+	if(numParameterOperator>1){
+		for(var i=3; i<pendingQueryFields.length; i=i+2){
+			pendingQueryFields.splice(i, 0, 'and');
+		}
 	}
 
 	return pendingQueryFields;
