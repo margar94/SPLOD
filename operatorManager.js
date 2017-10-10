@@ -241,9 +241,18 @@ console.log(results);
 }
 
 OperatorManager.prototype.selectedReusableResult = function(result){
-	pendingQuery.push(result);
-
 	var operator = pendingQuery[0];
+	var type;
+	if(operator == 'limit'){
+		type = 'number';
+	}else if(onFocus in resultDatatype){
+		type = resultDatatype[onFocus].datatype;
+	}else{
+		type = null;
+	}
+
+	pendingQuery.push({value: result, datatype:type});
+
 	var isComplete = parameterNumberOperator[operator]==pendingQuery.length;
 
 	if(isComplete){
@@ -257,7 +266,7 @@ OperatorManager.prototype.selectedReusableResult = function(result){
 
 OperatorManager.prototype.selectedOperator = function(operator){
 	pendingQuery = [];
-	pendingQuery.push(operator);
+	pendingQuery.push({value: operator});
 
 	var isComplete = parameterNumberOperator[operator]==pendingQuery.length;
 
@@ -279,7 +288,7 @@ OperatorManager.prototype.getResultToCompleteOperator = function(){
 	var results;
 	var type;
 
-	var operator = pendingQuery[0];
+	var operator = pendingQuery[0].value;
 
 	if(operator == 'limit'){
 		results = [];
@@ -319,11 +328,11 @@ OperatorManager.prototype.getPendingQueryFields = function(){
 
 	//selected operator and, eventually, selected parameters
 	for(var i=0; i<pendingQuery.length; i++){
-		pendingQueryFields.push(pendingQuery[i]);
+		pendingQueryFields.push(pendingQuery[i].value);
 	}
 
 	//fields to fill
-	var operator = pendingQuery[0];
+	var operator = pendingQuery[0].value;
 	var numParameterOperator = parameterNumberOperator[operator];
 	for(var i=pendingQuery.length; i<numParameterOperator; i++){
 		pendingQueryFields.push(' ');	
