@@ -299,11 +299,15 @@ OperatorManager.prototype.getPendingQueryFields = function(){
 
 	//fields to fill
 	var operator = pendingQuery[0];
-	for(var i=pendingQuery.length-1; i<parameterNumberOperator[operator]; i++){
+	for(var i=pendingQuery.length; i<parameterNumberOperator[operator]; i++){
 		pendingQueryFields.push(' ');	
 	}
 
 	return pendingQueryFields;
+}
+
+OperatorManager.prototype.discardOperator(){
+	pendingQuery = [];
 }
 
 function saveResults(select, keySelect, results){
