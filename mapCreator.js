@@ -501,6 +501,7 @@ function removeOperator(node){
 	switch(operator){
 		case 'is string':
 		case 'is url':
+		case 'is date':
 		case 'starts with':
 		case 'ends with':
 		case 'contains':
@@ -510,7 +511,10 @@ function removeOperator(node){
 		case '>':
 		case '>=':
 		case '=':
+		case 'before':
+		case 'after':
 
+		case 'range date':
 		case 'range':
 
 		case 'min':
@@ -586,6 +590,7 @@ MapCreator.prototype.selectedOperator = function(pendingQuery){
 	switch(operator){
 		case 'is string':
 		case 'is url':
+		case 'is date':
 		case 'starts with':
 		case 'ends with':
 		case 'contains':
@@ -595,7 +600,10 @@ MapCreator.prototype.selectedOperator = function(pendingQuery){
 		case '>':
 		case '>=':
 		case '=':
+		case 'before':
+		case 'after':
 
+		case 'range date':
 		case 'range':
 
 		case 'min':
