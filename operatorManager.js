@@ -228,27 +228,37 @@ OperatorManager.prototype.queryResult = function(select, labelSelect, keySelect,
 OperatorManager.prototype.selectedReusableResult = function(result){
 	pendingQuery.push(result);
 
+	var operator = pendingQuery[0];
+	var isComplete = parameterNumberOperator[operator]==pendingQuery.length;
+
 	if(OperatorManager.prototype.isComplete()){
 		mapCreator.selectedOperator(pendingQuery);
 		pendingQuery = [];
 	}
+
+	return isComplete;
+
 }
 
 OperatorManager.prototype.selectedOperator = function(operator){
 	pendingQuery = [];
 	pendingQuery.push(operator);
 
+	var isComplete = parameterNumberOperator[operator]==pendingQuery.length;
+
 	if(OperatorManager.prototype.isComplete()){
 		mapCreator.selectedOperator(pendingQuery);
 		pendingQuery = [];
 	}
 
+	return isComplete;
 }
 
+/*
 OperatorManager.prototype.isComplete = function(){
 	var operator = pendingQuery[0];
-	return (parameterNumberOperator[operator]==pendingQuery.length);
-}
+	return ();
+}*/
 
 OperatorManager.prototype.getResultToCompleteOperator = function(){
 	var results;
