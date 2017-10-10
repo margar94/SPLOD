@@ -55,7 +55,7 @@ function renderQuery(){
 				visitStack.push({type: 'endBarred', verbalization:{current: ['</span>']}, children:[] });
 			}
 
-			if(currentNode.label != 'range'){
+			if(currentNode.label != 'range' && currentNode.label != 'range date'){
 
 				if(childrenNumber){
 					//visitStack.push({type: 'endSpan', verbalization:{current: ['</span>']}, children:[] });
@@ -116,7 +116,7 @@ function visitRenderer(node){
 		queryString += '<span><span class="operator focusable" meta-removeReference="'+parent.key+'" meta-focusReference="'+parent.key+'" id="'+parent.key+'">'+node.verbalization.current[1]+'</span></span>';
 		if(node.verbalization.current[2] != undefined)
 			queryString += node.verbalization.current[2]+' ';
-		if(node.label == 'range'){
+		if(node.label == 'range' || node.label == 'range date'){
 			firstChild = queryLogicStructure[node.children[0]];
 			secondChild = queryLogicStructure[node.children[1]];
 			queryString += '<span class="focusable reusableResult" id="'+firstChild.key+'" meta-removeReference="'+node.key+'" meta-focusReference="'+firstChild.key+'">' + firstChild.verbalization.current[0] + '</span>'; 
@@ -200,7 +200,7 @@ function visitRenderer(node){
 			if(node.label != 'not')
 				if(parent.label != 'not'){
 					queryString += '<span class="focusable operator" id="'+node.key+'" meta-removeReference="'+node.key+'" meta-focusReference="'+node.key+'">' + node.verbalization.current[0]+' ';
-					if(node.label == 'range'){
+					if(node.label == 'range' || node.label == 'range date'){
 						firstChild = queryLogicStructure[node.children[0]];
 						secondChild = queryLogicStructure[node.children[1]];
 						queryString += '<span class="focusable reusableResult" id="'+firstChild.key+'" meta-removeReference="'+node.key+'" meta-focusReference="'+firstChild.key+'">' + firstChild.verbalization.current[0] + '</span>'; 
