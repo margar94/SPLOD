@@ -317,6 +317,9 @@ LanguageManager.prototype.getOperatorStandardVerbalization = function(operator){
 		case 'range date':
 			verbalization = ['that is between '];
 			break;
+		case 'limit':
+			verbalization = ['Number of results: '];
+			break;
 		default:
 			verbalization = ['that '+operator+' '];
 			break;

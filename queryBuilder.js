@@ -521,8 +521,10 @@ function visitSPARQL(key){
 					operatorLabel = '='; 
 					if(queryLogicStructure[node.parent].type == 'operator' && queryLogicStructure[node.parent].label == 'not')
 						operatorLabel = "!=";
+
+					var conversionFunction = 'xsd:'+queryLogicStructure[node.children[0]].datatype;
 					nodeWhere.push('FILTER(');
-					nodeWhere.push(parentVariable+ ' '+operatorLabel +' xsd:dateTime("'+queryLogicStructure[node.children[0]].label+'")');
+					nodeWhere.push(parentVariable+ ' '+operatorLabel +' '+conversionFunction+'("'+queryLogicStructure[node.children[0]].label+'")');
 					nodeWhere.push(')');
 					break;
 
@@ -542,8 +544,10 @@ function visitSPARQL(key){
 					operatorLabel = '<';
 					if(queryLogicStructure[node.parent].type == 'operator' && queryLogicStructure[node.parent].label == 'not')
 						operatorLabel = '>=';
+
+					var conversionFunction = 'xsd:'+queryLogicStructure[node.children[0]].datatype;
 					nodeWhere.push('FILTER(');
-					nodeWhere.push(parentVariable+' '+operatorLabel +' xsd:dateTime("'+queryLogicStructure[node.children[0]].label+'")');
+					nodeWhere.push(parentVariable+' '+operatorLabel +' '+conversionFunction+'("'+queryLogicStructure[node.children[0]].label+'")');
 					nodeWhere.push(')');
 					break;
 
@@ -551,18 +555,21 @@ function visitSPARQL(key){
 					operatorLabel = '>';
 					if(queryLogicStructure[node.parent].type == 'operator' && queryLogicStructure[node.parent].label == 'not')
 						operatorLabel = '<=';
+
+					var conversionFunction = 'xsd:'+queryLogicStructure[node.children[0]].datatype;
 					nodeWhere.push('FILTER(');
-					nodeWhere.push(parentVariable+' '+operatorLabel +' xsd:dateTime("'+queryLogicStructure[node.children[0]].label+'")');
+					nodeWhere.push(parentVariable+' '+operatorLabel +' '+conversionFunction+'("'+queryLogicStructure[node.children[0]].label+'")');
 					nodeWhere.push(')');
 					break;
 				case 'range date':
+					var conversionFunction = 'xsd:'+queryLogicStructure[node.children[0]].datatype;
 					if(queryLogicStructure[node.parent].type == 'operator' && queryLogicStructure[node.parent].label == 'not'){
 						nodeWhere.push('FILTER(');
-						nodeWhere.push(parentVariable+' < xsd:dateTime("'+queryLogicStructure[node.children[0]].label+'") || '+parentVariable+' > xsd:dateTime("'+queryLogicStructure[node.children[1]].label+'")');
+						nodeWhere.push(parentVariable+' < '+conversionFunction+'("'+queryLogicStructure[node.children[0]].label+'") || '+parentVariable+' > '+conversionFunction+'("'+queryLogicStructure[node.children[1]].label+'")');
 						nodeWhere.push(')');
 					}else{
 						nodeWhere.push('FILTER(');
-						nodeWhere.push(parentVariable+' >= xsd:dateTime("'+queryLogicStructure[node.children[0]].label+'") && '+parentVariable+' <= xsd:dateTime("'+queryLogicStructure[node.children[1]].label+'")');
+						nodeWhere.push(parentVariable+' >= '+conversionFunction+'("'+queryLogicStructure[node.children[0]].label+'") && '+parentVariable+' <= '+conversionFunction+'("'+queryLogicStructure[node.children[1]].label+'")');
 						nodeWhere.push(')');
 					}	
 					break;

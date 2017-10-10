@@ -54,8 +54,8 @@ var OperatorManager = function () {
 
 		'range' : 3,
 		'range date' : 3
-	};
-
+	};					
+						
 	operatorMap = {
 		'number' : ['<', '<=', '>', '>=', '=', 'min', 'max', 'average', 'range', 'not'],
 
@@ -64,6 +64,13 @@ var OperatorManager = function () {
 		'literal' : ['is string', 'starts with', 'ends with', 'contains', 'not', 'lang'],
 
 		'date' : ['is date', 'before', 'after', 'range date'],
+		'time' : ['is date', 'before', 'after', 'range date'],
+		'dateTime' : ['is date', 'before', 'after', 'range date'],
+		'gday' : ['is date', 'before', 'after', 'range date'],
+		'gMonth' : ['is date', 'before', 'after', 'range date'],
+		'gMonthDay' : ['is date', 'before', 'after', 'range date'],
+		'gYear' : ['is date', 'before', 'after', 'range date'],
+		'gYearMonth' : ['is date', 'before', 'after', 'range date'],
 
 		'uri' : ['is url'],
 
@@ -160,18 +167,37 @@ console.log(results);
 							resultDatatype[keySelect[index]] = {datatype : 'number'};
 							break;			
 						*/
-						case 'day':
-						case 'year':
 						case 'gYear':
+							if($.inArray('gYear', resultDatatype[keySelect[arrayIndex]].datatype)<0)
+								resultDatatype[keySelect[arrayIndex]].datatype.push('gYear');
+							break;
 						case 'gMonth':
+							if($.inArray('gMonth', resultDatatype[keySelect[arrayIndex]].datatype)<0)
+								resultDatatype[keySelect[arrayIndex]].datatype.push('gMonth');
+							break;
 						case 'gDay':
+							if($.inArray('gDay', resultDatatype[keySelect[arrayIndex]].datatype)<0)
+								resultDatatype[keySelect[arrayIndex]].datatype.push('gDay');
+							break;
 						case 'gMonthDay':
+							if($.inArray('gMonthDay', resultDatatype[keySelect[arrayIndex]].datatype)<0)
+								resultDatatype[keySelect[arrayIndex]].datatype.push('gMonthDay');
+							break;
 						case 'gYearMonth':
+							if($.inArray('gYearMonth', resultDatatype[keySelect[arrayIndex]].datatype)<0)
+								resultDatatype[keySelect[arrayIndex]].datatype.push('gYearMonth');
+							break;
 						case 'date':
-						case 'dateTime':
-						case 'time':
 							if($.inArray('date', resultDatatype[keySelect[arrayIndex]].datatype)<0)
 								resultDatatype[keySelect[arrayIndex]].datatype.push('date');
+							break;
+						case 'dateTime':
+							if($.inArray('dateTime', resultDatatype[keySelect[arrayIndex]].datatype)<0)
+								resultDatatype[keySelect[arrayIndex]].datatype.push('dateTime');
+							break;
+						case 'time':
+							if($.inArray('time', resultDatatype[keySelect[arrayIndex]].datatype)<0)
+								resultDatatype[keySelect[arrayIndex]].datatype.push('time');
 							break;
 						case 'langString':
 							if($.inArray('string', resultDatatype[keySelect[arrayIndex]].datatype)<0)
@@ -241,7 +267,7 @@ console.log(results);
 }
 
 OperatorManager.prototype.selectedReusableResult = function(result){
-	var operator = pendingQuery[0];
+	var operator = pendingQuery[0].value;
 	var type;
 	if(operator == 'limit'){
 		type = 'number';
@@ -322,9 +348,13 @@ console.log(type);
 OperatorManager.prototype.getPendingQueryFields = function(){
 	var pendingQueryFields = [];
 
-	//concepts or predicates that fire operator's inserting
-	var nodeOnFocus = mapCreator.getNodeByKey(onFocus);
-	pendingQueryFields.push(nodeOnFocus.label);
+	if(onFocus=='limit'){
+		pendingQueryFields.push('');
+	}else{
+		//concepts or predicates that fire operator's inserting
+		var nodeOnFocus = mapCreator.getNodeByKey(onFocus);
+		pendingQueryFields.push(nodeOnFocus.label);
+	}
 
 	//selected operator and, eventually, selected parameters
 	for(var i=0; i<pendingQuery.length; i++){
@@ -343,6 +373,7 @@ OperatorManager.prototype.getPendingQueryFields = function(){
 			pendingQueryFields.splice(i, 0, 'and');
 		}
 	}
+	
 
 	return pendingQueryFields;
 }
