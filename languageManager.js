@@ -181,6 +181,12 @@ LanguageManager.prototype.verbalizeOperator = function(operator){
 			verbalization.negated = ['that is ', 'not ', 'more or equals than '];
 			verbalization.current = verbalization.standard;
 			break;
+		case '=':
+			verbalization.standard = ['that is equals to '];
+			verbalization.truncated = ['equals to '];
+			verbalization.negated = ['that is ', 'not ', 'equals to '];
+			verbalization.current = verbalization.standard;
+			break;
 		case 'is string':
 			verbalization.standard = ['that is '];
 			verbalization.truncated = [''];
@@ -226,6 +232,58 @@ LanguageManager.prototype.verbalizeResult = function(result){
 	verbalization = {
 		standard: [result+' '],
 		current: [result+' ']};
+
+	return verbalization;
+
+}
+
+
+
+
+LanguageManager.prototype.getOperatorStandardVerbalization = function(operator){	
+	var verbalization;	
+
+	switch(operator){
+		case '<':
+			verbalization = ['that is less than '];
+			break;
+		case '<=':
+			verbalization = ['that is less or equals than '];
+			break;
+		case '>':
+			verbalization = ['that is more than '];
+			break;
+		case '>=':
+			verbalization = ['that is more or equals than '];
+			break;
+		case 'is string':
+			verbalization = ['that is '];
+			break;
+		case 'is url':
+			verbalization = ['that is '];
+			break;
+		case '=':
+			verbalization = ['that is equals to '];
+			break;
+		case 'range':
+			verbalization = ['that is between '];
+			break;
+		case 'and':	
+			verbalization = ['and '];
+			break;
+		case 'or':	
+			verbalization = ['or '];
+			break;
+		case 'not':
+			verbalization = ['that is not '];
+			break;
+		case 'lang':
+			verbalization = ['whose lang is '];
+			break;
+		default:
+			verbalization = ['that '+operator+' '];
+			break;
+	}
 
 	return verbalization;
 

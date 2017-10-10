@@ -1,8 +1,10 @@
 
 var operatorManager;
+var languageManager;
 
 function initOperatorViewer(){
 	operatorManager = new OperatorManager;
+	languageManager = new LanguageManager;
 }
 
 function renderResult(select, labelSelect, results){
@@ -15,6 +17,7 @@ function renderResult(select, labelSelect, results){
 
 function renderOperatorList(operators){
 
+	$('#pendingQuerySpan').empty();
 	var operatorList = $('#operatorList');
 	operatorList.empty();
 	$('#operatorList').show();
@@ -34,8 +37,7 @@ function renderOperatorList(operators){
 
 		li.appendTo(operatorList)
 			.on('click', function(){
-				operatorManager.selectedOperator($(this).attr('meta-value'));
-				if(!operatorManager.isComplete()){
+				if(!operatorManager.selectedOperator($(this).attr('meta-value'))){
 					var reusableResults = operatorManager.getResultToCompleteOperator();
 					renderReusableResultList(reusableResults);
 				}
@@ -52,18 +54,21 @@ function renderReusableResultList(reusableResults){
 	reusableResultList.empty();
 	reusableResultList.show();
 
-	if(reusableResults.blankNode != null){
-		var blankNode = $("<li/>")
+	renderPendingQuery();
+
+	//reusableResults.blankNode is the type of reusable result
+	if(reusableResults.type != null){
+		var userInput = $("<li/>")
 			.attr('class', 'collection-item');
 
 		var input = $("<input/>")
-			.attr('type', reusableResults.blankNode)
+			.attr('type', reusableResults.type)
 			.on('keyup', function(){
 				operatorManager.selectedReusableResult(this.value);
 			})
-			.appendTo(blankNode);
+			.appendTo(userInput);
 
-		blankNode.appendTo(reusableResultList);
+		userInput.appendTo(reusableResultList);
 	}
 	
 	$.each(reusableResults.results, function(index){
@@ -90,13 +95,59 @@ function renderReusableResultList(reusableResults){
 
 		li.appendTo(reusableResultList)
 			.on('click', function(){
-				operatorManager.selectedReusableResult($(this).attr('meta-value'));
-				if(operatorManager.isComplete()){
+				if(operatorManager.selectedReusableResult($(this).attr('meta-value'))){
 					$('#reusableResultList').hide();
 					$('#operatorList').show();
+					$('#pendingQuerySpan').empty();
+				}else{
+					console.log('not complete');
+					renderPendingQuery();
 				}
-				//range to manage
 			});
 	});
 
+}
+
+
+function renderPendingQuery(){
+	$('#pendingQuerySpan').empty();
+
+	var pendingQueryFields = operatorManager.getPendingQueryFields();
+
+	var pendingQuery = $("<span/>");
+
+	pendingQueryFields[1] = languageManager.getOperatorStandardVerbalization(pendingQueryFields[1])[0];
+
+	for(var i = 0; i<pendingQueryFields.length; i++){
+		if(pendingQueryFields[i] != ' ')
+			pendingQuery.html(pendingQuery.html()+pendingQueryFields[i]+' ');
+		else{
+			var toComplete = $("<span/>")
+				.text('input')
+				.attr('class', 'fieldToComplete');
+			toComplete.appendTo(pendingQuery);
+			if(i != pendingQueryFields.length-1)
+				pendingQuery.html(pendingQuery.html()+' and ');
+		}
+	}
+
+	pendingQuery.appendTo($('#pendingQuerySpan'));
+
+	var toHightlight = $('#pendingQuerySpan .fieldToComplete:first');
+	toHightlight.attr('class', toHightlight.attr('class') + ' active');
+
+
+	var discardButton = $('<i/>')
+		.attr('class', 'small material-icons blue-text')
+		.attr('id', 'discardButton')
+		.attr('title', 'Discard operator')
+		.text('highlight_off')
+		.on('click', function(){
+			operatorManager.discardOperator();
+			$('#pendingQuerySpan').empty();
+			$('#operatorList').show();
+			$('#reusableResultList').hide();
+		});
+
+	discardButton.appendTo($('#pendingQuerySpan'));
 }

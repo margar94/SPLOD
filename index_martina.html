@@ -183,6 +183,16 @@
 			ul:empty{
 				display: none;
 			}
+
+			#pendingQuerySpan .fieldToComplete{
+				text-decoration-line: underline;
+			    text-decoration-color: #bdbdbd;
+			    text-decoration-style: dashed;
+			}
+
+			#pendingQuerySpan .active{
+				text-decoration-color: yellow;
+			}
 /*
 			#overlay{
 				height: -webkit-fill-available;
@@ -359,6 +369,7 @@
 					  <div id="operatorsBox" class="card col s12">
 			            <div class="card-content">
 			              <span class="card-title">Operators</span>
+			              <span id="pendingQuerySpan"></span>
 			              <ul id="operatorList" class="collection"></ul>
 			              <ul id="reusableResultList" class="collection"></ul>
 						<!--<input type="text" id="searchResultsBox" class="search"

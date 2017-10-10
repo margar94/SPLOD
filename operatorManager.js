@@ -41,6 +41,7 @@ var OperatorManager = function () {
 		'<=' : 2,
 		'>' : 2,
 		'>=' : 2,
+		'=' : 2,
 		'is url' : 2,
 		'is string' : 2,
 		'starts with' : 2,
@@ -231,7 +232,7 @@ OperatorManager.prototype.selectedReusableResult = function(result){
 	var operator = pendingQuery[0];
 	var isComplete = parameterNumberOperator[operator]==pendingQuery.length;
 
-	if(OperatorManager.prototype.isComplete()){
+	if(isComplete){
 		mapCreator.selectedOperator(pendingQuery);
 		pendingQuery = [];
 	}
@@ -246,7 +247,7 @@ OperatorManager.prototype.selectedOperator = function(operator){
 
 	var isComplete = parameterNumberOperator[operator]==pendingQuery.length;
 
-	if(OperatorManager.prototype.isComplete()){
+	if(isComplete){
 		mapCreator.selectedOperator(pendingQuery);
 		pendingQuery = [];
 	}
@@ -316,7 +317,7 @@ OperatorManager.prototype.getPendingQueryFields = function(){
 	return pendingQueryFields;
 }
 
-OperatorManager.prototype.discardOperator(){
+OperatorManager.prototype.discardOperator = function(){
 	pendingQuery = [];
 }
 
