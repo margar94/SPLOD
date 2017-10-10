@@ -69,16 +69,21 @@ function renderQuery(){
 
 					visitStack.push({type: 'endSpan', verbalization:{current: ['</span>']}, children:[] });
 					visitStack.push(queryLogicStructure[currentNode.children[i]]);
-					visitStack.push({type: 'startSpan', verbalization:{current: ['<span>']}, children:[], focusReference: currentNode.children[i], removeReference: currentNode.children[i] });
 					
+					var startSpan = {type: 'startSpan', verbalization:{current: ['<span>']}, children:[], focusReference: currentNode.children[i]};
+					if(currentNode.type == 'everything' && currentNode.children.length == 1 && i == 0 && queryLogicStructure[currentNode.children[i]].direction == 'direct'){
+						startSpan['removeReference'] = currentNode.key;
+					
+					}else startSpan['removeReference'] = currentNode.children[i];
+					
+					visitStack.push(startSpan);
+ 
 					if(childrenNumber && (i==0 || (((i%2)==1) && (i!=currentNode.children.length-1))))
 						visitStack.push({type: 'startli', verbalization:{current: ['<li>']}, children:[] });
 				}
 
-				if(childrenNumber){
+				if(childrenNumber)
 					visitStack.push({type: 'startul', verbalization:{current: ['<ul>']}, children:[] });
-					//visitStack.push({type: 'startSpan', verbalization:{current: ['<span>']}, children:[] });
-				}
 			}
 
 			if(!notBarred){
@@ -168,8 +173,15 @@ function visitRenderer(node){
 			}else{
 				queryString += node.verbalization.current[0];
 
-				if(node.direction == 'reverse')
+				if(node.direction == 'reverse'){
 					utils = 'meta-removeReference="'+ node.key +'" meta-focusReference="'+node.children[0]+'" id="'+node.key+'" title="'+node.url+'"';
+				}else if(node.direction == 'direct'){//every thing remotion 
+					var parent = queryLogicStructure[node.parent];
+					if(parent.type == 'everything' && parent.children.length == 1){
+						utils = 'meta-removeReference="'+ parent.key +'" meta-focusReference="'+node.children[0]+'" id="'+node.key+'" title="'+node.url+'"';
+					}
+
+				}
 				
 				queryString += '<span class="predicate focusable" '+utils+' >' + node.verbalization.current[1] + '</span>';
 				if(node.direction == 'reverse')
