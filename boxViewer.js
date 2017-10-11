@@ -41,25 +41,6 @@ function updateBoxesFromPredicate(predicateUrl, predicateLabel, predicateDirecti
 	}
 	boxFiller.updatePredicatesFromPredicate(predicateUrl, predicateLabel, predicateDirection, renderPredicates);
 }
-/*
-function renderConcepts(concepts){
-	var conceptsList = $("#conceptsList");
-	conceptsList.empty();
-
-	$.each(concepts, function(index){
-		element = concepts[index];
-		var li = $("<li/>")
-			.attr('title', element.url)
-			.attr('meta-url', element.url)
-			.attr('meta-label', element.label)
-			.text(element.label)
-			.appendTo(conceptsList)
-			.on('click', function(){
-				updateBoxesFromConcept($(this).attr('meta-url'), $(this).attr('meta-label'));
-				mapCreator.selectedConcept($(this).attr('meta-url'), $(this).attr('meta-label'));
-			});
-	});
-}*/
 
 function renderConceptsHierarchy(roots, concepts){
 	var conceptsList = $("#conceptsList");
@@ -129,24 +110,16 @@ function renderDirectPredicates(directArray){
 	var directPredicatesList = $("#directPredicatesList");
 	directPredicatesList.empty();
 
-	/*var li = $("<li/>")
-		.css('backgroundColor', '#7c4dff')
-		.text('Direct predicates')
-		.appendTo(predicatesList);*/
-
 	$.each(directArray, function(index){
 		element = directArray[index];
-		article = languageManager.getArticle(element.label);
 		
 		var li = $("<li/>")
 			.attr('class', 'collection-item')
 			.attr('title', element.url)
 			.attr('meta-url', element.url)
 			.attr('meta-label', element.label)
-			.attr('meta-verb', element.verb)
-			.attr('meta-article', element.article)
 			.attr('meta-predicateDirection', 'direct') 
-			.text(element.verb +" "+ article +" "+ element.label)
+			.text(languageManager.getPredicateVerbalization(element.label, 'direct'))
 			.appendTo(directPredicatesList)
 			.on('click', function(){
 				mapCreator.selectedPredicate($(this).attr('meta-url'), $(this).attr('meta-label'), $(this).attr('meta-predicateDirection'));
@@ -159,24 +132,16 @@ function renderReversePredicates(reverseArray){
 	var reversePredicatesList = $("#reversePredicatesList");
 	reversePredicatesList.empty();
 
-	/*var li = $("<li/>")
-		.css('backgroundColor', '#7c4dff')
-		.text('Reverse predicates')
-		.appendTo(predicatesList);*/
-
 	$.each(reverseArray, function(index){
 		element = reverseArray[index];
-		article = languageManager.getArticle(element.label);
 
 		var li = $("<li/>")
 			.attr('class', 'collection-item')
 			.attr('title', element.url)
 			.attr('meta-url', element.url)
 			.attr('meta-label', element.label)
-			.attr('meta-verb', element.verb)
-			.attr('meta-article', element.article)
 			.attr('meta-predicateDirection', 'reverse')
-			.text(element.verb +" "+ article +" "+ element.label)
+			.text(languageManager.getPredicateVerbalization(element.label, 'reverse'))
 			.appendTo(reversePredicatesList)
 			.on('click', function(){
 				mapCreator.selectedPredicate($(this).attr('meta-url'), $(this).attr('meta-label'), $(this).attr('meta-predicateDirection'));
