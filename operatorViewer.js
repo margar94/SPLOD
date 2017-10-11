@@ -65,6 +65,9 @@ function renderReusableResultList(reusableResults){
 		var userInput = $("<li/>")
 			.attr('class', 'collection-item');
 
+		var userInputDiv = $("<div/>")
+			.attr('class', 'row')
+			.attr('id', 'rowUserValue');
 		//retrieve the type
 		var inputClass;
 		switch(type){
@@ -85,14 +88,14 @@ function renderReusableResultList(reusableResults){
 				break;
 		}
 
-		for(var i = 0; i<inputClass; i++){
+		for(var i = 0; i<inputClass.length; i++){
 
 			var div = $('<div/>')
-				.attr('class', 'input-field');
+				.attr('class', 'input-field userValueDiv col s10 m10 l10');
 
 			var input = $("<input/>")
 				.attr('type', 'text')
-				.attr('class', inputClass[i])
+				.attr('class', inputClass[i]+' userValue')
 				.attr('id', 'userValue_'+[i]);
 
 			var label = $('<label/>')
@@ -103,7 +106,7 @@ function renderReusableResultList(reusableResults){
 			input.appendTo(div);
 			label.appendTo(div);
 
-			div.appendTo(userInput);
+			div.appendTo(userInputDiv);
 		}
 
 		var button = $('<i/>')
@@ -112,11 +115,48 @@ function renderReusableResultList(reusableResults){
 			.attr('title', 'Confirm value')
 			.text('check_circle')
 			.on('click', function(){
-				operatorManager.selectedReusableResult(this.value);
+				var values = [];
+				values.push($('#userValue_0')[0].value);
+				if($('#userValue_1')[0] != undefined)
+					values.push($('#userValue_1')[0].value);
+
+				console.log(values);
+				operatorManager.selectedReusableResult(values);
 			});
 
-		button.appendTo(userInput);
+		button.appendTo(userInputDiv);
+		userInputDiv.appendTo(userInput);
 		userInput.appendTo(reusableResultList);
+
+		$('input.number').on('keypress', function(evt){
+			var charCode = (evt.which) ? evt.which : event.keyCode;
+		    if (charCode > 31 && (charCode < 48 || charCode > 57))
+		        return false;
+		    return true;
+		});
+
+		$('.datepicker').pickadate({
+			selectMonths: true,
+			selectYears: 100,
+			max: 'Today',
+			today: 'Today',
+			clear: 'Clear',
+			close: 'OK',
+			closeOnSelect: true,
+			format: 'yyyy-mm-dd'
+		});
+
+		$('.timepicker').pickatime({
+		    default: 'now', // Set default time: 'now', '1:30AM', '16:30'
+		    fromnow: 0,       // set default time to * milliseconds from now (using with default = 'now')
+		    twelvehour: true, // Use AM/PM or 24-hour format
+		    donetext: 'OK', // text for done-button
+		    cleartext: 'Clear', // text for clear-button
+		    canceltext: 'Cancel', // Text for cancel-button
+		    autoclose: true, // automatic close timepicker
+		    ampmclickable: true, // make AM PM clickable
+		  });
+
 	}
 
 
