@@ -1,4 +1,4 @@
-
+var languageManager;
 var queryLogicStructure;
 var queryLogicStructureRoot;
 var visitStack;
@@ -16,6 +16,7 @@ var QueryViewer= function () {
 	}
 
 	mapCreator = new MapCreator();
+	languageManager = new LanguageManager();
 	queryLogicStructure = {}; 
 	visitStack = [];
 
@@ -27,7 +28,7 @@ QueryViewer.prototype.updateQuery = function(queryRoot, queryMap, focus){
 	queryLogicStructureRoot = queryRoot;
 	queryLogicStructure = queryMap;
 	onFocus = focus;
-	queryString = 'Give me ';
+	queryString = languageManager.getQueryStartVerbalization();
 	renderQuery();
 }
 
@@ -36,7 +37,7 @@ QueryViewer.prototype.updateQuery = function(queryRoot, queryMap, focus){
 function renderQuery(){
 	//visit query implicit tree 
 	if(queryLogicStructureRoot == null){
-		queryString = "Give me..."
+		queryString = languageManager.getQueryInizializationVerbalization();
 	}else{
 		visitStack.push({type: 'firstEndSpan', verbalization:{current: ['</span>']}, children:[] });
 		visitStack.push(queryLogicStructure[queryLogicStructureRoot]);

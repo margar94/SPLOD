@@ -35,21 +35,9 @@ BoxFiller.prototype.retrievePredicates = function(callback) {
 	$.when(d1, d2).done(function(){
 
 		var resultObj = {
-			directArray: [],
-			reverseArray: [],
-			attributesArray: directData
+			directArray: directData,
+			reverseArray: reverseData
 		};
-
-		$.each(directData, function(index){
-
-			directData[index].verb = "that has";
-		});
-		resultObj.directArray = directData;
-
-		$.each(reverseData, function(index){
-			reverseData[index].verb = "that is";
-		});
-		resultObj.reverseArray = reverseData;
 
 		callback(resultObj);
 	});
@@ -87,28 +75,14 @@ BoxFiller.prototype.updatePredicatesFromConcept = function(predUrl, predLabel, p
 	$.when(d1, d2).done(function(){
 
 		var resultObj = {
-			directArray: [],
-			reverseArray: [],
-			attributesArray: directData
+			directArray: directData,
+			reverseArray: reverseData
 		};
 
-		$.each(directData, function(index){
-
-			directData[index].verb = "that has";
-		});
-		resultObj.directArray = directData;
-
-		$.each(reverseData, function(index){
-			reverseData[index].verb = "that is";
-		});
-		resultObj.reverseArray = reverseData;
-		//console.log(resultObj);
 		callback(resultObj);
 	});
 
 }
-
-
 
 BoxFiller.prototype.updateConceptsFromDirectPredicate = function(predUrl, predLabel, callback){
 
@@ -125,8 +99,6 @@ BoxFiller.prototype.updateConceptsFromReversePredicate = function(predUrl, predL
 		callback(roots, map);
 	});
 }
-
-
 
 BoxFiller.prototype.updatePredicatesFromPredicate = function(predUrl, predLabel, predicateDirection, callback){
 	
@@ -148,25 +120,12 @@ BoxFiller.prototype.updatePredicatesFromPredicate = function(predUrl, predLabel,
 	$.when(d1, d2).done(function(){
 
 		var resultObj = {
-			directArray: [],
-			reverseArray: [],
-			attributesArray: directData
+			directArray: directData,
+			reverseArray: reverseData
 		};
 
-		$.each(directData, function(index){
-
-			directData[index].verb = "that has";
-		});
-		resultObj.directArray = directData;
-
-		$.each(reverseData, function(index){
-			reverseData[index].verb = "that is";
-		});
-		resultObj.reverseArray = reverseData;
-		//console.log(resultObj);
 		callback(resultObj);
 	});
 
-	
 }
 

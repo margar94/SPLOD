@@ -262,9 +262,6 @@ LanguageManager.prototype.verbalizeResult = function(result){
 
 }
 
-
-
-
 LanguageManager.prototype.getOperatorStandardVerbalization = function(operator){	
 	var verbalization;	
 
@@ -328,3 +325,76 @@ LanguageManager.prototype.getOperatorStandardVerbalization = function(operator){
 	return verbalization;
 
 }
+
+LanguageManager.prototype.getQueryStartVerbalization = function(){
+	return 'Give me';
+}
+
+LanguageManager.prototype.getQueryInizializationVerbalization = function(){
+	return 'Give me...';
+}
+
+LanguageManager.prototype.getOperatorLabelVerbalization = function(operator){	
+	var label;	
+
+	switch(operator){
+		case 'is string':
+		case 'is url':
+		case 'is date':
+			label = 'is';
+			break;
+		case 'range':
+		case 'range date':
+			label = 'range';
+			break;
+		default: 
+			label = operator;
+			break;
+	}
+
+	return label;
+
+}
+
+LanguageManager.prototype.getUserInputHint = function(){	
+	return 'Insert your value: ';
+}
+
+LanguageManager.prototype.getButtonLabel = function(button){
+	var label;
+
+	switch(button){
+		case 'confirm' : 
+			label = 'Confirm';
+			break;
+		case 'remove':
+			label = 'Remove';
+			break;
+		case 'removeFocus': //remove higlighted part of query
+			label = 'Remove all the highlighted';
+			break;
+		case 'confirmUserInput': //confirm user value to complete operator
+			label = 'Add your value';
+			break;
+		case 'discardButton':
+			label = 'Discard operator';
+			break;
+	}
+
+	return label;
+}
+
+LanguageManager.prototype.getPredicateVerbalization = function(predicateLabel, direction){
+	var label;
+
+	if(predicateLabel.startsWith('has')||predicateLabel.startsWith('is'))
+		label = 'that '+ predicateLabel;
+	else if(direction == 'direct')
+		label =	'that has '+ LanguageManager.prototype.getArticle(predicateLabel) + ' ' + predicateLabel; 
+	else
+		label =	'that is the ' + predicateLabel; 
+	
+	return label; 
+}
+
+

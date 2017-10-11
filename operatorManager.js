@@ -246,24 +246,16 @@ console.log(results);
 
 			}
 
-
-
-
 		}
 
 	});
-
-	
 
 	//console.log(resultDatatype);
 
 	if(changedFocus)
 		manageUpdateOperatorViewer();
 	
-
 	saveResults(select, keySelect, results);
-
-	//renderResult(select, labelSelect, results);
 }
 
 OperatorManager.prototype.selectedReusableResult = function(result){
@@ -342,12 +334,6 @@ OperatorManager.prototype.selectedOperator = function(operator){
 
 	return isComplete;
 }
-
-/*
-OperatorManager.prototype.isComplete = function(){
-	var operator = pendingQuery[0];
-	return ();
-}*/
 
 OperatorManager.prototype.getResultToCompleteOperator = function(){
 	var results;
@@ -441,7 +427,6 @@ OperatorManager.prototype.getPendingQueryFields = function(){
 		}
 	}
 	
-
 	return pendingQueryFields;
 }
 

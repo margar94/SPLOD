@@ -8,11 +8,7 @@ function initOperatorViewer(){
 }
 
 function renderResult(select, labelSelect, results){
-
-	//fill result box & result table
-	//console.log(results);
 	createTable(select, labelSelect, results);
-
 }
 
 function renderOperatorList(operators){
@@ -28,12 +24,8 @@ function renderOperatorList(operators){
 
 		var li = $("<li/>")
 		.attr('class', 'collection-item')
-		.attr('meta-value', element);
-
-		if(element == 'is string' || element == "is url")
-			li.text('is');
-		else
-			li.text(element);
+		.attr('meta-value', element)
+		.text(languageManager.getOperatorLabelVerbalization(element));
 
 		li.appendTo(operatorList)
 			.on('click', function(){
@@ -55,7 +47,6 @@ function renderReusableResultList(reusableResults){
 	reusableResultList.show();
 
 	renderPendingQuery();
-
 
 	//user value
 	var type = reusableResults.type;
@@ -100,7 +91,7 @@ function renderReusableResultList(reusableResults){
 
 			var label = $('<label/>')
 				.attr('for', 'userValue_'+[i])
-				.text('Insert your value: ');
+				.text(languageManager.getUserInputHint());
 
 			
 			input.appendTo(div);
@@ -112,7 +103,7 @@ function renderReusableResultList(reusableResults){
 		var button = $('<i/>')
 			.attr('class', 'small material-icons blue-text')
 			.attr('id', 'userValueButton')
-			.attr('title', 'Confirm value')
+			.attr('title', languageManager.getButtonLabel('confirmUserInput'))
 			.text('check_circle')
 			.on('click', function(){
 				var values = [];
@@ -120,7 +111,6 @@ function renderReusableResultList(reusableResults){
 				if($('#userValue_1')[0] != undefined)
 					values.push($('#userValue_1')[0].value);
 
-				console.log(values);
 				operatorManager.selectedReusableResult(values);
 			});
 
@@ -227,7 +217,7 @@ function renderPendingQuery(){
 	var discardButton = $('<i/>')
 		.attr('class', 'small material-icons blue-text')
 		.attr('id', 'discardButton')
-		.attr('title', 'Discard operator')
+		.attr('title', languageManager.getButtonLabel('discardButton'))
 		.text('highlight_off')
 		.on('click', function(){
 			operatorManager.discardOperator();
