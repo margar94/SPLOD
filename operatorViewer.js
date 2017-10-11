@@ -56,20 +56,70 @@ function renderReusableResultList(reusableResults){
 
 	renderPendingQuery();
 
-	//reusableResults.blankNode is the type of reusable result
-	if(reusableResults.type != null){
+
+	//user value
+	var type = reusableResults.type;
+
+	if(type != null){
+
 		var userInput = $("<li/>")
 			.attr('class', 'collection-item');
 
-		var input = $("<input/>")
-			.attr('type', reusableResults.type)
-			.on('keyup', function(){
-				operatorManager.selectedReusableResult(this.value);
-			})
-			.appendTo(userInput);
+		//retrieve the type
+		var inputClass;
+		switch(type){
+			case 'date' :
+				inputClass = ['datepicker'];
+				break;
+			case 'time' :
+				inputClass = ['timepicker'];
+				break;
+			case 'dateTime' :
+				inputClass = ['datepicker', 'timepicker'];
+				break;
+			case 'text' :
+				inputClass = ['text'];
+				break;
+			case 'number' :
+				inputClass = ['number'];
+				break;
+		}
 
+		for(var i = 0; i<inputClass; i++){
+
+			var div = $('<div/>')
+				.attr('class', 'input-field');
+
+			var input = $("<input/>")
+				.attr('type', 'text')
+				.attr('class', inputClass[i])
+				.attr('id', 'userValue_'+[i]);
+
+			var label = $('<label/>')
+				.attr('for', 'userValue_'+[i])
+				.text('Insert your value: ');
+
+			
+			input.appendTo(div);
+			label.appendTo(div);
+
+			div.appendTo(userInput);
+		}
+
+		var button = $('<i/>')
+			.attr('class', 'small material-icons blue-text')
+			.attr('id', 'userValueButton')
+			.attr('title', 'Confirm value')
+			.text('check_circle')
+			.on('click', function(){
+				operatorManager.selectedReusableResult(this.value);
+			});
+
+		button.appendTo(userInput);
 		userInput.appendTo(reusableResultList);
 	}
+
+
 	
 	$.each(reusableResults.results, function(index){
 		var element = reusableResults.results[index];
