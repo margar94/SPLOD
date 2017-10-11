@@ -261,7 +261,9 @@ function renderFocus(){
 				fillConcepts();
 				fillPredicates();
 			}else if(queryLogicStructure[onFocus].type == 'operator'){
-				updateBoxesFromOperator(queryLogicStructure[onFocus].label);
+				updateBoxesFromOperator();
+			}else if(queryLogicStructure[onFocus].type == 'result'){
+				updateBoxesFromResult();
 			}
 		}
 		
@@ -331,6 +333,10 @@ function attachEvents(){
 			
 			updateBoxesFromOperator(queryLogicStructure[onFocus].label);
 
+		}else if(queryLogicStructure[onFocus].type == 'result'){
+
+			updateBoxesFromResult();
+			
 		}
 		
 
