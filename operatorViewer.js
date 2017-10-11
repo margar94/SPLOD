@@ -31,14 +31,60 @@ function renderOperatorList(operators){
 			.on('click', function(){
 				if(!operatorManager.selectedOperator($(this).attr('meta-value'))){
 					var reusableResults = operatorManager.getResultToCompleteOperator();
-					renderReusableResultList(reusableResults);
+					renderReusableResultListFromOperator(reusableResults);
 				}
 			});
 	});
 
 }
 
-function renderReusableResultList(reusableResults){
+function renderReusableResultListFromOperator(reusableResults){
+	var onClickButtonFunction = function(){
+					var values = [];
+					values.push($('#userValue_0')[0].value);
+					if($('#userValue_1')[0] != undefined)
+						values.push($('#userValue_1')[0].value);
+
+					operatorManager.chagedReusableResult(values);
+				}
+
+
+	var onClickLiFunction = function(){
+					if(operatorManager.chagedReusableResult([$(this).attr('meta-value')])){
+						$('#reusableResultList').hide();
+						$('#operatorList').show();
+						$('#pendingQuerySpan').empty();
+					}else{
+						renderPendingQuery();
+					}
+				}
+	renderReusableResultList(reusableResults, onClickButtonFunction, onClickLiFunction);
+}
+
+function renderReusableResultListFromResult(reusableResults){
+	var onClickButtonFunction = function(){
+					var values = [];
+					values.push($('#userValue_0')[0].value);
+					if($('#userValue_1')[0] != undefined)
+						values.push($('#userValue_1')[0].value);
+
+					operatorManager.selectedReusableResult(values);
+				}
+
+
+	var onClickLiFunction = function(){
+					if(operatorManager.selectedReusableResult([$(this).attr('meta-value')])){
+						$('#reusableResultList').hide();
+						$('#operatorList').show();
+						$('#pendingQuerySpan').empty();
+					}else{
+						renderPendingQuery();
+					}
+				}
+	renderReusableResultList(reusableResults, onClickButtonFunction, onClickLiFunction);
+}
+
+function renderReusableResultList(reusableResults, onClickButtonFunction, onClickLiFunction){
 
 	var operatorList = $('#operatorList').hide();
 
@@ -105,14 +151,7 @@ function renderReusableResultList(reusableResults){
 			.attr('id', 'userValueButton')
 			.attr('title', languageManager.getButtonLabel('confirmUserInput'))
 			.text('check_circle')
-			.on('click', function(){
-				var values = [];
-				values.push($('#userValue_0')[0].value);
-				if($('#userValue_1')[0] != undefined)
-					values.push($('#userValue_1')[0].value);
-
-				operatorManager.selectedReusableResult(values);
-			});
+			.on('click', onClickButtonFunction);
 
 		button.appendTo(userInputDiv);
 		userInputDiv.appendTo(userInput);
@@ -174,15 +213,7 @@ function renderReusableResultList(reusableResults){
 			.appendTo(li);
 
 		li.appendTo(reusableResultList)
-			.on('click', function(){
-				if(operatorManager.selectedReusableResult([$(this).attr('meta-value')])){
-					$('#reusableResultList').hide();
-					$('#operatorList').show();
-					$('#pendingQuerySpan').empty();
-				}else{
-					renderPendingQuery();
-				}
-			});
+			.on('click', onClickLiFunction);
 	});
 
 }
