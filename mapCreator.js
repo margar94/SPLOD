@@ -600,7 +600,7 @@ function removeOperator(node){
 MapCreator.prototype.selectedOperator = function(pendingQuery){
 
 	//console.log(pendingQuery);
-
+	var resultsKey = [];
 	var operator = pendingQuery[0].value;
 
 	switch(operator){
@@ -669,6 +669,9 @@ MapCreator.prototype.selectedOperator = function(pendingQuery){
 				queryLogicMap[keyChildren] = newLogicChildren;
 
 				newLogicElement.children.push(keyChildren);
+
+				//keys to return 
+				resultsKey.push(keyChildren);
 			}	
 			updateAndNotifyFocus(elementOnFocus);
 			break;
@@ -765,7 +768,7 @@ MapCreator.prototype.selectedOperator = function(pendingQuery){
 		queryBuilder = new QueryBuilder;
 	queryBuilder.updateQuery(rootQueryLogicMap, queryLogicMap);
 
-	
+	return resultsKey;
 		//console.log(queryLogicMap);
 
 }
