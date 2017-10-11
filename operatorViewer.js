@@ -185,7 +185,7 @@ function renderReusableResultList(reusableResults){
 
 		li.appendTo(reusableResultList)
 			.on('click', function(){
-				if(operatorManager.selectedReusableResult($(this).attr('meta-value'))){
+				if(operatorManager.selectedReusableResult([$(this).attr('meta-value')])){
 					$('#reusableResultList').hide();
 					$('#operatorList').show();
 					$('#pendingQuerySpan').empty();

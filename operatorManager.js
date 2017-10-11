@@ -267,17 +267,56 @@ console.log(results);
 }
 
 OperatorManager.prototype.selectedReusableResult = function(result){
+console.log(result);
 	var operator = pendingQuery[0].value;
+
 	var type;
 	if(operator == 'limit'){
 		type = 'number';
 	}else if(onFocus in resultDatatype){
 		type = resultDatatype[onFocus].datatype;
+		if(type.length > 1)
+			type = 'string';
+		else
+			type = type[0];
 	}else{
 		type = null;
 	}
+console.log(type);
+	var value; 
+	switch(type){
+		case 'gYear':
+			value = result[0].split('-')[0];
+			break;
+		case 'gMonth':
+			value = result[0].split('-')[1];
+			break;
+		case 'gDay':
+			value = result[0].split('-')[2];
+			break;
+		case 'gMonthDay':
+			value = result[0].substring(5);
+			break;
+		case 'gYearMonth':
+			value = result[0].substring(0, 7);
+			break;
+		case 'dateTime':
+			value = result[0] + 'T' + result[1];
+			break;
+		case 'img':
+		case 'uri':
+		case 'time':
+		case 'date':
+		case 'string':
+		case 'literal':
+		case 'boolean':
+		case 'number':
+		default:
+			value = result[0];
+			break;
+	}
 
-	pendingQuery.push({value: result, datatype:type});
+	pendingQuery.push({value: value, datatype:type});
 
 	var isComplete = parameterNumberOperator[operator]==pendingQuery.length;
 
@@ -331,11 +370,12 @@ OperatorManager.prototype.getResultToCompleteOperator = function(){
 	}
 	else if(onFocus in resultDatatype){
 		var datatype = resultDatatype[onFocus].datatype;
+		console.log(datatype);
+
 		if(datatype.length>1)
 			datatype = 'string';
 		else
 			datatype = datatype[0];
-console.log(datatype);
 		switch(datatype){
 			case 'img':
 			case 'uri':
