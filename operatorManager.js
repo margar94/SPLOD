@@ -312,7 +312,7 @@ OperatorManager.prototype.isComplete = function(){
 
 OperatorManager.prototype.getResultToCompleteOperator = function(){
 	var results;
-	var type;
+	var type = '';
 
 	var operator = pendingQuery[0].value;
 
@@ -331,6 +331,11 @@ OperatorManager.prototype.getResultToCompleteOperator = function(){
 	}
 	else if(onFocus in resultDatatype){
 		var datatype = resultDatatype[onFocus].datatype;
+		if(datatype.length>1)
+			datatype = 'string';
+		else
+			datatype = datatype[0];
+console.log(datatype);
 		switch(datatype){
 			case 'img':
 			case 'uri':
