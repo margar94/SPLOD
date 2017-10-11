@@ -330,18 +330,40 @@ OperatorManager.prototype.getResultToCompleteOperator = function(){
 		type = 'number';
 	}
 	else if(onFocus in resultDatatype){
-		if(resultDatatype[onFocus].datatype=='literal' || resultDatatype[onFocus].datatype=='string'){
-			type = 'text';
-		}else{
-			type = resultDatatype[onFocus].datatype;
+		var datatype = resultDatatype[onFocus].datatype;
+		switch(datatype){
+			case 'img':
+			case 'uri':
+				type = null;
+				break;
+			case 'gYear':
+			case 'gMonth':
+			case 'gDay':
+			case 'gMonthDay':
+			case 'gYearMonth':
+			case 'date':
+				type = 'date';
+				break;
+			case 'dateTime':
+				type = 'dateTime';
+				break;
+			case 'time':
+				type = 'time';
+				break;
+			case 'string':
+			case 'literal':
+			case 'boolean':
+				type = 'text';
+				break;
+			case 'number':
+				type = 'number';
+				break;
 		}
 	}else{
 		type = null;
 	}
 console.log(type);
 	return {type : type, results: results};
-	
-	
 
 }
 
