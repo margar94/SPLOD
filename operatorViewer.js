@@ -45,12 +45,12 @@ function renderReusableResultListFromOperator(reusableResults){
 					if($('#userValue_1')[0] != undefined)
 						values.push($('#userValue_1')[0].value);
 
-					operatorManager.chagedReusableResult(values);
+					operatorManager.selectedReusableResult(values, true);
 				}
 
 
 	var onClickLiFunction = function(){
-					if(operatorManager.chagedReusableResult([$(this).attr('meta-value')])){
+					if(operatorManager.selectedReusableResult([$(this).attr('meta-value')], false)){
 						$('#reusableResultList').hide();
 						$('#operatorList').show();
 						$('#pendingQuerySpan').empty();
@@ -68,19 +68,14 @@ function renderReusableResultListFromResult(reusableResults){
 					if($('#userValue_1')[0] != undefined)
 						values.push($('#userValue_1')[0].value);
 
-					operatorManager.selectedReusableResult(values);
+					operatorManager.changedReusableResult(values, true);
 				}
 
 
 	var onClickLiFunction = function(){
-					if(operatorManager.selectedReusableResult([$(this).attr('meta-value')])){
-						$('#reusableResultList').hide();
-						$('#operatorList').show();
-						$('#pendingQuerySpan').empty();
-					}else{
-						renderPendingQuery();
-					}
+					operatorManager.changedReusableResult([$(this).attr('meta-value')], false);
 				}
+
 	renderReusableResultList(reusableResults, onClickButtonFunction, onClickLiFunction);
 }
 
