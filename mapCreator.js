@@ -665,7 +665,8 @@ MapCreator.prototype.selectedOperator = function(pendingQuery){
 							   url: resultValue, label: resultValue, 
 							   type:'result', direction: false,
 							   verbalization: verbalizationChildren, 
-							   parent:key, children: [], datatype: resultDatatype};
+							   parent:key, children: [], datatype: resultDatatype,
+							   relatedTo: elementOnFocus};
 				queryLogicMap[keyChildren] = newLogicChildren;
 
 				newLogicElement.children.push(keyChildren);
@@ -768,4 +769,36 @@ MapCreator.prototype.selectedOperator = function(pendingQuery){
 	
 		//console.log(queryLogicMap);
 
+}
+MapCreator.prototype.selectedResult = function(result){
+
+	var verbalization = languageManager.verbalizeResult(result.value);
+
+	if(!(result.value in indexMap)){
+		indexMap[result.value] = 1;
+	}
+	else{
+		indexMap[result.value] += 1;
+	}
+
+	var index = indexMap[result.value];
+	var key = result.value + "_" + index;
+
+	queryLogicMap[elementOnFocus].key = key;
+	queryLogicMap[elementOnFocus].index = index;
+	queryLogicMap[elementOnFocus].url = result.value;
+	queryLogicMap[elementOnFocus].label = result.value;
+	queryLogicMap[elementOnFocus].verbalization = verbalization;
+	queryLogicMap[elementOnFocus].datatype = result.datatype;
+
+	updateAndNotifyFocus(key);
+
+	if(queryVerbalizator == null)
+		queryVerbalizator = new QueryVerbalizator;
+	queryVerbalizator.updateQuery(rootQueryLogicMap, queryLogicMap, elementOnFocus);
+
+	if(queryBuilder == null)
+		queryBuilder = new QueryBuilder;
+	queryBuilder.updateQuery(rootQueryLogicMap, queryLogicMap);
+	
 }

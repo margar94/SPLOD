@@ -58,6 +58,8 @@ function renderReusableResultListFromOperator(reusableResults){
 						renderPendingQuery();
 					}
 				}
+
+	renderPendingQuery();
 	renderReusableResultList(reusableResults, onClickButtonFunction, onClickLiFunction);
 }
 
@@ -87,7 +89,7 @@ function renderReusableResultList(reusableResults, onClickButtonFunction, onClic
 	reusableResultList.empty();
 	reusableResultList.show();
 
-	renderPendingQuery();
+	//renderPendingQuery();
 
 	//user value
 	var type = reusableResults.type;

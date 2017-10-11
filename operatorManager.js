@@ -258,7 +258,7 @@ console.log(results);
 	saveResults(select, keySelect, results);
 }
 
-OperatorManager.prototype.selectedReusableResult = function(result){
+OperatorManager.prototype.selectedReusableResult = function(result, fromInput){
 console.log(result);
 	var operator = pendingQuery[0].value;
 
@@ -275,37 +275,40 @@ console.log(result);
 		type = null;
 	}
 console.log(type);
-	var value; 
-	switch(type){
-		case 'gYear':
-			value = result[0].split('-')[0];
-			break;
-		case 'gMonth':
-			value = result[0].split('-')[1];
-			break;
-		case 'gDay':
-			value = result[0].split('-')[2];
-			break;
-		case 'gMonthDay':
-			value = result[0].substring(5);
-			break;
-		case 'gYearMonth':
-			value = result[0].substring(0, 7);
-			break;
-		case 'dateTime':
-			value = result[0] + 'T' + result[1];
-			break;
-		case 'img':
-		case 'uri':
-		case 'time':
-		case 'date':
-		case 'string':
-		case 'literal':
-		case 'boolean':
-		case 'number':
-		default:
-			value = result[0];
-			break;
+	var value = result[0];
+
+	if(fromInput){
+		switch(type){
+			case 'gYear':
+				value = result[0].split('-')[0];
+				break;
+			case 'gMonth':
+				value = result[0].split('-')[1];
+				break;
+			case 'gDay':
+				value = result[0].split('-')[2];
+				break;
+			case 'gMonthDay':
+				value = result[0].substring(5);
+				break;
+			case 'gYearMonth':
+				value = result[0].substring(0, 7);
+				break;
+			case 'dateTime':
+				value = result[0] + 'T' + result[1];
+				break;
+			case 'img':
+			case 'uri':
+			case 'time':
+			case 'date':
+			case 'string':
+			case 'literal':
+			case 'boolean':
+			case 'number':
+			default:
+				value = result[0];
+				break;
+		}
 	}
 
 	pendingQuery.push({value: value, datatype:type});
@@ -336,17 +339,20 @@ OperatorManager.prototype.selectedOperator = function(operator){
 }
 
 OperatorManager.prototype.getResultToCompleteOperator = function(){
+	return getResultByOperator(onFocus, pendingQuery[0].value);
+}
+
+function getResultByOperator(operatorField, operator){
+
 	var results;
 	var type = '';
 
-	var operator = pendingQuery[0].value;
-
 	if(operator == 'limit'){
 		results = [];
-	}else if(onFocus in resultDatatype){ 
-		if(resultDatatype[onFocus].datatype=='literal' && operator == 'lang')
-			results = literalLang[onFocus];
-		else results = savedResult[onFocus];
+	}else if(operatorField in resultDatatype){ 
+		if(resultDatatype[operatorField].datatype=='literal' && operator == 'lang')
+			results = literalLang[operatorField];
+		else results = savedResult[operatorField];
 	}else{
 		results = [];
 	}
@@ -354,8 +360,8 @@ OperatorManager.prototype.getResultToCompleteOperator = function(){
 	if(operator == 'limit'){
 		type = 'number';
 	}
-	else if(onFocus in resultDatatype){
-		var datatype = resultDatatype[onFocus].datatype;
+	else if(operatorField in resultDatatype){
+		var datatype = resultDatatype[operatorField].datatype;
 		console.log(datatype);
 
 		if(datatype.length>1)
@@ -395,7 +401,6 @@ OperatorManager.prototype.getResultToCompleteOperator = function(){
 	}
 console.log(type);
 	return {type : type, results: results};
-
 }
 
 OperatorManager.prototype.getPendingQueryFields = function(){
@@ -551,35 +556,98 @@ OperatorManager.prototype.changedFocus = function(newOnFocus, userChangeFocus){
 function manageUpdateOperatorViewer(){
 	
 	if(onFocus!=null){
+		var node = mapCreator.getNodeByKey(onFocus);
 
-		if(onFocus.split('_')[0] in operatorMap){ //onFocus is an operator
-			renderOperatorList(operatorMap[onFocus.split('_')[0]]);
-		}else{ 
-			if(mapCreator.isRefinement(onFocus))
-				onFocus = mapCreator.getTopElement(onFocus);
-			
-			if(onFocus in resultDatatype){
-			/*var listOperator = [];
-			var listDatatype = resultDatatype[onFocus].datatype;
-			
-			for(var i=0; i<listDatatype.length; i++){
-				if(listDatatype[i] in operatorMap){
-					listOperator = listOperator.concat(operatorMap[listDatatype[i]]);
+		if(node.type=='result'){
+			var operatorNode = mapCreator.getNodeByKey(node.parent);
+			renderReusableResultListFromResult(getResultByOperator(node.relatedTo, operatorNode.label));
+		}
+		else{
+			if(onFocus.split('_')[0] in operatorMap){ //onFocus is an operator
+				renderOperatorList(operatorMap[onFocus.split('_')[0]]);
+			}else{ 
+				if(mapCreator.isRefinement(onFocus))
+					onFocus = mapCreator.getTopElement(onFocus);
+				
+				if(onFocus in resultDatatype){
+				/*var listOperator = [];
+				var listDatatype = resultDatatype[onFocus].datatype;
+				
+				for(var i=0; i<listDatatype.length; i++){
+					if(listDatatype[i] in operatorMap){
+						listOperator = listOperator.concat(operatorMap[listDatatype[i]]);
+					}
+				}
+				renderOperatorList(listOperator); */
+					if(resultDatatype[onFocus].datatype.length>1)
+						renderOperatorList(operatorMap['string']); 
+					else		
+						renderOperatorList(operatorMap[resultDatatype[onFocus].datatype[0]]); 
+				}else{
+					renderOperatorList([]);
 				}
 			}
-			renderOperatorList(listOperator); */
-				if(resultDatatype[onFocus].datatype.length>1)
-					renderOperatorList(operatorMap['string']); 
-				else		
-					renderOperatorList(operatorMap[resultDatatype[onFocus].datatype[0]]); 
-			}else{
-				renderOperatorList([]);
-			}
-		}
+		} 
 
 	}else{
 		renderOperatorList([]);
 	}
 	
 	changedFocus = false;
+}
+
+OperatorManager.prototype.changedReusableResult = function(result, fromInput){
+
+	var onFocusNode = mapCreator.getNodeByKey(onFocus); 
+	//var operator = mapCreator.getNodeByKey(onFocusNode.parent);
+	//var relatedToNode = mapCreator.getNodeByKey(onFocusNode.relatedTo);
+
+	var type;
+	if(onFocusNode.relatedTo in resultDatatype){
+		type = resultDatatype[onFocusNode.relatedTo].datatype;
+		if(type.length > 1)
+			type = 'string';
+		else
+			type = type[0];
+	}else{
+		type = null;
+	}
+
+	var value = result[0];
+	if(fromInput){
+		switch(type){
+			case 'gYear':
+				value = result[0].split('-')[0];
+				break;
+			case 'gMonth':
+				value = result[0].split('-')[1];
+				break;
+			case 'gDay':
+				value = result[0].split('-')[2];
+				break;
+			case 'gMonthDay':
+				value = result[0].substring(5);
+				break;
+			case 'gYearMonth':
+				value = result[0].substring(0, 7);
+				break;
+			case 'dateTime':
+				value = result[0] + 'T' + result[1];
+				break;
+			case 'img':
+			case 'uri':
+			case 'time':
+			case 'date':
+			case 'string':
+			case 'literal':
+			case 'boolean':
+			case 'number':
+			default:
+				value = result[0];
+				break;
+		}
+	}
+
+	mapCreator.selectedResult({value: value, datatype:type});
+
 }
