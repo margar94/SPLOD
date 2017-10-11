@@ -4,6 +4,7 @@ var parameterNumberOperator;
 
 var savedResult;
 var literalLang;
+var cachedResult;
 
 var mapCreator;
 
@@ -21,6 +22,7 @@ var OperatorManager = function () {
 	resultDatatype = {};
 	savedResult = {};
 	literalLang = {};
+	cachedResult = {};
 	pendingQuery = [];
 	mapCreator = new MapCreator();
 
@@ -120,7 +122,6 @@ OperatorManager.prototype.queryResult = function(select, labelSelect, keySelect,
 		resultDatatype[keySelect[arrayIndex]].datatype = []; 
 	}
 
-console.log(results);
 	$.each(results, function(index){
 
 		var result = results[index];
@@ -259,7 +260,6 @@ console.log(results);
 }
 
 OperatorManager.prototype.selectedReusableResult = function(result, fromInput){
-console.log(result);
 	var operator = pendingQuery[0].value;
 
 	var type;
@@ -274,7 +274,7 @@ console.log(result);
 	}else{
 		type = null;
 	}
-console.log(type);
+
 	var value = result[0];
 
 	if(fromInput){
@@ -316,8 +316,9 @@ console.log(type);
 	var isComplete = parameterNumberOperator[operator]==pendingQuery.length;
 
 	if(isComplete){
-		mapCreator.selectedOperator(pendingQuery);
+		var resultsKey = mapCreator.selectedOperator(pendingQuery);
 		pendingQuery = [];
+		cacheResultToChange(resultsKey);
 	}
 
 	return isComplete;
@@ -339,14 +340,8 @@ OperatorManager.prototype.selectedOperator = function(operator){
 }
 
 OperatorManager.prototype.getResultToCompleteOperator = function(){
-	return getResultByOperator(onFocus, pendingQuery[0].value);
-}
-
-function getResultByOperator(operatorField, operator){
-
-	var results;
-	var type = '';
-
+	var operator = pendingQuery[0].value;
+	var operatorField = onFocus;
 	if(operator == 'limit'){
 		results = [];
 	}else if(operatorField in resultDatatype){ 
@@ -356,6 +351,14 @@ function getResultByOperator(operatorField, operator){
 	}else{
 		results = [];
 	}
+	var type = getTypeByOperator(operatorField, operator);
+	return {type:type, results: results};
+}
+
+function getTypeByOperator(operatorField, operator){
+
+	var results;
+	var type = '';
 
 	if(operator == 'limit'){
 		type = 'number';
@@ -399,8 +402,7 @@ function getResultByOperator(operatorField, operator){
 	}else{
 		type = null;
 	}
-console.log(type);
-	return {type : type, results: results};
+	return type;
 }
 
 OperatorManager.prototype.getPendingQueryFields = function(){
@@ -556,38 +558,43 @@ OperatorManager.prototype.changedFocus = function(newOnFocus, userChangeFocus){
 function manageUpdateOperatorViewer(){
 	
 	if(onFocus!=null){
-		var node = mapCreator.getNodeByKey(onFocus);
-
-		if(node.type=='result'){
-			var operatorNode = mapCreator.getNodeByKey(node.parent);
-			renderReusableResultListFromResult(getResultByOperator(node.relatedTo, operatorNode.label));
+		if(onFocus=='limit'){//focus on every or everything or number applied as resultLimit
+			renderOperatorList(operatorMap[onFocus]);
 		}
 		else{
-			if(onFocus.split('_')[0] in operatorMap){ //onFocus is an operator
-				renderOperatorList(operatorMap[onFocus.split('_')[0]]);
-			}else{ 
-				if(mapCreator.isRefinement(onFocus))
-					onFocus = mapCreator.getTopElement(onFocus);
+			var node = mapCreator.getNodeByKey(onFocus);
+
+			if(node.type=='result'){
+				var operatorNode = mapCreator.getNodeByKey(node.parent);
+				var operator = operatorNode.label;
+				var operatorField = node.relatedTo;
 				
-				if(onFocus in resultDatatype){
-				/*var listOperator = [];
-				var listDatatype = resultDatatype[onFocus].datatype;
-				
-				for(var i=0; i<listDatatype.length; i++){
-					if(listDatatype[i] in operatorMap){
-						listOperator = listOperator.concat(operatorMap[listDatatype[i]]);
+				if(operatorField in resultDatatype){ 
+					results = cachedResult[node.key];
+				}else{
+					results = [];
+				} 
+				var type = getTypeByOperator(operatorField, operator);
+				renderReusableResultListFromResult({type:type, results:results});
+			}
+			else{ 
+				if(onFocus.split('_')[0] in operatorMap){ //onFocus is an operator
+					renderOperatorList(operatorMap[onFocus.split('_')[0]]);
+				}else{ //concept or predicate that fired operator
+					if(mapCreator.isRefinement(onFocus))
+						onFocus = mapCreator.getTopElement(onFocus);
+					
+					if(onFocus in resultDatatype){
+						if(resultDatatype[onFocus].datatype.length>1)
+							renderOperatorList(operatorMap['string']); 
+						else		
+							renderOperatorList(operatorMap[resultDatatype[onFocus].datatype[0]]); 
+					}else{
+						renderOperatorList([]);
 					}
 				}
-				renderOperatorList(listOperator); */
-					if(resultDatatype[onFocus].datatype.length>1)
-						renderOperatorList(operatorMap['string']); 
-					else		
-						renderOperatorList(operatorMap[resultDatatype[onFocus].datatype[0]]); 
-				}else{
-					renderOperatorList([]);
-				}
-			}
-		} 
+			} 
+		}
 
 	}else{
 		renderOperatorList([]);
@@ -599,8 +606,6 @@ function manageUpdateOperatorViewer(){
 OperatorManager.prototype.changedReusableResult = function(result, fromInput){
 
 	var onFocusNode = mapCreator.getNodeByKey(onFocus); 
-	//var operator = mapCreator.getNodeByKey(onFocusNode.parent);
-	//var relatedToNode = mapCreator.getNodeByKey(onFocusNode.relatedTo);
 
 	var type;
 	if(onFocusNode.relatedTo in resultDatatype){
@@ -648,6 +653,21 @@ OperatorManager.prototype.changedReusableResult = function(result, fromInput){
 		}
 	}
 
-	mapCreator.selectedResult({value: value, datatype:type});
+	var cachedResultList = cachedResult[onFocus];
+	delete cachedResult[onFocus];
 
+	var newKey = mapCreator.selectedResult({value: value, datatype:type});
+	cachedResult[newKey] = cachedResultList;
+
+}
+
+/*
+	Cache result list when a result is used to complete an operator for the first time
+	resultsKey could be []
+*/
+function cacheResultToChange(resultsKey){
+	for(var i=0; i<resultsKey.length; i++){
+		var resultNode = mapCreator.getNodeByKey(resultsKey[i]);
+		cachedResult[resultNode.key] = savedResult[resultNode.relatedTo];
+	}
 }

@@ -537,12 +537,14 @@ function removeOperator(node){
 		case 'max':
 		case 'average':
 
-			removeMeAndMyDescendents(node);	
+			var nodeToRemove = node;
+			var parentNode = queryLogicMap[node.parent];
+			if(parentNode.type == 'operator' && parentNode.label == 'not')
+				nodeToRemove = parentNode;
 
-			var index = $.inArray(node.key, queryLogicMap[node.parent].children);
-			queryLogicMap[node.parent].children.splice(index, 1);
-
-			updateAndNotifyFocus(node.parent);
+			removeMeAndMyDescendents(nodeToRemove);
+			cleanMyParentList(nodeToRemove);
+			updateAndNotifyFocus(nodeToRemove.parent);
 
 			break;
 
@@ -598,6 +600,7 @@ function removeOperator(node){
 
 //pendingQuery : array of elements to add to map
 MapCreator.prototype.selectedOperator = function(pendingQuery){
+	
 
 	//console.log(pendingQuery);
 	var resultsKey = [];
@@ -625,6 +628,31 @@ MapCreator.prototype.selectedOperator = function(pendingQuery){
 		case 'min':
 		case 'max':
 		case 'average':
+
+			var parentNode = queryLogicMap[elementOnFocus];
+			if(parentNode.children.length>0){
+				var andOperator = 'and';
+				var andVerbalization = languageManager.verbalizeOperator(andOperator);
+
+				if(!(andOperator in indexMap)){
+					indexMap[andOperator] = 1;
+				}
+				else{
+					indexMap[andOperator] += 1;
+				}
+
+				var andIndex = indexMap[andOperator];
+				var andKey = andOperator + "_" + andIndex;
+
+				var andLogicElement = {key: andKey, index: andIndex,
+									   url: andOperator, label: andOperator, 
+									   type:'operator', direction: false, 
+									   verbalization: andVerbalization, 
+									   parent:elementOnFocus, children: []};
+				queryLogicMap[andKey] = andLogicElement;
+
+				parentNode.children.push(andKey);
+			}
 
 			var verbalization = languageManager.verbalizeOperator(operator);
 
@@ -774,7 +802,7 @@ MapCreator.prototype.selectedOperator = function(pendingQuery){
 
 }
 MapCreator.prototype.selectedResult = function(result){
-
+console.log(result);
 	var verbalization = languageManager.verbalizeResult(result.value);
 
 	if(!(result.value in indexMap)){
@@ -794,8 +822,16 @@ MapCreator.prototype.selectedResult = function(result){
 	queryLogicMap[elementOnFocus].verbalization = verbalization;
 	queryLogicMap[elementOnFocus].datatype = result.datatype;
 
-	updateAndNotifyFocus(key);
+	queryLogicMap[key] = queryLogicMap[elementOnFocus];
 
+	var elementOnFocusNode = queryLogicMap[elementOnFocus];
+	var index = $.inArray(elementOnFocus, queryLogicMap[elementOnFocusNode.parent].children);
+	queryLogicMap[elementOnFocusNode.parent].children[index] = key;
+	
+	delete queryLogicMap[elementOnFocus];
+console.log(queryLogicMap[elementOnFocus]);
+	updateAndNotifyFocus(key);
+console.log(elementOnFocus);
 	if(queryVerbalizator == null)
 		queryVerbalizator = new QueryVerbalizator;
 	queryVerbalizator.updateQuery(rootQueryLogicMap, queryLogicMap, elementOnFocus);
@@ -803,5 +839,7 @@ MapCreator.prototype.selectedResult = function(result){
 	if(queryBuilder == null)
 		queryBuilder = new QueryBuilder;
 	queryBuilder.updateQuery(rootQueryLogicMap, queryLogicMap);
+
+	return key;
 	
 }
