@@ -154,3 +154,9 @@ function updateBoxesFromOperator(operator){
 	$("#directPredicatesList").empty();	
 	$("#reversePredicatesList").empty();	
 }
+
+function updateBoxesFromResult(){
+	$("#conceptsList").empty();
+	$("#directPredicatesList").empty();	
+	$("#reversePredicatesList").empty();	
+}
