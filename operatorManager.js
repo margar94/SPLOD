@@ -83,6 +83,7 @@ var OperatorManager = function () {
 
 		'and' : ['or', 'xor'],
 		'or' : ['and', 'xor'],
+		'xor' : ['and', 'or'],
 
 		'<' : ['not'],
 		'<=' : ['not'],

@@ -225,6 +225,10 @@ LanguageManager.prototype.verbalizeOperator = function(operator){
 			verbalization.standard = ['or '];
 			verbalization.current = verbalization.standard;
 			break;
+		case 'xor':	
+			verbalization.standard = ['xor '];
+			verbalization.current = verbalization.standard;
+			break;
 		case 'not':
 			verbalization.standard = ['that is not '];
 			verbalization.current = verbalization.standard;
@@ -304,6 +308,9 @@ LanguageManager.prototype.getOperatorStandardVerbalization = function(operator){
 			break;
 		case 'or':	
 			verbalization = ['or '];
+			break;
+		case 'or':	
+			verbalization = ['xor '];
 			break;
 		case 'not':
 			verbalization = ['that is not '];

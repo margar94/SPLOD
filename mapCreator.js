@@ -586,6 +586,35 @@ function removeOperator(node){
 			updateAndNotifyFocus(conjunctionKey);
 
 			break;
+		case 'xor':
+			operator = 'and';
+			var conjunctionVerbalization = languageManager.verbalizeOperator(operator);
+
+			if(!(operator in indexMap)){
+				indexMap[operator] = 1;
+			}
+			else{
+				indexMap[operator] += 1;
+			}
+
+			var conjunctionIndex = indexMap[operator];
+			var conjunctionKey = operator + "_" + conjunctionIndex;
+
+			var conjunctionLogicElement = {key: conjunctionKey, index: conjunctionIndex,
+								   url: operator, label: operator, 
+								   type:'operator', direction: false, 
+								   verbalization: conjunctionVerbalization, 
+								   parent:node.parent, children: []};
+			queryLogicMap[conjunctionKey] = conjunctionLogicElement;
+
+			var index = $.inArray(node.key, queryLogicMap[node.parent].children);
+			queryLogicMap[node.parent].children[index] = conjunctionKey;
+			
+			delete queryLogicMap[node.key];
+
+			updateAndNotifyFocus(conjunctionKey);
+
+			break;
 
 	}
 	//console.log(queryLogicMap);
@@ -732,6 +761,7 @@ MapCreator.prototype.selectedOperator = function(pendingQuery){
 
 		case 'and': //focus su or
 		case 'or': //focus su and
+		case 'xor':
 
 			var elementOnFocusNode = queryLogicMap[elementOnFocus];
 			var conjunctionVerbalization = languageManager.verbalizeOperator(operator);
