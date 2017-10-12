@@ -82,12 +82,14 @@ QueryExecutor.prototype.getAllEntities = function(callback) {
 					" WHERE { " + 
 						" GRAPH " + graph + " { " +
 							" {?istance a ?class. "+
-							" ?class a owl:Class ; rdfs:subClassOf ?superclass. } UNION" +
+							" ?class a owl:Class. "+
+							" FILTER(!EXISTS{?class rdfs:subClassOf ?superclass.}) } UNION" +
 							" {?istance a ?subclass. "+
 							" ?subclass a owl:Class ; rdfs:subClassOf ?class. }" +
 						" } " +
 					" } " +
 					" group by ?class ";
+
 		
 			   	queryUrl2 = endpoint+"?query="+ encodeURIComponent(query2) +"&format=json";
 			    $.ajax({
@@ -324,7 +326,7 @@ QueryExecutor.prototype.getConceptsFromDirectPredicate = function(predicate, lim
 								" FILTER (lang(?label) = '" + language + "')} " +
 							" } " +
 						" } " +
-						" group by ?class ";
+						" group by ?class";
 			
 				   	queryUrl2 = endpoint+"?query="+ encodeURIComponent(query2) +"&format=json";
 				    var xhr2 = $.ajax({
@@ -621,6 +623,8 @@ function manageClassHierarchy(data){
 }
 
 function buildSubmapHierarchy(selectedClass){
+
+	//ATTENZIONE controllare che sia nella mappa
 	var elementStack = [];
 	elementStack.push(selectedClass);
 
@@ -630,7 +634,7 @@ function buildSubmapHierarchy(selectedClass){
 
 	while(elementStack.length!=0){
 		currentElement = elementStack.pop();
-		submap[currentElement] = classHierarchyMap[currentElement];
+		submap[currentElement] = $.extend(true, {}, classHierarchyMap[currentElement]);
 
 		children = classHierarchyMap[currentElement].children;
 
@@ -698,6 +702,7 @@ function updateMap(url, label, map){
 
 //data must contain class to identify url class and numberOfInstances
 function addInstancesOccurenceClassHierarchy(arrayData, map){
+
 	$.each(arrayData, function(index){
 		element = arrayData[index];
 
@@ -713,7 +718,7 @@ function addInstancesOccurenceClassHierarchy(arrayData, map){
 
 function cleanMap(map){
 
-	
+/*	
 
 	for(key in map){
 		var element = map[key];
@@ -743,9 +748,9 @@ function cleanMap(map){
 			delete map[key];
 		}
 	}
+*/
 
 
-/*
 	var element;
 	var elementsToCheck = [];
 	for(key in map){
@@ -754,18 +759,26 @@ function cleanMap(map){
 			var  parents = element.parent;
 			var children = element.children;
 			for(var i=0; i<parents.length; i++){
-				var index = $.inArray(element.url, map[parents[i]].children);
-				map[parents[i]].children.splice(index, 1);
-				map[parents[i]].children = map[parents[i]].children.concat(children);
+				if(map[parents[i]]!= undefined){
+					var index = $.inArray(element.url, map[parents[i]].children);
+					map[parents[i]].children.splice(index, 1);
+					map[parents[i]].children = map[parents[i]].children.concat(children);
+				}else{
+					console.log(element);
+				}
 			}
 			for(var i=0; i<children.length; i++){
-				var index = $.inArray(element.url, map[children[i]].parent);
-				map[children[i]].parent.splice(index, 1);
-				map[children[i]].parent = map[children[i]].parent.concat(parents);
+				if(map[children[i]]!=undefined){
+					var index = $.inArray(element.url, map[children[i]].parent);
+					map[children[i]].parent.splice(index, 1);
+					map[children[i]].parent = map[children[i]].parent.concat(parents);
+				}else{
+					console.log(element);
+				}
 			}
 			delete map[key];
 		}
-	}*/
+	}
 	return map;
 }
 
