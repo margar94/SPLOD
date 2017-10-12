@@ -419,11 +419,11 @@ function visitSPARQL(key){
 		case 'operator': 
 			var parentVariable = queryLogicStructure[node.parent].variable;
 
-			var notLabel = "";
+			/*var notLabel = "";
 			if(addNot){
 				notLabel = "!";
 				addNot=false;
-			}
+			}*/
 
 			var claus = [];
 			var operatorLabel = node.label;
@@ -431,49 +431,85 @@ function visitSPARQL(key){
 
 			switch(switchOperatorLabel){
 				case 'is url': 
+					if(addNot){
+						operatorLabel = '!=';
+						addNot=false;
+					}
+					else{
+						operatorLabel = '=';
+					}
 					nodeWhere.push('FILTER(');
 					nodeWhere.push(parentVariable);
-					nodeWhere.push(notLabel);
-					nodeWhere.push('=');
+					nodeWhere.push(operatorLabel);
 					nodeWhere.push('<'+queryLogicStructure[node.children[0]].label+'>');
 					nodeWhere.push(')');
 
 					break;
 				
 				case 'is string': 
+					if(addNot){
+						operatorLabel = '!=';
+						addNot=false;
+					}
+					else{
+						operatorLabel = '=';
+					}
 					nodeWhere.push('FILTER(');
 					nodeWhere.push(parentVariable);
-					nodeWhere.push(notLabel);
-					nodeWhere.push('=');
+					nodeWhere.push(operatorLabel);
 					nodeWhere.push('"'+queryLogicStructure[node.children[0]].label+'"');
 					nodeWhere.push(')');
 					break;
 
 				case 'contains': 
+					if(addNot){
+						operatorLabel = '!contains';
+						addNot=false;
+					}
+				
 					nodeWhere.push('FILTER(');
-					nodeWhere.push(notLabel);
-					nodeWhere.push('contains(xsd:string('+parentVariable+'),"'+queryLogicStructure[node.children[0]].label+'")');
+					nodeWhere.push(operatorLabel);
+					nodeWhere.push('(xsd:string('+parentVariable+'),"'+queryLogicStructure[node.children[0]].label+'")');
 					nodeWhere.push(')');
 					break;
 
 				case 'starts with': 
+					if(addNot){
+						operatorLabel = '!strStarts';
+						addNot=false;
+					}
+					else{
+						operatorLabel = 'strStarts';
+					}
 					nodeWhere.push('FILTER(');
-					nodeWhere.push(notLabel);
-					nodeWhere.push('strStarts(xsd:string('+parentVariable+'),"'+queryLogicStructure[node.children[0]].label+'")');
+					nodeWhere.push(operatorLabel);
+					nodeWhere.push('(xsd:string('+parentVariable+'),"'+queryLogicStructure[node.children[0]].label+'")');
 					nodeWhere.push(')');
 					break;
 
 				case 'ends with': 
+					if(addNot){
+						operatorLabel = '!strEnds';
+						addNot=false;
+					}
+					else{
+						operatorLabel = 'strEnds';
+					}
 					nodeWhere.push('FILTER(');
-					nodeWhere.push(notLabel);
-					nodeWhere.push('strEnds(xsd:string('+parentVariable+'),"'+queryLogicStructure[node.children[0]].label+'")');
+					nodeWhere.push(operatorLabel);
+					nodeWhere.push('(xsd:string('+parentVariable+'),"'+queryLogicStructure[node.children[0]].label+'")');
 					nodeWhere.push(')');
 					break;
 
 				case 'lang': 
+					if(addNot){
+						operatorLabel = '!lang';
+						addNot=false;
+					}
+					
 					nodeWhere.push('FILTER(');
-					nodeWhere.push(notLabel);
-					nodeWhere.push('LANG('+parentVariable+')="'+queryLogicStructure[node.children[0]].label+'"');
+					nodeWhere.push(operatorLabel);
+					nodeWhere.push('('+parentVariable+')="'+queryLogicStructure[node.children[0]].label+'"');
 					nodeWhere.push(')');
 					break;
 				

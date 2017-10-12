@@ -23,7 +23,7 @@ function renderOperatorList(operators){
 		var element = operators[index];
 
 		var li = $("<li/>")
-		.attr('class', 'collection-item')
+		.attr('class', 'collection-item addToQuery')
 		.attr('meta-value', element)
 		.text(languageManager.getOperatorLabelVerbalization(element));
 
@@ -191,7 +191,7 @@ function renderReusableResultList(reusableResults, onClickButtonFunction, onClic
 		var element = reusableResults.results[index];
 
 		var li = $("<li/>")
-		.attr('class', 'collection-item')
+		.attr('class', 'collection-item addToQuery')
 		.attr('meta-label', element.value)
 		.attr('meta-value', element.value)
 		.text(element.value);
