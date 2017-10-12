@@ -101,18 +101,11 @@ MapCreator.prototype.selectedConcept = function(selectedUrl, selectedLabel) {
 			delete queryLogicMap[precLogicElement.key];
 			
 
-		}else if(precLogicElement.type=='concept'){ // concept refining
+		}else{ // concept refining parent node
 
 			newLogicElement.parent = precLogicElement.key;
 			precLogicElement.children.push(newLogicElement.key);
 
-		}else if(precLogicElement.type=='predicate'){ // direct predicate
-
-			newLogicElement.parent = precLogicElement.key;
-			precLogicElement.children.push(newLogicElement.key);
-
-		}else{
-			//...
 		}
 
 	} 
@@ -127,7 +120,7 @@ MapCreator.prototype.selectedConcept = function(selectedUrl, selectedLabel) {
 		queryBuilder = new QueryBuilder;
 	queryBuilder.updateQuery(rootQueryLogicMap, queryLogicMap);
 
-	//console.log(queryLogicMap);
+	console.log(queryLogicMap);
 	//console.log(elementsList);
 
 }
