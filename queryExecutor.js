@@ -337,7 +337,6 @@ QueryExecutor.prototype.getConceptsFromDirectPredicate = function(predicate, lim
 			        			activeAjaxRequest.splice(index, 1);
 
 				        	var arrayData = data.results.bindings;					
-
 				        	addInstancesOccurenceClassHierarchy(arrayData, subMap);
 
 				        	var mapRoots = getMapRoots(subMap);
@@ -634,6 +633,14 @@ function getResultMap(arrayData){
 
 	});
 
+	for(key in map){
+		for(var i=0; i<map[key].parent.length; i++){
+			if(!(map[key].parent[i] in map))
+				map[key].parent.splice(i, 1);
+
+		}
+	}
+
 	return map;
 
 }
@@ -655,14 +662,12 @@ function updateMap(url, label, map){
 		for(var i=0; i<children.length; i++)
 			elementStack.push(children[i]);
 	}
-	map[url].parent = [];
+	//map[url].parent = [];
 
 }
 
-//data must contain numberOfInstances
+//data must contain class to identify url class and numberOfInstances
 function addInstancesOccurenceClassHierarchy(arrayData, map){
-	
-
 	$.each(arrayData, function(index){
 		element = arrayData[index];
 
@@ -673,7 +678,6 @@ function addInstancesOccurenceClassHierarchy(arrayData, map){
 			console.log("QUERYEXECUTOR : " + element.class.value + " not in map");
 		}
 	});
-
 	cleanMap(map);
 }
 
