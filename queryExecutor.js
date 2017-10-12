@@ -378,12 +378,48 @@ QueryExecutor.prototype.getConceptsFromReversePredicate = function(predicate, li
 		        	if(index != -1)
 		        		activeAjaxRequest.splice(index, 1);
 
-					var result = getResultMap(data);
-					callback(result.roots, result.map);
+
+					var arrayData = data.results.bindings;
+				    var subMap = getResultMap(arrayData);
+
+				    query2 = " prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
+						" prefix owl: <http://www.w3.org/2002/07/owl#> " +
+						" SELECT ?class (count(?class) as ?numberOfInstances)  " +
+						" WHERE { " + 
+							" GRAPH " + graph + " { " +
+								" ?o a ?class. " +
+								" ?s  <"+predicate+"> ?o. " +
+								" OPTIONAL {?class rdfs:label ?label. " +
+								" FILTER (lang(?label) = '" + language + "')} " +
+							" } " +
+						" } " +
+						" group by ?class ";
+			
+				   	queryUrl2 = endpoint+"?query="+ encodeURIComponent(query2) +"&format=json";
+
+				   	var xhr2 = $.ajax({
+				        url: queryUrl2,
+				        method:'post',
+				        success: function( data, textStatus, jqXHR ) {
+					        //remove this request from pending queries
+			        		var index = $.inArray(jqXHR, activeAjaxRequest);
+			        		if(index != -1)
+			        			activeAjaxRequest.splice(index, 1);
+
+				        	var arrayData = data.results.bindings;					
+				        	subMap = addInstancesOccurenceClassHierarchy(arrayData, subMap);
+				        	subMap = cleanMap(subMap);
+
+				        	var mapRoots = getMapRoots(subMap);
+				        	callback(mapRoots, subMap);	
+				        }
+				    });	
+				    activeAjaxRequest.push(xhr2);
         }
     });	
     activeAjaxRequest.push(xhr);
 }
+
 /*
 	Tested query 
 		prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
@@ -677,7 +713,7 @@ function addInstancesOccurenceClassHierarchy(arrayData, map){
 
 function cleanMap(map){
 
-	/*
+	
 
 	for(key in map){
 		var element = map[key];
@@ -706,10 +742,10 @@ function cleanMap(map){
 
 			delete map[key];
 		}
-	}*/
+	}
 
 
-
+/*
 	var element;
 	var elementsToCheck = [];
 	for(key in map){
@@ -729,7 +765,7 @@ function cleanMap(map){
 			}
 			delete map[key];
 		}
-	}
+	}*/
 	return map;
 }
 
