@@ -95,7 +95,8 @@ QueryExecutor.prototype.getAllEntities = function(callback) {
 			        method:'post',
 			        success: function( data ) {
 			        	var arrayData = data.results.bindings;
-			        	addInstancesOccurenceClassHierarchy(arrayData, classHierarchyMap);
+			        	classHierarchyMap = addInstancesOccurenceClassHierarchy(arrayData, classHierarchyMap);
+			        	classHierarchyMap = cleanMap(classHierarchyMap);
 			        	var mapRoots = getMapRoots(classHierarchyMap);
 			        	classHierarchyMapRoots = mapRoots;
 						callback(classHierarchyMapRoots, classHierarchyMap);
@@ -158,7 +159,6 @@ QueryExecutor.prototype.getAllDirectPredicates = function(limit, callback) {
      	method:'post',
         success: function( data ) {
         	var result = getUrlAndLabelFromResult(data);
-        	//console.log(result);
 			callback(result);
         }
     });	
@@ -337,16 +337,11 @@ QueryExecutor.prototype.getConceptsFromDirectPredicate = function(predicate, lim
 			        			activeAjaxRequest.splice(index, 1);
 
 				        	var arrayData = data.results.bindings;					
-				        	addInstancesOccurenceClassHierarchy(arrayData, subMap);
+				        	subMap = addInstancesOccurenceClassHierarchy(arrayData, subMap);
+				        	subMap = cleanMap(subMap);
 
 				        	var mapRoots = getMapRoots(subMap);
-
-	console.log(subMap);
-	console.log(mapRoots);
-
-
-				        	callback(mapRoots, subMap);
-							
+				        	callback(mapRoots, subMap);	
 				        }
 				    });	
 				    activeAjaxRequest.push(xhr2);
@@ -511,7 +506,6 @@ QueryExecutor.prototype.executeUserQuery = function(querySPARQL){
 		        	if(index != -1)
 		        		activeAjaxRequest.splice(index, 1);
 
-		        	//console.log(data.results.bindings);
 					operatorManager.queryResult(querySPARQL.select, querySPARQL.labelSelect, querySPARQL.keySelect, data.results.bindings);
 		        	renderResultTable(querySPARQL.select, querySPARQL.labelSelect, data.results.bindings);
 	        }
@@ -549,7 +543,6 @@ function getUrlAndLabelFromResult(data) {
 		result.push({url:element.url.value, label:element.label.value});
 	}
 	
-	//console.log(result);
 	return result;
 }
 
@@ -625,7 +618,7 @@ function getResultMap(arrayData){
 		else label = element.url.value;
 
 		if(element.url.value in classHierarchyMap){
-			updateMap(element.url.value, label, map);
+			map = updateMap(element.url.value, label, map);
 
 		}else{
 			map[element.url.value] = {url: element.url.value, label: label, children: [], parent: [], numberOfInstances:0};
@@ -634,8 +627,9 @@ function getResultMap(arrayData){
 	});
 
 	for(key in map){
-		for(var i=0; i<map[key].parent.length; i++){
-			if(!(map[key].parent[i] in map))
+		var parents = map[key].parent;
+		for(var i=0; i<parents.length; i++){
+			if(!(parents[i] in map))
 				map[key].parent.splice(i, 1);
 
 		}
@@ -654,7 +648,7 @@ function updateMap(url, label, map){
 
 	while(elementStack.length!=0){
 		currentElement = elementStack.pop();
-		map[currentElement] = classHierarchyMap[currentElement];
+		map[currentElement] = $.extend(true, {}, classHierarchyMap[currentElement]);
 		map[currentElement].numberOfInstances = 0;
 		
 		children = classHierarchyMap[currentElement].children;
@@ -663,7 +657,7 @@ function updateMap(url, label, map){
 			elementStack.push(children[i]);
 	}
 	//map[url].parent = [];
-
+	return map;
 }
 
 //data must contain class to identify url class and numberOfInstances
@@ -674,45 +668,50 @@ function addInstancesOccurenceClassHierarchy(arrayData, map){
 		if(element.class.value in map){
 			map[element.class.value].numberOfInstances = element.numberOfInstances.value;
 		}
-		else{
+		/*else{
 			console.log("QUERYEXECUTOR : " + element.class.value + " not in map");
-		}
+		}*/
 	});
-	cleanMap(map);
+	return map; 
 }
 
 function cleanMap(map){
-	var element;
-	var elementsToCheck = [];
 
-	/*for(key in map){
-		element = map[key];
-		if(element.numberOfInstances == 0 && element.children.length == 0){
-			var  parents = element.parent;
-			for(var i=0; i<parents.length; i++){
-				var index = $.inArray(element.url, map[parents[i]].children);
-				map[parents[i]].children.splice(index, 1);
-				elementsToCheck.push(parents[i]);
+	/*
+
+	for(key in map){
+		var element = map[key];
+
+		if(element.numberOfInstances == 0){
+
+			var parents = element.parent;
+			var children = element.children;
+
+			for(var i=0; i<children.length; i++){
+				var index = $.inArray(key, map[children[i]].parent);
+				map[children[i]].parent.splice(index, 1);
 			}
-			delete map[element.url];
+
+			for(var i=0; i<parents.length; i++){
+				var index = $.inArray(key, map[parents[i]].children);
+				map[parents[i]].children.splice(index, 1);
+			}
+
+			for(var i=0; i<parents.length; i++){
+				for(var j=0; j<children.length; j++){
+					map[parents[i]].children.push(children[j]);
+					map[children[j]].parent.push(parents[i]);
+				}
+			}
+
+			delete map[key];
 		}
-	}
-
-	while(elementsToCheck.length!=0){
-		var url = elementsToCheck.pop();
-		element = map[url];
-
-		if(element!=undefined && element.numberOfInstances == 0 && element.children.length == 0){
-			var  parents = element.parent;
-			for(var i=0; i<parents.length; i++){
-				var index = $.inArray(element.url, map[parents[i]].children);
-				map[parents[i]].children.splice(index, 1);
-				elementsToCheck.push(parents[i]);
-			}
-			delete map[element.url];
-		}	
 	}*/
 
+
+
+	var element;
+	var elementsToCheck = [];
 	for(key in map){
 		element = map[key];
 		if(element.numberOfInstances == 0){
@@ -731,10 +730,10 @@ function cleanMap(map){
 			delete map[key];
 		}
 	}
+	return map;
 }
 
 function getMapRoots(map){
-	//classHierarchyMapRoots = [];
 	var roots = [];
 	for(element in map){
 		if(map[element].parent.length==0){
