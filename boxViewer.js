@@ -105,16 +105,16 @@ function renderPredicates(predicates){
 	
 }
 
-function renderDirectPredicates(directArray){
+function renderDirectPredicates(directMap){
 
 	var directPredicatesList = $("#directPredicatesList");
 	directPredicatesList.empty();
 
-	$.each(directArray, function(index){
-		element = directArray[index];
+	for(key in directMap){
+		element = directMap[key];
 		
 		var li = $("<li/>")
-			.attr('class', 'collection-item')
+			.attr('class', 'collection-item addToQuery')
 			.attr('title', element.url)
 			.attr('meta-url', element.url)
 			.attr('meta-label', element.label)
@@ -124,7 +124,13 @@ function renderDirectPredicates(directArray){
 			.on('click', function(){
 				mapCreator.selectedPredicate($(this).attr('meta-url'), $(this).attr('meta-label'), $(this).attr('meta-predicateDirection'));
 			});
-	});
+
+		var badge = $("<span/>")
+			.attr('class', 'new badge')
+			.attr('data-badge-caption', '')
+			.text(element.numberOfInstances)
+			.appendTo(li);
+	}
 }
 
 function renderReversePredicates(reverseArray){
@@ -136,7 +142,7 @@ function renderReversePredicates(reverseArray){
 		element = reverseArray[index];
 
 		var li = $("<li/>")
-			.attr('class', 'collection-item')
+			.attr('class', 'collection-item addToQuery')
 			.attr('title', element.url)
 			.attr('meta-url', element.url)
 			.attr('meta-label', element.label)
