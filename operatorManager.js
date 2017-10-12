@@ -74,7 +74,8 @@ var OperatorManager = function () {
 		'gYear' : ['is date', 'before', 'after', 'range date'],
 		'gYearMonth' : ['is date', 'before', 'after', 'range date'],
 
-		'uri' : ['is url'],
+		'uri' : ['is url', 'not'],
+		'special uri' : ['is url'],
 
 		'boolean' : ['is string'],
 
@@ -578,7 +579,7 @@ function manageUpdateOperatorViewer(){
 				renderReusableResultListFromResult({type:type, results:results});
 			}
 			else{ 
-				if(onFocus.split('_')[0] in operatorMap){ //onFocus is an operator
+				if(onFocus.split('_')[0] in operatorMap){ //onFocus is an operator 
 					renderOperatorList(operatorMap[onFocus.split('_')[0]]);
 				}else{ //concept or predicate that fired operator
 					if(mapCreator.isRefinement(onFocus))
@@ -587,8 +588,17 @@ function manageUpdateOperatorViewer(){
 					if(onFocus in resultDatatype){
 						if(resultDatatype[onFocus].datatype.length>1)
 							renderOperatorList(operatorMap['string']); 
-						else		
+						else if(resultDatatype[onFocus].datatype[0] != 'uri'){		
 							renderOperatorList(operatorMap[resultDatatype[onFocus].datatype[0]]); 
+						}else{
+							var onFocusNode = mapCreator.getNodeByKey(onFocus);
+							if(onFocusNode.parent == null 
+								|| onFocusNode.type == 'concept'
+								|| mapCreator.getNodeByKey(onFocusNode.parent).type == 'everything')
+									renderOperatorList(operatorMap['special uri']);
+							else
+								renderOperatorList(operatorMap[resultDatatype[onFocus].datatype[0]]);
+						}
 					}else{
 						renderOperatorList([]);
 					}
