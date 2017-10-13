@@ -10,6 +10,7 @@ var queryUrl, queryUrl2;
 var language;
 
 var operatorManager;
+var tableResultManager;
 
 var classHierarchyMap;
 var classHierarchyMapRoots;
@@ -51,6 +52,7 @@ var QueryExecutor = function (selectedEndpoint, selectedGraph) {
 	resultLimit = false;
 
 	operatorManager = new OperatorManager();
+	tableResultManager = new TableResultManager();
 
 	QueryExecutor.prototype._singletonInstance = this;
 	
@@ -584,7 +586,7 @@ QueryExecutor.prototype.executeUserQuery = function(querySPARQL){
 		        		activeAjaxRequest.splice(index, 1);
 
 					operatorManager.queryResult(querySPARQL.select, querySPARQL.labelSelect, querySPARQL.keySelect, data.results.bindings);
-		        	renderResultTable(querySPARQL.select, querySPARQL.labelSelect, data.results.bindings);
+		        	tableResultManager.updateTable(querySPARQL.select, querySPARQL.labelSelect, data.results.bindings);
 	        }
 	    });
 	    activeAjaxRequest.push(xhr);

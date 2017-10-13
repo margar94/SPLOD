@@ -2,6 +2,10 @@
 function initTableResultViewer(){
 }
 
+function resetResultTable(){
+	$('#resultsTable').empty();
+}
+
 function renderResultTable(select, labelSelect, results){
 
 	createTable(select, labelSelect, results);

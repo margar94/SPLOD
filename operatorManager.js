@@ -19,15 +19,11 @@ var OperatorManager = function () {
 		return OperatorManager.prototype._singletonInstance;
 	}
 
-	resultDatatype = {};
-	savedResult = {};
-	literalLang = {};
-	cachedResult = {};
-	pendingQuery = [];
 	mapCreator = new MapCreator();
 
 	changedFocus = false;
 	onFocus = null;
+	inizializeMaps();
 
 	parameterNumberOperator = {
 		'and' : 1, 
@@ -553,6 +549,7 @@ OperatorManager.prototype.changedFocus = function(newOnFocus, userChangeFocus){
 			manageUpdateOperatorViewer();
 		}
 	}else{
+		inizializeMaps();
 		renderOperatorList([]);
 	}
 }
@@ -681,4 +678,12 @@ function cacheResultToChange(resultsKey){
 		var resultNode = mapCreator.getNodeByKey(resultsKey[i]);
 		cachedResult[resultNode.key] = savedResult[resultNode.relatedTo];
 	}
+}
+
+function inizializeMaps(){
+	resultDatatype = {};
+	savedResult = {};
+	literalLang = {};
+	cachedResult = {};
+	pendingQuery = [];
 }

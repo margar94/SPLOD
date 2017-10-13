@@ -10,6 +10,7 @@ var languageManager;
 var queryBuilder = null;
 var queryVerbalizator = null;
 var operatorManager = null;
+var tableResultManager = null;
 
 var elementOnFocus;
 
@@ -17,12 +18,9 @@ var MapCreator = function () {
 	if(MapCreator.prototype._singletonInstance){
 		return MapCreator.prototype._singletonInstance;
 	}
-	queryLogicMap = {};
- 	rootQueryLogicMap = null;
-
-	indexMap = {};
-
-	elementOnFocus = null;
+	
+	elementOnFocus = null;	
+	initializeMap();
 
  	languageManager = new LanguageManager();
 
@@ -309,6 +307,9 @@ MapCreator.prototype.getTopElement = function(key){
 
 function updateAndNotifyFocus(key){
 	elementOnFocus = key;
+
+	if(elementOnFocus==null) 
+		initializeMap();
 
 	if(operatorManager == null)
 		operatorManager = new OperatorManager;
@@ -825,7 +826,6 @@ MapCreator.prototype.selectedOperator = function(pendingQuery){
 
 }
 MapCreator.prototype.selectedResult = function(result){
-console.log(result);
 	var verbalization = languageManager.verbalizeResult(result.value);
 
 	if(!(result.value in indexMap)){
@@ -852,9 +852,9 @@ console.log(result);
 	queryLogicMap[elementOnFocusNode.parent].children[index] = key;
 	
 	delete queryLogicMap[elementOnFocus];
-console.log(queryLogicMap[elementOnFocus]);
+
 	updateAndNotifyFocus(key);
-console.log(elementOnFocus);
+
 	if(queryVerbalizator == null)
 		queryVerbalizator = new QueryVerbalizator;
 	queryVerbalizator.updateQuery(rootQueryLogicMap, queryLogicMap, elementOnFocus);
@@ -866,3 +866,14 @@ console.log(elementOnFocus);
 	return key;
 	
 }
+
+function initializeMap(){
+	queryLogicMap = {};
+ 	rootQueryLogicMap = null;
+	indexMap = {};
+
+	if(tableResultManager == null)
+		tableResultManager = new TableResultManager;
+	tableResultManager.resetTable();
+}
+
