@@ -23,7 +23,7 @@ BoxFiller.prototype.retrieveConcepts = function(callback) {
 BoxFiller.prototype.retrievePredicates = function(callback) {
 	var limit = false;
 
-	if($.isEmptyObject(directData) || $.isEmptyObject(reverseData) || $.isEmptyObject(stats)){
+	//if($.isEmptyObject(directData) || $.isEmptyObject(reverseData) || $.isEmptyObject(stats)){
 
 		var d1 = $.Deferred(executor.getAllDirectPredicates(limit, function(data){
 			directData = data;
@@ -33,14 +33,14 @@ BoxFiller.prototype.retrievePredicates = function(callback) {
 			reverseData = data;
 			d2.resolve();
 		}));
-		var d3 = $.Deferred(executor.getAllPredicatesStats(limit, function(data){
+		/*var d3 = $.Deferred(executor.getAllPredicatesStats(limit, function(data){
 			stats = data;
 			d3.resolve();
-		}))
+		}))*/
 
-		$.when(d1, d2, d3).done(function(){
+		$.when(d1, d2).done(function(){
 
-			addStatsToPredicate(directData, reverseData, stats);
+			//addStatsToPredicate(directData, reverseData, stats);
 
 			var resultObj = {
 				directArray: directData,
@@ -49,14 +49,14 @@ BoxFiller.prototype.retrievePredicates = function(callback) {
 
 			callback(resultObj);
 		});
-	}else{
+	/*}else{
 		var resultObj = {
 			directArray: directData,
 			reverseArray: reverseData
 		};
 
 		callback(resultObj);
-	}
+	}*/
 }
 
 

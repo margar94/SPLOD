@@ -53,30 +53,32 @@ function renderConceptsHierarchy(roots, concepts){
 }
 
 function iterativePreorderVisit(concept, concepts, toAppend){
-	
-	var li = $("<li/>")
-		.appendTo(toAppend);
+	if(concepts[concept].numberOfInstances != 0){
+		var li = $("<li/>")
+			.appendTo(toAppend);
 
-	var collapsibleheader = $("<div/>")
-		.attr('class', 'collapsible-header active')
-		.appendTo(li);
+		var collapsibleheader = $("<div/>")
+			.attr('class', 'collapsible-header active')
+			.appendTo(li);
 
-	var headercontent = $("<span/>")
-		.attr('class', 'addToQuery')
-		.attr('title', concept)
-		.attr('meta-url', concept)
-		.attr('meta-label', concepts[concept].label)
-		.text(concepts[concept].label)
-		.appendTo(collapsibleheader)
-		.on('click', function(){
-			mapCreator.selectedConcept($(this).attr('meta-url'), $(this).attr('meta-label'));
-		});
+		var headercontent = $("<span/>")
+			.attr('class', 'addToQuery')
+			.attr('title', concept)
+			.attr('meta-url', concept)
+			.attr('meta-label', concepts[concept].label)
+			.text(concepts[concept].label)
+			.appendTo(collapsibleheader)
+			.on('click', function(){
+				mapCreator.selectedConcept($(this).attr('meta-url'), $(this).attr('meta-label'));
+			});
 		
-	var badge = $("<span/>")
-		.attr('class', 'new badge')
-		.attr('data-badge-caption', '')
-		.text(concepts[concept].numberOfInstances)
-		.appendTo(collapsibleheader);
+		
+		var badge = $("<span/>")
+			.attr('class', 'new badge')
+			.attr('data-badge-caption', '')
+			.text(concepts[concept].numberOfInstances)
+			.appendTo(collapsibleheader);
+	}
 
 	var children = concepts[concept].children;
 	if(children.length!=0){
@@ -125,11 +127,11 @@ function renderDirectPredicates(directMap){
 				mapCreator.selectedPredicate($(this).attr('meta-url'), $(this).attr('meta-label'), $(this).attr('meta-predicateDirection'));
 			});
 
-		var badge = $("<span/>")
+		/*var badge = $("<span/>")
 			.attr('class', 'new badge')
 			.attr('data-badge-caption', '')
 			.text(element.numberOfInstances)
-			.appendTo(li);
+			.appendTo(li);*/
 	}
 }
 
@@ -153,11 +155,11 @@ function renderReversePredicates(reverseArray){
 				mapCreator.selectedPredicate($(this).attr('meta-url'), $(this).attr('meta-label'), $(this).attr('meta-predicateDirection'));
 			});
 
-		var badge = $("<span/>")
+		/*var badge = $("<span/>")
 			.attr('class', 'new badge')
 			.attr('data-badge-caption', '')
 			.text(element.numberOfInstances)
-			.appendTo(li);
+			.appendTo(li);*/
 	});
 }
 

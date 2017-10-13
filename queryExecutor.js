@@ -104,7 +104,7 @@ QueryExecutor.prototype.getAllEntities = function(callback) {
 			        success: function( data ) {
 			        	var arrayData = data.results.bindings;
 			        	classHierarchyMap = addInstancesOccurenceClassHierarchy(arrayData, classHierarchyMap);
-			        	classHierarchyMap = cleanMap(classHierarchyMap);
+			        	//classHierarchyMap = cleanMap(classHierarchyMap);
 			        	var mapRoots = getMapRoots(classHierarchyMap);
 			        	classHierarchyMapRoots = mapRoots;
 						callback(classHierarchyMapRoots, classHierarchyMap);
@@ -381,7 +381,7 @@ QueryExecutor.prototype.getConceptsFromDirectPredicate = function(predicate, lim
 
 				        	var arrayData = data.results.bindings;					
 				        	subMap = addInstancesOccurenceClassHierarchy(arrayData, subMap);
-				        	subMap = cleanMap(subMap);
+				        	//subMap = cleanMap(subMap);
 
 				        	var mapRoots = getMapRoots(subMap);
 				        	callback(mapRoots, subMap);	
@@ -451,7 +451,7 @@ QueryExecutor.prototype.getConceptsFromReversePredicate = function(predicate, li
 
 				        	var arrayData = data.results.bindings;					
 				        	subMap = addInstancesOccurenceClassHierarchy(arrayData, subMap);
-				        	subMap = cleanMap(subMap);
+				        	//subMap = cleanMap(subMap);
 
 				        	var mapRoots = getMapRoots(subMap);
 				        	callback(mapRoots, subMap);	
