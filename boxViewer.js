@@ -56,7 +56,7 @@ function renderConcept(rootMap, map){
 	lastRootMap = rootMap;
 	lastMap = map;
 	if(hierarchyOnFlag)
-		renderConceptsHierarchy(rootMap, map);
+		newrenderConceptsHierarchy(rootMap, map);
 	else
 		renderConceptsList(rootMap, map);
 }
@@ -77,7 +77,7 @@ function renderConceptsList(roots, concepts){
 
 		if(concept.numberOfInstances != 0){
 			var li = $("<li/>")
-				.attr('class', 'collection-item addToQuery')
+				.attr('class', 'collection-item addToQuery withMargin')
 				.attr('title', concept.url)
 				.attr('meta-url', concept.url)
 				.attr('meta-label', concept.label)
@@ -93,6 +93,55 @@ function renderConceptsList(roots, concepts){
 				.text(concept.numberOfInstances)
 				.appendTo(li);
 		}
+	}
+}
+
+function newrenderConceptsHierarchy(roots, concepts){
+	var conceptsList = $("#conceptsList");
+	conceptsList.empty();
+	conceptsList.attr('class', 'collection');
+
+	for(var i=0; i<roots.length; i++)
+		newiterativePreorderVisit(roots[i], concepts, conceptsList, 0);
+
+	 $(".collapsible-header").addClass("active");
+	//$('.collapsible').collapsible();
+}
+
+function newiterativePreorderVisit(concept, concepts, toAppend, level){
+	var childrenLevel = level;
+	if(concepts[concept].numberOfInstances != 0){
+		var li = $("<li/>")
+			.attr('class', 'collection-item addToQuery withMargin ')
+			.appendTo(toAppend)		
+			.css('margin-left', level*2+'em');
+			
+
+		var span = $("<span/>")
+			.attr('title', concepts[concept].url)
+			.attr('meta-url', concepts[concept].url)
+			.attr('meta-label', concepts[concept].label)
+			.text(concepts[concept].label)
+			.appendTo(li)
+			.on('click', function(){
+				mapCreator.selectedConcept($(this).attr('meta-url'), $(this).attr('meta-label'));
+			});
+		
+		var badge = $("<span/>")
+			.attr('class', 'new badge')
+			.attr('data-badge-caption', '')
+			.text(concepts[concept].numberOfInstances)
+			.appendTo(li);
+		childrenLevel++;
+		
+
+	}
+		
+	var children = concepts[concept].children;
+	if(children.length!=0){
+		for(var i=0; i<children.length; i++){
+			newiterativePreorderVisit(children[i], concepts, toAppend, childrenLevel);
+		}		
 	}
 }
 
@@ -172,7 +221,7 @@ function renderDirectPredicates(directMap){
 		element = directMap[key];
 		
 		var li = $("<li/>")
-			.attr('class', 'collection-item addToQuery')
+			.attr('class', 'collection-item addToQuery withMargin')
 			.attr('title', element.url)
 			.attr('meta-url', element.url)
 			.attr('meta-label', element.label)
@@ -200,7 +249,7 @@ function renderReversePredicates(reverseArray){
 		element = reverseArray[index];
 
 		var li = $("<li/>")
-			.attr('class', 'collection-item addToQuery')
+			.attr('class', 'collection-item addToQuery withMargin')
 			.attr('title', element.url)
 			.attr('meta-url', element.url)
 			.attr('meta-label', element.label)
