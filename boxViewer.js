@@ -152,6 +152,12 @@ function renderReversePredicates(reverseArray){
 			.on('click', function(){
 				mapCreator.selectedPredicate($(this).attr('meta-url'), $(this).attr('meta-label'), $(this).attr('meta-predicateDirection'));
 			});
+
+		var badge = $("<span/>")
+			.attr('class', 'new badge')
+			.attr('data-badge-caption', '')
+			.text(element.numberOfInstances)
+			.appendTo(li);
 	});
 }
 

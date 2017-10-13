@@ -14,7 +14,7 @@ var operatorManager;
 var classHierarchyMap;
 var classHierarchyMapRoots;
 
-var directPredicateMap;
+//var directPredicateMap;
 
 var activeAjaxRequest;
 
@@ -137,8 +137,6 @@ QueryExecutor.prototype.getAllEntities = function(callback) {
 
 QueryExecutor.prototype.getAllDirectPredicates = function(limit, callback) {
 
-	//if($.isEmptyObject(directPredicateMap)){
-
 		query = " prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> " + 
 			" prefix owl: <http://www.w3.org/2002/07/owl#> " +
 				" SELECT DISTINCT ?url ?label " +
@@ -158,43 +156,18 @@ QueryExecutor.prototype.getAllDirectPredicates = function(limit, callback) {
 					" } " +
 				" } ";
 					
-		/*if(limit)
+		if(limit)
 			query += "LIMIT " + limit;  
-		*/
+		
 	   	queryUrl = endpoint+"?query="+ encodeURIComponent(query) +"&format=json";
 	    $.ajax({
 	        url: queryUrl,
 	     	method:'post',
 	        success: function( data ) {
 	        	var result = getUrlAndLabelFromResult(data);
-	        	manageDirectPredicateMap(result);
-
-	        	query2 = 
-					" SELECT ?property (COUNT(?property) AS ?propTotal) " +
-					" WHERE { " + 
-						" GRAPH " + graph + " { " +
-							" ?s ?property ?o . "+
-							"}" +
-						" } " +
-					" GROUP BY ?property " ;
-
-		
-			   	queryUrl2 = endpoint+"?query="+ encodeURIComponent(query2) +"&format=json";
-			    $.ajax({
-			        url: queryUrl2,
-			        method:'post',
-			        success: function( data ) {
-			        	var arrayData = data.results.bindings;
-			        	directPredicateMap = addInstancesOccurenceDirectPredicate(arrayData, directPredicateMap);
-						callback(directPredicateMap);
-			        }
-			    });	
+	        	callback(managePredicateMap(result));
 	        }
 	    });	
-
-	/*}else{
-		callback(directPredicateMap);
-	}*/
 }
 
 QueryExecutor.prototype.getAllReversePredicates = function(limit, callback) {
@@ -225,11 +198,47 @@ QueryExecutor.prototype.getAllReversePredicates = function(limit, callback) {
         url: queryUrl,
         method:'post',
         success: function( data ) {
-			callback(getUrlAndLabelFromResult(data));
+			var result = getUrlAndLabelFromResult(data);
+	        callback(managePredicateMap(result));
         }
     });	
 	
 }
+
+
+
+
+
+
+QueryExecutor.prototype.getAllPredicatesStats = function(limit, callback){
+
+	var query = " SELECT ?property (COUNT(?property) AS ?propTotal) " +
+		" WHERE { " + 
+			" GRAPH " + graph + " { " +
+				" ?s ?property ?o . "+
+				"}" +
+			" } " +
+		" GROUP BY ?property " ;
+	if(limit)
+		query += "LIMIT " + limit;  
+
+   	queryUrl = endpoint+"?query="+ encodeURIComponent(query) +"&format=json";
+    $.ajax({
+        url: queryUrl,
+        method:'post',
+        success: function( data ) {
+        	var arrayData = data.results.bindings;
+        	callback(managePropertyStats(arrayData));
+        }
+    });	
+}
+
+
+
+
+
+
+
 
 
 /*
@@ -822,19 +831,18 @@ function getMapRoots(map){
 	return roots;
 }
 
-function manageDirectPredicateMap(result){
-
+function managePredicateMap(result){
+	var predicateMap = {};
 	for(var i=0; i< result.length; i++){
-		directPredicateMap[result[i].url] = {url: result[i].url, label: result[i].label, numberOfInstances: 0};
+		predicateMap[result[i].url] = {url: result[i].url, label: result[i].label, numberOfInstances: 0};
 	}	
+	return predicateMap;
 }
 
-function addInstancesOccurenceDirectPredicate(result, map){
-
+function managePropertyStats(result){
+	var map = {};
 	for(var i = 0;i<result.length;i++){
-		if(result[i].property.value in map){
-			map[result[i].property.value].numberOfInstances = result[i].propTotal.value;
-		}
+		map[result[i].property.value] = result[i].propTotal.value;
 	}
 	return map;
 }

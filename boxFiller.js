@@ -1,5 +1,8 @@
 
 var executor;
+var directData;
+var reverseData;
+var stats;
 
 var BoxFiller= function () {
 	if(BoxFiller.prototype._singletonInstance){
@@ -18,29 +21,42 @@ BoxFiller.prototype.retrieveConcepts = function(callback) {
 }
 
 BoxFiller.prototype.retrievePredicates = function(callback) {
-	var limit = 100;
+	var limit = false;
 
-	var directData;
-	var reverseData;
+	if($.isEmptyObject(directData) || $.isEmptyObject(reverseData) || $.isEmptyObject(stats)){
 
-	var d1 = $.Deferred(executor.getAllDirectPredicates(limit, function(data){
-		directData = data;
-		d1.resolve();
-	}));
-	var d2 = $.Deferred(executor.getAllReversePredicates(limit, function(data){
-		reverseData = data;
-		d2.resolve();
-	}));
+		var d1 = $.Deferred(executor.getAllDirectPredicates(limit, function(data){
+			directData = data;
+			d1.resolve();
+		}));
+		var d2 = $.Deferred(executor.getAllReversePredicates(limit, function(data){
+			reverseData = data;
+			d2.resolve();
+		}));
+		var d3 = $.Deferred(executor.getAllPredicatesStats(limit, function(data){
+			stats = data;
+			d3.resolve();
+		}))
 
-	$.when(d1, d2).done(function(){
+		$.when(d1, d2, d3).done(function(){
 
+			addStatsToPredicate(directData, reverseData, stats);
+
+			var resultObj = {
+				directArray: directData,
+				reverseArray: reverseData
+			};
+
+			callback(resultObj);
+		});
+	}else{
 		var resultObj = {
 			directArray: directData,
 			reverseArray: reverseData
 		};
 
 		callback(resultObj);
-	});
+	}
 }
 
 
@@ -129,3 +145,16 @@ BoxFiller.prototype.updatePredicatesFromPredicate = function(predUrl, predLabel,
 
 }
 
+function addStatsToPredicate(directData, reverseData, stats){
+	
+	for(key in directData){
+		if(key in stats){
+			directData[key].numberOfInstances = stats[key];
+		}
+	}
+	for(key in reverseData){
+		if(key in stats){
+			reverseData[key].numberOfInstances = stats[key];
+		}
+	}
+}
