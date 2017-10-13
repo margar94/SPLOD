@@ -3,15 +3,25 @@ var boxFiller;
 var languageManager;
 var mapCreator;
 
+var hierarchyOnFlag;
+
+var lastMap;
+var lastRootMap;
+
 function initBoxViewer(){
 	boxFiller = new BoxFiller();
 	languageManager = new LanguageManager();
 	mapCreator = new MapCreator();
+
+	hierarchyOnFlag = true;
+	$("#hierarchySpan").html('<i class="small material-icons white-text right" style="margin:0" onClick="hierarchyOff();">format_list_bulleted</i>');
 }
 
 function fillConcepts(){
 	boxFiller.retrieveConcepts(function (rootMap, map){
-		renderConceptsHierarchy(rootMap, map);
+		lastMap = map;
+		lastRootMap = rootMap;
+		renderConcept(rootMap, map);
 	});
 }
 
@@ -19,7 +29,7 @@ function updateBoxesFromConcept(conceptUrl, conceptLabel){
 	$("#searchConceptsBox").val('');
 	$("#searchPredicatesBox").val('');
 	
-	boxFiller.updateConceptsFromConcept(conceptUrl, conceptLabel, renderConceptsHierarchy);
+	boxFiller.updateConceptsFromConcept(conceptUrl, conceptLabel, renderConcept);
 	boxFiller.updatePredicatesFromConcept(conceptUrl, conceptLabel, false, renderPredicates);
 
 }
@@ -35,16 +45,62 @@ function updateBoxesFromPredicate(predicateUrl, predicateLabel, predicateDirecti
 	$("#searchPredicatesBox").val('');
 
 	if(predicateDirection == 'direct'){
-		boxFiller.updateConceptsFromDirectPredicate(predicateUrl, predicateLabel, renderConceptsHierarchy);
+		boxFiller.updateConceptsFromDirectPredicate(predicateUrl, predicateLabel, renderConcept);
 	}else{
-		boxFiller.updateConceptsFromReversePredicate(predicateUrl, predicateLabel, renderConceptsHierarchy);
+		boxFiller.updateConceptsFromReversePredicate(predicateUrl, predicateLabel, renderConcept);
 	}
 	boxFiller.updatePredicatesFromPredicate(predicateUrl, predicateLabel, predicateDirection, renderPredicates);
+}
+
+function renderConcept(rootMap, map){
+	lastRootMap = rootMap;
+	lastMap = map;
+	if(hierarchyOnFlag)
+		renderConceptsHierarchy(rootMap, map);
+	else
+		renderConceptsList(rootMap, map);
+}
+
+function renderConceptsList(roots, concepts){
+	var conceptsList = $("#conceptsList");
+	conceptsList.empty();
+	conceptsList.attr('class', 'collection');
+
+	var orderedKeys = Object.keys(concepts).sort(function(a,b){
+		var x = concepts[a].label.toLowerCase();
+	    var y = concepts[b].label.toLowerCase();
+	    return x < y ? -1 : x > y ? 1 : 0;
+	});
+
+	for(var i=0; i<orderedKeys.length; i++){
+		var concept = concepts[orderedKeys[i]];
+
+		if(concept.numberOfInstances != 0){
+			var li = $("<li/>")
+				.attr('class', 'collection-item addToQuery')
+				.attr('title', concept.url)
+				.attr('meta-url', concept.url)
+				.attr('meta-label', concept.label)
+				.text(concept.label)
+				.appendTo(conceptsList)		
+				.on('click', function(){
+					mapCreator.selectedConcept($(this).attr('meta-url'), $(this).attr('meta-label'));
+				});
+			
+			var badge = $("<span/>")
+				.attr('class', 'new badge')
+				.attr('data-badge-caption', '')
+				.text(concept.numberOfInstances)
+				.appendTo(li);
+		}
+	}
 }
 
 function renderConceptsHierarchy(roots, concepts){
 	var conceptsList = $("#conceptsList");
 	conceptsList.empty();
+	conceptsList.attr('class', 'collapsible');
+	conceptsList.attr('data-collapsible', 'expandable');
 
 	for(var i=0; i<roots.length; i++)
 		iterativePreorderVisit(roots[i], concepts, conceptsList);
@@ -173,4 +229,16 @@ function updateBoxesFromResult(){
 	$("#conceptsList").empty();
 	$("#directPredicatesList").empty();	
 	$("#reversePredicatesList").empty();	
+}
+
+function hierarchyOff(){
+	hierarchyOnFlag = false;
+	$("#hierarchySpan").html('<i class="small material-icons white-text right" style="margin:0" onClick="hierarchyOn();">device_hub</i>');
+	renderConcept(lastRootMap, lastMap);
+}
+
+function hierarchyOn(){
+	hierarchyOnFlag = true;
+	$("#hierarchySpan").html('<i class="small material-icons white-text right" style="margin:0" onClick="hierarchyOff();">format_list_bulleted</i>');
+	renderConcept(lastRootMap, lastMap);
 }
