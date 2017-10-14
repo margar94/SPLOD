@@ -145,6 +145,12 @@ BoxFiller.prototype.updatePredicatesFromPredicate = function(predUrl, predLabel,
 
 }
 
+BoxFiller.prototype.getPredicateStats = function(predicateUrl, callback){
+	executor.getPredicateStats(predicateUrl, function(number){
+		callback(number);
+	});
+}
+
 function addStatsToPredicate(directData, reverseData, stats){
 	
 	for(key in directData){

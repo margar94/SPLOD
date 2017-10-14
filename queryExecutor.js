@@ -210,7 +210,7 @@ QueryExecutor.prototype.getAllReversePredicates = function(limit, callback) {
 
 
 
-
+/*
 
 QueryExecutor.prototype.getAllPredicatesStats = function(limit, callback){
 
@@ -235,7 +235,30 @@ QueryExecutor.prototype.getAllPredicatesStats = function(limit, callback){
     });	
 }
 
+*/
 
+/*
+	SELECT (COUNT(?o) AS ?totalNumberOfNames)
+	WHERE { ?s dbp:name ?o }
+*/
+QueryExecutor.prototype.getPredicateStats = function(pred, callback){
+	var query = " SELECT (COUNT(?o) AS ?number) " +
+		" WHERE { " + 
+			" GRAPH " + graph + " { " +
+				" ?s <"+pred+"> ?o . "+
+				"}" +
+			" } ";  
+
+   	queryUrl = endpoint+"?query="+ encodeURIComponent(query) +"&format=json";
+    $.ajax({
+        url: queryUrl,
+        method:'post',
+        success: function( data ) {
+        	var arrayData = data.results.bindings;
+        	callback(arrayData[0]['number'].value);
+        }
+    });	
+}
 
 
 

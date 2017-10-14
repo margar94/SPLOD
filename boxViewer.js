@@ -181,14 +181,32 @@ function renderDirectPredicates(directMap){
 		
 		var li = $("<li/>")
 			.attr('class', 'collection-item addToQuery withMargin')
+			.attr('id', element.url + "item")
+			.appendTo(directPredicatesList);
+
+		var span = $("<span/>")
 			.attr('title', element.url)
 			.attr('meta-url', element.url)
 			.attr('meta-label', element.label)
 			.attr('meta-predicateDirection', 'direct') 
 			.text(languageManager.getPredicateVerbalization(element.label, 'direct'))
-			.appendTo(directPredicatesList)
+			.css('margin-left', '0.5em')
+			.appendTo(li)
 			.on('click', function(){
 				mapCreator.selectedPredicate($(this).attr('meta-url'), $(this).attr('meta-label'), $(this).attr('meta-predicateDirection'));
+			});
+
+		var info = $("<i/>")
+			.attr('class', 'tiny material-icons right')
+			.html('info')
+			.attr('meta-url', element.url)
+			.appendTo(li)
+			.on('click', function(){
+				boxFiller.getPredicateStats($(this).attr('meta-url'), function(numberOfInstances){
+					console.log(numberOfInstances);
+
+					//manage stats
+				});
 			});
 
 		/*var badge = $("<span/>")

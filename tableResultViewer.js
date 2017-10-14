@@ -1,9 +1,7 @@
-var visibleFields;
 var languageManager;
 var cachedFieldsToHide;
 
 function initTableResultViewer(){
-	visibleFields = [];
 	cachedFieldsToHide = [];
 	languageManager = new LanguageManager();
 }
