@@ -110,7 +110,7 @@ function iterativePreorderVisit(concept, concepts, toAppend, level){
 
 	var li = $("<li/>")
 		.attr('class', 'collection-item addToQuery withMargin')
-		.css('margin-left', level*2+'em')
+		.css('margin-left', level*2+0.1+'em')
 		.appendTo(toAppend);
 
 	if(children.length>0){
