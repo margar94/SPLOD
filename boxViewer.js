@@ -56,7 +56,7 @@ function renderConcept(rootMap, map){
 	lastRootMap = rootMap;
 	lastMap = map;
 	if(hierarchyOnFlag)
-		newrenderConceptsHierarchy(rootMap, map);
+		renderConceptsHierarchy(rootMap, map);
 	else
 		renderConceptsList(rootMap, map);
 }
@@ -64,7 +64,6 @@ function renderConcept(rootMap, map){
 function renderConceptsList(roots, concepts){
 	var conceptsList = $("#conceptsList");
 	conceptsList.empty();
-	conceptsList.attr('class', 'collection');
 
 	var orderedKeys = Object.keys(concepts).sort(function(a,b){
 		var x = concepts[a].label.toLowerCase();
@@ -96,106 +95,66 @@ function renderConceptsList(roots, concepts){
 	}
 }
 
-function newrenderConceptsHierarchy(roots, concepts){
+function renderConceptsHierarchy(roots, concepts){
 	var conceptsList = $("#conceptsList");
 	conceptsList.empty();
-	conceptsList.attr('class', 'collection');
 
 	for(var i=0; i<roots.length; i++)
-		newiterativePreorderVisit(roots[i], concepts, conceptsList, 0);
-
-	 $(".collapsible-header").addClass("active");
-	//$('.collapsible').collapsible();
+		iterativePreorderVisit(roots[i], concepts, conceptsList, 0);
 }
 
-function newiterativePreorderVisit(concept, concepts, toAppend, level){
-	var childrenLevel = level;
-	if(concepts[concept].numberOfInstances != 0){
-		var li = $("<li/>")
-			.attr('class', 'collection-item addToQuery withMargin ')
-			.appendTo(toAppend)		
-			.css('margin-left', level*2+'em');
-			
+function iterativePreorderVisit(concept, concepts, toAppend, level){
+	var children = concepts[concept].children;
 
-		var span = $("<span/>")
+	var childrenLevel=level+1;
+
+	var li = $("<li/>")
+		.attr('class', 'collection-item addToQuery withMargin')
+		.css('margin-left', level*2+'em')
+		.appendTo(toAppend);
+
+	if(children.length>0){
+		var expandableIcon = $("<i/>")
+			.attr('class', 'tiny material-icons grey-text')
+			.html('expand_less')
+			.appendTo(li);
+	}
+
+	var span = $("<span/>")
 			.attr('title', concepts[concept].url)
 			.attr('meta-url', concepts[concept].url)
 			.attr('meta-label', concepts[concept].label)
 			.text(concepts[concept].label)
+			.css('margin-left', '0.5em')
 			.appendTo(li)
 			.on('click', function(){
 				mapCreator.selectedConcept($(this).attr('meta-url'), $(this).attr('meta-label'));
 			});
 		
-		var badge = $("<span/>")
-			.attr('class', 'new badge')
-			.attr('data-badge-caption', '')
-			.text(concepts[concept].numberOfInstances)
-			.appendTo(li);
-		childrenLevel++;
+	var badge = $("<span/>")
+		.attr('class', 'new badge')
+		.attr('data-badge-caption', '')
+		.text(concepts[concept].numberOfInstances)
+		.appendTo(li);
 		
-
-	}
-		
-	var children = concepts[concept].children;
-	if(children.length!=0){
-		for(var i=0; i<children.length; i++){
-			newiterativePreorderVisit(children[i], concepts, toAppend, childrenLevel);
-		}		
-	}
-}
-
-function renderConceptsHierarchy(roots, concepts){
-	var conceptsList = $("#conceptsList");
-	conceptsList.empty();
-	conceptsList.attr('class', 'collapsible');
-	conceptsList.attr('data-collapsible', 'expandable');
-
-	for(var i=0; i<roots.length; i++)
-		iterativePreorderVisit(roots[i], concepts, conceptsList);
-
-	$('.collapsible').collapsible();
-}
-
-function iterativePreorderVisit(concept, concepts, toAppend){
-	if(concepts[concept].numberOfInstances != 0){
-		var li = $("<li/>")
+	if(children.length>0){
+		var div = $("<div/>")
+			.attr('class', 'myCollapsibleBody')
 			.appendTo(toAppend);
 
-		var collapsibleheader = $("<div/>")
-			.attr('class', 'collapsible-header active')
-			.appendTo(li);
+		li.on('click', function(){
+			if($(this).next().is(':visible')){
+				$(this).next().hide();
+				expandableIcon.html('expand_more');
+			}
+			else{
+				$(this).next().show();
+				expandableIcon.html('expand_less');
+			}
+		});
 
-		var headercontent = $("<span/>")
-			.attr('class', 'addToQuery')
-			.attr('title', concept)
-			.attr('meta-url', concept)
-			.attr('meta-label', concepts[concept].label)
-			.text(concepts[concept].label)
-			.appendTo(collapsibleheader)
-			.on('click', function(){
-				mapCreator.selectedConcept($(this).attr('meta-url'), $(this).attr('meta-label'));
-			});
-		
-		
-		var badge = $("<span/>")
-			.attr('class', 'new badge')
-			.attr('data-badge-caption', '')
-			.text(concepts[concept].numberOfInstances)
-			.appendTo(collapsibleheader);
-	}
-
-	var children = concepts[concept].children;
-	if(children.length!=0){
-		var collapsiblebody = $("<div/>")
-			.attr('class', 'collapsible-body')
-			.appendTo(li);
-		var ul = $("<ul/>")		
-			.attr('class', 'collapsible')
-			.attr('data-collapsible','expandable')
-			.appendTo(collapsiblebody);
 		for(var i=0; i<children.length; i++){
-			iterativePreorderVisit(children[i], concepts, ul);
+			iterativePreorderVisit(children[i], concepts, div, childrenLevel);
 		}		
 	}
 }

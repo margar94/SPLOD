@@ -1,15 +1,82 @@
+var visibleFields;
 
 function initTableResultViewer(){
+	visibleFields = [];
 }
 
 function resetResultTable(){
 	$('#resultsTable').empty();
 }
 
+function resetFieldsList(){
+	$('#resultsTable').empty();
+}
+
 function renderResultTable(select, labelSelect, results){
 
-	createTable(select, labelSelect, results);
+	var labels = createTableLabel(select, labelSelect);
+	createFieldsSelectionList(labels);
+	createTable(select, labels, results);
 
+}
+
+function createTableLabel(select, labelSelect){
+	var labels = [];
+	var stringSelect = select.join(' ');
+
+console.log(stringSelect);
+
+	for(var i=0; i<labelSelect.length; i++){
+	console.log(labelSelect[i]);
+		var re = new RegExp("\?"+labelSelect[i]+"_", "g");
+	console.log(re);
+		var matches = stringSelect.match(re);
+		if(matches==null || matches.length==1){
+			labels.push(labelSelect[i]);
+		}
+		else{
+			labels.push(select[i].split('?')[1]);
+		}
+	}
+	return labels;
+}
+
+function createFieldsSelectionList(labelSelect){
+	var fieldsCollection = $('#fieldsCollection');
+	fieldsCollection.empty();
+
+	for(field in labelSelect){
+		var li = $("<li/>")
+			.attr('class', 'collection-item withMargin')
+			.appendTo(fieldsCollection);
+
+		var input = $("<input/>")
+			.attr('type', 'checkbox')
+			.attr('id', labelSelect[field])
+			.attr('value', labelSelect[field])
+			.attr('checked', 'checked')
+			.attr('name', 'visibleFields')
+			.appendTo(li)
+			.on('click', manageFields);
+
+		var label = $("<label/>")
+			.attr('for', labelSelect[field])
+			.text(labelSelect[field])
+			.appendTo(li);
+
+	}
+
+}
+
+function manageFields(){
+	var fieldsToHide = $("input:checkbox[name=visibleFields]:not(:checked)");
+	$.each(fieldsToHide, function(index){
+		$('.'+fieldsToHide[index].id).hide();
+	});
+	var fieldsToShow = $("input:checkbox[name=visibleFields]:checked");
+	$.each(fieldsToShow, function(index){
+		$('.'+fieldsToShow[index].id).show();
+	});
 }
 
 function createTable(select, labelSelect, results){
@@ -22,7 +89,7 @@ function createTable(select, labelSelect, results){
 	var tr = $("<tr/>");
 	for(field in labelSelect){
 		var th = $("<th/>")
-			//.css('text-align', 'center')
+			.attr('class', labelSelect[field])
 			.text(labelSelect[field])
 			.appendTo(tr);
 	}
@@ -41,6 +108,8 @@ function createTable(select, labelSelect, results){
 			if(field in element){
 				var td = $("<td/>")
 					.text(element[field].value)
+					//to change
+					.attr('class', field.split('_')[0])
 					.appendTo(tr);
 					
 				if(element[field].type == 'uri'){

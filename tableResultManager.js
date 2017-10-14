@@ -12,4 +12,5 @@ TableResultManager.prototype.updateTable = function(select, labelSelect, results
 
 TableResultManager.prototype.resetTable = function(){
 	resetResultTable();
+	resetFieldsList();
 }

@@ -104,7 +104,7 @@ QueryExecutor.prototype.getAllEntities = function(callback) {
 			        success: function( data ) {
 			        	var arrayData = data.results.bindings;
 			        	classHierarchyMap = addInstancesOccurenceClassHierarchy(arrayData, classHierarchyMap);
-			        	//classHierarchyMap = cleanMap(classHierarchyMap);
+			        	classHierarchyMap = cleanMap(classHierarchyMap);
 			        	var mapRoots = getMapRoots(classHierarchyMap);
 			        	classHierarchyMapRoots = mapRoots;
 						callback(classHierarchyMapRoots, classHierarchyMap);
