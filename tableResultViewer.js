@@ -21,21 +21,17 @@ function renderResultTable(select, labelSelect, results){
 }
 
 function createTableLabel(select, labelSelect){
-	var labels = [];
+	var labels = {};
 	var stringSelect = select.join(' ');
 
-console.log(stringSelect);
-
 	for(var i=0; i<labelSelect.length; i++){
-	console.log(labelSelect[i]);
-		var re = new RegExp("\?"+labelSelect[i]+"_", "g");
-	console.log(re);
+		var re = new RegExp("\\?"+labelSelect[i]+"_", "g");
 		var matches = stringSelect.match(re);
 		if(matches==null || matches.length==1){
-			labels.push(labelSelect[i]);
+			labels[select[i].split('?')[1]] = labelSelect[i];
 		}
 		else{
-			labels.push(select[i].split('?')[1]);
+			labels[select[i].split('?')[1]] = select[i].split('?')[1];
 		}
 	}
 	return labels;
@@ -109,7 +105,7 @@ function createTable(select, labelSelect, results){
 				var td = $("<td/>")
 					.text(element[field].value)
 					//to change
-					.attr('class', field.split('_')[0])
+					.attr('class', labelSelect[field])
 					.appendTo(tr);
 					
 				if(element[field].type == 'uri'){

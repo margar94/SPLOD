@@ -165,6 +165,26 @@
 				color:#7c4dff;
 			}
 
+			#predicatesBox .tabs .tab a, #predicatesBox .tabs .tab a:hover, #predicatesBox .tabs .tab a.active{
+				color: #7c4dff;
+			}
+
+			#predicatesBox .indicator{
+				background-color: #7c4dff;
+			}
+
+			#predicatesBox .card-title{
+				color: #7c4dff;
+			}
+
+			#conceptsBox .card-title{
+				color: #00e676;
+			}
+
+			#operatorsBox .card-title{
+				color: #bdbdbd;
+			}
+
 			.tabs #operatorsTab a:hover,
 			.tabs #operatorsTab a.active{
 				background-color: #bdbdbd;
@@ -333,7 +353,7 @@
 
 		<div class="row">
 
-			<div class="col s3" id="navBar">
+			<div class="col s2" id="navBar">
 		      <ul id="myTabs" class="tabs black-text" style="display: table-cell;border-right: 4px solid #00e676;">
 		   
 		        <li class="tab col s12" id="conceptsTab" onclick="$('#myTabs').css('border-right-color', '#00e676')">	<a href="#conceptsBox">Concepts</a>
@@ -345,12 +365,12 @@
 		        	<a href="#operatorsBox">Operators</a>
 		        </li>
 		        <li class="tab col s12" id="queryTab" onclick="$('#myTabs').css('border-right-color', '#f44336')">
-		        	<a href="#dacambiareBox">Query</a>
+		        	<a href="#dacambiareBox">Settings</a>
 		        </li>
 		      </ul>
 		    </div>
 		   
-		    <div class="col s9">
+		    <div class="col s10">
 		        <!-- page content  -->
 		        <div class="col s12">
 
@@ -445,10 +465,10 @@
 
 	    <!--start result table-->
 		<div class="row">
-			<div id="fieldsCollectionNavBar" class="col s3">
+			<div id="fieldsCollectionNavBar" class="col s2">
 				<ul id="fieldsCollection" class="collection" ></ul>
 			</div>
-			<div class="col s9">
+			<div class="col s10">
 				<div id="resultsTableBox" class="card col s12 scrollableTableContent">
 					<div class="card-content ">
 			              <span class="card-title">Results</span>
