@@ -1,7 +1,9 @@
 var visibleFields;
+var languageManager;
 
 function initTableResultViewer(){
 	visibleFields = [];
+	languageManager = new LanguageManager();
 }
 
 function resetResultTable(){
@@ -21,18 +23,22 @@ function renderResultTable(select, labelSelect, results){
 }
 
 function createTableLabel(select, labelSelect){
-	var labels = {};
+	var labels = [];
 	var stringSelect = select.join(' ');
+	var labelObj = {};
 
 	for(var i=0; i<labelSelect.length; i++){
 		var re = new RegExp("\\?"+labelSelect[i]+"_", "g");
 		var matches = stringSelect.match(re);
 		if(matches==null || matches.length==1){
-			labels[select[i].split('?')[1]] = labelSelect[i];
+			labelObj = {label : labelSelect[i], className : labelSelect[i].replace(/[ ]/g, "_")};
 		}
 		else{
-			labels[select[i].split('?')[1]] = select[i].split('?')[1];
+			var splittedSelect = select[i].split('_');
+			var cardinalNumber = parseInt(splittedSelect[splittedSelect.length-1]);
+			labelObj = {label : languageManager.getOrdinalNumber(cardinalNumber) + " " +labelSelect[i], className : select[i].split('?')[1].replace(/[ ]/g, "_")};
 		}
+		labels.push(labelObj);
 	}
 	return labels;
 }
@@ -48,16 +54,15 @@ function createFieldsSelectionList(labelSelect){
 
 		var input = $("<input/>")
 			.attr('type', 'checkbox')
-			.attr('id', labelSelect[field])
-			.attr('value', labelSelect[field])
+			.attr('id', labelSelect[field].className)
 			.attr('checked', 'checked')
 			.attr('name', 'visibleFields')
 			.appendTo(li)
 			.on('click', manageFields);
 
 		var label = $("<label/>")
-			.attr('for', labelSelect[field])
-			.text(labelSelect[field])
+			.attr('for', labelSelect[field].className)
+			.text(labelSelect[field].label)
 			.appendTo(li);
 
 	}
@@ -85,8 +90,8 @@ function createTable(select, labelSelect, results){
 	var tr = $("<tr/>");
 	for(field in labelSelect){
 		var th = $("<th/>")
-			.attr('class', labelSelect[field])
-			.text(labelSelect[field])
+			.attr('class', labelSelect[field].className)
+			.text(labelSelect[field].label)
 			.appendTo(tr);
 	}
 	tr.appendTo(thead);
@@ -104,8 +109,7 @@ function createTable(select, labelSelect, results){
 			if(field in element){
 				var td = $("<td/>")
 					.text(element[field].value)
-					//to change
-					.attr('class', labelSelect[field])
+					.attr('class', labelSelect[i].className)
 					.appendTo(tr);
 					
 				if(element[field].type == 'uri'){
@@ -122,14 +126,8 @@ function createTable(select, labelSelect, results){
 							.attr('href', element[field].url)
 							.appendTo(td);
 
-						/*var img = $("<img/>")
-							.attr('src', 'img/ic_open_in_new_black_24dp_2x.png')
-							.attr('class', 'imgResult')
-							.appendTo(a);*/
-
 						var icon = $("<i class='material-icons tiny red-text'>")
 							.text('open_in_new')
-							//.attr('class', 'imgResult')
 							.appendTo(a);
 					}
 				}
