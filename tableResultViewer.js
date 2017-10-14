@@ -1,8 +1,10 @@
 var visibleFields;
 var languageManager;
+var cachedFieldsToHide;
 
 function initTableResultViewer(){
 	visibleFields = [];
+	cachedFieldsToHide = [];
 	languageManager = new LanguageManager();
 }
 
@@ -52,13 +54,15 @@ function createFieldsSelectionList(labelSelect){
 			.attr('class', 'collection-item withMargin')
 			.appendTo(fieldsCollection);
 
-		var input = $("<input/>")
+		var fieldCheck = $("<input/>")
 			.attr('type', 'checkbox')
 			.attr('id', labelSelect[field].className)
-			.attr('checked', 'checked')
 			.attr('name', 'visibleFields')
 			.appendTo(li)
 			.on('click', manageFields);
+
+		if(($.inArray(labelSelect[field].className,cachedFieldsToHide))<0)
+			fieldCheck.attr('checked', 'checked');
 
 		var label = $("<label/>")
 			.attr('for', labelSelect[field].className)
@@ -70,14 +74,17 @@ function createFieldsSelectionList(labelSelect){
 }
 
 function manageFields(){
+	cachedFieldsToHide = [];
 	var fieldsToHide = $("input:checkbox[name=visibleFields]:not(:checked)");
 	$.each(fieldsToHide, function(index){
 		$('.'+fieldsToHide[index].id).hide();
+		cachedFieldsToHide.push(fieldsToHide[index].id);
 	});
 	var fieldsToShow = $("input:checkbox[name=visibleFields]:checked");
 	$.each(fieldsToShow, function(index){
 		$('.'+fieldsToShow[index].id).show();
 	});
+
 }
 
 function createTable(select, labelSelect, results){
@@ -140,4 +147,8 @@ function createTable(select, labelSelect, results){
 		tr.appendTo(tbody);
 	});
 	tbody.appendTo(resultsTable);
+
+	$.each(cachedFieldsToHide, function(index){
+		$('.'+cachedFieldsToHide[index]).hide();
+	});
 }
