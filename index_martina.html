@@ -26,287 +26,7 @@
 		<link href="Materialize/fonts/roboto/Roboto-Regular.woff2" rel="application/x-font-woff">		
 		<link href="Materialize/css/materialize.min.css" rel="stylesheet">
 		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
-		<style>
-
-			body {
-				background-color: #f5f5f5;
-				font-family: 'Roboto', sans-serif;
-			}
-
-			div#queryBox{
-				margin-top: 30px;
-			}
-
-			div#conceptsListBox {
-				height: 300px;
-			    overflow: auto;
-			    border-radius:2px;
-			    background-color:#f5f5f5; 
-			}
-
-			div#conceptsBox .card-action{
-				background-color:#00e676;
-			}
-
-			div .card-action i{
-				cursor: pointer;
-			}
-
-			div#predicatesListBox {
-			    height: 300px;
-			    overflow: auto;
-			}
-
-			div#contentOperatorBox{
-				overflow: auto;
-			    height: 300px;
-			}
-
-			/*div#resultsTableBox {
-			    height: 500px;
-			    overflow: scroll;
-			}*/
-
-			span.highlighted {
-				background-color: #fff59d   ;
-				border-radius: 4px;
-			}
-
-			span.highlightRemove {
-				background-color: #fff59d   ;
-				border-radius: 4px;
-			}
-
-			span.concept {
-				color: #00e676;
-				font-weight: bold;
-			}
-
-			span.predicate {
-				color: #7c4dff ;
-				font-weight: bold;
-			}
-
-			span.operator {
-				text-decoration-line: underline;
-			    text-decoration-color: #bdbdbd;
-			    text-decoration-style: dashed;
-			}
-
-			span.barred {
-				text-decoration-line: line-through;
-			}
-
-			img.imgResult {
-				height: 10px;
-			}
-
-			#myTabs>li.indicator{
-				display:none;
-			}
-			#myTabs li{
-				border-bottom: 1px solid #ddd
-			}
-
-			#sparqlQuery{
-				margin-top: -40px;
-				float:right;
-			}
-
-			#queryNaturalLanguage ul{
-				padding-left: 0.8em;
-    			margin: 0;
-			}
-
-			#removeButton {
-				height: 20px;
-			}
-
-			#removeButton:hover{
-				cursor: pointer;
-			}
-
-			span {
-				padding:3px !important;
-			}
-
-			/*::-webkit-scrollbar {
-			    width: 9px;
-			    height: 9px;
-			}
-			::-webkit-scrollbar-track {
-			    background: #eee;
-			    border: thin solid lightgray;
-			    box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.1) inset;
-			}
-			::-webkit-scrollbar-thumb {
-			    background: #999;
-			    border: thin solid gray;
-			}*/
-
-			.tabs #conceptsTab a:hover,
-			.tabs #conceptsTab a.active{
-				background-color: #00e676;
-				color: white;
-			}
-
-			.tabs #conceptsTab a{
-				color:#00e676;
-			}
-
-			.tabs #predicatesTab a:hover,
-			.tabs #predicatesTab a.active{
-				background-color: #7c4dff ;
-				color: white;
-			}
-
-			.tabs #predicatesTab a{
-				color:#7c4dff;
-			}
-
-			#predicatesBox .tabs .tab a, #predicatesBox .tabs .tab a:hover, #predicatesBox .tabs .tab a.active{
-				color: #7c4dff;
-			}
-
-			#predicatesBox .indicator{
-				background-color: #7c4dff;
-			}
-
-			#predicatesBox .card-title{
-				color: #7c4dff;
-			}
-
-			#conceptsBox .card-title{
-				color: #00e676;
-			}
-
-			#operatorsBox .card-title{
-				color: #bdbdbd;
-			}
-
-			.tabs #operatorsTab a:hover,
-			.tabs #operatorsTab a.active{
-				background-color: #bdbdbd;
-				color: white;
-			}
-
-			.tabs #operatorsTab a{
-				color:#bdbdbd;
-			}
-
-			.tabs #queryTab a:hover,
-			.tabs #queryTab a.active{
-				background-color: #f44336;
-				color: white;
-			}
-
-			.tabs #queryTab a{
-				color:#f44336;
-			}
-
-			.addToQuery:hover{
-				font-weight: bold;
-				cursor:pointer;
-			}
-
-			input {
-			  border-bottom: none!important;
-			  box-shadow: none!important;
-			}
-
-			span.mySearch input{
-				margin-bottom: auto !important;
-			}
-
-			ul:empty{
-				display: none;
-			}
-
-			/*#pendingQuerySpan .fieldToComplete{
-				text-decoration-line: underline;
-			    text-decoration-color: #bdbdbd;
-			    text-decoration-style: dashed;
-			}*/
-
-			#pendingQuerySpan .active{
-				color: #2196f3; 
-				font-weight: bold;
-			}
-/*
-			#overlay{
-				height: -webkit-fill-available;
-				width: -webkit-fill-available;
-			    background-color: black;
-			    z-index: 10;
-			    position: fixed;
-			    opacity: 0.3;
-			}*/
-/*
-			span.mySearch:not(browser-default):active.not([readonly])+label{
-				color:red;
-			}
-*/
-			.input-field label:not(.label-icon).active{
-				transform: translateY(-4px) scale(0.8);
-				
-			}
-
-			.scrollableTableContent thead tr:after{
-				display : block;
-				width:100%;
-				overflow-y: scroll;
-				visibility:hidden;
-				height:0;
-			}
-			.scrollableTableContent thead th{
-				flex:1;
-				display:block;
-			}
-			.scrollableTableContent tbody{
-				display : block;
-				height: 400px;
-				overflow-y: auto;
-				width:100%;
-			}
-			.scrollableTableContent tr{
-				width:100%;
-				display:flex;	
-			}
-			.scrollableTableContent td{
-				flex:1;
-			}
-
-			input.userValue{
-				border-bottom: 1px solid #9e9e9e !important;
-			}
-
-			#rowUserValue{
-				margin-bottom: 0;
-			}
-
-			i#userValueButton{
-				float: right;
-				margin-top: 2rem;
-			}
-
-			#navBar, #fieldsCollectionNavBar{
-				padding-left: 0;
-			    padding-right: 0;
-			    height: -webkit-fill-available;
-			    background-color: white;
-			    -webkit-box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 1px 5px 0 rgba(0,0,0,0.12), 0 3px 1px -2px rgba(0,0,0,0.2);
-    			box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 1px 5px 0 rgba(0,0,0,0.12), 0 3px 1px -2px rgba(0,0,0,0.2);
-			}
-
-			#conceptsListBox ul{
-				border : none;
-			}
-
-			li.withMargin {
-				margin-top:0.2em !important;
-			}
-		</style>
+		<link href="martina_style.css" rel="stylesheet">
 
 	</head>
 	<body>
@@ -409,7 +129,7 @@
             				<div class=" valign-wrapper ">
 			            		<span class="input-field col s11 m11 l11 mySearch">
 					              	<input type="search" id="searchPredicatesBox" 
-										onkeyup="filter('searchPredicatesBox', 'predicatesBox')" 
+										onkeyup="filter('searchPredicatesBox', 'directPredicatesList');filter('searchPredicatesBox', 'reversePredicatesList');" 
 										title="Type in a predicate">
 									<label for="searchPredicatesBox">Search for a predicate</label>
 								</span>
@@ -433,9 +153,8 @@
 					      		<ul id="reversePredicatesList" class="collection"></ul>
 					      	</div>
 					      </div>
-			            <!--<div id="predicatesListBox">
-								<ul id="predicatesList"></ul>
-							</div>-->
+			            <div class="card-action valign-wrapper">
+			            </div>
 			          </div>
 
 					  <div id="operatorsBox" class="card">
@@ -446,9 +165,8 @@
 				              <ul id="operatorList" class="collection"></ul>
 				              <ul id="reusableResultList" class="collection"></ul>
 				          </div>
-						<!--<input type="text" id="searchResultsBox" class="search"
-							onkeyup="filter('searchResultsBox', 'resultsBox')" 
-							placeholder="Search for a result..." title="Type in a result">-->
+			            </div>
+			            <div class="card-action valign-wrapper">
 			            </div>
 			          </div>
 
