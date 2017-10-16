@@ -441,6 +441,10 @@ OperatorManager.prototype.discardOperator = function(){
 
 function saveResults(select, keySelect, results){
 
+	if(results.length == 0){
+		return;
+	}
+
 	for(var i=0; i<keySelect.length; i++){
 		savedResult[keySelect[i]] = [];
 		literalLang[keySelect[i]] = [];

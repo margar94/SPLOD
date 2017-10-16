@@ -11,7 +11,7 @@ function resetResultTable(){
 }
 
 function resetFieldsList(){
-	$('#resultsTable').empty();
+	$('#fieldsCollection').empty();
 }
 
 function renderResultTable(select, labelSelect, results){

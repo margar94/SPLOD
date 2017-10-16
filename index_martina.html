@@ -75,13 +75,50 @@
 			<div class="col s2" id="navBar">
 		      <ul id="myTabs" class="tabs black-text" style="display: table-cell;border-right: 4px solid #00e676;">
 		   
-		        <li class="tab col s12" id="conceptsTab" onclick="$('#myTabs').css('border-right-color', '#00e676')">	<a href="#conceptsBox">Concepts</a>
+		        <li class="tab col s12" id="conceptsTab" onclick="$('#myTabs').css('border-right-color', '#00e676')">	
+		        	<a href="#conceptsBox">Concepts
+			        	<div id="conceptsSpinner" class="preloader-wrapper mySpinner active">
+						    <div class="spinner-layer spinner-blue-only">
+						      <div class="circle-clipper left">
+						        <div class="circle"></div>
+						      </div><div class="gap-patch">
+						        <div class="circle"></div>
+						      </div><div class="circle-clipper right">
+						        <div class="circle"></div>
+						      </div>
+						    </div>
+						</div>
+					</a>
 		        </li>
 		        <li class="tab col s12" id="predicatesTab" onclick="$('#myTabs').css('border-right-color', '#7c4dff ')">
-		        	<a href="#predicatesBox">Predicates</a>
+		        	<a href="#predicatesBox">Predicates
+		        		<div id="predicatesSpinner" class="preloader-wrapper mySpinner active">
+						    <div class="spinner-layer spinner-blue-only">
+						      <div class="circle-clipper left">
+						        <div class="circle"></div>
+						      </div><div class="gap-patch">
+						        <div class="circle"></div>
+						      </div><div class="circle-clipper right">
+						        <div class="circle"></div>
+						      </div>
+						    </div>
+						</div>
+		        	</a>
 		        </li>
 		        <li class="tab col s12" id="operatorsTab" onclick="$('#myTabs').css('border-right-color', '#bdbdbd')">
-		        	<a href="#operatorsBox">Operators</a>
+		        	<a href="#operatorsBox">Operators
+		        		<div id="operatorsSpinner" class="preloader-wrapper mySpinner active">
+						    <div class="spinner-layer spinner-blue-only">
+						      <div class="circle-clipper left">
+						        <div class="circle"></div>
+						      </div><div class="gap-patch">
+						        <div class="circle"></div>
+						      </div><div class="circle-clipper right">
+						        <div class="circle"></div>
+						      </div>
+						    </div>
+						</div>
+		        	</a>
 		        </li>
 		        <li class="tab col s12" id="queryTab" onclick="$('#myTabs').css('border-right-color', '#f44336')">
 		        	<a href="#dacambiareBox">Settings</a>

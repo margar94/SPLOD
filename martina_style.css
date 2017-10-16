@@ -108,7 +108,17 @@ span.barred {
 	display:none;
 }
 #myTabs li{
-	border-bottom: 1px solid #ddd
+	border-bottom: 1px solid #ddd;
+	padding: 0;
+}
+
+#myTabs li .mySpinner{
+	height: 1em;
+	width: 1em;
+}
+
+#myTabs li .mySpinner .circle-clipper{
+	color: #2196f3;
 }
 
 .tabs #conceptsTab a:hover,
@@ -162,6 +172,10 @@ span.barred {
 
 #fieldsCollection:empty{
 	display: none;
+}
+
+ul#fieldsCollection {
+	margin-top:0;
 }
 
 
@@ -223,6 +237,10 @@ div#predicatesListBox {
 
 div#predicatesBox .card-action{
 	background-color:#7c4dff;
+}
+
+i.predicateInfo{
+	color: #7c4dff;
 }
 
 

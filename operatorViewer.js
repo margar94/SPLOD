@@ -30,11 +30,13 @@ function renderOperatorList(operators){
 		li.appendTo(operatorList)
 			.on('click', function(){
 				if(!operatorManager.selectedOperator($(this).attr('meta-value'))){
+					$('#operatorsSpinner').show();
 					var reusableResults = operatorManager.getResultToCompleteOperator();
 					renderReusableResultListFromOperator(reusableResults);
 				}
 			});
 	});
+	$('#operatorsSpinner').hide();
 
 }
 
@@ -212,6 +214,8 @@ function renderReusableResultList(reusableResults, onClickButtonFunction, onClic
 		li.appendTo(reusableResultList)
 			.on('click', onClickLiFunction);
 	});
+
+	$('#operatorsSpinner').hide();
 
 }
 
