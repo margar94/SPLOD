@@ -36,7 +36,7 @@ function renderOperatorList(operators){
 				}
 			});
 	});
-	console.log('hide operators');
+
 	$('#operatorsSpinner').hide();
 
 }

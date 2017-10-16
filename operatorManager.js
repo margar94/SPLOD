@@ -120,7 +120,6 @@ OperatorManager.prototype.queryResult = function(select, labelSelect, keySelect,
 		resultDatatype[keySelect[arrayIndex]].datatype = []; 
 	}
 
-console.log(results);
 	$.each(results, function(index){
 
 		var result = results[index];
@@ -468,10 +467,14 @@ function saveResults(select, keySelect, results){
 			savedResult[keySelect[index]].push(cachedResult);
 
 			if(type == 'literal'){
-				var newLang = {value:(element[field])['xml:lang']};
-
-				if(!objInArray(newLang, literalLang[keySelect[index]]))
+				var langIndex = valInArray((element[field])['xml:lang'], literalLang[keySelect[index]]);
+				if(langIndex<0){
+					var newLang = {value:(element[field])['xml:lang'], occurrences:1};
 					literalLang[keySelect[index]].push(newLang);
+				}
+				else{
+					literalLang[keySelect[index]][langIndex].occurrences++;
+				}
 				
 			}
 
@@ -510,6 +513,7 @@ function saveResults(select, keySelect, results){
 		}
 
 		savedResult[keySelect[i]]=newArray;
+
 	}
 
 }
@@ -537,12 +541,14 @@ function compareNumber(a,b){
 	return 0;
 }
 
-function objInArray(obj, arr){
-
-	if($.inArray(JSON.stringify(obj),$.map(arr, JSON.stringify))>=0)
-		return true;
-
-	return false;
+function valInArray(val, arr){
+	var currentObj;
+	for(var i=0; i<arr.length; i++){
+		currentObj = arr[i];
+		if(currentObj.value == val)
+			return i;
+	}
+	return -1;
 }
 
 OperatorManager.prototype.changedFocus = function(newOnFocus, userChangeFocus){
@@ -572,6 +578,8 @@ function manageUpdateOperatorViewer(){
 				var operatorNode = mapCreator.getNodeByKey(node.parent);
 				var operator = operatorNode.label;
 				var operatorField = node.relatedTo;
+	console.log(operatorField);
+	console.log(cachedResult);
 				
 				if(operatorField in resultDatatype){ 
 					results = cachedResult[node.key];
@@ -682,7 +690,12 @@ OperatorManager.prototype.changedReusableResult = function(result, fromInput){
 function cacheResultToChange(resultsKey){
 	for(var i=0; i<resultsKey.length; i++){
 		var resultNode = mapCreator.getNodeByKey(resultsKey[i]);
-		cachedResult[resultNode.key] = savedResult[resultNode.relatedTo];
+		var operatorNode = mapCreator.getNodeByKey(resultNode.parent);
+
+		if(resultDatatype[resultNode.relatedTo].datatype=='literal' && operatorNode.label == 'lang')
+			cachedResult[resultNode.key] = literalLang[resultNode.relatedTo];
+		else
+			cachedResult[resultNode.key] = savedResult[resultNode.relatedTo];
 	}
 }
 

@@ -118,7 +118,6 @@ MapCreator.prototype.selectedConcept = function(selectedUrl, selectedLabel) {
 		queryBuilder = new QueryBuilder;
 	queryBuilder.updateQuery(rootQueryLogicMap, queryLogicMap);
 
-	console.log(queryLogicMap);
 	//console.log(elementsList);
 
 }
