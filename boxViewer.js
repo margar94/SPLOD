@@ -34,7 +34,6 @@ function updateBoxesFromConcept(conceptUrl, conceptLabel){
 	
 	$('#conceptsSpinner').show();
 	$('#predicatesSpinner').show();
-	$('#operatorsSpinner').show();
 
 	boxFiller.updateConceptsFromConcept(conceptUrl, conceptLabel, renderConcept);
 	
@@ -54,7 +53,7 @@ function updateBoxesFromPredicate(predicateUrl, predicateLabel, predicateDirecti
 
 	$('#conceptsSpinner').show();
 	$('#predicatesSpinner').show();
-	$('#operatorsSpinner').show();
+
 
 	if(predicateDirection == 'direct'){
 		boxFiller.updateConceptsFromDirectPredicate(predicateUrl, predicateLabel, renderConcept);
@@ -98,6 +97,7 @@ function renderConceptsList(roots, concepts){
 				.text(concept.label)
 				.appendTo(conceptsList)		
 				.on('click', function(){
+					$('#operatorsSpinner').show();
 					mapCreator.selectedConcept($(this).attr('meta-url'), $(this).attr('meta-label'));
 				});
 			
@@ -143,6 +143,7 @@ function iterativePreorderVisit(concept, concepts, toAppend, level){
 			.css('margin-left', '0.5em')
 			.appendTo(li)
 			.on('click', function(){
+				$('#operatorsSpinner').show();
 				mapCreator.selectedConcept($(this).attr('meta-url'), $(this).attr('meta-label'));
 			});
 		
@@ -211,6 +212,7 @@ function renderDirectPredicates(directMap){
 			.css('margin-left', '0.5em')
 			.appendTo(li)
 			.on('click', function(){
+				$('#operatorsSpinner').show();
 				mapCreator.selectedPredicate($(this).attr('meta-url'), $(this).attr('meta-label'), $(this).attr('meta-predicateDirection'));
 			});
 
@@ -252,6 +254,7 @@ function renderReversePredicates(reverseArray){
 			.text(languageManager.getPredicateVerbalization(element.label, 'reverse'))
 			.appendTo(reversePredicatesList)
 			.on('click', function(){
+				$('#operatorsSpinner').show();
 				mapCreator.selectedPredicate($(this).attr('meta-url'), $(this).attr('meta-label'), $(this).attr('meta-predicateDirection'));
 			});
 

@@ -36,6 +36,7 @@ function renderOperatorList(operators){
 				}
 			});
 	});
+	console.log('hide operators');
 	$('#operatorsSpinner').hide();
 
 }
@@ -187,8 +188,6 @@ function renderReusableResultList(reusableResults, onClickButtonFunction, onClic
 
 	}
 
-
-	
 	$.each(reusableResults.results, function(index){
 		var element = reusableResults.results[index];
 

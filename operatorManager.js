@@ -120,6 +120,7 @@ OperatorManager.prototype.queryResult = function(select, labelSelect, keySelect,
 		resultDatatype[keySelect[arrayIndex]].datatype = []; 
 	}
 
+console.log(results);
 	$.each(results, function(index){
 
 		var result = results[index];
@@ -613,6 +614,7 @@ function manageUpdateOperatorViewer(){
 	}
 	
 	changedFocus = false;
+	
 }
 
 OperatorManager.prototype.changedReusableResult = function(result, fromInput){

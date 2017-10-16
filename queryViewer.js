@@ -243,7 +243,6 @@ function renderFocus(){
 			$('#focus').text(' ' + $('#limit').text());
 			updateBoxesFromOperator('limit');
 		}else{
-console.log(queryLogicStructure);
 			var number = queryLogicStructure[onFocus].index; 
 			var label = languageManager.getOrdinalNumber(number) + " " + queryLogicStructure[onFocus].label;
 
@@ -302,6 +301,8 @@ function attachEvents(){
 		var label = languageManager.getOrdinalNumber(number) + " " + queryLogicStructure[onFocus].label;
 
 		$('#focus').text(' ' + label);
+		$('#operatorsSpinner').show();
+
 		mapCreator.changeFocus(onFocus);
 
 		var size = activeAjaxRequest.length;

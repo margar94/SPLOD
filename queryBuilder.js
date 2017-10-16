@@ -306,10 +306,10 @@ function visitSPARQL(key){
 
 					parentVariable = node.variable;
 				}else{
-					node.variable = queryLogicStructure[node.children[0]].variable;
-
 					parentVariable = queryLogicStructure[node.parent].variable;
 				}
+				
+				node.variable = queryLogicStructure[node.children[0]].variable;
 
 				nodeWhere = nodeWhere.concat([node.variable, ' <'+node.url+'> ', parentVariable+'.']);
 
