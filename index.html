@@ -4,6 +4,7 @@
         
         <script src="queryExecutor.js"></script>
 
+        <script src="tableResultManager.js"></script>
 		<script src="operatorManager.js"></script>
 		<script src="languageManager.js"></script>	
 		<script src="queryVerbalizator.js"></script>
@@ -19,223 +20,257 @@
 		<script src="utilLogicLayer.js"></script>
 		<script src="utilPresentationLayer.js"></script>
 
+
 		<script src="Materialize/js/materialize.min.js"></script>
-
-		<link href="Materialize/fonts/roboto/Roboto-Regular.woff" rel="stylesheet">	
-		<link href="Materialize/fonts/roboto/Roboto-Regular.woff2" rel="stylesheet">		
+		<link href="Materialize/fonts/roboto/Roboto-Regular.woff" rel="application/x-font-woff">	
+		<link href="Materialize/fonts/roboto/Roboto-Regular.woff2" rel="application/x-font-woff">		
 		<link href="Materialize/css/materialize.min.css" rel="stylesheet">
-
-		<style>
-
-			body {
-				font-family: 'Roboto', sans-serif;
-			}
-
-			div#queryBox {
-				padding: 5px;
-				margin: 5px;
-			    border: 2px solid royalblue;
-			    border-radius: 5px;
-			}
-
-			div#queryNaturalLanguage {
-				display: inline-block;
-			}
-
-			div#conceptsBox {
-				position:absolute;
-				padding: 5px;
-			    border: 2px solid limegreen;
-			    border-radius: 5px;
-			    width: 30%;
-			    height: 500px;
-			    overflow: scroll;
-			    display: inline-block;
-			}
-
-			div#predicatesBox {
-				position:absolute;
-				margin-left: 33%;
-				padding: 5px;
-			    border: 2px solid orange;
-			    border-radius: 5px;
-			    width: 30%;
-			    height: 500px;
-			    overflow: scroll;
-			    display: inline-block;
-			}
-
-			div#resultsBox {
-				position:absolute;
-				margin-left: 66%;
-				padding: 5px;
-			    border: 2px solid red;
-			    border-radius: 5px;
-			    width: 30%;
-			    height: 500px;
-			    overflow: scroll;
-			    display: inline-block;
-			}
-
-			div#resultsTableBox {
-				margin-top: 550px;
-				border: 2px solid red;
-			    border-radius: 5px;
-			    height: 500px;
-			    overflow: scroll;
-			}
-
-			span.highlighted {
-				background-color: yellow;
-			}
-
-			span.highlightRemove {
-				background-color: yellow;
-			}
-
-			span.concept {
-				color: limegreen;
-			}
-
-			span.predicate {
-				color: orange;
-			}
-
-			img.imgResult {
-				height: 10px;
-			}
-
-			#removeButton {
-				height: 20px;
-			}
-
-			#removeButtonDiv{
-				float:right;
-			}
-
-			.search {
-			  width: 100%;
-			  font-size: 16px;
-			  padding: 12px 20px 12px 20px;
-			  border: 1px solid #ddd;
-			  margin-bottom: 12px;
-			}
-
-		</style>
+		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+		<link href="martina_style.css" rel="stylesheet">
 
 	</head>
 	<body>
-		<div id="queryBox">	
-			<div id="queryNaturalLanguage">
-				<span id="span1">Give me...</span>
+		<!--<div id="overlay">
+		</div>-->
+		<div class="container">
+		  	<div class="row">
+				<div id="queryBox" class="col s12">	
+					<div class="card">
+						<div id="queryNaturalLanguage" class="card-content">
+							<span id="span1">Give me...</span>
+							<a class="btn-floating btn btn-small waves-effect waves-light blue modal-trigger" id="sparqlQuery" href="#modalSPARQL"><i class="material-icons">share</i></a>
 
-			<!--<span>A 
-				<span>B 
-					<span>
-						<ul>
-							<li>C <span>E </span> </li>
-						</ul>
-						<span>D </span>
-					</span>
-				</span>
-			</span>-->
+							<div id="modalSPARQL" class="modal">
+							    <div class="modal-content">
+							      <h4>SPARQL query</h4>
+							      <p>A bunch of text</p>
+							    </div>
+							    <div class="modal-footer">
+							      <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Close</a>
+							    </div>
+							  </div>
 
-			<!-- 
-				onfocuschange su concept, predicate, something
-					- chi sottolineare
-					- chi mettere nel focus
-					- notifica della key che si sta eliminando
+						</div>
+						<div class="card-action blue white-text">
+							<span class="white-text"> Focus: <span id="focus">-</span> </span>
 
-
-
-
-
-			Give me every place that has a label
-
-				tutti gli span focusable tranne give me
-			
-				<div>give me 
-					<span class=> every 
-						<span id=key class=concept title=url>place</span>
-						<span> that has
-							<span id=key class=predicate title=url>label</span>
-						</span>
-					</span>
+				              <span class="right">
+				              <i class="small material-icons white-text" id="removeButton" 
+				              	title="Remove all the highlighted"
+				              	onmouseover="highlightElementsToRemove();" 
+				              	onmouseleave="removeHighlightElementsToRemove();" 
+				              	onclick="mapCreator.removeElement($('.highlighted').attr('meta-removereference'));">highlight_off</i>
+				            </span>
+						</div>
+					</div>
 				</div>
-
-
-				Give me every place that is the label of something
-
-				tutti gli span focusable tranne give me
-			
-				<div>give me 
-					<span class=> every 
-						<span id=key class=concept title=url>place</span>
-						<span> that is the
-							<span id=key class=predicate title=url>label</span>
-							of
-							<span id=key class=??? title=url (non significativa)> something</span>
-						</span>
-					</span>
-				</div>
-
-			-->
-
-			</div>
-			<div id="removeButtonDiv">
-				<input id="removeButton" type="image" src="img/remove.png" onmouseover="highlightElementsToRemove();" onmouseleave="removeHighlightElementsToRemove();" onclick="mapCreator.removeElement($('.highlighted').attr('meta-removereference'));"></input> 
+				
+				
 			</div>
 		</div>
+
+
+		<div class="row">
+
+			<div class="col s2" id="navBar">
+		      <ul id="myTabs" class="tabs black-text" style="display: table-cell;border-right: 4px solid #00e676;">
+		   
+		        <li class="tab col s12" id="conceptsTab" onclick="$('#myTabs').css('border-right-color', '#00e676')">	
+		        	<a href="#conceptsBox">Concepts
+			        	<div id="conceptsSpinner" class="preloader-wrapper mySpinner active">
+						    <div class="spinner-layer spinner-blue-only">
+						      <div class="circle-clipper left">
+						        <div class="circle"></div>
+						      </div><div class="gap-patch">
+						        <div class="circle"></div>
+						      </div><div class="circle-clipper right">
+						        <div class="circle"></div>
+						      </div>
+						    </div>
+						</div>
+					</a>
+		        </li>
+		        <li class="tab col s12" id="predicatesTab" onclick="$('#myTabs').css('border-right-color', '#7c4dff ')">
+		        	<a href="#predicatesBox">Predicates
+		        		<div id="predicatesSpinner" class="preloader-wrapper mySpinner active">
+						    <div class="spinner-layer spinner-blue-only">
+						      <div class="circle-clipper left">
+						        <div class="circle"></div>
+						      </div><div class="gap-patch">
+						        <div class="circle"></div>
+						      </div><div class="circle-clipper right">
+						        <div class="circle"></div>
+						      </div>
+						    </div>
+						</div>
+		        	</a>
+		        </li>
+		        <li class="tab col s12" id="operatorsTab" onclick="$('#myTabs').css('border-right-color', '#bdbdbd')">
+		        	<a href="#operatorsBox">Operators
+		        		<div id="operatorsSpinner" class="preloader-wrapper mySpinner active">
+						    <div class="spinner-layer spinner-blue-only">
+						      <div class="circle-clipper left">
+						        <div class="circle"></div>
+						      </div><div class="gap-patch">
+						        <div class="circle"></div>
+						      </div><div class="circle-clipper right">
+						        <div class="circle"></div>
+						      </div>
+						    </div>
+						</div>
+		        	</a>
+		        </li>
+		        <li class="tab col s12" id="queryTab" onclick="$('#myTabs').css('border-right-color', '#f44336')">
+		        	<a href="#dacambiareBox">Settings</a>
+		        </li>
+		      </ul>
+		    </div>
+		   
+		    <div class="col s10">
+		        <!-- page content  -->
+		        <div class="col s12">
+
+		        	<div id="conceptsBox" class="card">
+			            <div class="card-content ">
+			              <span class="card-title">Concepts</span>
+
+			              	  <div class="card">
+	            				<div class=" valign-wrapper ">
+				            		<span class="input-field col s11 m11 l11 mySearch">
+						              	<input type="search" id="searchConceptsBox" 
+											onkeyup="filter('searchConceptsBox', 'conceptsListBox')" 
+											title="Type in a concept">
+										<label for="searchConceptsBox">Search for a concept</label>
+									</span>
+									<span class="col s2 m2 l2 right">
+										<i class="material-icons"> search</i>
+									</span>
+								</div>
+							  </div>
+							 
+							<div id="conceptsListBox">
+								<ul id="conceptsList" class="collection"></ul>
+							</div>
+			            </div>
+			            <div class="card-action valign-wrapper">
+			              	<span class="col s1" id="hierarchySpan"></span>
+			            </div>
+			          </div>
+
+			          <div id="predicatesBox" class="card">
+			            <div class="card-content ">
+			              <span class="card-title">Predicate</span>
+
+		              	  <div class="card">
+            				<div class=" valign-wrapper ">
+			            		<span class="input-field col s11 m11 l11 mySearch">
+					              	<input type="search" id="searchPredicatesBox" 
+										onkeyup="filter('searchPredicatesBox', 'directPredicatesList');filter('searchPredicatesBox', 'reversePredicatesList');" 
+										title="Type in a predicate">
+									<label for="searchPredicatesBox">Search for a predicate</label>
+								</span>
+								<span class="col s2 m2 l2 right">
+									<i class="material-icons"> search</i>
+								</span>
+							</div>
+						  </div>
+						  	<ul class="tabs tabs-fixed-width" id="predicatesTab">
+						  		<li class="tab"><a class="active" href="#direct">Direct</a></li>
+				        		<li class="tab"><a href="#reverse">Reverse</a></li>
+						  	</ul>
+						  </div>
+			            <div id="direct">
+					      	<div id="predicatesListBox">
+					      		<ul id="directPredicatesList" class="collection"></ul>
+					      	</div> 
+					    </div>
+					      <div id="reverse">
+					      	<div id="predicatesListBox">
+					      		<ul id="reversePredicatesList" class="collection"></ul>
+					      	</div>
+					      </div>
+			            <div class="card-action valign-wrapper">
+			            </div>
+			          </div>
+
+					  <div id="operatorsBox" class="card">
+			            <div class="card-content">
+			              <span class="card-title">Operators</span>
+			              <span id="pendingQuerySpan"></span>
+			              <div id="contentOperatorBox">
+				              <ul id="operatorList" class="collection"></ul>
+				              <ul id="reusableResultList" class="collection"></ul>
+				          </div>
+			            </div>
+			            <div class="card-action valign-wrapper">
+			            </div>
+			          </div>
+
+			          <div id="dacambiareBox" class="card">
+			            <div class="card-content ">
+			              <span class="card-title">Other query</span>
+			            </div>
+			          </div>
+				</div>
+
+	      	</div>
+
+	    </div><!--end row-->
+
+	    <!--start result table-->
+		<div class="row">
+			<div id="fieldsCollectionNavBar" class="col s2">
+				<ul id="fieldsCollection" class="collection" ></ul>
+			</div>
+			<div class="col s10">
+				<div id="resultsTableBox" class="card col s12 scrollableTableContent">
+					<div class="card-content ">
+			              <span class="card-title">Results</span>
+			              <table id="resultsTable" class="striped centered">
+						</table>
+			              	  
+			        </div>				
+				</div>
+			</div>
+		</div>
+		<!--end result table-->
 		
-		<div>
-			<span id="focus"></span>
-		</div>
-		<div>
-			<div id="conceptsBox">
-				<h1>Concepts</h1>
-				<input type="text" id="searchConceptsBox" class="search"
-					onkeyup="filter('searchConceptsBox', 'conceptsBox')" 
-					placeholder="Search for a concept..." title="Type in a concept">
-				<ul id="conceptsList"></ul>
 
-			</div>
-
-			<div id="predicatesBox">
-				<h1>Predicates</h1>
-				<input type="text" id="searchPredicatesBox" class="search"
-					onkeyup="filter('searchPredicatesBox', 'predicatesBox')" 
-					placeholder="Search for a predicate..." title="Type in a predicate">
-				<ul id="predicatesList"></ul>
-
-			</div>
-			<div id="resultsBox">
-				<!--<h1>Predicati</h1>-->
-				<ul id="operatorList"></ul>
-				<!--<input type="text" id="searchResultsBox" class="search"
-					onkeyup="filter('searchResultsBox', 'resultsBox')" 
-					placeholder="Search for a result..." title="Type in a result">-->
-				<ul id="resultList"></ul>
-			</div>
-		</div>
-
-		<div id="resultsTableBox">
-			<h1>Results</h1>
-			<table id="resultsTable" border="1">
-			</table>
-		</div>
-
+		
+<!--
+			<ul class="collection">
+		        
+		        <li class="collection-item green accent-3 white-text">Concepts</li>
+		        <li class="collection-item deep-purple accent-2 white-text" >Predicates</li>
+		        <li class="collection-item grey lighten-1 white-text" >Operators</li>
+		        <li class="collection-item red white-text" >Explore</li>
+		    </ul>
+-->
 	</body>
 
 	<script>
 		
 		$(document).ready(function(){
 
+
+			$(document).ready(function(){
+			    // the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
+			    $('#overlay').hide();
+			    $('.modal').modal();
+			    $('ul.tabs').tabs({onShow: function(tab) {
+			    	if(tab[0].id == "predicatesBox"){
+			    		$('ul#predicatesTab').tabs();
+			    	}}
+			    });
+			});
+
 			initBoxViewer();
 			initQueryViewer();
-			//initOperatorViewer();
+			initOperatorViewer();
 
 			fillConcepts();
 			fillPredicates();
+
 
 		});
 

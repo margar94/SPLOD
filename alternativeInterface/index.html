@@ -1,0 +1,244 @@
+<HTML>
+	 <head>
+        <script src="jquery.js"></script>
+        
+        <script src="queryExecutor.js"></script>
+
+		<script src="operatorManager.js"></script>
+		<script src="languageManager.js"></script>	
+		<script src="queryVerbalizator.js"></script>
+		<script src="queryBuilder.js"></script>
+		<script src="mapCreator.js"></script>
+		<script src="boxFiller.js"></script>
+
+		<script src="boxViewer.js"></script>
+		<script src="queryViewer.js"></script>
+		<script src="operatorViewer.js"></script>
+		<script src="tableResultViewer.js"></script>
+
+		<script src="utilLogicLayer.js"></script>
+		<script src="utilPresentationLayer.js"></script>
+
+		<script src="Materialize/js/materialize.min.js"></script>
+
+		<link href="Materialize/fonts/roboto/Roboto-Regular.woff" rel="stylesheet">	
+		<link href="Materialize/fonts/roboto/Roboto-Regular.woff2" rel="stylesheet">		
+		<link href="Materialize/css/materialize.min.css" rel="stylesheet">
+
+		<style>
+
+			body {
+				font-family: 'Roboto', sans-serif;
+			}
+
+			div#queryBox {
+				padding: 5px;
+				margin: 5px;
+			    border: 2px solid royalblue;
+			    border-radius: 5px;
+			}
+
+			div#queryNaturalLanguage {
+				display: inline-block;
+			}
+
+			div#conceptsBox {
+				position:absolute;
+				padding: 5px;
+			    border: 2px solid limegreen;
+			    border-radius: 5px;
+			    width: 30%;
+			    height: 500px;
+			    overflow: scroll;
+			    display: inline-block;
+			}
+
+			div#predicatesBox {
+				position:absolute;
+				margin-left: 33%;
+				padding: 5px;
+			    border: 2px solid orange;
+			    border-radius: 5px;
+			    width: 30%;
+			    height: 500px;
+			    overflow: scroll;
+			    display: inline-block;
+			}
+
+			div#resultsBox {
+				position:absolute;
+				margin-left: 66%;
+				padding: 5px;
+			    border: 2px solid red;
+			    border-radius: 5px;
+			    width: 30%;
+			    height: 500px;
+			    overflow: scroll;
+			    display: inline-block;
+			}
+
+			div#resultsTableBox {
+				margin-top: 550px;
+				border: 2px solid red;
+			    border-radius: 5px;
+			    height: 500px;
+			    overflow: scroll;
+			}
+
+			span.highlighted {
+				background-color: yellow;
+			}
+
+			span.highlightRemove {
+				background-color: yellow;
+			}
+
+			span.concept {
+				color: limegreen;
+			}
+
+			span.predicate {
+				color: orange;
+			}
+
+			img.imgResult {
+				height: 10px;
+			}
+
+			#removeButton {
+				height: 20px;
+			}
+
+			#removeButtonDiv{
+				float:right;
+			}
+
+			.search {
+			  width: 100%;
+			  font-size: 16px;
+			  padding: 12px 20px 12px 20px;
+			  border: 1px solid #ddd;
+			  margin-bottom: 12px;
+			}
+
+		</style>
+
+	</head>
+	<body>
+		<div id="queryBox">	
+			<div id="queryNaturalLanguage">
+				<span id="span1">Give me...</span>
+
+			<!--<span>A 
+				<span>B 
+					<span>
+						<ul>
+							<li>C <span>E </span> </li>
+						</ul>
+						<span>D </span>
+					</span>
+				</span>
+			</span>-->
+
+			<!-- 
+				onfocuschange su concept, predicate, something
+					- chi sottolineare
+					- chi mettere nel focus
+					- notifica della key che si sta eliminando
+
+
+
+
+
+			Give me every place that has a label
+
+				tutti gli span focusable tranne give me
+			
+				<div>give me 
+					<span class=> every 
+						<span id=key class=concept title=url>place</span>
+						<span> that has
+							<span id=key class=predicate title=url>label</span>
+						</span>
+					</span>
+				</div>
+
+
+				Give me every place that is the label of something
+
+				tutti gli span focusable tranne give me
+			
+				<div>give me 
+					<span class=> every 
+						<span id=key class=concept title=url>place</span>
+						<span> that is the
+							<span id=key class=predicate title=url>label</span>
+							of
+							<span id=key class=??? title=url (non significativa)> something</span>
+						</span>
+					</span>
+				</div>
+
+			-->
+
+			</div>
+			<div id="removeButtonDiv">
+				<input id="removeButton" type="image" src="img/remove.png" onmouseover="highlightElementsToRemove();" onmouseleave="removeHighlightElementsToRemove();" onclick="mapCreator.removeElement($('.highlighted').attr('meta-removereference'));"></input> 
+			</div>
+		</div>
+		
+		<div>
+			<span id="focus"></span>
+		</div>
+		<div>
+			<div id="conceptsBox">
+				<h1>Concepts</h1>
+				<input type="text" id="searchConceptsBox" class="search"
+					onkeyup="filter('searchConceptsBox', 'conceptsBox')" 
+					placeholder="Search for a concept..." title="Type in a concept">
+				<ul id="conceptsList"></ul>
+
+			</div>
+
+			<div id="predicatesBox">
+				<h1>Predicates</h1>
+				<input type="text" id="searchPredicatesBox" class="search"
+					onkeyup="filter('searchPredicatesBox', 'predicatesBox')" 
+					placeholder="Search for a predicate..." title="Type in a predicate">
+				<ul id="predicatesList"></ul>
+
+			</div>
+			<div id="resultsBox">
+				<!--<h1>Predicati</h1>-->
+				<ul id="operatorList"></ul>
+				<!--<input type="text" id="searchResultsBox" class="search"
+					onkeyup="filter('searchResultsBox', 'resultsBox')" 
+					placeholder="Search for a result..." title="Type in a result">-->
+				<ul id="resultList"></ul>
+			</div>
+		</div>
+
+		<div id="resultsTableBox">
+			<h1>Results</h1>
+			<table id="resultsTable" border="1">
+			</table>
+		</div>
+
+	</body>
+
+	<script>
+		
+		$(document).ready(function(){
+
+			initBoxViewer();
+			initQueryViewer();
+			//initOperatorViewer();
+
+			fillConcepts();
+			fillPredicates();
+
+		});
+
+	</script>
+
+</HTML>
