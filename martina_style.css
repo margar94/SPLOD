@@ -135,9 +135,21 @@ div#querySparqlText{
 	width: 1em;
 }
 
-#myTabs li .mySpinner .circle-clipper{
-	color: #2196f3;
+#myTabs li #conceptsSpinner .spinner-layer{
+	border-color: #1b5e20;
 }
+
+#myTabs li #predicatesSpinner .spinner-layer{
+	border-color: #1a237e;
+} 
+
+#myTabs li #operatorsSpinner .spinner-layer{
+	border-color: #757575;
+} 
+
+#myTabs li #tableResultSpinner .spinner-layer{
+	border-color: #b71c1c;
+} 
 
 .tabs #conceptsTab a:hover,
 .tabs #conceptsTab a.active{
