@@ -376,12 +376,26 @@ function removeFocusable(){
 	});
 }
 
+function showUserQueryBox(){
+	if($('#openSparqlQuery').text() == 'arrow_back'){
+
+		$('#openSparqlQuery').text('arrow_forward');
+		$('#querySparqlText').show();
+		document.getElementById('querySparqlBox').className = document.getElementById('querySparqlBox').className.replace(/s1/, 's6');
+		document.getElementById('queryBox').className = document.getElementById('queryBox').className.replace(/s11/, 's6');
+		
+	}else{
+
+		$('#openSparqlQuery').text('arrow_back');
+		$('#querySparqlText').hide();
+		document.getElementById('querySparqlBox').className = document.getElementById('querySparqlBox').className.replace(/s6/, 's1');
+		document.getElementById('queryBox').className = document.getElementById('queryBox').className.replace(/s6/, 's11');
+	}
+}
+
 function renderUserQuery(){
 	var sparqlQueryArray = executor.getUserQuery();
 	var sparqlQuery = sparqlQueryArray.join('\n');
 
-	//sparqlQuery = sparqlQuery.replace(/>/g, "\>");
-
-	console.log(sparqlQuery);
-	$('#querySparql').text(sparqlQuery);
+	$('#querySparqlText').text(sparqlQuery);
 }
