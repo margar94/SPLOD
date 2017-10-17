@@ -34,6 +34,9 @@ function renderOperatorList(operators){
 					var reusableResults = operatorManager.getResultToCompleteOperator();
 					renderReusableResultListFromOperator(reusableResults);
 				}
+				else{
+					$('#tableResultSpinner').show();
+				}
 			});
 	});
 
@@ -48,7 +51,15 @@ function renderReusableResultListFromOperator(reusableResults){
 					if($('#userValue_1')[0] != undefined)
 						values.push($('#userValue_1')[0].value);
 
-					operatorManager.selectedReusableResult(values, true);
+					if(operatorManager.selectedReusableResult(values, true)){
+						$('#reusableResultList').hide();
+						$('#operatorList').show();
+						$('#pendingQuerySpan').empty();
+						$('#tableResultSpinner').show();
+					}else{
+						renderPendingQuery();
+					}
+
 				}
 
 
@@ -57,6 +68,7 @@ function renderReusableResultListFromOperator(reusableResults){
 						$('#reusableResultList').hide();
 						$('#operatorList').show();
 						$('#pendingQuerySpan').empty();
+						$('#tableResultSpinner').show();
 					}else{
 						renderPendingQuery();
 					}
@@ -73,11 +85,13 @@ function renderReusableResultListFromResult(reusableResults){
 					if($('#userValue_1')[0] != undefined)
 						values.push($('#userValue_1')[0].value);
 
+					$('#tableResultSpinner').show();
 					operatorManager.changedReusableResult(values, true);
 				}
 
 
 	var onClickLiFunction = function(){
+					$('#tableResultSpinner').show();
 					operatorManager.changedReusableResult([$(this).attr('meta-value')], false);
 				}
 

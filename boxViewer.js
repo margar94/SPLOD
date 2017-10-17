@@ -98,6 +98,7 @@ function renderConceptsList(roots, concepts){
 				.appendTo(conceptsList)		
 				.on('click', function(){
 					$('#operatorsSpinner').show();
+					$('#tableResultSpinner').show();
 					mapCreator.selectedConcept($(this).attr('meta-url'), $(this).attr('meta-label'));
 				});
 			
@@ -144,6 +145,7 @@ function iterativePreorderVisit(concept, concepts, toAppend, level){
 			.appendTo(li)
 			.on('click', function(){
 				$('#operatorsSpinner').show();
+				$('#tableResultSpinner').show();
 				mapCreator.selectedConcept($(this).attr('meta-url'), $(this).attr('meta-label'));
 			});
 		
@@ -213,6 +215,7 @@ function renderDirectPredicates(directMap){
 			.appendTo(li)
 			.on('click', function(){
 				$('#operatorsSpinner').show();
+				$('#tableResultSpinner').show();
 				mapCreator.selectedPredicate($(this).attr('meta-url'), $(this).attr('meta-label'), $(this).attr('meta-predicateDirection'));
 			});
 
@@ -255,6 +258,7 @@ function renderReversePredicates(reverseArray){
 			.appendTo(reversePredicatesList)
 			.on('click', function(){
 				$('#operatorsSpinner').show();
+				$('#tableResultSpinner').show();
 				mapCreator.selectedPredicate($(this).attr('meta-url'), $(this).attr('meta-label'), $(this).attr('meta-predicateDirection'));
 			});
 
@@ -290,4 +294,9 @@ function hierarchyOn(){
 	hierarchyOnFlag = true;
 	$("#hierarchySpan").html('<i class="small material-icons white-text right" style="margin:0" onClick="hierarchyOff();">format_list_bulleted</i>');
 	renderConcept(lastRootMap, lastMap);
+}
+
+function removeHighlightElements(keyToRemove){
+	$('#tableResultSpinner').show();
+	mapCreator.removeElement(keyToRemove);
 }

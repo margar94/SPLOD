@@ -4,6 +4,8 @@ var cachedFieldsToHide;
 function initTableResultViewer(){
 	cachedFieldsToHide = [];
 	languageManager = new LanguageManager();
+
+	$('#tableResultSpinner').hide();
 }
 
 function resetResultTable(){
@@ -149,4 +151,6 @@ function createTable(select, labelSelect, results){
 	$.each(cachedFieldsToHide, function(index){
 		$('.'+cachedFieldsToHide[index]).hide();
 	});
+
+	$('#tableResultSpinner').hide();
 }
