@@ -11,6 +11,7 @@ var language;
 
 var operatorManager;
 var tableResultManager;
+var queryViewer;
 
 var classHierarchyMap;
 var classHierarchyMapRoots;
@@ -57,6 +58,7 @@ var QueryExecutor = function (selectedEndpoint, selectedGraph) {
 
 	operatorManager = new OperatorManager();
 	tableResultManager = new TableResultManager();
+	queryViewer = new QueryViewer();
 
 	QueryExecutor.prototype._singletonInstance = this;
 	
@@ -605,6 +607,7 @@ QueryExecutor.prototype.executeUserQuery = function(querySPARQL){
 		cachedUserQuery.push("WHERE { ");
 		cachedUserQuery = cachedUserQuery.concat(querySPARQL.where);
 		cachedUserQuery.push("} ");
+		queryViewer.renderUserQuery(cachedUserQuery);
 		console.log(query);
 		
 	   	queryUrl = endpoint+"?query="+ encodeURIComponent(query) +"&format=json";
@@ -612,7 +615,6 @@ QueryExecutor.prototype.executeUserQuery = function(querySPARQL){
 	        url: queryUrl,
 	        method:'post',
 	        success: function( data, textStatus, jqXHR ) {
-	  console.log(data);
 		        	var index = $.inArray(jqXHR, activeAjaxRequest);
 		        	if(index != -1)
 		        		activeAjaxRequest.splice(index, 1);

@@ -5,7 +5,6 @@ var visitStack;
 var queryString;
 
 var mapCreator;
-var executor;
 
 var onFocus;
 
@@ -17,7 +16,6 @@ var QueryViewer= function () {
 	}
 
 	mapCreator = new MapCreator();
-	executor = new QueryExecutor();
 	languageManager = new LanguageManager();
 	queryLogicStructure = {}; 
 	visitStack = [];
@@ -392,8 +390,7 @@ function showUserQueryBox(){
 	}
 }
 
-QueryViewer.prototype.renderUserQuery = function(){
-	var sparqlQueryArray = executor.getUserQuery();
+QueryViewer.prototype.renderUserQuery = function(sparqlQueryArray){
 	var sparqlQuery = sparqlQueryArray.join('\n');
 	$('#querySparqlText').text(sparqlQuery);
 }

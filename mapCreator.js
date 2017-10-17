@@ -110,13 +110,13 @@ MapCreator.prototype.selectedConcept = function(selectedUrl, selectedLabel) {
 	
 	updateAndNotifyFocus(key);	
 
-	if(queryBuilder == null)
-		queryBuilder = new QueryBuilder;
-	queryBuilder.updateQuery(rootQueryLogicMap, queryLogicMap);
-
 	if(queryVerbalizator == null)
 		queryVerbalizator = new QueryVerbalizator;
 	queryVerbalizator.updateQuery(rootQueryLogicMap, queryLogicMap, elementOnFocus);
+	
+	if(queryBuilder == null)
+		queryBuilder = new QueryBuilder;
+	queryBuilder.updateQuery(rootQueryLogicMap, queryLogicMap);
 
 	//console.log(elementsList);
 
@@ -251,14 +251,14 @@ MapCreator.prototype.selectedPredicate = function(selectedUrl, selectedLabel, pr
 	} 
 	
 	updateAndNotifyFocus(elementOnFocus);
-	
-	if(queryBuilder == null)
-		queryBuilder = new QueryBuilder;
-	queryBuilder.updateQuery(rootQueryLogicMap, queryLogicMap);
 
 	if(queryVerbalizator == null)
 		queryVerbalizator = new QueryVerbalizator;
 	queryVerbalizator.updateQuery(rootQueryLogicMap, queryLogicMap, elementOnFocus);
+	
+	if(queryBuilder == null)
+		queryBuilder = new QueryBuilder;
+	queryBuilder.updateQuery(rootQueryLogicMap, queryLogicMap);
 
 	//console.log(queryLogicMap);
 
@@ -325,13 +325,13 @@ console.log(key);
 			operatorManager = new OperatorManager;
 		operatorManager.changedFocus(elementOnFocus, false);
 
-		if(queryBuilder == null)
-			queryBuilder = new QueryBuilder;
-		queryBuilder.updateQuery(rootQueryLogicMap, queryLogicMap);
-
 		if(queryVerbalizator == null)
 			queryVerbalizator = new QueryVerbalizator;
 		queryVerbalizator.updateQuery(rootQueryLogicMap, queryLogicMap, elementOnFocus);
+		
+		if(queryBuilder == null)
+			queryBuilder = new QueryBuilder;
+		queryBuilder.updateQuery(rootQueryLogicMap, queryLogicMap);
 
 	}else{
 	
@@ -402,13 +402,13 @@ console.log(key);
 		if(elementOnFocus == null)
 			indexMap = {};
 
-		if(queryBuilder == null)
-			queryBuilder = new QueryBuilder;
-		queryBuilder.updateQuery(rootQueryLogicMap, queryLogicMap);
-
 		if(queryVerbalizator == null)
 			queryVerbalizator = new QueryVerbalizator;
 		queryVerbalizator.updateQuery(rootQueryLogicMap, queryLogicMap, elementOnFocus);
+		
+		if(queryBuilder == null)
+			queryBuilder = new QueryBuilder;
+		queryBuilder.updateQuery(rootQueryLogicMap, queryLogicMap);
 	}
 
 //console.log(queryLogicMap);
@@ -800,13 +800,13 @@ MapCreator.prototype.selectedOperator = function(pendingQuery){
 				operatorManager = new OperatorManager;
 			operatorManager.changedFocus(elementOnFocus, false);
 
-			if(queryBuilder == null)
-				queryBuilder = new QueryBuilder;
-			queryBuilder.updateQuery(rootQueryLogicMap, queryLogicMap);
-
 			if(queryVerbalizator == null)
 				queryVerbalizator = new QueryVerbalizator;
 			queryVerbalizator.updateQuery(rootQueryLogicMap, queryLogicMap, elementOnFocus);
+			
+			if(queryBuilder == null)
+				queryBuilder = new QueryBuilder;
+			queryBuilder.updateQuery(rootQueryLogicMap, queryLogicMap);
 
 			break;
 
@@ -814,13 +814,13 @@ MapCreator.prototype.selectedOperator = function(pendingQuery){
 
 	//console.log(queryLogicMap);
 
-	if(queryBuilder == null)
-		queryBuilder = new QueryBuilder;
-	queryBuilder.updateQuery(rootQueryLogicMap, queryLogicMap);
-
 	if(queryVerbalizator == null)
 		queryVerbalizator = new QueryVerbalizator;
 	queryVerbalizator.updateQuery(rootQueryLogicMap, queryLogicMap, elementOnFocus);
+	
+	if(queryBuilder == null)
+		queryBuilder = new QueryBuilder;
+	queryBuilder.updateQuery(rootQueryLogicMap, queryLogicMap);
 
 	return resultsKey;
 		//console.log(queryLogicMap);
