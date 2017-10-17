@@ -42,7 +42,7 @@ var QueryExecutor = function (selectedEndpoint, selectedGraph) {
 	query2 = '';
 	queryUrl2 = '';
 
-	cachedUserQuery = '';
+	cachedUserQuery = [];
 
 	language = 'en';
 
@@ -588,8 +588,7 @@ QueryExecutor.prototype.executeUserQuery = function(querySPARQL){
 			querySPARQL.where[index] = querySPARQL.where[index].join(' ')
 		});*/
 		querySPARQL.where.join(' ');
-		query = " prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
-					" SELECT " + querySPARQL.select.join(' ') +
+		query = " SELECT " + querySPARQL.select.join(' ') +
 					" WHERE { " + 
 						" GRAPH " + graph + " { " +
 							querySPARQL.where.join(' ') +
@@ -601,7 +600,10 @@ QueryExecutor.prototype.executeUserQuery = function(querySPARQL){
 			query += "LIMIT 100"; 
 		} 
 
-		cachedUserQuery = query;
+		cachedUserQuery.push(" SELECT " + querySPARQL.select.join(' '));
+		cachedUserQuery.push(" WHERE { ");
+		cachedUserQuery = cachedUserQuery.concat(querySPARQL.where);
+		cachedUserQuery.push(" } ");
 		console.log(query);
 		
 	   	queryUrl = endpoint+"?query="+ encodeURIComponent(query) +"&format=json";
