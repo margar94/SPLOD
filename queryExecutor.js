@@ -21,6 +21,8 @@ var activeAjaxRequest;
 
 var resultLimit;
 
+var cachedUserQuery;
+
 var QueryExecutor = function (selectedEndpoint, selectedGraph) {
 	if(QueryExecutor.prototype._singletonInstance){
 		return QueryExecutor.prototype._singletonInstance;
@@ -39,6 +41,8 @@ var QueryExecutor = function (selectedEndpoint, selectedGraph) {
 	queryUrl = '';
 	query2 = '';
 	queryUrl2 = '';
+
+	cachedUserQuery = '';
 
 	language = 'en';
 
@@ -597,6 +601,7 @@ QueryExecutor.prototype.executeUserQuery = function(querySPARQL){
 			query += "LIMIT 100"; 
 		} 
 
+		cachedUserQuery = query;
 		console.log(query);
 		
 	   	queryUrl = endpoint+"?query="+ encodeURIComponent(query) +"&format=json";
@@ -615,6 +620,10 @@ QueryExecutor.prototype.executeUserQuery = function(querySPARQL){
 	    activeAjaxRequest.push(xhr);
 	}
 	
+}
+
+QueryExecutor.prototype.getUserQuery = function(){
+	return cachedUserQuery;
 }
 
 QueryExecutor.prototype.changeEndpoint = function (selectedEndpoint, selectedGraph) {
