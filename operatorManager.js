@@ -4,6 +4,7 @@ var parameterNumberOperator;
 
 var savedResult;
 var literalLang;
+var resultLiteralLang;
 var cachedResult;
 
 var mapCreator;
@@ -55,11 +56,11 @@ var OperatorManager = function () {
 	};					
 						
 	operatorMap = {
-		'number' : ['<', '<=', '>', '>=', '=', 'min', 'max', 'average', 'range', 'not'],
+		'number' : ['<', '<=', '>', '>=', '=', 'range'],
 
-		'string' : ['is string', 'starts with', 'ends with', 'contains', 'not'],
+		'string' : ['is string', 'starts with', 'ends with', 'contains'],
 
-		'literal' : ['is string', 'starts with', 'ends with', 'contains', 'not', 'lang'],
+		'literal' : ['is string', 'starts with', 'ends with', 'contains', 'lang'],
 
 		'date' : ['is date', 'before', 'after', 'range date'],
 		'time' : ['is date', 'before', 'after', 'range date'],
@@ -70,12 +71,11 @@ var OperatorManager = function () {
 		'gYear' : ['is date', 'before', 'after', 'range date'],
 		'gYearMonth' : ['is date', 'before', 'after', 'range date'],
 
-		'uri' : ['is url', 'not'],
-		'special uri' : ['is url'],
+		'uri' : ['is url'],
 
 		'boolean' : ['is string'],
 
-		'img' : ['not'],
+		'img' : [],
 
 		'and' : ['or', 'xor'],
 		'or' : ['and', 'xor'],
@@ -86,10 +86,6 @@ var OperatorManager = function () {
 		'>' : ['not'],
 		'>=' : ['not'],
 		'=' : ['not'],
-		//not min, max, avg...
-		'min' : ['not'],
-		'max' : ['not'],
-		'average' : ['not'],
 		'range' : ['not'],
 
 		'starts with': ['not'],
@@ -309,7 +305,10 @@ OperatorManager.prototype.selectedReusableResult = function(result, fromInput){
 		}
 	}
 
-	pendingQuery.push({value: value, datatype:type});
+	var lang = 'en';
+	if(value in resultLiteralLang)
+		lang = resultLiteralLang[value];
+	pendingQuery.push({value: value, datatype:type, lang:lang});
 
 	var isComplete = parameterNumberOperator[operator]==pendingQuery.length;
 
@@ -462,11 +461,14 @@ function saveResults(select, keySelect, results){
 			if(type == 'uri'){
 				cachedResult.url = element[field].url;
 			}
-				
+
 			var index = $.inArray('?'+field, select);
 			savedResult[keySelect[index]].push(cachedResult);
 
 			if(type == 'literal'){
+				
+				resultLiteralLang[element[field].value] = (element[field])['xml:lang']; //more equals save last
+
 				var langIndex = valInArray((element[field])['xml:lang'], literalLang[keySelect[index]]);
 				if(langIndex<0){
 					var newLang = {value:(element[field])['xml:lang'], occurrences:1};
@@ -477,6 +479,8 @@ function saveResults(select, keySelect, results){
 				}
 				
 			}
+
+
 
 		}
 
@@ -566,6 +570,66 @@ OperatorManager.prototype.changedFocus = function(newOnFocus, userChangeFocus){
 }
 
 function manageUpdateOperatorViewer(){
+
+	changedFocus = false;
+	var operatorList = [];
+
+	if(onFocus==null){
+		renderOperatorList([]);
+		return;
+	}
+
+	if(onFocus=='limit'){//focus on every or everything or number applied as resultLimit
+		renderOperatorList(operatorMap[onFocus]);
+		return;
+	}
+	
+	var node = mapCreator.getNodeByKey(onFocus);
+
+	if(node.type=='result'){
+		var operatorNode = mapCreator.getNodeByKey(node.parent);
+		var operator = operatorNode.label;
+		var operatorField = node.relatedTo;
+		
+		if(operatorField in resultDatatype){ 
+			results = cachedResult[node.key];
+		}else{
+			results = [];
+		} 
+		var type = getTypeByOperator(operatorField, operator);
+		renderReusableResultListFromResult({type:type, results:results});
+		return;
+	}
+	
+	if(node.type == 'operator' && (node.label in operatorMap)){ //onFocus is an operator 
+		renderOperatorList(operatorMap[node.label]);
+		return;
+	}
+				
+	//concept or predicate that fired operator
+	if(node.type == 'predicate' && node.direction == 'direct')
+		operatorList.push('not');
+
+	if(mapCreator.isRefinement(onFocus)){
+		operatorList.push('not');
+		onFocus = mapCreator.getTopElement(onFocus);
+	}
+	//from here onFocus could be the concept or his ancestor
+	if(onFocus in resultDatatype){
+		for(var i=0; i<resultDatatype[onFocus].datatype.length; i++){
+			operatorList = operatorList.concat(operatorMap[resultDatatype[onFocus].datatype[i]]);
+		}
+		
+		renderOperatorList(operatorList);
+		return;
+	}	
+	else{
+		console.log('PROBLEMA');
+	}
+	
+}
+
+function oldmanageUpdateOperatorViewer(){
 	
 	if(onFocus!=null){
 		if(onFocus=='limit'){//focus on every or everything or number applied as resultLimit
@@ -578,8 +642,6 @@ function manageUpdateOperatorViewer(){
 				var operatorNode = mapCreator.getNodeByKey(node.parent);
 				var operator = operatorNode.label;
 				var operatorField = node.relatedTo;
-	console.log(operatorField);
-	console.log(cachedResult);
 				
 				if(operatorField in resultDatatype){ 
 					results = cachedResult[node.key];
@@ -594,6 +656,7 @@ function manageUpdateOperatorViewer(){
 					renderOperatorList(operatorMap[onFocus.split('_')[0]]);
 				}else{ //concept or predicate that fired operator
 					if(mapCreator.isRefinement(onFocus))
+						//aggiungi not e optional ai miei operatori
 						onFocus = mapCreator.getTopElement(onFocus);
 					
 					if(onFocus in resultDatatype){
@@ -604,7 +667,7 @@ function manageUpdateOperatorViewer(){
 						}else{
 							var onFocusNode = mapCreator.getNodeByKey(onFocus);
 							if(onFocusNode.parent == null 
-								|| onFocusNode.type == 'concept'
+								//|| onFocusNode.type == 'concept'
 								|| mapCreator.getNodeByKey(onFocusNode.parent).type == 'everything')
 									renderOperatorList(operatorMap['special uri']);
 							else
@@ -678,7 +741,10 @@ OperatorManager.prototype.changedReusableResult = function(result, fromInput){
 	var cachedResultList = cachedResult[onFocus];
 	delete cachedResult[onFocus];
 
-	var newKey = mapCreator.selectedResult({value: value, datatype:type});
+	var lang = 'en';
+	if(value in resultLiteralLang)
+		lang = resultLiteralLang[value];
+	var newKey = mapCreator.selectedResult({value: value, datatype:type, lang:lang});
 	cachedResult[newKey] = cachedResultList;
 
 }
@@ -702,6 +768,7 @@ function cacheResultToChange(resultsKey){
 function inizializeMaps(){
 	resultDatatype = {};
 	savedResult = {};
+	resultLiteralLang = {};
 	literalLang = {};
 	cachedResult = {};
 	pendingQuery = [];

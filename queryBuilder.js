@@ -466,12 +466,7 @@ function visitSPARQL(key){
 					else{
 						operatorLabel = '=';
 					}
-					nodeWhere.push('FILTER(');
-					nodeWhere.push(parentVariable);
-					nodeWhere.push(operatorLabel);
-					nodeWhere.push('<'+queryLogicStructure[node.children[0]].label+'>');
-					nodeWhere.push(')');
-
+					nodeWhere.push('FILTER(' + parentVariable + operatorLabel + '<'+queryLogicStructure[node.children[0]].label+'>' + ')');
 					break;
 				
 				case 'is string': 
@@ -482,11 +477,7 @@ function visitSPARQL(key){
 					else{
 						operatorLabel = '=';
 					}
-					nodeWhere.push('FILTER(');
-					nodeWhere.push(parentVariable);
-					nodeWhere.push(operatorLabel);
-					nodeWhere.push('"'+queryLogicStructure[node.children[0]].label+'"');
-					nodeWhere.push(')');
+					nodeWhere.push('FILTER(' + parentVariable + operatorLabel + '"'+queryLogicStructure[node.children[0]].label+'"@' + queryLogicStructure[node.children[0]].lang + ')');
 					break;
 
 				case 'contains': 
@@ -495,10 +486,7 @@ function visitSPARQL(key){
 						addNot=false;
 					}
 				
-					nodeWhere.push('FILTER(');
-					nodeWhere.push(operatorLabel);
-					nodeWhere.push('(xsd:string('+parentVariable+'),"'+queryLogicStructure[node.children[0]].label+'")');
-					nodeWhere.push(')');
+					nodeWhere.push('FILTER(' + operatorLabel + '(xsd:string('+parentVariable+'),"'+queryLogicStructure[node.children[0]].label+'")' + ')');
 					break;
 
 				case 'starts with': 
@@ -509,10 +497,7 @@ function visitSPARQL(key){
 					else{
 						operatorLabel = 'strStarts';
 					}
-					nodeWhere.push('FILTER(');
-					nodeWhere.push(operatorLabel);
-					nodeWhere.push('(xsd:string('+parentVariable+'),"'+queryLogicStructure[node.children[0]].label+'")');
-					nodeWhere.push(')');
+					nodeWhere.push('FILTER(' + operatorLabel + '(xsd:string('+parentVariable+'),"'+queryLogicStructure[node.children[0]].label+'")' + ')');
 					break;
 
 				case 'ends with': 
@@ -523,10 +508,7 @@ function visitSPARQL(key){
 					else{
 						operatorLabel = 'strEnds';
 					}
-					nodeWhere.push('FILTER(');
-					nodeWhere.push(operatorLabel);
-					nodeWhere.push('(xsd:string('+parentVariable+'),"'+queryLogicStructure[node.children[0]].label+'")');
-					nodeWhere.push(')');
+					nodeWhere.push('FILTER(' + operatorLabel + '(xsd:string('+parentVariable+'),"'+queryLogicStructure[node.children[0]].label+'")' + ')');
 					break;
 
 				case 'lang': 
@@ -535,106 +517,97 @@ function visitSPARQL(key){
 						addNot=false;
 					}
 					
-					nodeWhere.push('FILTER(');
-					nodeWhere.push(operatorLabel);
-					nodeWhere.push('('+parentVariable+')="'+queryLogicStructure[node.children[0]].label+'"');
-					nodeWhere.push(')');
+					nodeWhere.push('FILTER(' + operatorLabel + '('+parentVariable+')="'+queryLogicStructure[node.children[0]].label+'"' + ')');
 					break;
 				
 				case '<': 
-					if(queryLogicStructure[node.parent].type == 'operator' && queryLogicStructure[node.parent].label == 'not')
-						operatorLabel = ">=";
-					nodeWhere.push('FILTER(');
-					nodeWhere.push(parentVariable+' '+operatorLabel+' '+queryLogicStructure[node.children[0]].label);
-					nodeWhere.push(')');
+					if(addNot){
+						operatorLabel = '>=';
+						addNot=false;
+					}
+					nodeWhere.push('FILTER(' + parentVariable+' '+operatorLabel+' '+queryLogicStructure[node.children[0]].label + ')');
 					break;
 
 				case '<=':
-					if(queryLogicStructure[node.parent].type == 'operator' && queryLogicStructure[node.parent].label == 'not')
-						operatorLabel = ">";
-					nodeWhere.push('FILTER(');
-					nodeWhere.push(parentVariable+' '+operatorLabel+' '+queryLogicStructure[node.children[0]].label);
-					nodeWhere.push(')');
+					if(addNot){
+						operatorLabel = '>';
+						addNot=false;
+					}
+					nodeWhere.push('FILTER(' + parentVariable+' '+operatorLabel+' '+queryLogicStructure[node.children[0]].label + ')');
 					break;
 
 				case '>':
-					if(queryLogicStructure[node.parent].type == 'operator' && queryLogicStructure[node.parent].label == 'not')
-						operatorLabel = "<=";
-					nodeWhere.push('FILTER(');
-					nodeWhere.push(parentVariable+' '+operatorLabel+' '+queryLogicStructure[node.children[0]].label);
-					nodeWhere.push(')');
+					if(addNot){
+						operatorLabel = '<=';
+						addNot=false;
+					}
+					nodeWhere.push('FILTER(' + parentVariable+' '+operatorLabel+' '+queryLogicStructure[node.children[0]].label + ')');
 					break;
 
 				case '>=':
-					if(queryLogicStructure[node.parent].type == 'operator' && queryLogicStructure[node.parent].label == 'not')
-						operatorLabel = "<";
-					nodeWhere.push('FILTER(');
-					nodeWhere.push(parentVariable+' '+operatorLabel+' '+queryLogicStructure[node.children[0]].label);
-					nodeWhere.push(')');
+					if(addNot){
+						operatorLabel = '<';
+						addNot=false;
+					}
+					nodeWhere.push('FILTER(' + parentVariable+' '+operatorLabel+' '+queryLogicStructure[node.children[0]].label + ')');
 					break;
 
 				case '=':
-					if(queryLogicStructure[node.parent].type == 'operator' && queryLogicStructure[node.parent].label == 'not')
-						operatorLabel = "!=";
-					nodeWhere.push('FILTER(');
-					nodeWhere.push(parentVariable+' '+operatorLabel+' '+queryLogicStructure[node.children[0]].label);
-					nodeWhere.push(')');
+					if(addNot){
+						operatorLabel = '!=';
+						addNot=false;
+					}
+					nodeWhere.push('FILTER(' + parentVariable+' '+operatorLabel+' '+queryLogicStructure[node.children[0]].label + ')');
 					break;
 
 				case 'is date':
-					operatorLabel = '='; 
-					if(queryLogicStructure[node.parent].type == 'operator' && queryLogicStructure[node.parent].label == 'not')
-						operatorLabel = "!=";
-
+					if(addNot){
+						operatorLabel = '!=';
+						addNot=false;
+					}else{
+						operatorLabel = '=';
+					}
 					var conversionFunction = 'xsd:'+queryLogicStructure[node.children[0]].datatype;
-					nodeWhere.push('FILTER(');
-					nodeWhere.push(parentVariable+ ' '+operatorLabel +' '+conversionFunction+'("'+queryLogicStructure[node.children[0]].label+'")');
-					nodeWhere.push(')');
+					nodeWhere.push('FILTER(' + parentVariable+ ' '+operatorLabel +' '+conversionFunction+'("'+queryLogicStructure[node.children[0]].label+'")' + ')');
 					break;
 
 				case 'range':
 					//se padre not riscriviamo query else
-					if(queryLogicStructure[node.parent].type == 'operator' && queryLogicStructure[node.parent].label == 'not'){
-						nodeWhere.push('FILTER(');
-						nodeWhere.push(parentVariable+' < '+queryLogicStructure[node.children[0]].label+' || '+parentVariable+' > '+queryLogicStructure[node.children[1]].label);
-						nodeWhere.push(')');
+					if(addNot){
+						nodeWhere.push('FILTER('+ parentVariable+' < '+queryLogicStructure[node.children[0]].label+' || '+parentVariable+' > '+queryLogicStructure[node.children[1]].label +')');
+						addNot = false;
 					}else{
-						nodeWhere.push('FILTER(');
-						nodeWhere.push(parentVariable+' >= '+queryLogicStructure[node.children[0]].label+' && '+parentVariable+' <= '+queryLogicStructure[node.children[1]].label);
-						nodeWhere.push(')');
+						nodeWhere.push('FILTER(' + parentVariable+' >= '+queryLogicStructure[node.children[0]].label+' && '+parentVariable+' <= '+queryLogicStructure[node.children[1]].label + ')');
 					}	
 					break;
 				case 'before':
-					operatorLabel = '<';
-					if(queryLogicStructure[node.parent].type == 'operator' && queryLogicStructure[node.parent].label == 'not')
+					if(addNot){
 						operatorLabel = '>=';
-
+						addNot=false;
+					}else{
+						operatorLabel = '<';
+					}
 					var conversionFunction = 'xsd:'+queryLogicStructure[node.children[0]].datatype;
-					nodeWhere.push('FILTER(');
-					nodeWhere.push(parentVariable+' '+operatorLabel +' '+conversionFunction+'("'+queryLogicStructure[node.children[0]].label+'")');
-					nodeWhere.push(')');
+					nodeWhere.push('FILTER(' + parentVariable+ ' '+operatorLabel +' '+conversionFunction+'("'+queryLogicStructure[node.children[0]].label+'")' + ')');
 					break;
 
 				case 'after':
-					operatorLabel = '>';
-					if(queryLogicStructure[node.parent].type == 'operator' && queryLogicStructure[node.parent].label == 'not')
+					if(addNot){
 						operatorLabel = '<=';
-
+						addNot=false;
+					}else{
+						operatorLabel = '>';
+					}
 					var conversionFunction = 'xsd:'+queryLogicStructure[node.children[0]].datatype;
-					nodeWhere.push('FILTER(');
-					nodeWhere.push(parentVariable+' '+operatorLabel +' '+conversionFunction+'("'+queryLogicStructure[node.children[0]].label+'")');
-					nodeWhere.push(')');
+					nodeWhere.push('FILTER(' + parentVariable+ ' '+operatorLabel +' '+conversionFunction+'("'+queryLogicStructure[node.children[0]].label+'")' + ')');
 					break;
 				case 'range date':
 					var conversionFunction = 'xsd:'+queryLogicStructure[node.children[0]].datatype;
-					if(queryLogicStructure[node.parent].type == 'operator' && queryLogicStructure[node.parent].label == 'not'){
-						nodeWhere.push('FILTER(');
-						nodeWhere.push(parentVariable+' < '+conversionFunction+'("'+queryLogicStructure[node.children[0]].label+'") || '+parentVariable+' > '+conversionFunction+'("'+queryLogicStructure[node.children[1]].label+'")');
-						nodeWhere.push(')');
+					if(addNot){
+						nodeWhere.push('FILTER(' + parentVariable+' < '+conversionFunction+'("'+queryLogicStructure[node.children[0]].label+'") || '+parentVariable+' > '+conversionFunction+'("'+queryLogicStructure[node.children[1]].label+'")' + ')');
+						addNot = false;
 					}else{
-						nodeWhere.push('FILTER(');
-						nodeWhere.push(parentVariable+' >= '+conversionFunction+'("'+queryLogicStructure[node.children[0]].label+'") && '+parentVariable+' <= '+conversionFunction+'("'+queryLogicStructure[node.children[1]].label+'")');
-						nodeWhere.push(')');
+						nodeWhere.push('FILTER(' + parentVariable+' >= '+conversionFunction+'("'+queryLogicStructure[node.children[0]].label+'") && '+parentVariable+' <= '+conversionFunction+'("'+queryLogicStructure[node.children[1]].label+'")' + ')');
 					}	
 					break;
 

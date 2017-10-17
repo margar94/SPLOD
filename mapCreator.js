@@ -285,7 +285,7 @@ MapCreator.prototype.isRefinement = function(key){
 
 	var parent = queryLogicMap[node.parent];
 
-	if(node.type == 'concept' && (parent.type == 'concept' || (parent.type == 'predicate' && parent.direction == 'direct'))){
+	if(node.type == 'concept' && (parent.type == 'concept' || parent.type == 'everything' || (parent.type == 'predicate' && parent.direction == 'direct'))){
 		return true;
 	}
 
@@ -700,6 +700,7 @@ MapCreator.prototype.selectedOperator = function(pendingQuery){
 			for(var i=1; i<pendingQuery.length; i++){
 				var resultValue = pendingQuery[i].value;
 				var resultDatatype = pendingQuery[i].datatype;
+				var resultLang = pendingQuery[i].lang;
 				var verbalizationChildren = languageManager.verbalizeResult(resultValue);
 
 				if(!(resultValue in indexMap)){
@@ -717,6 +718,7 @@ MapCreator.prototype.selectedOperator = function(pendingQuery){
 							   type:'result', direction: false,
 							   verbalization: verbalizationChildren, 
 							   parent:key, children: [], datatype: resultDatatype,
+							   lang: resultLang,
 							   relatedTo: elementOnFocus};
 				queryLogicMap[keyChildren] = newLogicChildren;
 
@@ -845,6 +847,7 @@ MapCreator.prototype.selectedResult = function(result){
 	queryLogicMap[elementOnFocus].label = result.value;
 	queryLogicMap[elementOnFocus].verbalization = verbalization;
 	queryLogicMap[elementOnFocus].datatype = result.datatype;
+	queryLogicMap[elementOnFocus].lang = result.lang;
 
 	queryLogicMap[key] = queryLogicMap[elementOnFocus];
 

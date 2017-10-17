@@ -10,6 +10,7 @@ function initTableResultViewer(){
 
 function resetResultTable(){
 	$('#resultsTable').empty();
+	$('#tableResultSpinner').hide();
 }
 
 function resetFieldsList(){
