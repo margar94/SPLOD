@@ -34,34 +34,37 @@
 		</div>-->
 		<!--<div class="container">-->
 		  	<div class="row">
-				<div id="queryBox" class="col s6">	
-					<div class="card">
-						<div id="queryNaturalLanguage" class="card-content">
-							<span id="span1">Give me...</span>
-						</div>
-						<a class="btn-floating btn btn-small waves-effect waves-light blue" id="sparqlQuery" ><i class="material-icons" onclick="renderUserQuery();">share</i></a>
-						<div class="card-action blue white-text">
-							<span class="white-text"> Focus: <span id="focus">-</span> </span>
+    <div id="queryBox" class="col s11"> 
+     <div class="card">
+      <div id="queryNaturalLanguage" class="card-content">
+       <span id="span1">Give me...</span>
+      </div>
+      <div class="card-action blue white-text">
+       <span class="white-text"> Focus: <span id="focus">-</span> </span>
 
-				              <span class="right">
-				              <i class="small material-icons white-text" id="removeButton" 
-				              	title="Remove all the highlighted"
-				              	onmouseover="highlightElementsToRemove();" 
-				              	onmouseleave="removeHighlightElementsToRemove();" 
-				              	onclick="mapCreator.removeElement($('.highlighted').attr('meta-removereference'));">highlight_off</i>
-				            </span>
-						</div>
-					</div>
-				</div>
-				<div id="querySparqlBox" class="col s6">	
-					<div class="card">
-						<div id="querySparql" class="card-content"></div>
-						<div class="card-action blue white-text">
-						</div>
-					</div>
-					</div> 
-				</div>
-			</div>
+                  <span class="right">
+                  <i class="small material-icons white-text" id="removeButton" 
+                   title="Remove all the highlighted"
+                   onmouseover="highlightElementsToRemove();" 
+                   onmouseleave="removeHighlightElementsToRemove();" 
+                   onclick="mapCreator.removeElement($('.highlighted').attr('meta-removereference'));">highlight_off</i>
+                </span>
+      </div>
+     </div>
+    </div>
+    <div id="querySparqlBox" class="col s1"> 
+     <div class="card">
+      <div id="querySparql" class="card-content">
+       <div id="querySparqlText"></div>
+      </div>
+      <div class="card-action blue white-text">
+                  <i class="small material-icons white-text" id="openSparqlQuery"
+                   onclick="showUserQueryBox();renderUserQuery();">arrow_back</i>
+      </div>
+     </div>
+     </div> 
+    </div>
+   </div>
 		<!--</div>-->
 
 
@@ -115,8 +118,23 @@
 						</div>
 		        	</a>
 		        </li>
-		        <li class="tab col s12" id="queryTab" onclick="$('#myTabs').css('border-right-color', '#f44336')">
-		        	<a href="#dacambiareBox">Settings</a>
+		        <li class="tab col s12" id="tableResultTab" onclick="$('#myTabs').css('border-right-color', '#f44336')">
+		        	<a href="#tableResultBox">Table Result
+		        		<div id="tableResultSpinner" class="preloader-wrapper mySpinner active">
+						    <div class="spinner-layer spinner-blue-only">
+						      <div class="circle-clipper left">
+						        <div class="circle"></div>
+						      </div><div class="gap-patch">
+						        <div class="circle"></div>
+						      </div><div class="circle-clipper right">
+						        <div class="circle"></div>
+						      </div>
+						    </div>
+						</div>
+		        	</a>
+		        </li>
+		        <li class="tab col s12" id="settingsTab" onclick="$('#myTabs').css('border-right-color', '#2196f3')">
+		        	<a href="#settingsBox"><i class="tiny material-icons" id="settings">settings</i> Settings</a>
 		        </li>
 		      </ul>
 		    </div>
@@ -201,9 +219,28 @@
 			            </div>
 			          </div>
 
-			          <div id="dacambiareBox" class="card">
+			          <div id="tableResultBox" class="card">
 			            <div class="card-content ">
-			              <span class="card-title">Other query</span>
+			              	<div class="row">
+								<div id="fieldsCollectionNavBar" class="col s2">
+									<ul id="fieldsCollection" class="collection" ></ul>
+								</div>
+								<div class="col s10">
+									<div id="resultsTableBox" class="card col s12 scrollableTableContent">
+										<div class="card-content ">
+								              <span class="card-title">Results</span>
+								              <table id="resultsTable" class="striped centered"></table>
+								        </div>				
+									</div>
+								</div>
+							</div>
+						</div>
+				   	   	<div class="card-action valign-wrapper"></div>
+			          </div>
+
+			          <div id="settingsBox" class="card">
+			            <div class="card-content ">
+			              <span class="card-title">Settings</span>
 			            </div>
 			          </div>
 				</div>
@@ -213,7 +250,7 @@
 	    </div><!--end row-->
 
 	    <!--start result table-->
-		<div class="row">
+		<!--<div class="row">
 			<div id="fieldsCollectionNavBar" class="col s2">
 				<ul id="fieldsCollection" class="collection" ></ul>
 			</div>
@@ -227,7 +264,7 @@
 			        </div>				
 				</div>
 			</div>
-		</div>
+		</div>-->
 		<!--end result table-->
 		
 
@@ -247,18 +284,12 @@
 		
 		$(document).ready(function(){
 
-
-			$(document).ready(function(){
-			    // the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
-			    $('#overlay').hide();
-			    $('.modal').modal();
-			    $('ul.tabs').tabs({onShow: function(tab) {
-			    	if(tab[0].id == "predicatesBox"){
-			    		$('ul#predicatesTab').tabs();
-			    	}}
-			    });
-			});
-
+		    $('ul.tabs').tabs({onShow: function(tab) {
+		    	if(tab[0].id == "predicatesBox"){
+		    		$('ul#predicatesTab').tabs();
+		    	}}
+		    });
+			
 			initBoxViewer();
 			initQueryViewer();
 			initOperatorViewer();

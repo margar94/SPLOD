@@ -103,11 +103,12 @@ span.barred {
 /*SPARQL query*/
 
 div#querySparqlBox{
-	margin-top: 30px;
+ margin-top: 30px;
 }
 
-div#querySparql{
-	white-space: pre;
+div#querySparqlText{
+ white-space: pre;
+ display:none;
 }
 
 
@@ -161,14 +162,30 @@ div#querySparql{
 	color:#bdbdbd;
 }
 
-.tabs #queryTab a:hover,
-.tabs #queryTab a.active{
+.tabs #tableResultTab a:hover,
+.tabs #tableResultTab a.active{
 	background-color: #f44336;
 	color: white;
 }
 
-.tabs #queryTab a{
+.tabs #tableResultTab a{
 	color:#f44336;
+}
+
+.tabs #settingsTab a:hover,
+.tabs #settingsTab a.active{
+	background-color: #2196f3;
+	color: white;
+}
+
+.tabs #settingsTab a,
+.tabs #settingsTab a i{
+	color:#2196f3;
+}
+
+.tabs #settingsTab a:hover i,
+.tabs #settingsTab a.active i{
+	color: white;
 }
 
 #navBar, #fieldsCollectionNavBar{
@@ -187,8 +204,6 @@ div#querySparql{
 ul#fieldsCollection {
 	margin-top:0;
 }
-
-
 
 /*Concepts box*/
 

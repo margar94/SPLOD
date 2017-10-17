@@ -612,6 +612,7 @@ QueryExecutor.prototype.executeUserQuery = function(querySPARQL){
 	        url: queryUrl,
 	        method:'post',
 	        success: function( data, textStatus, jqXHR ) {
+	  console.log(data);
 		        	var index = $.inArray(jqXHR, activeAjaxRequest);
 		        	if(index != -1)
 		        		activeAjaxRequest.splice(index, 1);
