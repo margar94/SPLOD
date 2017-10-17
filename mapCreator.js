@@ -110,13 +110,13 @@ MapCreator.prototype.selectedConcept = function(selectedUrl, selectedLabel) {
 	
 	updateAndNotifyFocus(key);	
 
-	if(queryVerbalizator == null)
-		queryVerbalizator = new QueryVerbalizator;
-	queryVerbalizator.updateQuery(rootQueryLogicMap, queryLogicMap, elementOnFocus);
-
 	if(queryBuilder == null)
 		queryBuilder = new QueryBuilder;
 	queryBuilder.updateQuery(rootQueryLogicMap, queryLogicMap);
+
+	if(queryVerbalizator == null)
+		queryVerbalizator = new QueryVerbalizator;
+	queryVerbalizator.updateQuery(rootQueryLogicMap, queryLogicMap, elementOnFocus);
 
 	//console.log(elementsList);
 
@@ -252,13 +252,13 @@ MapCreator.prototype.selectedPredicate = function(selectedUrl, selectedLabel, pr
 	
 	updateAndNotifyFocus(elementOnFocus);
 	
-	if(queryVerbalizator == null)
-		queryVerbalizator = new QueryVerbalizator;
-	queryVerbalizator.updateQuery(rootQueryLogicMap, queryLogicMap, elementOnFocus);
-
 	if(queryBuilder == null)
 		queryBuilder = new QueryBuilder;
 	queryBuilder.updateQuery(rootQueryLogicMap, queryLogicMap);
+
+	if(queryVerbalizator == null)
+		queryVerbalizator = new QueryVerbalizator;
+	queryVerbalizator.updateQuery(rootQueryLogicMap, queryLogicMap, elementOnFocus);
 
 	//console.log(queryLogicMap);
 
@@ -325,13 +325,14 @@ console.log(key);
 			operatorManager = new OperatorManager;
 		operatorManager.changedFocus(elementOnFocus, false);
 
+		if(queryBuilder == null)
+			queryBuilder = new QueryBuilder;
+		queryBuilder.updateQuery(rootQueryLogicMap, queryLogicMap);
+
 		if(queryVerbalizator == null)
 			queryVerbalizator = new QueryVerbalizator;
 		queryVerbalizator.updateQuery(rootQueryLogicMap, queryLogicMap, elementOnFocus);
 
-		if(queryBuilder == null)
-			queryBuilder = new QueryBuilder;
-		queryBuilder.updateQuery(rootQueryLogicMap, queryLogicMap);
 	}else{
 	
 		var node = queryLogicMap[key];
@@ -401,13 +402,13 @@ console.log(key);
 		if(elementOnFocus == null)
 			indexMap = {};
 
-		if(queryVerbalizator == null)
-			queryVerbalizator = new QueryVerbalizator;
-		queryVerbalizator.updateQuery(rootQueryLogicMap, queryLogicMap, elementOnFocus);
-
 		if(queryBuilder == null)
 			queryBuilder = new QueryBuilder;
 		queryBuilder.updateQuery(rootQueryLogicMap, queryLogicMap);
+
+		if(queryVerbalizator == null)
+			queryVerbalizator = new QueryVerbalizator;
+		queryVerbalizator.updateQuery(rootQueryLogicMap, queryLogicMap, elementOnFocus);
 	}
 
 //console.log(queryLogicMap);
@@ -799,26 +800,27 @@ MapCreator.prototype.selectedOperator = function(pendingQuery){
 				operatorManager = new OperatorManager;
 			operatorManager.changedFocus(elementOnFocus, false);
 
+			if(queryBuilder == null)
+				queryBuilder = new QueryBuilder;
+			queryBuilder.updateQuery(rootQueryLogicMap, queryLogicMap);
+
 			if(queryVerbalizator == null)
 				queryVerbalizator = new QueryVerbalizator;
 			queryVerbalizator.updateQuery(rootQueryLogicMap, queryLogicMap, elementOnFocus);
 
-			if(queryBuilder == null)
-				queryBuilder = new QueryBuilder;
-			queryBuilder.updateQuery(rootQueryLogicMap, queryLogicMap);
 			break;
 
 	}
 
 	//console.log(queryLogicMap);
 
-	if(queryVerbalizator == null)
-		queryVerbalizator = new QueryVerbalizator;
-	queryVerbalizator.updateQuery(rootQueryLogicMap, queryLogicMap, elementOnFocus);
-
 	if(queryBuilder == null)
 		queryBuilder = new QueryBuilder;
 	queryBuilder.updateQuery(rootQueryLogicMap, queryLogicMap);
+
+	if(queryVerbalizator == null)
+		queryVerbalizator = new QueryVerbalizator;
+	queryVerbalizator.updateQuery(rootQueryLogicMap, queryLogicMap, elementOnFocus);
 
 	return resultsKey;
 		//console.log(queryLogicMap);
@@ -854,13 +856,13 @@ MapCreator.prototype.selectedResult = function(result){
 
 	updateAndNotifyFocus(key);
 
-	if(queryVerbalizator == null)
-		queryVerbalizator = new QueryVerbalizator;
-	queryVerbalizator.updateQuery(rootQueryLogicMap, queryLogicMap, elementOnFocus);
-
 	if(queryBuilder == null)
 		queryBuilder = new QueryBuilder;
 	queryBuilder.updateQuery(rootQueryLogicMap, queryLogicMap);
+
+	if(queryVerbalizator == null)
+		queryVerbalizator = new QueryVerbalizator;
+	queryVerbalizator.updateQuery(rootQueryLogicMap, queryLogicMap, elementOnFocus);
 
 	return key;
 	

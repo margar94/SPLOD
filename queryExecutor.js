@@ -601,10 +601,10 @@ QueryExecutor.prototype.executeUserQuery = function(querySPARQL){
 		} 
 
 		cachedUserQuery = [];
-		cachedUserQuery.push(" SELECT " + querySPARQL.select.join(' '));
-		cachedUserQuery.push(" WHERE { ");
+		cachedUserQuery.push("SELECT " + querySPARQL.select.join(' '));
+		cachedUserQuery.push("WHERE { ");
 		cachedUserQuery = cachedUserQuery.concat(querySPARQL.where);
-		cachedUserQuery.push(" } ");
+		cachedUserQuery.push("} ");
 		console.log(query);
 		
 	   	queryUrl = endpoint+"?query="+ encodeURIComponent(query) +"&format=json";

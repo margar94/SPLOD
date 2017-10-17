@@ -150,7 +150,7 @@ function visitSPARQL(key){
 			}
 
 			//where management
-			nodeWhere = nodeWhere.concat([node.variable, ' a', ' <'+node.url+'>.']);
+			nodeWhere = nodeWhere.concat([node.variable+' a'+' <'+node.url+'>.']);
 
 			for(var i=0; i<node.children.length; i++){ 
 				childQuery = visitSPARQL(node.children[i]);
@@ -227,7 +227,7 @@ function visitSPARQL(key){
 
 				if(addNot)
 					nodeWhere = nodeWhere.concat('FILTER(!EXISTS{');	
-				nodeWhere = nodeWhere.concat([parentVariable, ' <'+node.url+'> ', node.variable+'.']);
+				nodeWhere = nodeWhere.concat([parentVariable+ ' <'+node.url+'> '+ node.variable+'.']);
 
 				if(!addNot){
 					for(var i=0; i<node.children.length; i++){ 
@@ -311,7 +311,7 @@ function visitSPARQL(key){
 				
 				node.variable = queryLogicStructure[node.children[0]].variable;
 
-				nodeWhere = nodeWhere.concat([node.variable, ' <'+node.url+'> ', parentVariable+'.']);
+				nodeWhere = nodeWhere.concat([node.variable+ ' <'+node.url+'> '+ parentVariable+'.']);
 
 				for(var i=0; i<node.children.length; i++){ 
 					childQuery = visitSPARQL(node.children[i]); 
