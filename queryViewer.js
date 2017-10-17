@@ -31,7 +31,6 @@ QueryViewer.prototype.updateQuery = function(queryRoot, queryMap, focus){
 	queryLogicStructure = queryMap;
 	onFocus = focus;
 	queryString = languageManager.getQueryStartVerbalization();
-	renderUserQuery();
 	renderQuery();
 }
 
@@ -393,9 +392,8 @@ function showUserQueryBox(){
 	}
 }
 
-function renderUserQuery(){
+QueryViewer.prototype.renderUserQuery = function(){
 	var sparqlQueryArray = executor.getUserQuery();
 	var sparqlQuery = sparqlQueryArray.join('\n');
-
 	$('#querySparqlText').text(sparqlQuery);
 }
