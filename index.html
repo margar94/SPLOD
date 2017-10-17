@@ -30,49 +30,51 @@
 
 	</head>
 	<body>
-		<!--<div id="overlay">
-		</div>-->
+	 <div id="controlet">	
 		<!--<div class="container">-->
-		  	<div class="row">
-    <div id="queryBox" class="col s11"> 
-     <div class="card">
-      <div id="queryNaturalLanguage" class="card-content">
-       <span id="span1">Give me...</span>
-      </div>
-      <div class="card-action blue white-text">
-       <span class="white-text"> Focus: <span id="focus">-</span> </span>
-
+		<div class="row">
+			<!--end query natural language box--> 
+		    <div id="queryBox" class="col s11"> 
+		     <div class="card">
+		      <div id="queryNaturalLanguage" class="card-content">
+		       <span id="span1">Give me...</span>
+		      </div>
+		      <div class="card-action blue white-text">
+		       <span class="white-text"> Focus: <span id="focus">-</span> </span>
                   <span class="right">
                   <i class="small material-icons white-text" id="removeButton" 
                    title="Remove all the highlighted"
                    onmouseover="highlightElementsToRemove();" 
                    onmouseleave="removeHighlightElementsToRemove();" 
-                   onclick="mapCreator.removeElement($('.highlighted').attr('meta-removereference'));">highlight_off</i>
+                   onclick="removeHighlightElements($('.highlighted').attr('meta-removereference'))">highlight_off</i>
                 </span>
-      </div>
-     </div>
-    </div>
-    <div id="querySparqlBox" class="col s1"> 
-     <div class="card">
-      <div id="querySparql" class="card-content">
-       <div id="querySparqlText"></div>
-      </div>
-      <div class="card-action blue white-text">
-                  <i class="small material-icons white-text" id="openSparqlQuery"
-                   onclick="showUserQueryBox();">arrow_back</i>
-      </div>
-     </div>
-     </div> 
-    </div>
-   </div>
-		<!--</div>-->
+		      </div>
+		     </div>
+		    </div>
+		    <!--end query natural language box--> 
 
+		    <!--start query sparql box--> 
+		    <div id="querySparqlBox" class="col s1"> 
+		     	<div class="card">
+			      	<div id="querySparql" class="card-content">
+			       		<div id="querySparqlText"></div>
+			      	</div>
+			      	<div class="card-action blue white-text"><i class="small material-icons white-text" id="openSparqlQuery" onclick="showUserQueryBox();">arrow_back</i>
+			      	</div>
+		     	</div>
+		    </div>
+		     <!--end query sparql box--> 
 
+	    </div>
+	    <!--end first row-->
+
+	    <!--start second row-->
 		<div class="row">
 
+			<!--start navBar-->
 			<div class="col s2" id="navBar">
-		      <ul id="myTabs" class="tabs black-text" style="display: table-cell;border-right: 4px solid #00e676;">
-		   
+		      <ul id="myTabs" class="tabs black-text">
+		   		<!--start concepts-->
 		        <li class="tab col s12" id="conceptsTab" onclick="$('#myTabs').css('border-right-color', '#00e676')">	
 		        	<a href="#conceptsBox">Concepts
 			        	<div id="conceptsSpinner" class="preloader-wrapper mySpinner active">
@@ -88,6 +90,8 @@
 						</div>
 					</a>
 		        </li>
+		        <!--end concepts-->
+		        <!--start predicates-->
 		        <li class="tab col s12" id="predicatesTab" onclick="$('#myTabs').css('border-right-color', '#7c4dff ')">
 		        	<a href="#predicatesBox">Predicates
 		        		<div id="predicatesSpinner" class="preloader-wrapper mySpinner active">
@@ -103,6 +107,8 @@
 						</div>
 		        	</a>
 		        </li>
+		        <!--end predicates-->
+		        <!--start operators-->
 		        <li class="tab col s12" id="operatorsTab" onclick="$('#myTabs').css('border-right-color', '#bdbdbd')">
 		        	<a href="#operatorsBox">Operators
 		        		<div id="operatorsSpinner" class="preloader-wrapper mySpinner active">
@@ -118,6 +124,8 @@
 						</div>
 		        	</a>
 		        </li>
+		        <!--end operators-->
+		        <!--start result table-->
 		        <li class="tab col s12" id="tableResultTab" onclick="$('#myTabs').css('border-right-color', '#f44336')">
 		        	<a href="#tableResultBox">Table Result
 		        		<div id="tableResultSpinner" class="preloader-wrapper mySpinner active">
@@ -133,21 +141,29 @@
 						</div>
 		        	</a>
 		        </li>
+		        <!--end result table-->
+
+		        <!--preview-->
+
+		        <!--start settings-->
 		        <li class="tab col s12" id="settingsTab" onclick="$('#myTabs').css('border-right-color', '#2196f3')">
 		        	<a href="#settingsBox"><i class="tiny material-icons" id="settings">settings</i> Settings</a>
 		        </li>
+		        <!--end settings-->
 		      </ul>
 		    </div>
+			<!--end navBar-->
 		   
+		   <!--start right content-->
 		    <div class="col s10">
-		        <!-- page content  -->
 		        <div class="col s12">
 
+		        	<!--start concepts content-->
 		        	<div id="conceptsBox" class="card">
 			            <div class="card-content ">
-			              <span class="card-title">Concepts</span>
-
-			              	  <div class="card">
+			              	<span class="card-title">Concepts</span>
+		              		<!--search-->
+		              	  	<div class="card">
 	            				<div class=" valign-wrapper ">
 				            		<span class="input-field col s11 m11 l11 mySearch">
 						              	<input type="search" id="searchConceptsBox" 
@@ -159,54 +175,66 @@
 										<i class="material-icons"> search</i>
 									</span>
 								</div>
-							  </div>
-							 
+						  	</div>
+						  	<!--end search-->
+						 
+						 	<!--Concepts list-->
 							<div id="conceptsListBox">
 								<ul id="conceptsList" class="collection"></ul>
 							</div>
+							<!--end concepts list-->
 			            </div>
 			            <div class="card-action valign-wrapper">
 			              	<span class="col s1" id="hierarchySpan"></span>
 			            </div>
-			          </div>
+			        </div>
+			        <!--end concepts content-->
 
-			          <div id="predicatesBox" class="card">
+			        <!--start predicates content-->
+			        <div id="predicatesBox" class="card">
 			            <div class="card-content ">
-			              <span class="card-title">Predicate</span>
+			              	<span class="card-title">Predicate</span>
+			              	<!--search-->
+		              	  	<div class="card">
+	            				<div class=" valign-wrapper ">
+				            		<span class="input-field col s11 m11 l11 mySearch">
+						              	<input type="search" id="searchPredicatesBox" 
+											onkeyup="filter('searchPredicatesBox', 'directPredicatesList');filter('searchPredicatesBox', 'reversePredicatesList');" 
+											title="Type in a predicate">
+										<label for="searchPredicatesBox">Search for a predicate</label>
+									</span>
+									<span class="col s2 m2 l2 right">
+										<i class="material-icons"> search</i>
+									</span>
+								</div>
+						  	</div>
+			              	<!--end search-->
 
-		              	  <div class="card">
-            				<div class=" valign-wrapper ">
-			            		<span class="input-field col s11 m11 l11 mySearch">
-					              	<input type="search" id="searchPredicatesBox" 
-										onkeyup="filter('searchPredicatesBox', 'directPredicatesList');filter('searchPredicatesBox', 'reversePredicatesList');" 
-										title="Type in a predicate">
-									<label for="searchPredicatesBox">Search for a predicate</label>
-								</span>
-								<span class="col s2 m2 l2 right">
-									<i class="material-icons"> search</i>
-								</span>
-							</div>
-						  </div>
 						  	<ul class="tabs tabs-fixed-width" id="predicatesTab">
 						  		<li class="tab"><a class="active" href="#direct">Direct</a></li>
 				        		<li class="tab"><a href="#reverse">Reverse</a></li>
 						  	</ul>
-						  </div>
+						</div>
+						<!--direct predocate-->
 			            <div id="direct">
 					      	<div id="predicatesListBox">
 					      		<ul id="directPredicatesList" class="collection"></ul>
 					      	</div> 
 					    </div>
-					      <div id="reverse">
+					    <!--reverse predocate-->
+					    <div id="reverse">
 					      	<div id="predicatesListBox">
 					      		<ul id="reversePredicatesList" class="collection"></ul>
 					      	</div>
-					      </div>
+					    </div>
+
 			            <div class="card-action valign-wrapper">
 			            </div>
-			          </div>
+			        </div>
+			        <!--end predicates content-->
 
-					  <div id="operatorsBox" class="card">
+					<!--start operators content-->
+					<div id="operatorsBox" class="card">
 			            <div class="card-content">
 			              <span class="card-title">Operators</span>
 			              <span id="pendingQuerySpan"></span>
@@ -217,66 +245,45 @@
 			            </div>
 			            <div class="card-action valign-wrapper">
 			            </div>
-			          </div>
+			        </div>
+			        <!--end operators content-->
 
-			          <div id="tableResultBox" class="card">
+			        <!--start table result content-->
+			        <div id="tableResultBox" class="card">
 			            <div class="card-content ">
 			            	<span class="card-title">Table result</span>
 			              	<div class="row">
 								<div id="fieldsCollectionNavBar" class="col s2">
-									<ul id="fieldsCollection" class="collection" ></ul>
+									<ul id="fieldsCollection" class="collection"></ul>
 								</div>
 								<div class="col s10">
 									<div id="resultsTableBox" class=" col s12 scrollableTableContent">
-										
-								              <table id="resultsTable" class="striped centered"></table>
+										<table id="resultsTable" class="striped centered"></table>
 									</div>
 								</div>
 							</div>
 						</div>
 				   	   	<div class="card-action valign-wrapper"></div>
-			          </div>
+			        </div>
+			        <!--end table result content-->
 
-			          <div id="settingsBox" class="card">
+			        <!--start settings content-->
+			        <div id="settingsBox" class="card">
 			            <div class="card-content ">
 			              <span class="card-title">Settings</span>
 			            </div>
-			          </div>
-				</div>
+			        </div>
+			        <!--end settings content-->
 
+				</div>
 	      	</div>
+			<!--end right content-->
 
-	    </div><!--end row-->
-
-	    <!--start result table-->
-		<!--<div class="row">
-			<div id="fieldsCollectionNavBar" class="col s2">
-				<ul id="fieldsCollection" class="collection" ></ul>
-			</div>
-			<div class="col s10">
-				<div id="resultsTableBox" class="card col s12 scrollableTableContent">
-					<div class="card-content ">
-			              <span class="card-title">Results</span>
-			              <table id="resultsTable" class="striped centered">
-						</table>
-			              	  
-			        </div>				
-				</div>
-			</div>
-		</div>-->
-		<!--end result table-->
-		
-
-		
-<!--
-			<ul class="collection">
-		        
-		        <li class="collection-item green accent-3 white-text">Concepts</li>
-		        <li class="collection-item deep-purple accent-2 white-text" >Predicates</li>
-		        <li class="collection-item grey lighten-1 white-text" >Operators</li>
-		        <li class="collection-item red white-text" >Explore</li>
-		    </ul>
--->
+	    </div>
+	   	<!--end second row-->
+	   	
+	 </div>
+	 <!--end controlet-->	
 	</body>
 
 	<script>
@@ -292,6 +299,7 @@
 			initBoxViewer();
 			initQueryViewer();
 			initOperatorViewer();
+			initTableResultViewer();
 
 			fillConcepts();
 			fillPredicates();

@@ -1,8 +1,10 @@
-
-
 body {
 	background-color: #f5f5f5;
 	font-family: 'Roboto', sans-serif;
+}
+
+#controlet{
+    
 }
 
 .new, .badge{
@@ -114,6 +116,11 @@ div#querySparqlText{
 
 
 /*Left bar*/
+
+#myTabs {
+	display: table-cell;
+	border-right: 4px solid #00e676;
+}
 
 #myTabs>li.indicator{
 	display:none;
