@@ -5,6 +5,7 @@ var visitStack;
 var queryString;
 
 var mapCreator;
+var executor;
 
 var onFocus;
 
@@ -16,6 +17,7 @@ var QueryViewer= function () {
 	}
 
 	mapCreator = new MapCreator();
+	executor = new QueryExecutor();
 	languageManager = new LanguageManager();
 	queryLogicStructure = {}; 
 	visitStack = [];
@@ -29,6 +31,7 @@ QueryViewer.prototype.updateQuery = function(queryRoot, queryMap, focus){
 	queryLogicStructure = queryMap;
 	onFocus = focus;
 	queryString = languageManager.getQueryStartVerbalization();
+	renderUserQuery();
 	renderQuery();
 }
 
@@ -371,4 +374,14 @@ function removeFocusable(){
 	$.each(focusable, function(index){
 		focusable[index].classList.remove("focusable");
 	});
+}
+
+function renderUserQuery(){
+	var sparqlQueryArray = executor.getUserQuery();
+	var sparqlQuery = sparqlQueryArray.join('\n');
+
+	//sparqlQuery = sparqlQuery.replace(/>/g, "\>");
+
+	console.log(sparqlQuery);
+	$('#querySparql').text(sparqlQuery);
 }

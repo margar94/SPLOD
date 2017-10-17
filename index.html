@@ -32,25 +32,14 @@
 	<body>
 		<!--<div id="overlay">
 		</div>-->
-		<div class="container">
+		<!--<div class="container">-->
 		  	<div class="row">
-				<div id="queryBox" class="col s12">	
+				<div id="queryBox" class="col s6">	
 					<div class="card">
 						<div id="queryNaturalLanguage" class="card-content">
 							<span id="span1">Give me...</span>
-							<a class="btn-floating btn btn-small waves-effect waves-light blue modal-trigger" id="sparqlQuery" href="#modalSPARQL"><i class="material-icons">share</i></a>
-
-							<div id="modalSPARQL" class="modal">
-							    <div class="modal-content">
-							      <h4>SPARQL query</h4>
-							      <p>A bunch of text</p>
-							    </div>
-							    <div class="modal-footer">
-							      <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Close</a>
-							    </div>
-							  </div>
-
 						</div>
+						<a class="btn-floating btn btn-small waves-effect waves-light blue" id="sparqlQuery" ><i class="material-icons" onclick="renderUserQuery();">share</i></a>
 						<div class="card-action blue white-text">
 							<span class="white-text"> Focus: <span id="focus">-</span> </span>
 
@@ -64,10 +53,16 @@
 						</div>
 					</div>
 				</div>
-				
-				
+				<div id="querySparqlBox" class="col s6">	
+					<div class="card">
+						<div id="querySparql" class="card-content"></div>
+						<div class="card-action blue white-text">
+						</div>
+					</div>
+					</div> 
+				</div>
 			</div>
-		</div>
+		<!--</div>-->
 
 
 		<div class="row">
