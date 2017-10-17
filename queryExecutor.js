@@ -600,6 +600,7 @@ QueryExecutor.prototype.executeUserQuery = function(querySPARQL){
 			query += "LIMIT 100"; 
 		} 
 
+		cachedUserQuery = [];
 		cachedUserQuery.push(" SELECT " + querySPARQL.select.join(' '));
 		cachedUserQuery.push(" WHERE { ");
 		cachedUserQuery = cachedUserQuery.concat(querySPARQL.where);
