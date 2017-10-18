@@ -635,7 +635,7 @@ function visitSPARQL(key){
 					if(node.children.length==1){
 						nodeWhere = nodeWhere.concat(childWhere[0]);
 					}
-
+					/*
 					var child;
 					for(var i=1; i<node.children.length; i = i+2){ //only 'and' and 'or' nodes
 						child = queryLogicStructure[node.children[i]];
@@ -680,7 +680,32 @@ function visitSPARQL(key){
 									nodeWhere = nodeWhere.concat(['UNION']);
 							}
 						}
+					}*/
+					break;
+
+				case 'optional':
+					node.variable = parentVariable; // ??? 
+
+					nodeWhere.push('OPTIONAL{');
+
+					for(var i=0; i<node.children.length; i++){ 
+						childQuery = visitSPARQL(node.children[i]); 
+
+						nodeSelect = nodeSelect.concat(childQuery.select);
+						nodeLabelSelect = nodeLabelSelect.concat(childQuery.labelSelect);
+						nodeKeySelect = nodeKeySelect.concat(childQuery.keySelect);
+
+						childWhere.push(childQuery.where);
 					}
+
+					if(node.children.length==1){
+						nodeWhere = nodeWhere.concat(childWhere[0]);
+					}else{
+						console.log('OPTIONAL - Are you sure that I can have more than one child or zero?');
+					}
+
+					nodeWhere.push('}');
+					
 					break;
 
 			}

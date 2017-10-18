@@ -18,6 +18,8 @@ LanguageManager.prototype.verbalizeConcept = function(conceptLabel){
 	verbalization = {
 		standard: [],
 		modified: [],
+		negated: [],
+		optional: [],
 		truncated: [],
 		first: [],
 		current: []};
@@ -27,6 +29,12 @@ LanguageManager.prototype.verbalizeConcept = function(conceptLabel){
 
 	verbalization.modified.push('that is ' + LanguageManager.prototype.getArticle(conceptLabel) + ' ');
 	verbalization.modified.push(conceptLabel + ' ');
+
+	verbalization.negated.push('that is ' + 'not ' + LanguageManager.prototype.getArticle(conceptLabel) + ' ');
+	verbalization.negated.push(conceptLabel + ' ');
+
+	verbalization.optional.push('that is ' + 'optional ' + LanguageManager.prototype.getArticle(conceptLabel) + ' ');
+	verbalization.optional.push(conceptLabel + ' ');
 
 	verbalization.truncated.push('is ' + LanguageManager.prototype.getArticle(conceptLabel) + ' ');
 	verbalization.truncated.push(conceptLabel + ' ');
@@ -46,6 +54,7 @@ LanguageManager.prototype.verbalizePredicate = function(predicateLabel, predicat
 		modified: [],
 		truncated: [],
 		negated: [],
+		optional: [],
 		first: [],
 		current: []};
 
@@ -62,6 +71,11 @@ LanguageManager.prototype.verbalizePredicate = function(predicateLabel, predicat
 		verbalization.negated.push('not ');
 		verbalization.negated.push(LanguageManager.prototype.getArticle(predicateLabel) + ' ');
 		verbalization.negated.push(predicateLabel + ' ');
+
+		verbalization.optional.push('that has ');
+		verbalization.optional.push('optionally ');
+		verbalization.optional.push(LanguageManager.prototype.getArticle(predicateLabel) + ' ');
+		verbalization.optional.push(predicateLabel + ' ');
 
 		verbalization.truncated.push('has ' + LanguageManager.prototype.getArticle(predicateLabel) + ' ');
 		verbalization.truncated.push(predicateLabel + ' ');
@@ -154,6 +168,7 @@ LanguageManager.prototype.verbalizeOperator = function(operator){
 		standard: ['that '+operator+' '],
 		truncated: [operator+' '],
 		negated: ['that is ', 'not ', operator+' '],
+		optional : ['that is ', 'optionally ', operator+' '],
 		current: ['that '+operator+' ']};
 
 	switch(operator){
@@ -161,60 +176,70 @@ LanguageManager.prototype.verbalizeOperator = function(operator){
 			verbalization.standard = ['that is less than '];
 			verbalization.truncated = ['less than '];
 			verbalization.negated = ['that is ', 'not ', 'less than '];
+			verbalization.optional = ['that is ', 'optionally ', 'less than '];
 			verbalization.current = verbalization.standard;
 			break;
 		case '<=':
 			verbalization.standard = ['that is less or equals than '];
 			verbalization.truncated = ['less or equals than '];
 			verbalization.negated = ['that is ', 'not ', 'less or equals than '];
+			verbalization.optional = ['that is ', 'optionally ', 'less or equals than '];
 			verbalization.current = verbalization.standard;
 			break;
 		case '>':
 			verbalization.standard = ['that is more than '];
 			verbalization.truncated = ['more than '];
 			verbalization.negated = ['that is ', 'not ', 'more than '];
+			verbalization.optional = ['that is ', 'optionally ', 'more than '];
 			verbalization.current = verbalization.standard;
 			break;
 		case '>=':
 			verbalization.standard = ['that is more or equals than '];
 			verbalization.truncated = ['more or equals than '];
 			verbalization.negated = ['that is ', 'not ', 'more or equals than '];
+			verbalization.optional = ['that is ', 'optionally ', 'more or equals than '];
 			verbalization.current = verbalization.standard;
 			break;
 		case '=':
 			verbalization.standard = ['that is equals to '];
 			verbalization.truncated = ['equals to '];
 			verbalization.negated = ['that is ', 'not ', 'equals to '];
+			verbalization.optional = ['that is ', 'optionally ', 'equals to '];
 			verbalization.current = verbalization.standard;
 			break;
 		case 'is string':
 			verbalization.standard = ['that is '];
 			verbalization.truncated = [''];
 			verbalization.negated = ['that is ', 'not '];
+			verbalization.optional = ['that is ', 'optionally '];
 			verbalization.current = verbalization.standard;
 			break;
 		case 'is url':
 			verbalization.standard = ['that is '];
 			verbalization.truncated = [''];
 			verbalization.negated = ['that is ', 'not '];
+			verbalization.optional = ['that is ', 'optionally '];
 			verbalization.current = verbalization.standard;
 			break;
 		case 'is date':
 			verbalization.standard = ['that is '];
 			verbalization.truncated = [''];
 			verbalization.negated = ['that is ', 'not '];
+			verbalization.optional = ['that is ', 'optionally '];
 			verbalization.current = verbalization.standard;
 			break;
 		case 'range':
 			verbalization.standard = ['that is between '];
 			verbalization.truncated = ['between '];
 			verbalization.negated = ['that is ', 'not ', 'between '];
+			verbalization.optional = ['that is ', 'optionally ', 'between '];
 			verbalization.current = verbalization.standard;
 			break;
 		case 'range date':
 			verbalization.standard = ['that is between '];
 			verbalization.truncated = ['between '];
 			verbalization.negated = ['that is ', 'not ', 'between '];
+			verbalization.optional = ['that is ', 'optionally ', 'between '];
 			verbalization.current = verbalization.standard;
 			break;
 		case 'and':	
@@ -233,21 +258,28 @@ LanguageManager.prototype.verbalizeOperator = function(operator){
 			verbalization.standard = ['that is not '];
 			verbalization.current = verbalization.standard;
 			break;
+		case 'optional':
+			verbalization.standard = ['that is optionally '];
+			verbalization.current = verbalization.standard;
+			break;
 		case 'lang':
 			verbalization.standard = ['whose lang is '];
 			verbalization.negated = ['whose lang is ', 'not '];
+			verbalization.optional = ['whose lang is ', 'optionally '];
 			verbalization.current = verbalization.standard;
 			break;
 		case 'before':
 			verbalization.standard = ['that is before '];
 			verbalization.truncated = ['before '];
 			verbalization.negated = ['that is ', 'not ', 'before '];
+			verbalization.optional = ['that is ', 'optionally ', 'before '];
 			verbalization.current = verbalization.standard;
 			break;
 		case 'after':
 			verbalization.standard = ['that is after '];
 			verbalization.truncated = ['after '];
 			verbalization.negated = ['that is ', 'not ', 'after '];
+			verbalization.optional = ['that is ', 'optionally ', 'before '];
 			verbalization.current = verbalization.standard;
 			break;
 	}
@@ -314,6 +346,9 @@ LanguageManager.prototype.getOperatorStandardVerbalization = function(operator){
 			break;
 		case 'not':
 			verbalization = ['that is not '];
+			break;
+		case 'optional':
+			verbalization = ['that is optionally '];
 			break;
 		case 'lang':
 			verbalization = ['whose lang is '];

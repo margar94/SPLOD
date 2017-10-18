@@ -527,10 +527,6 @@ function removeOperator(node){
 		case 'range date':
 		case 'range':
 
-		case 'min':
-		case 'max':
-		case 'average':
-
 			var nodeToRemove = node;
 			var parentNode = queryLogicMap[node.parent];
 			if(parentNode.type == 'operator' && parentNode.label == 'not')
@@ -543,6 +539,7 @@ function removeOperator(node){
 			break;
 
 		case 'not':
+		case 'optional':
 
 			var child = queryLogicMap[node.children[0]];
 			
@@ -648,10 +645,6 @@ MapCreator.prototype.selectedOperator = function(pendingQuery){
 		case 'range date':
 		case 'range':
 
-		case 'min':
-		case 'max':
-		case 'average':
-
 			var parentNode = queryLogicMap[elementOnFocus];
 			if(parentNode.children.length>0){
 				var andOperator = 'and';
@@ -731,6 +724,7 @@ MapCreator.prototype.selectedOperator = function(pendingQuery){
 			break;
 
 		case 'not':
+		case 'optional':
 
 			var verbalization = languageManager.verbalizeOperator(operator);
 

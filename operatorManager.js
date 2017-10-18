@@ -31,9 +31,7 @@ var OperatorManager = function () {
 		'or' : 1,
 		'xor' : 1,
 		'not' : 1,
-		'min' : 1,
-		'max' : 1,
-		'average' : 1,
+		'optional' : 1,
 		
 		'limit' :2,
 		'<' : 2,
@@ -81,23 +79,23 @@ var OperatorManager = function () {
 		'or' : ['and', 'xor'],
 		'xor' : ['and', 'or'],
 
-		'<' : ['not'],
-		'<=' : ['not'],
-		'>' : ['not'],
-		'>=' : ['not'],
-		'=' : ['not'],
-		'range' : ['not'],
+		'<' : ['not', 'optional'],
+		'<=' : ['not', 'optional'],
+		'>' : ['not', 'optional'],
+		'>=' : ['not', 'optional'],
+		'=' : ['not', 'optional'],
+		'range' : ['not', 'optional'],
 
-		'starts with': ['not'],
-		'ends with': ['not'],
-		'contains': ['not'],
-		'is string': ['not'],
-		'is url': ['not'],
-		'lang': ['not'],
-		'is date': ['not'],
-		'before': ['not'],
-		'after': ['not'],
-		'range date': ['not'],
+		'starts with': ['not', 'optional'],
+		'ends with': ['not', 'optional'],
+		'contains': ['not', 'optional'],
+		'is string': ['not', 'optional'],
+		'is url': ['not', 'optional'],
+		'lang': ['not', 'optional'],
+		'is date': ['not', 'optional'],
+		'before': ['not', 'optional'],
+		'after': ['not', 'optional'],
+		'range date': ['not', 'optional'],
 
 		'limit': ['limit']
 
@@ -607,11 +605,14 @@ function manageUpdateOperatorViewer(){
 	}
 				
 	//concept or predicate that fired operator
-	if(node.type == 'predicate' && node.direction == 'direct')
+	if(node.type == 'predicate' && node.direction == 'direct'){
 		operatorList.push('not');
+		operatorList.push('optional');
+	}
 
 	if(mapCreator.isRefinement(onFocus)){
 		operatorList.push('not');
+		operatorList.push('optional');
 		onFocus = mapCreator.getTopElement(onFocus);
 	}
 	//from here onFocus could be the concept or his ancestor
@@ -619,72 +620,10 @@ function manageUpdateOperatorViewer(){
 		for(var i=0; i<resultDatatype[onFocus].datatype.length; i++){
 			operatorList = operatorList.concat(operatorMap[resultDatatype[onFocus].datatype[i]]);
 		}
-		
-		renderOperatorList(operatorList);
-		return;
 	}	
-	else{
-		console.log('PROBLEMA');
-	}
-	
-}
 
-function oldmanageUpdateOperatorViewer(){
-	
-	if(onFocus!=null){
-		if(onFocus=='limit'){//focus on every or everything or number applied as resultLimit
-			renderOperatorList(operatorMap[onFocus]);
-		}
-		else{
-			var node = mapCreator.getNodeByKey(onFocus);
-
-			if(node.type=='result'){
-				var operatorNode = mapCreator.getNodeByKey(node.parent);
-				var operator = operatorNode.label;
-				var operatorField = node.relatedTo;
-				
-				if(operatorField in resultDatatype){ 
-					results = cachedResult[node.key];
-				}else{
-					results = [];
-				} 
-				var type = getTypeByOperator(operatorField, operator);
-				renderReusableResultListFromResult({type:type, results:results});
-			}
-			else{ 
-				if(onFocus.split('_')[0] in operatorMap){ //onFocus is an operator 
-					renderOperatorList(operatorMap[onFocus.split('_')[0]]);
-				}else{ //concept or predicate that fired operator
-					if(mapCreator.isRefinement(onFocus))
-						//aggiungi not e optional ai miei operatori
-						onFocus = mapCreator.getTopElement(onFocus);
-					
-					if(onFocus in resultDatatype){
-						if(resultDatatype[onFocus].datatype.length>1)
-							renderOperatorList(operatorMap['string']); 
-						else if(resultDatatype[onFocus].datatype[0] != 'uri'){		
-							renderOperatorList(operatorMap[resultDatatype[onFocus].datatype[0]]); 
-						}else{
-							var onFocusNode = mapCreator.getNodeByKey(onFocus);
-							if(onFocusNode.parent == null 
-								//|| onFocusNode.type == 'concept'
-								|| mapCreator.getNodeByKey(onFocusNode.parent).type == 'everything')
-									renderOperatorList(operatorMap['special uri']);
-							else
-								renderOperatorList(operatorMap[resultDatatype[onFocus].datatype[0]]);
-						}
-					}else{
-						renderOperatorList([]);
-					}
-				}
-			} 
-		}
-
-	}else{
-		renderOperatorList([]);
-	}
-	
-	changedFocus = false;
+	renderOperatorList(operatorList);
+	return;
 	
 }
 
