@@ -26,21 +26,31 @@ LanguageManager.prototype.verbalizeConcept = function(conceptLabel){
 
 	verbalization.standard.push(LanguageManager.prototype.getArticle(conceptLabel) + ' ');
 	verbalization.standard.push(conceptLabel + ' ');
+	verbalization.standard.push('');
 
 	verbalization.modified.push('that is ' + LanguageManager.prototype.getArticle(conceptLabel) + ' ');
 	verbalization.modified.push(conceptLabel + ' ');
+	verbalization.modified.push('');
 
-	verbalization.negated.push('that is ' + 'not ' + LanguageManager.prototype.getArticle(conceptLabel) + ' ');
+	verbalization.negated.push('that is ');
+	verbalization.negated.push('not ');
+	verbalization.negated.push(LanguageManager.prototype.getArticle(conceptLabel) + ' ');
 	verbalization.negated.push(conceptLabel + ' ');
+	verbalization.negated.push('');	
 
-	verbalization.optional.push('that is ' + 'optional ' + LanguageManager.prototype.getArticle(conceptLabel) + ' ');
+	verbalization.optional.push('that is ');
+	verbalization.optional.push('optional ');
+	verbalization.optional.push(LanguageManager.prototype.getArticle(conceptLabel) + ' ');
 	verbalization.optional.push(conceptLabel + ' ');
+	verbalization.optional.push('');
 
 	verbalization.truncated.push('is ' + LanguageManager.prototype.getArticle(conceptLabel) + ' ');
 	verbalization.truncated.push(conceptLabel + ' ');
+	verbalization.truncated.push('');
 
-	verbalization.first.push('every ');
+	verbalization.first.push('');
 	verbalization.first.push(conceptLabel + ' ');
+	verbalization.first.push('');
 
 	verbalization.current = verbalization.standard;
 
@@ -61,50 +71,110 @@ LanguageManager.prototype.verbalizePredicate = function(predicateLabel, predicat
 
 	if(predicateDirection == 'direct'){
 
-		verbalization.standard.push('that has ' + LanguageManager.prototype.getArticle(predicateLabel) + ' ');
-		verbalization.standard.push(predicateLabel + ' ');
+		if(LanguageManager.prototype.startsWithVerb(predicateLabel)){
+			verbalization.standard.push('that ');
+			verbalization.standard.push(predicateLabel + ' ');
+			verbalization.standard.push('');
 
-		verbalization.modified.push('whose ');
-		verbalization.modified.push(predicateLabel + ' ');
+			verbalization.modified.push('whose ');
+			verbalization.modified.push(predicateLabel + ' ');
+			verbalization.modified.push('');
 
-		verbalization.negated.push('that has ');
-		verbalization.negated.push('not ');
-		verbalization.negated.push(LanguageManager.prototype.getArticle(predicateLabel) + ' ');
-		verbalization.negated.push(predicateLabel + ' ');
+			verbalization.negated.push('that ');
+			verbalization.negated.push('not ');
+			verbalization.negated.push('');
+			verbalization.negated.push(predicateLabel + ' ');
+			verbalization.negated.push('');
 
-		verbalization.optional.push('that has ');
-		verbalization.optional.push('optionally ');
-		verbalization.optional.push(LanguageManager.prototype.getArticle(predicateLabel) + ' ');
-		verbalization.optional.push(predicateLabel + ' ');
+			verbalization.optional.push('that ');
+			verbalization.optional.push('optionally ');
+			verbalization.optional.push('');
+			verbalization.optional.push(predicateLabel + ' ');
+			verbalization.optional.push('');
 
-		verbalization.truncated.push('has ' + LanguageManager.prototype.getArticle(predicateLabel) + ' ');
-		verbalization.truncated.push(predicateLabel + ' ');
+			verbalization.truncated.push('');
+			verbalization.truncated.push(predicateLabel + ' ');
+			verbalization.truncated.push('');
 
-		verbalization.first.push('every ');
-		verbalization.first.push('thing that has ');
-		verbalization.first.push(predicateLabel + ' ');
+			//direct predicate should not be the first node
+			verbalization.first.push('thing ');
+			verbalization.first.push('that ');
+			verbalization.first.push(predicateLabel + ' ');
+			verbalization.first.push('');
+		}else{
+			verbalization.standard.push('that has ' + LanguageManager.prototype.getArticle(predicateLabel) + ' ');
+			verbalization.standard.push(predicateLabel + ' ');
+			verbalization.standard.push('');
+
+			verbalization.modified.push('whose ');
+			verbalization.modified.push(predicateLabel + ' ');
+			verbalization.modified.push('');
+
+			verbalization.negated.push('that has ');
+			verbalization.negated.push('not ');
+			verbalization.negated.push(LanguageManager.prototype.getArticle(predicateLabel) + ' ');
+			verbalization.negated.push(predicateLabel + ' ');
+			verbalization.negated.push('');
+
+			verbalization.optional.push('that has ');
+			verbalization.optional.push('optionally ');
+			verbalization.optional.push(LanguageManager.prototype.getArticle(predicateLabel) + ' ');
+			verbalization.optional.push(predicateLabel + ' ');
+			verbalization.optional.push('');
+
+			verbalization.truncated.push('has ' + LanguageManager.prototype.getArticle(predicateLabel) + ' ');
+			verbalization.truncated.push(predicateLabel + ' ');
+			verbalization.truncated.push('');
+
+			//direct predicate should not be the first node
+			verbalization.first.push('thing ');
+			verbalization.first.push('that has ');
+			verbalization.first.push(predicateLabel + ' ');
+			verbalization.first.push('');
+		}
 
 	}else if(predicateDirection == 'reverse'){
 		var postLabel = 'of ';
 		if(LanguageManager.prototype.endsWithPreposition(predicateLabel))
 			postLabel = ' ';
 
-		verbalization.standard.push('that is the ');
-		verbalization.standard.push(predicateLabel + ' ');
-		verbalization.standard.push(postLabel);
+		if(LanguageManager.prototype.startsWithVerb(predicateLabel)){
 
-		verbalization.modified.push('');
-		verbalization.modified.push('the ' + predicateLabel + ' ');
-		verbalization.modified.push(postLabel);
+			verbalization.standard.push('that ');
+			verbalization.standard.push(predicateLabel + ' ');
+			verbalization.standard.push(postLabel);
 
-		verbalization.truncated.push('is the ');
-		verbalization.truncated.push(predicateLabel + ' ');
-		verbalization.truncated.push(postLabel);
+			verbalization.modified.push('');
+			verbalization.modified.push(predicateLabel + ' ');
+			verbalization.modified.push(postLabel);
 
-		verbalization.first.push('everything ');
-		verbalization.first.push('that is the ');
-		verbalization.first.push(predicateLabel + ' ');
-		verbalization.first.push(postLabel);
+			verbalization.truncated.push('');
+			verbalization.truncated.push(predicateLabel + ' ');
+			verbalization.truncated.push(postLabel);
+
+			verbalization.first.push('thing ');
+			verbalization.first.push('that ');
+			verbalization.first.push(predicateLabel + ' ');
+			verbalization.first.push(postLabel);
+
+		}else{
+			verbalization.standard.push('that is the ');
+			verbalization.standard.push(predicateLabel + ' ');
+			verbalization.standard.push(postLabel);
+
+			verbalization.modified.push('');
+			verbalization.modified.push('the ' + predicateLabel + ' ');
+			verbalization.modified.push(postLabel);
+
+			verbalization.truncated.push('is the ');
+			verbalization.truncated.push(predicateLabel + ' ');
+			verbalization.truncated.push(postLabel);
+
+			verbalization.first.push('thing ');
+			verbalization.first.push('that is the ');
+			verbalization.first.push(predicateLabel + ' ');
+			verbalization.first.push(postLabel);
+		}
 	}
 	
 	verbalization.current = verbalization.standard;
@@ -117,9 +187,6 @@ LanguageManager.prototype.verbalizeSomething = function(){
 
 	verbalization = {
 		standard: ['something '],
-		modified: [],
-		truncated: [],
-		first: [],
 		current: ['something ']};
 
 	return verbalization;
@@ -130,8 +197,6 @@ LanguageManager.prototype.verbalizeEverything = function(){
 
 	verbalization = {
 		standard: ['thing '],
-		modified: [],
-		truncated: [],
 		first: ['thing '],
 		current: ['thing ']};
 
@@ -165,81 +230,82 @@ LanguageManager.prototype.endsWithPreposition = function(label){
 LanguageManager.prototype.verbalizeOperator = function(operator){
 
 	verbalization = {
-		standard: ['that '+operator+' '],
-		truncated: [operator+' '],
-		negated: ['that is ', 'not ', operator+' '],
-		optional : ['that is ', 'optionally ', operator+' '],
-		current: ['that '+operator+' ']};
+		standard: ['that ', operator+' ', ''],
+		truncated: ['', operator+' ', ''],
+		negated: ['that is ', 'not ', operator+' ', ''],
+		optional : ['that is ', 'optionally ', operator+' ', '']};
+
+	verbalization.current = verbalization.standard;
 
 	switch(operator){
 		case '<':
-			verbalization.standard = ['that is less than '];
-			verbalization.truncated = ['less than '];
-			verbalization.negated = ['that is ', 'not ', 'less than '];
-			verbalization.optional = ['that is ', 'optionally ', 'less than '];
+			verbalization.standard = ['that is ','less ','than '];
+			verbalization.truncated = ['','less ','than '];
+			verbalization.negated = ['that is ', 'not ', 'less ','than '];
+			verbalization.optional = ['that is ', 'optionally ', 'less ','than '];
 			verbalization.current = verbalization.standard;
 			break;
 		case '<=':
-			verbalization.standard = ['that is less or equals than '];
-			verbalization.truncated = ['less or equals than '];
-			verbalization.negated = ['that is ', 'not ', 'less or equals than '];
-			verbalization.optional = ['that is ', 'optionally ', 'less or equals than '];
+			verbalization.standard = ['that is ','less or equals ','than '];
+			verbalization.truncated = ['','less or equals ','than '];
+			verbalization.negated = ['that is ', 'not ', 'less or equals ','than '];
+			verbalization.optional = ['that is ', 'optionally ', 'less or equals ','than '];
 			verbalization.current = verbalization.standard;
 			break;
 		case '>':
-			verbalization.standard = ['that is more than '];
-			verbalization.truncated = ['more than '];
-			verbalization.negated = ['that is ', 'not ', 'more than '];
-			verbalization.optional = ['that is ', 'optionally ', 'more than '];
+			verbalization.standard = ['that is ','more ','than '];
+			verbalization.truncated = ['','more ','than '];
+			verbalization.negated = ['that is ', 'not ', 'more ','than '];
+			verbalization.optional = ['that is ', 'optionally ', 'more ','than '];
 			verbalization.current = verbalization.standard;
 			break;
 		case '>=':
-			verbalization.standard = ['that is more or equals than '];
-			verbalization.truncated = ['more or equals than '];
-			verbalization.negated = ['that is ', 'not ', 'more or equals than '];
-			verbalization.optional = ['that is ', 'optionally ', 'more or equals than '];
+			verbalization.standard = ['that is ','more or equals ','than '];
+			verbalization.truncated = ['','more or equals ','than '];
+			verbalization.negated = ['that is ', 'not ', 'more or equals ','than '];
+			verbalization.optional = ['that is ', 'optionally ', 'more or equals ','than '];
 			verbalization.current = verbalization.standard;
 			break;
 		case '=':
-			verbalization.standard = ['that is equals to '];
-			verbalization.truncated = ['equals to '];
-			verbalization.negated = ['that is ', 'not ', 'equals to '];
-			verbalization.optional = ['that is ', 'optionally ', 'equals to '];
+			verbalization.standard = ['that is ','equals ','to '];
+			verbalization.truncated = ['','equals ','to '];
+			verbalization.negated = ['that is ', 'not ', 'equals ','to '];
+			verbalization.optional = ['that is ', 'optionally ', 'equals ','to '];
 			verbalization.current = verbalization.standard;
 			break;
 		case 'is string':
-			verbalization.standard = ['that is '];
-			verbalization.truncated = [''];
-			verbalization.negated = ['that is ', 'not '];
-			verbalization.optional = ['that is ', 'optionally '];
+			verbalization.standard = ['that ','is ',''];
+			verbalization.truncated = ['','',''];
+			verbalization.negated = ['that ','is ', 'not ',''];
+			verbalization.optional = ['that ','is ', 'optionally ',''];
 			verbalization.current = verbalization.standard;
 			break;
 		case 'is url':
-			verbalization.standard = ['that is '];
-			verbalization.truncated = [''];
-			verbalization.negated = ['that is ', 'not '];
-			verbalization.optional = ['that is ', 'optionally '];
+			verbalization.standard = ['that ','is ',''];
+			verbalization.truncated = ['','',''];
+			verbalization.negated = ['that ','is ', 'not ',''];
+			verbalization.optional = ['that ','is ', 'optionally ',''];
 			verbalization.current = verbalization.standard;
 			break;
 		case 'is date':
-			verbalization.standard = ['that is '];
-			verbalization.truncated = [''];
-			verbalization.negated = ['that is ', 'not '];
-			verbalization.optional = ['that is ', 'optionally '];
+			verbalization.standard = ['that ','is ',''];
+			verbalization.truncated = ['','',''];
+			verbalization.negated = ['that ','is ', 'not ',''];
+			verbalization.optional = ['that ','is ', 'optionally ',''];
 			verbalization.current = verbalization.standard;
 			break;
 		case 'range':
-			verbalization.standard = ['that is between '];
-			verbalization.truncated = ['between '];
-			verbalization.negated = ['that is ', 'not ', 'between '];
-			verbalization.optional = ['that is ', 'optionally ', 'between '];
+			verbalization.standard = ['that is ','between ',''];
+			verbalization.truncated = ['','between ',''];
+			verbalization.negated = ['that is ', 'not ', 'between ',''];
+			verbalization.optional = ['that is ', 'optionally ', 'between ',''];
 			verbalization.current = verbalization.standard;
 			break;
 		case 'range date':
-			verbalization.standard = ['that is between '];
-			verbalization.truncated = ['between '];
-			verbalization.negated = ['that is ', 'not ', 'between '];
-			verbalization.optional = ['that is ', 'optionally ', 'between '];
+			verbalization.standard = ['that is ','between ',''];
+			verbalization.truncated = ['','between ',''];
+			verbalization.negated = ['that is ', 'not ', 'between ',''];
+			verbalization.optional = ['that is ', 'optionally ', 'between ',''];
 			verbalization.current = verbalization.standard;
 			break;
 		case 'and':	
@@ -255,31 +321,31 @@ LanguageManager.prototype.verbalizeOperator = function(operator){
 			verbalization.current = verbalization.standard;
 			break;
 		case 'not':
-			verbalization.standard = ['that is not '];
+			verbalization.standard = ['not '];
 			verbalization.current = verbalization.standard;
 			break;
 		case 'optional':
-			verbalization.standard = ['that is optionally '];
+			verbalization.standard = ['optionally '];
 			verbalization.current = verbalization.standard;
 			break;
 		case 'lang':
-			verbalization.standard = ['whose lang is '];
-			verbalization.negated = ['whose lang is ', 'not '];
-			verbalization.optional = ['whose lang is ', 'optionally '];
+			verbalization.standard = ['that has ','lang ',''];
+			verbalization.negated = ['that has ', 'not ','lang ',''];
+			verbalization.optional = ['that has ','optionally ','lang ',''];
 			verbalization.current = verbalization.standard;
 			break;
 		case 'before':
-			verbalization.standard = ['that is before '];
-			verbalization.truncated = ['before '];
-			verbalization.negated = ['that is ', 'not ', 'before '];
-			verbalization.optional = ['that is ', 'optionally ', 'before '];
+			verbalization.standard = ['that is ','before ',''];
+			verbalization.truncated = ['','before ',''];
+			verbalization.negated = ['that is ', 'not ', 'before ',''];
+			verbalization.optional = ['that is ', 'optionally ', 'before ',''];
 			verbalization.current = verbalization.standard;
 			break;
 		case 'after':
-			verbalization.standard = ['that is after '];
-			verbalization.truncated = ['after '];
-			verbalization.negated = ['that is ', 'not ', 'after '];
-			verbalization.optional = ['that is ', 'optionally ', 'before '];
+			verbalization.standard = ['that is ','after ',''];
+			verbalization.truncated = ['','after ',''];
+			verbalization.negated = ['that is ', 'not ', 'after ',''];
+			verbalization.optional = ['that is ', 'optionally ', 'before ',''];
 			verbalization.current = verbalization.standard;
 			break;
 	}
@@ -425,6 +491,12 @@ LanguageManager.prototype.getButtonLabel = function(button){
 
 	return label;
 }
+
+
+LanguageManager.prototype.startsWithVerb = function(predicateLabel, direction){
+	return predicateLabel.startsWith('has')||predicateLabel.startsWith('is');
+}
+
 
 LanguageManager.prototype.getPredicateVerbalization = function(predicateLabel, direction){
 	var label;

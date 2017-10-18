@@ -32,9 +32,239 @@ QueryViewer.prototype.updateQuery = function(queryRoot, queryMap, focus){
 	renderQuery();
 }
 
+QueryViewer.prototype.renderQuery = function(queryRoot, queryMap, focus){
+	if(queryLogicStructureRoot != null){
+
+		var queryString = "<span id='limit' meta-focusReference='limit' meta-removeReference='limit' class='focusable operator'>every </span>";
+
+		queryString += visitRenderer(queryLogicStructureRoot);
+
+	}
+
+	$('#queryNaturalLanguage')[0].innerHTML = queryString;
+	removeFocusable();
+
+	attachEvents();
+	renderFocus();
+}
+
+function visitRenderer(key){
+	var node = queryLogicStructure[key];
+	var nodeQueryString = '';
+
+	switch(node.type){
+
+		case 'concept':
+			var verbalizationIndex = 0;
+
+			//pre label
+			nodeQueryString += "<span class='focusable' meta-focusReference='"+node.key+"' meta-removeReference='"+node.key+"'">;
+			nodeQueryString += node.verbalization.current[verbalizationIndex++];
+
+			//eventually not or optional
+			var parentNode = queryLogicStructure[node.parent];
+			if(parentNode != undefined && parentNode.type == 'operator' && (parentNode.label == 'not' || parentNode.label == 'optional')){
+				nodeQueryString += "<span id='"+parentNode.key+"' class='focusable operator' meta-removeReference='"+parentNode.key+"' meta-focusReference='"+parentNode.key+"'>";
+				nodeQueryString += node.verbalization.current[verbalizationIndex++];
+				nodeQueryString += "</span>";
+
+				//article
+				nodeQueryString += node.verbalization.current[verbalizationIndex++];
+			}
+
+			//content
+			nodeQueryString += "<span id='"+node.key+"' title='"+node.url+"' class='focusable concept' meta-removeReference='"+node.key+"' meta-focusReference='"+node.key+"'>";
+			nodeQueryString += node.verbalization.current[verbalizationIndex++];
+			nodeQueryString += "</span>";
+
+			//post label
+			nodeQueryString += node.verbalization.current[verbalizationIndex++];
+
+			//TO DO managing of addBarred
+
+			var addUl;
+			(node.children.length >= 2)?addUl = true : addUl = false;
+
+
+			//children
+			if(addUl)
+				nodeQueryString += "<ul>"; 
+
+			for(var i=0; i<node.children.length;i++){
+				if(addUl){
+					if(i==0 || (i%2)==1)
+						nodeQueryString += '<li>';
+				}
+
+				nodeQueryString += visitRenderer(node.children[i]);
+
+				if(addUl){
+					if(i==node.children.length-1 || (i%2)==0)
+						nodeQueryString += '</li>';
+				}
+			}
+
+			if(addUl)
+				nodeQueryString += "</ul>"; 
+
+			//TO DO managing of addBarred
+
+			nodeQueryString += "</span>";
+			break;
+
+		case 'result':
+			var verbalizationIndex = 0;
+
+			//pre label
+			nodeQueryString += "<span class='focusable' meta-focusReference='"+node.key+"' meta-removeReference='"+node.parent+"'">;
+
+			//content
+			nodeQueryString += "<span id='"+node.key+"' class='focusable reusableResult' meta-removeReference='"+node.parent+"' meta-focusReference='"+node.key+"'>";
+			nodeQueryString += node.verbalization.current[verbalizationIndex++];
+			nodeQueryString += "</span>";
+
+			//TO DO managing of addBarred
+
+			var addUl;
+			(node.children.length >= 2)?addUl = true : addUl = false;
+
+
+			//children
+			if(addUl)
+				nodeQueryString += "<ul>"; 
+
+			for(var i=0; i<node.children.length;i++){
+				if(addUl){
+					if(i==0 || (i%2)==1)
+						nodeQueryString += '<li>';
+				}
+
+				nodeQueryString += visitRenderer(node.children[i]);
+
+				if(addUl){
+					if(i==node.children.length-1 || (i%2)==0)
+						nodeQueryString += '</li>';
+				}
+			}
+
+			if(addUl)
+				nodeQueryString += "</ul>"; 
+
+			//TO DO managing of addBarred
+
+			nodeQueryString += "</span>";
+			break;
+
+		case 'something':
+			var verbalizationIndex = 0;
+
+			//pre label
+			nodeQueryString += "<span class='focusable' meta-focusReference='"+node.key+"' meta-removeReference='"+node.parent+"'">;
+
+			//content
+			nodeQueryString += "<span id='"+node.key+"' class='focusable something' meta-removeReference='"+node.parent+"' meta-focusReference='"+node.key+"'>";
+			nodeQueryString += node.verbalization.current[verbalizationIndex++];
+			nodeQueryString += "</span>";
+
+			//TO DO managing of addBarred
+
+			var addUl;
+			(node.children.length >= 2)?addUl = true : addUl = false;
+
+
+			//children
+			if(addUl)
+				nodeQueryString += "<ul>"; 
+
+			for(var i=0; i<node.children.length;i++){
+				if(addUl){
+					if(i==0 || (i%2)==1)
+						nodeQueryString += '<li>';
+				}
+
+				nodeQueryString += visitRenderer(node.children[i]);
+
+				if(addUl){
+					if(i==node.children.length-1 || (i%2)==0)
+						nodeQueryString += '</li>';
+				}
+			}
+
+			if(addUl)
+				nodeQueryString += "</ul>"; 
+
+			//TO DO managing of addBarred
+
+			nodeQueryString += "</span>";
+			break;
+		
+		
+
+		case 'everything':
+			//TO DOOO
+			//problema quando modificare il remove reference
+			break;
+
+		case 'predicate':
+			//TO DOOO
+			//diretti simili ai concetti
+			//reverse da capire il focus reference (per operatori)
+			break;
+		
+		case 'operator':
+			//TO DOOO
+			//range non deve creare ul
+			//not innesca addBarred
+			//optional ignorato??
+			//altri span esterno
+			switch(node.label){
+				case 'and' :
+				case 'or' : 
+				case 'xor' : 
+					//no figli :(
+					break;
+
+				case 'not' :
+					break;
+				case 'optional' :
+					//forse completo
+					break;
+		
+				case '<' :
+				case '<=' : 
+				case '>' : 
+				case '>=' : 
+				case '=' : 
+				case 'is url' : 
+				case 'is string' : 
+				case 'starts with' : 
+				case 'ends with' : 
+				case 'contains' : 
+				case 'lang' : 
+				case 'is date' : 
+				case 'before' : 
+				case 'after' : 
+					//un figlio
+					break;
+
+				case 'range' : 
+				case 'range date' : 
+					//due figli senza ul e con and in mezzo
+					break;
+			}
+			break;
+	}
+}
+
+
+
+
+
+
+
 //ATTENZIONE
 //focusReference: currentNode.key, removeReference: currentNode.children[i] negli span lista
-function renderQuery(){
+function oldrenderQuery(){
 	//visit query implicit tree 
 	if(queryLogicStructureRoot == null){
 		queryString = languageManager.getQueryInizializationVerbalization();
@@ -47,8 +277,8 @@ function renderQuery(){
 			var currentNode = visitStack.pop();
 			visitRenderer(currentNode);
 
-			var childrenNumber;
-			(currentNode.children.length >= 2)?childrenNumber = true : childrenNumber = false;
+			var addUl;
+			(currentNode.children.length >= 2)?addUl = true : addUl = false;
 
 			var notBarred = (currentNode.type == 'operator' || currentNode.parent == null || !(queryLogicStructure[currentNode.parent].type == 'operator' && queryLogicStructure[currentNode.parent].label == 'not'));
 
@@ -58,14 +288,14 @@ function renderQuery(){
 
 			if(currentNode.label != 'range' && currentNode.label != 'range date'){
 
-				if(childrenNumber){
+				if(addUl){
 					//visitStack.push({type: 'endSpan', verbalization:{current: ['</span>']}, children:[] });
 					visitStack.push({type: 'endul', verbalization:{current: ['</ul>']}, children:[] });
 				}
 
 				for(var i = currentNode.children.length-1; i>=0; i--){
 
-					if(childrenNumber && (i==0 || ((i%2)==0)))
+					if(addUl && (i==0 || ((i%2)==0)))
 						visitStack.push({type: 'endli', verbalization:{current: ['</li>']}, children:[] });
 
 					visitStack.push({type: 'endSpan', verbalization:{current: ['</span>']}, children:[] });
@@ -79,11 +309,11 @@ function renderQuery(){
 					
 					visitStack.push(startSpan);
  
-					if(childrenNumber && (i==0 || (((i%2)==1) && (i!=currentNode.children.length-1))))
+					if(addUl && (i==0 || (((i%2)==1) && (i!=currentNode.children.length-1))))
 						visitStack.push({type: 'startli', verbalization:{current: ['<li>']}, children:[] });
 				}
 
-				if(childrenNumber)
+				if(addUl)
 					visitStack.push({type: 'startul', verbalization:{current: ['<ul>']}, children:[] });
 			}
 
@@ -100,19 +330,19 @@ function renderQuery(){
 	renderFocus();
 }
 
-function visitRenderer(node){
+function oldvisitRenderer(node){
 
 	var utils = 'meta-removeReference="'+ node.key +'" meta-focusReference="'+node.key+'" id="'+node.key+'" title="'+node.url+'"';
 	
 	var parent = queryLogicStructure[node.parent];
 
 	//two special cases: predicate and operations negated
-	if(node.type == 'predicate' && node != queryLogicStructure[queryLogicStructureRoot] && parent.type == 'operator' && parent.label == 'not'){
+	if(node.type == 'predicate' && node != queryLogicStructure[queryLogicStructureRoot] && parent.type == 'operator' && (parent.label == 'not' || parent.label == 'optional')){
 		queryString += node.verbalization.current[0];
 		queryString += '<span><span class="operator focusable" meta-removeReference="'+parent.key+'" meta-focusReference="'+parent.key+'" id="'+parent.key+'">'+node.verbalization.current[1]+'</span></span>';
 		queryString += node.verbalization.current[2];
 		queryString += '<span class="predicate focusable" '+utils+' >' + node.verbalization.current[3] + '</span>';
-	}else if(node.type == 'operator' && node != queryLogicStructure[queryLogicStructureRoot] && parent.type == 'operator' && parent.label == 'not'){
+	}else if(node.type == 'operator' && node != queryLogicStructure[queryLogicStructureRoot] && parent.type == 'operator' && (parent.label == 'not' || parent.label == 'optional')){
 		queryString += '<span class="operator focusable" '+utils+' >' + node.verbalization.current[0];
 		queryString += '<span><span class="operator focusable" meta-removeReference="'+parent.key+'" meta-focusReference="'+parent.key+'" id="'+parent.key+'">'+node.verbalization.current[1]+'</span></span>';
 		if(node.verbalization.current[2] != undefined)
@@ -198,8 +428,10 @@ function visitRenderer(node){
 			queryString += '<span class="focusable" meta-removeReference="'+node.removeReference+'" meta-focusReference="'+node.focusReference+'">'; 
 
 		}else if(node.type == 'operator'){
-			if(node.label != 'not')
-				if(parent.label != 'not'){
+			if(node.label != 'not' || node.label != 'optional')
+				if(parent.label != 'not' || node.label != 'optional'){
+
+
 					queryString += '<span class="focusable operator" id="'+node.key+'" meta-removeReference="'+node.key+'" meta-focusReference="'+node.key+'">' + node.verbalization.current[0]+' ';
 					if(node.label == 'range' || node.label == 'range date'){
 						firstChild = queryLogicStructure[node.children[0]];

@@ -32,10 +32,12 @@ function verbalizeQuery(){
 	if(queryLogicStructureRoot != null){
 
 		// complete map's info with predicatesCounter
-		if(queryLogicStructure[queryLogicStructureRoot].type=='concept' || queryLogicStructure[queryLogicStructureRoot].type=='everything')
+		if(queryLogicStructure[queryLogicStructureRoot].type=='concept' 
+			|| queryLogicStructure[queryLogicStructureRoot].type=='everything')
 			queryLogicStructure[queryLogicStructureRoot].predicatesCounter = 0;
 		else
 			queryLogicStructure[queryLogicStructureRoot].predicatesCounter = 1;
+
 		visitStack.push(queryLogicStructure[queryLogicStructureRoot]);
 
 		while(visitStack.length != 0){
@@ -45,18 +47,27 @@ function verbalizeQuery(){
 
 			for(var i = currentNode.children.length-1; i>=0; i--){
 				//update predicatesCouter
-				if(queryLogicStructure[currentNode.children[i]].type=='concept'){
-					if(currentNode.type == 'predicate')
-						queryLogicStructure[currentNode.children[i]].predicatesCounter = queryLogicStructure[currentNode.key].predicatesCounter+1;
-					else
+				var node = queryLogicStructure[currentNode.children[i]];
+				switch(node.type){
+					case 'concept':
+					case 'something':
+					case 'result': //same as concepts
 						queryLogicStructure[currentNode.children[i]].predicatesCounter = 0;
+						break;
+					case 'predicate':
+						queryLogicStructure[currentNode.children[i]].predicatesCounter = queryLogicStructure[currentNode.key].predicatesCounter+1;
+						break;
+					case 'operator':
+						queryLogicStructure[currentNode.children[i]].predicatesCounter = queryLogicStructure[currentNode.key].predicatesCounter;
+						break;
 				}
 
-				else if(queryLogicStructure[currentNode.children[i]].type=='something')
+				if(currentNode.type == 'operator' 
+					&& (queryLogicStructure[node.parent].label == 'not' || queryLogicStructure[node.parent].label == 'optional'))
 					queryLogicStructure[currentNode.children[i]].predicatesCounter = 0;
-				else
-					queryLogicStructure[currentNode.children[i]].predicatesCounter = queryLogicStructure[currentNode.key].predicatesCounter+1;
+
 				visitStack.push(queryLogicStructure[currentNode.children[i]]);
+				
 			}
 
 		}
@@ -68,34 +79,57 @@ function verbalizeQuery(){
 }
 
 function visitVerbalizator(node){
-	if(node.parent == null) // root
+
+	if(node.parent == null){
 		node.verbalization.current = node.verbalization.first;
-	else if(queryLogicStructure[node.parent].type == 'operator' && queryLogicStructure[node.parent].label == 'not'){
-		//not operator changes all his children verbalization
-		node.verbalization.current = node.verbalization.negated;
-		/*if(node.type == 'predicate' || node.label == 'is url' || node.label == 'is string'){
-			node.verbalization.current = node.verbalization.negated;
-		}else if(node.type == 'operator'){
-			node.verbalization.current = node.verbalization.truncated;
-		}*/
-	}else if(node.type == 'concept'){
-		if(queryLogicStructure[node.parent].type == 'concept')
-			node.verbalization.current = node.verbalization.modified;
-		else if(queryLogicStructure[node.parent].type == 'predicate' && queryLogicStructure[node.parent].direction == 'direct'){ 
-			node.verbalization.current = node.verbalization.truncated;
-			if(node.predicatesCounter%2 == 0){
-				queryLogicStructure[node.parent].verbalization.current = queryLogicStructure[node.parent].verbalization.modified;
-			}
-		}
+		return;
 	}
-	else if(node.type == 'predicate'){
-		if(queryLogicStructure[node.parent].type == 'predicate' && queryLogicStructure[node.parent].direction == 'direct'){
-			if(node.predicatesCounter%2 == 0){
-				queryLogicStructure[node.parent].verbalization.current = queryLogicStructure[node.parent].verbalization.modified;
+
+	var parentNode = queryLogicStructure[node.parent];
+
+	switch(node.type){
+		case 'concept':
+			if(parentNode.type == 'concept' || parentNode.type == 'everything')
+				node.verbalization.current = node.verbalization.modified;
+			else if(parentNode.type == 'predicate' && parentNode.direction == 'direct'){ 
 				node.verbalization.current = node.verbalization.truncated;
+				
+				if(parentNode.predicatesCounter != 0){//potentially i can change it
+					if(parentNode.predicatesCounter%2 == 0){//i have to change it
+						queryLogicStructure[node.parent].verbalization.current = parentNode.verbalization.modified;
+					}
+				}
+				
+			}//if my parent is a reverse , I'm not a refinement
+			break;
+
+		case 'something':
+		case 'result':
+		case 'operator':
+			break;
+
+		case 'predicate':
+			if(parentNode.type == 'predicate' && parentNode.direction == 'direct'){
+				if(parentNode.predicatesCounter != 0){//potentially i can change it
+					if(node.predicatesCounter%2 == 0){//i have to change it
+						queryLogicStructure[node.parent].verbalization.current = parentNode.verbalization.modified;
+						node.verbalization.current = node.verbalization.truncated;
+					}
+				}
+
 			}
+		
+	}
+
+	//stronger rule
+	if(queryLogicStructure[node.parent].type == 'operator'){
+		if(queryLogicStructure[node.parent].label == 'not'){
+			node.verbalization.current = node.verbalization.negated;
+		}else if(queryLogicStructure[node.parent].label == 'optional'){
+			node.verbalization.current = node.verbalization.optional;
 		}
 	}
+
 }		
 
 function resetPredicatesCounter(){
