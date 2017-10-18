@@ -317,7 +317,7 @@ function updateAndNotifyFocus(key){
 
 // remove element in map
 MapCreator.prototype.removeElement = function(key){
-console.log(key);
+
 	if(key=='limit'){
 		resultLimit = false;
 
@@ -378,7 +378,13 @@ console.log(key);
 					}else{
 						elementOnFocus = everythingNode.key;
 					}
-				}else{
+				}else if(queryLogicMap[node.parent].type == 'operator'){//should be 'not' or 'optional' 
+					var operatorNode = queryLogicMap[node.parent];
+					removeMeAndMyDescendents(operatorNode);
+					cleanMyParentList(operatorNode);
+					elementOnFocus = operatorNode.parent;
+				}
+				else{
 					elementOnFocus = node.parent;
 				}
 			}
@@ -411,7 +417,7 @@ console.log(key);
 		queryBuilder.updateQuery(rootQueryLogicMap, queryLogicMap);
 	}
 
-//console.log(queryLogicMap);
+
 }
 
 function iReplaceASomethingNode(key){
