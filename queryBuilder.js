@@ -440,7 +440,11 @@ function visitSPARQL(key){
 					else{
 						operatorLabel = '=';
 					}
-					nodeWhere.push('FILTER(' + parentVariable + operatorLabel + '"'+queryLogicStructure[node.children[0]].label+'"@' + queryLogicStructure[node.children[0]].lang + ')');
+
+					if(queryLogicStructure[node.children[0]].lang != null)
+						nodeWhere.push('FILTER(' + parentVariable + operatorLabel + '"'+queryLogicStructure[node.children[0]].label +'"@' + queryLogicStructure[node.children[0]].lang + ')');
+					else
+						nodeWhere.push('FILTER(str(' + parentVariable +')'+ operatorLabel + '"'+queryLogicStructure[node.children[0]].label + '")');
 					break;
 
 				case 'contains': 

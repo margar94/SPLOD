@@ -112,16 +112,18 @@ OperatorManager.prototype.queryResult = function(select, labelSelect, keySelect,
 	var result = results[0];
 
 	for(var i=0; i<keySelect.length; i++){
-		savedResult[keySelect[i]] = {};
-		literalLang[keySelect[i]] = [];
+		savedResult[keySelect[i]] = new Object();
+		literalLang[keySelect[i]] = new Array();
 	}
 
 	for(field in result){
 		var arrayIndex = $.inArray('?'+field, select);
-		resultDatatype[keySelect[arrayIndex]] = {}; 
-		resultDatatype[keySelect[arrayIndex]].datatype = []; 
+		resultDatatype[keySelect[arrayIndex]] = new Object(); 
+		resultDatatype[keySelect[arrayIndex]].datatype = new Array(); 
 	}
 
+	console.log(savedResult);
+	console.log(resultDatatype);
 	$.each(results, function(index){
 
 		var result = results[index];
@@ -299,7 +301,7 @@ OperatorManager.prototype.selectedReusableResult = function(result, fromInput){
 		}
 	}
 
-	var lang = 'en';
+	var lang = null;
 	if(value in resultLiteralLang)
 		lang = resultLiteralLang[value];
 	pendingQuery.push({value: value, datatype:type, lang:lang});
@@ -570,12 +572,7 @@ OperatorManager.prototype.changedReusableResult = function(result, fromInput){
 
 	var onFocusNode = mapCreator.getNodeByKey(onFocus); 
 
-	var type;
-	if(onFocusNode.relatedTo in resultDatatype){
-		type = onFocusNode.datatype;
-	}else{
-		type = null;
-	}
+	var type = onFocusNode.datatype;
 
 	var value = result[0];
 	if(fromInput){
@@ -615,7 +612,7 @@ OperatorManager.prototype.changedReusableResult = function(result, fromInput){
 	var cachedResultList = cachedResult[onFocus];
 	delete cachedResult[onFocus];
 
-	var lang = 'en';
+	var lang = null;
 	if(value in resultLiteralLang)
 		lang = resultLiteralLang[value];
 	var newKey = mapCreator.selectedResult({value: value, datatype:type, lang:lang});
