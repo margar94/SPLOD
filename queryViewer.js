@@ -37,12 +37,16 @@ QueryViewer.prototype.updateQuery = function(queryRoot, queryMap, focus){
 	renderQuery();
 }
 
-function renderQuery(){
+function renderQuery(){ 
 	if(queryLogicStructureRoot != null){
 
 		queryString = languageManager.getQueryStartVerbalization();
 		queryString += '<span meta-focusReference="limit" meta-removeReference="limit" class="focusable">';
-		queryString += '<span id="limit" meta-focusReference="limit" meta-removeReference="limit" class="focusable operator">every </span>';
+		queryString += '<span id="limit" meta-focusReference="limit" meta-removeReference="limit" class="focusable operator">';
+		if(resultLimit == null)
+			 queryString += 'every ';
+		else queryString += resultLimit+' '
+		queryString += '</span>';
 		queryString += '</span>';
 
 		queryString += visitRenderer(queryLogicStructureRoot);

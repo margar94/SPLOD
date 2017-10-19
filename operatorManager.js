@@ -116,14 +116,11 @@ OperatorManager.prototype.queryResult = function(select, labelSelect, keySelect,
 		literalLang[keySelect[i]] = new Array();
 	}
 
-	for(field in result){
-		var arrayIndex = $.inArray('?'+field, select);
-		resultDatatype[keySelect[arrayIndex]] = new Object(); 
-		resultDatatype[keySelect[arrayIndex]].datatype = new Array(); 
+	for(var i=0; i<keySelect.length; i++){
+		resultDatatype[keySelect[i]] = new Object(); 
+		resultDatatype[keySelect[i]].datatype = new Array(); 
 	}
 
-	console.log(savedResult);
-	console.log(resultDatatype);
 	$.each(results, function(index){
 
 		var result = results[index];
@@ -244,8 +241,6 @@ OperatorManager.prototype.queryResult = function(select, labelSelect, keySelect,
 		}
 
 	});
-console.log(resultLiteralLang);
-	//console.log(resultDatatype);
 
 	if(changedFocus)
 		manageUpdateOperatorViewer();
