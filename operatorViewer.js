@@ -19,7 +19,35 @@ function renderOperatorList(operators){
 	$('#operatorList').show();
 	$('#reusableResultList').hide();
 
-	$.each(operators, function(index){
+	for(var i = 0; i<operators.length; i++){
+		var datatypeOperators = operators[i];
+		var datatype = datatypeOperators.datatype;
+		var datatypeOperatorList = datatypeOperators.list;
+
+		$("<li/>").appendTo(operatorList);
+		for(var j = 0; j<datatypeOperatorList.length;j++){
+			var li = $("<li/>")
+			.attr('class', 'collection-item addToQuery')
+			.attr('meta-value', datatypeOperatorList[j])
+			.attr('meta-datatype', datatype)
+			.text(languageManager.getOperatorLabelVerbalization(datatypeOperatorList[j]));
+
+			li.appendTo(operatorList)
+				.on('click', function(){
+					if(!operatorManager.selectedOperator($(this).attr('meta-value'), $(this).attr('meta-datatype'))){
+						$('#operatorsSpinner').show();
+						var reusableResults = operatorManager.getResultToCompleteOperator();
+						renderReusableResultListFromOperator(reusableResults);
+					}
+					else{
+						$('#tableResultSpinner').show();
+					}
+				});
+		}
+		$("<li/>").appendTo(operatorList);
+	}
+
+	/*$.each(operators, function(index){
 		var element = operators[index];
 
 		var li = $("<li/>")
@@ -38,7 +66,7 @@ function renderOperatorList(operators){
 					$('#tableResultSpinner').show();
 				}
 			});
-	});
+	});*/
 
 	$('#operatorsSpinner').hide();
 
