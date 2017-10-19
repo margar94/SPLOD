@@ -47,21 +47,26 @@ function fillPredicates(){
 	});
 }
 
-function updateBoxesFromPredicate(predicateUrl, predicateLabel, predicateDirection){
+function updateBoxesFromDirectPredicate(predicateUrl, predicateLabel){
 	$("#searchConceptsBox").val('');
 	$("#searchPredicatesBox").val('');
 
 	$('#conceptsSpinner').show();
 	$('#predicatesSpinner').show();
 
+	boxFiller.updateConceptsFromDirectPredicate(predicateUrl, predicateLabel, renderConcept);
+	boxFiller.updatePredicatesFromPredicate(predicateUrl, predicateLabel, 'direct', renderPredicates);
+}
 
-	if(predicateDirection == 'direct'){
-		boxFiller.updateConceptsFromDirectPredicate(predicateUrl, predicateLabel, renderConcept);
-	}else{
-		boxFiller.updateConceptsFromReversePredicate(predicateUrl, predicateLabel, renderConcept);
-	}
-	boxFiller.updatePredicatesFromPredicate(predicateUrl, predicateLabel, predicateDirection, renderPredicates);
+function updateBoxesFromReversePredicate(predicateUrl, predicateLabel){
+	$("#searchConceptsBox").val('');
+	$("#searchPredicatesBox").val('');
 
+	$('#conceptsSpinner').show();
+	$('#predicatesSpinner').show();
+
+	boxFiller.updateConceptsFromReversePredicate(predicateUrl, predicateLabel, renderConcept);
+	boxFiller.updatePredicatesFromPredicate(predicateUrl, predicateLabel, 'reverse', renderPredicates);
 }
 
 function renderConcept(rootMap, map){
@@ -268,6 +273,17 @@ function renderReversePredicates(reverseArray){
 			.text(element.numberOfInstances)
 			.appendTo(li);*/
 	});
+}
+
+function updateBoxesFromSomething(predicateUrl, predicateLabel){
+	$("#searchConceptsBox").val('');
+	$("#searchPredicatesBox").val('');
+
+	$('#conceptsSpinner').show();
+	$('#predicatesSpinner').show();
+
+	boxFiller.updateConceptsFromReversePredicate(predicateUrl, predicateLabel, renderConcept);
+	boxFiller.updatePredicatesFromPredicate(predicateUrl, predicateLabel, 'reverse', renderPredicates);	
 }
 
 function updateBoxesFromOperator(operator){

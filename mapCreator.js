@@ -153,34 +153,29 @@ MapCreator.prototype.selectedPredicate = function(selectedUrl, selectedLabel, pr
 
 	if(rootQueryLogicMap == null){ // first element selected
 
-		if(predicateDirection == 'direct'){ 
-			// add predicate's subject -> everything
-			var verbalizationEverything = languageManager.verbalizeEverything();
+		// add predicate's subject -> everything
+		var verbalizationEverything = languageManager.verbalizeEverything();
 
-			if(!indexMap.hasOwnProperty('everything')){
-				indexMap['everything'] = 1;
-			}
-			else{
-				indexMap['everything'] += 1;
-			}
-			var everythingKey = 'everything' + "_" + indexMap['everything'];
-			var everythingIndex = indexMap['everything'];
-
-			var everythingElement = {key: everythingKey, index: everythingIndex,
-								  url: everythingKey, label:'thing', 
-								  type:'everything', direction:false,
-								  verbalization:verbalizationEverything,
-								  parent:null, children:[key],
-								  counterDirectPredicatesChildren: 1};
-			queryLogicMap[everythingKey] = everythingElement;
-
-			rootQueryLogicMap = everythingKey;
-			newLogicElement.parent = everythingKey;
+		if(!indexMap.hasOwnProperty('everything')){
+			indexMap['everything'] = 1;
 		}
-		else
-			//set root
-			rootQueryLogicMap = key;
+		else{
+			indexMap['everything'] += 1;
+		}
+		var everythingKey = 'everything' + "_" + indexMap['everything'];
+		var everythingIndex = indexMap['everything'];
 
+		var everythingElement = {key: everythingKey, index: everythingIndex,
+							  url: everythingKey, label:'thing', 
+							  type:'everything', direction:false,
+							  verbalization:verbalizationEverything,
+							  parent:null, children:[key],
+							  counterDirectPredicatesChildren: 1};
+		queryLogicMap[everythingKey] = everythingElement;
+
+		rootQueryLogicMap = everythingKey;
+		newLogicElement.parent = everythingKey;
+	
 	}else{ //there's a prec 
 
 		var precLogicElement = queryLogicMap[elementOnFocus];
@@ -626,7 +621,6 @@ function removeOperator(node){
 
 //pendingQuery : array of elements to add to map
 MapCreator.prototype.selectedOperator = function(pendingQuery){
-	
 
 	//console.log(pendingQuery);
 	var resultsKey = [];
@@ -652,6 +646,9 @@ MapCreator.prototype.selectedOperator = function(pendingQuery){
 		case 'range':
 
 			var parentNode = queryLogicMap[elementOnFocus];
+			if(parentNode.type == 'predicate' && parentNode.direction == 'reverse' && queryLogicMap[parentNode.parent].type == 'everything')
+				parentNode = queryLogicMap[parentNode.parent];
+
 			if(parentNode.children.length>0){
 				var andOperator = 'and';
 				var andVerbalization = languageManager.verbalizeOperator(andOperator);
@@ -670,7 +667,7 @@ MapCreator.prototype.selectedOperator = function(pendingQuery){
 									   url: andOperator, label: andOperator, 
 									   type:'operator', direction: false, 
 									   verbalization: andVerbalization, 
-									   parent:elementOnFocus, children: []};
+									   parent:parentNode.key, children: []};
 				queryLogicMap[andKey] = andLogicElement;
 
 				parentNode.children.push(andKey);
@@ -691,10 +688,10 @@ MapCreator.prototype.selectedOperator = function(pendingQuery){
 						   url: operator, label: operator, 
 						   type:'operator', direction: false,
 						   verbalization: verbalization, 
-						   parent:elementOnFocus, children: []};
+						   parent:parentNode.key, children: []};
 			queryLogicMap[key] = newLogicElement;	
 
-			queryLogicMap[elementOnFocus].children.push(key);				
+			parentNode.children.push(key);				
 
 			for(var i=1; i<pendingQuery.length; i++){
 				var resultValue = pendingQuery[i].value;
@@ -814,7 +811,7 @@ MapCreator.prototype.selectedOperator = function(pendingQuery){
 
 	}
 
-	//console.log(queryLogicMap);
+console.log(queryLogicMap);
 
 	if(queryVerbalizator == null)
 		queryVerbalizator = new QueryVerbalizator;

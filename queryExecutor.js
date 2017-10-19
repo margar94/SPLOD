@@ -19,6 +19,7 @@ var classHierarchyMapRoots;
 //var directPredicateMap;
 
 var activeAjaxRequest;
+var userAjaxRequest;
 
 var resultLimit;
 
@@ -53,6 +54,7 @@ var QueryExecutor = function (selectedEndpoint, selectedGraph) {
 	directPredicateMap = {};
 
 	activeAjaxRequest = [];
+	userAjaxRequest = null;
 
 	resultLimit = false;
 
@@ -615,15 +617,13 @@ QueryExecutor.prototype.executeUserQuery = function(querySPARQL){
 	        url: queryUrl,
 	        method:'post',
 	        success: function( data, textStatus, jqXHR ) {
-		        	var index = $.inArray(jqXHR, activeAjaxRequest);
-		        	if(index != -1)
-		        		activeAjaxRequest.splice(index, 1);
+		        	userAjaxRequest = null;
 
 					operatorManager.queryResult(querySPARQL.select, querySPARQL.labelSelect, querySPARQL.keySelect, data.results.bindings);
 		        	tableResultManager.updateTable(querySPARQL.select, querySPARQL.labelSelect, data.results.bindings);
 	        }
 	    });
-	    activeAjaxRequest.push(xhr);
+	    userAjaxRequest=xhr;
 	}
 	
 }

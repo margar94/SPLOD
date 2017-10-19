@@ -6,6 +6,7 @@ var LanguageManager = function () {
 	LanguageManager.prototype._singletonInstance = this;
 };
 
+//Return a or an according to how noun starts
 LanguageManager.prototype.getArticle = function(noun){
 	var article;
 	if("aeiouAEIOU".indexOf(noun.charAt(0)) != -1)
@@ -14,6 +15,18 @@ LanguageManager.prototype.getArticle = function(noun){
 	return article;
 }
 
+/*
+	Return verbalization object given a conceprLabel
+	Verbalization object's structure : 
+		verbalization = {
+			standard: [], // standard one
+			modified: [], // when specialize a prev noun (concept or predicate)
+			negated: [], // when 'not' is its father
+			optional: [], // when 'optional' is its father
+			truncated: [],  
+			first: [], // when concept is the query's subject
+			current: []};
+*/
 LanguageManager.prototype.verbalizeConcept = function(conceptLabel){
 	verbalization = {
 		standard: [],
@@ -97,7 +110,6 @@ LanguageManager.prototype.verbalizePredicate = function(predicateLabel, predicat
 			verbalization.truncated.push('');
 
 			//direct predicate should not be the first node
-			verbalization.first.push('thing ');
 			verbalization.first.push('that ');
 			verbalization.first.push(predicateLabel + ' ');
 			verbalization.first.push('');
@@ -127,7 +139,6 @@ LanguageManager.prototype.verbalizePredicate = function(predicateLabel, predicat
 			verbalization.truncated.push('');
 
 			//direct predicate should not be the first node
-			verbalization.first.push('thing ');
 			verbalization.first.push('that has ');
 			verbalization.first.push(predicateLabel + ' ');
 			verbalization.first.push('');
@@ -148,11 +159,22 @@ LanguageManager.prototype.verbalizePredicate = function(predicateLabel, predicat
 			verbalization.modified.push(predicateLabel + ' ');
 			verbalization.modified.push(postLabel);
 
+			verbalization.negated.push('that ');
+			verbalization.negated.push('not ');
+			verbalization.negated.push('');
+			verbalization.negated.push(predicateLabel + ' ');
+			verbalization.negated.push('');
+
+			verbalization.optional.push('that ');
+			verbalization.optional.push('optionally ');
+			verbalization.optional.push('');
+			verbalization.optional.push(predicateLabel + ' ');
+			verbalization.optional.push('');
+
 			verbalization.truncated.push('');
 			verbalization.truncated.push(predicateLabel + ' ');
 			verbalization.truncated.push(postLabel);
 
-			verbalization.first.push('thing ');
 			verbalization.first.push('that ');
 			verbalization.first.push(predicateLabel + ' ');
 			verbalization.first.push(postLabel);
@@ -162,15 +184,26 @@ LanguageManager.prototype.verbalizePredicate = function(predicateLabel, predicat
 			verbalization.standard.push(predicateLabel + ' ');
 			verbalization.standard.push(postLabel);
 
-			verbalization.modified.push('');
-			verbalization.modified.push('the ' + predicateLabel + ' ');
+			verbalization.modified.push('the ');
+			verbalization.modified.push(predicateLabel + ' ');
 			verbalization.modified.push(postLabel);
+
+			verbalization.negated.push('that is ');
+			verbalization.negated.push('not ');
+			verbalization.negated.push('the ');
+			verbalization.negated.push(predicateLabel + ' ');
+			verbalization.negated.push(postLabel);
+
+			verbalization.optional.push('that is ');
+			verbalization.optional.push('optionally ');
+			verbalization.optional.push('the ');
+			verbalization.optional.push(predicateLabel + ' ');
+			verbalization.optional.push(postLabel);
 
 			verbalization.truncated.push('is the ');
 			verbalization.truncated.push(predicateLabel + ' ');
 			verbalization.truncated.push(postLabel);
 
-			verbalization.first.push('thing ');
 			verbalization.first.push('that is the ');
 			verbalization.first.push(predicateLabel + ' ');
 			verbalization.first.push(postLabel);
@@ -274,24 +307,24 @@ LanguageManager.prototype.verbalizeOperator = function(operator){
 			verbalization.current = verbalization.standard;
 			break;
 		case 'is string':
-			verbalization.standard = ['that ','is ',''];
+			verbalization.standard = ['that is ','equals ','to '];
 			verbalization.truncated = ['','',''];
-			verbalization.negated = ['that ','is ', 'not ',''];
-			verbalization.optional = ['that ','is ', 'optionally ',''];
+			verbalization.negated = ['that is ', 'not ','equals ', 'to '];
+			verbalization.optional = ['that is ', 'optionally ','equals ', 'to '];
 			verbalization.current = verbalization.standard;
 			break;
 		case 'is url':
-			verbalization.standard = ['that ','is ',''];
+			verbalization.standard = ['that is ','equals ','to '];
 			verbalization.truncated = ['','',''];
-			verbalization.negated = ['that ','is ', 'not ',''];
-			verbalization.optional = ['that ','is ', 'optionally ',''];
+			verbalization.negated = ['that is ', 'not ','equals ', 'to '];
+			verbalization.optional = ['that is ', 'optionally ','equals ', 'to '];
 			verbalization.current = verbalization.standard;
 			break;
 		case 'is date':
-			verbalization.standard = ['that ','is ',''];
+			verbalization.standard = ['that is ','equals ','to '];
 			verbalization.truncated = ['','',''];
-			verbalization.negated = ['that ','is ', 'not ',''];
-			verbalization.optional = ['that ','is ', 'optionally ',''];
+			verbalization.negated = ['that is ', 'not ','equals ', 'to '];
+			verbalization.optional = ['that is ', 'optionally ','equals ', 'to '];
 			verbalization.current = verbalization.standard;
 			break;
 		case 'range':
@@ -434,12 +467,19 @@ LanguageManager.prototype.getOperatorStandardVerbalization = function(operator){
 
 }
 
+//First part of query verbalization
 LanguageManager.prototype.getQueryStartVerbalization = function(){
-	return 'Give me';
+	return 'Give me ';
 }
 
-LanguageManager.prototype.getQueryInizializationVerbalization = function(){
+//Initialization of query
+LanguageManager.prototype.getQueryInitialVerbalization = function(){
 	return 'Give me...';
+}
+
+//Initialization of focus
+LanguageManager.prototype.getFocusInitialVerbalization = function(){
+	return ' -';
 }
 
 LanguageManager.prototype.getOperatorLabelVerbalization = function(operator){	
