@@ -73,8 +73,10 @@ function visitRenderer(key){
 			//eventually not or optional
 			var parentNode = queryLogicStructure[node.parent];
 			if(parentNode != undefined && parentNode.type == 'operator' && (parentNode.label == 'not' || parentNode.label == 'optional')){
+				nodeQueryString += "<span class='focusable' meta-removeReference='"+parentNode.key+"' meta-focusReference='"+parentNode.key+"'>";
 				nodeQueryString += "<span id='"+parentNode.key+"' class='focusable operator' meta-removeReference='"+parentNode.key+"' meta-focusReference='"+parentNode.key+"'>";
 				nodeQueryString += node.verbalization.current[verbalizationIndex++];
+				nodeQueryString += "</span>";
 				nodeQueryString += "</span>";
 
 				//article
@@ -235,8 +237,10 @@ function visitRenderer(key){
 				//eventually not or optional
 				var parentNode = queryLogicStructure[node.parent];
 				if(parentNode != undefined && parentNode.type == 'operator' && (parentNode.label == 'not' || parentNode.label == 'optional')){
+					nodeQueryString += "<span class='focusable' meta-removeReference='"+parentNode.key+"' meta-focusReference='"+parentNode.key+"'>";
 					nodeQueryString += "<span id='"+parentNode.key+"' class='focusable operator' meta-removeReference='"+parentNode.key+"' meta-focusReference='"+parentNode.key+"'>";
 					nodeQueryString += node.verbalization.current[verbalizationIndex++];
+					nodeQueryString += "</span>";
 					nodeQueryString += "</span>";
 
 					//article
@@ -296,8 +300,10 @@ function visitRenderer(key){
 				//eventually not or optional
 				var parentNode = queryLogicStructure[node.parent];
 				if(parentNode != undefined && parentNode.type == 'operator' && (parentNode.label == 'not' || parentNode.label == 'optional')){
+					nodeQueryString += "<span class='focusable' meta-removeReference='"+parentNode.key+"' meta-focusReference='"+parentNode.key+"'>";
 					nodeQueryString += "<span id='"+parentNode.key+"' class='focusable operator' meta-removeReference='"+parentNode.key+"' meta-focusReference='"+parentNode.key+"'>";
 					nodeQueryString += node.verbalization.current[verbalizationIndex++];
+					nodeQueryString += "</span>";
 					nodeQueryString += "</span>";
 
 					//article
@@ -325,7 +331,7 @@ function visitRenderer(key){
 				case 'or' : 
 				case 'xor' : 
 					var verbalizationIndex = 0;
-					nodeQueryString += "<span id='"+node.key+"' meta-focusReference='"+node.key+"' meta-removeReference='"+node.key+"' class='focusable operator'>" + node.verbalization.current[verbalizationIndex++] + "</span>";
+					nodeQueryString += "<span class='focusable' meta-focusReference='"+node.key+"' meta-removeReference='"+node.key+"'><span id='"+node.key+"' meta-focusReference='"+node.key+"' meta-removeReference='"+node.key+"' class='focusable operator'>" + node.verbalization.current[verbalizationIndex++] + "</span></span>";
 					break;
 
 				case 'not' :
@@ -389,8 +395,10 @@ function visitRenderer(key){
 					//eventually not or optional
 					var parentNode = queryLogicStructure[node.parent];
 					if(parentNode != undefined && parentNode.type == 'operator' && (parentNode.label == 'not' || parentNode.label == 'optional')){
+						nodeQueryString += "<span class='focusable' meta-removeReference='"+parentNode.key+"' meta-focusReference='"+parentNode.key+"'>";					
 						nodeQueryString += "<span id='"+parentNode.key+"' class='focusable operator' meta-removeReference='"+parentNode.key+"' meta-focusReference='"+parentNode.key+"'>";
 						nodeQueryString += node.verbalization.current[verbalizationIndex++];
+						nodeQueryString += "</span>";
 						nodeQueryString += "</span>";
 					}
 

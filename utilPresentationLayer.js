@@ -1,13 +1,17 @@
 function highlightElementsToRemove(){
 	var IDtoRemove = $('.highlighted').attr('meta-removereference');
-	if(IDtoRemove != undefined){
-		var spanToRemove = document.getElementById(IDtoRemove).parentNode.querySelectorAll('span');
-		document.getElementById(IDtoRemove).parentNode.className += ' highlightRemove';
 
+	if(IDtoRemove != undefined){
+        document.getElementById(IDtoRemove).parentNode.className += ' highlightRemove';
+
+		var spanToRemove = document.getElementById(IDtoRemove).parentNode.querySelectorAll('span');
 		$.each(spanToRemove, function(index){
 			spanToRemove[index].className += ' highlightRemove';
 		});
-	}
+
+	}else{
+        console.log("This element has no meta-removereference");
+    }
 }
 
 function removeHighlightElementsToRemove(){
