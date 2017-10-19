@@ -67,14 +67,14 @@ function visitRenderer(key){
 			var verbalizationIndex = 0;
 
 			//pre label
-			nodeQueryString += "<span class='focusable' meta-focusReference='"+node.key+"' meta-removeReference='"+node.key+"'>";
+			nodeQueryString += "<span class='focusable' meta-focusReference='"+encodeURI(node.key)+"' meta-removeReference='"+encodeURI(node.key)+"'>";
 			nodeQueryString += node.verbalization.current[verbalizationIndex++];
 
 			//eventually not or optional
 			var parentNode = queryLogicStructure[node.parent];
 			if(parentNode != undefined && parentNode.type == 'operator' && (parentNode.label == 'not' || parentNode.label == 'optional')){
-				nodeQueryString += "<span class='focusable' meta-removeReference='"+parentNode.key+"' meta-focusReference='"+parentNode.key+"'>";
-				nodeQueryString += "<span id='"+parentNode.key+"' class='focusable operator' meta-removeReference='"+parentNode.key+"' meta-focusReference='"+parentNode.key+"'>";
+				nodeQueryString += "<span class='focusable' meta-removeReference='"+encodeURI(parentNode.key)+"' meta-focusReference='"+encodeURI(parentNode.key)+"'>";
+				nodeQueryString += "<span id='"+encodeURI(parentNode.key)+"' class='focusable operator' meta-removeReference='"+encodeURI(parentNode.key)+"' meta-focusReference='"+encodeURI(parentNode.key)+"'>";
 				nodeQueryString += node.verbalization.current[verbalizationIndex++];
 				nodeQueryString += "</span>";
 				nodeQueryString += "</span>";
@@ -84,7 +84,7 @@ function visitRenderer(key){
 			}
 
 			//content
-			nodeQueryString += "<span id='"+node.key+"' title='"+node.url+"' class='focusable concept' meta-removeReference='"+node.key+"' meta-focusReference='"+node.key+"'>";
+			nodeQueryString += "<span id='"+encodeURI(node.key)+"' title='"+node.url+"' class='focusable concept' meta-removeReference='"+encodeURI(node.key)+"' meta-focusReference='"+encodeURI(node.key)+"'>";
 			nodeQueryString += node.verbalization.current[verbalizationIndex++];
 			nodeQueryString += "</span>";
 
@@ -131,10 +131,10 @@ function visitRenderer(key){
 			var verbalizationIndex = 0;
 
 			//pre label
-			nodeQueryString += "<span class='focusable' meta-focusReference='"+node.key+"' meta-removeReference='"+node.parent+"'>";
+			nodeQueryString += "<span class='focusable' meta-focusReference='"+encodeURI(node.key)+"' meta-removeReference='"+node.parent+"'>";
 
 			//content
-			nodeQueryString += "<span id='"+node.key+"' class='focusable reusableResult' meta-removeReference='"+node.parent+"' meta-focusReference='"+node.key+"'>";
+			nodeQueryString += "<span id='"+encodeURI(node.key)+"' class='focusable reusableResult' meta-removeReference='"+node.parent+"' meta-focusReference='"+encodeURI(node.key)+"'>";
 			nodeQueryString += node.verbalization.current[verbalizationIndex++];
 			nodeQueryString += "</span>";
 
@@ -178,15 +178,15 @@ function visitRenderer(key){
 			var verbalizationIndex = 0;
 			var metaRemoveReference;
 			if(node.type == 'everything')
-				metaRemoveReference = node.key;
+				metaRemoveReference = encodeURI(node.key);
 			else if(node.type == 'something')
 				metaRemoveReference = node.parent;
 			
 
-			nodeQueryString += "<span class='focusable' meta-focusReference='"+node.key+"' meta-removeReference='"+metaRemoveReference+"'>";
+			nodeQueryString += "<span class='focusable' meta-focusReference='"+encodeURI(node.key)+"' meta-removeReference='"+metaRemoveReference+"'>";
 
 			//content
-			nodeQueryString += "<span id='"+node.key+"' class='focusable specialNode' meta-removeReference='"+metaRemoveReference+"' meta-focusReference='"+node.key+"'>";
+			nodeQueryString += "<span id='"+encodeURI(node.key)+"' class='focusable specialNode' meta-removeReference='"+metaRemoveReference+"' meta-focusReference='"+encodeURI(node.key)+"'>";
 			nodeQueryString += node.verbalization.current[verbalizationIndex++];
 			nodeQueryString += "</span>";
 
@@ -231,14 +231,14 @@ function visitRenderer(key){
 				var verbalizationIndex = 0;
 
 				//pre label
-				nodeQueryString += "<span class='focusable' meta-focusReference='"+node.key+"' meta-removeReference='"+node.key+"'>";
+				nodeQueryString += "<span class='focusable' meta-focusReference='"+encodeURI(node.key)+"' meta-removeReference='"+encodeURI(node.key)+"'>";
 				nodeQueryString += node.verbalization.current[verbalizationIndex++];
 
 				//eventually not or optional
 				var parentNode = queryLogicStructure[node.parent];
 				if(parentNode != undefined && parentNode.type == 'operator' && (parentNode.label == 'not' || parentNode.label == 'optional')){
-					nodeQueryString += "<span class='focusable' meta-removeReference='"+parentNode.key+"' meta-focusReference='"+parentNode.key+"'>";
-					nodeQueryString += "<span id='"+parentNode.key+"' class='focusable operator' meta-removeReference='"+parentNode.key+"' meta-focusReference='"+parentNode.key+"'>";
+					nodeQueryString += "<span class='focusable' meta-removeReference='"+encodeURI(parentNode.key)+"' meta-focusReference='"+encodeURI(parentNode.key)+"'>";
+					nodeQueryString += "<span id='"+encodeURI(parentNode.key)+"' class='focusable operator' meta-removeReference='"+encodeURI(parentNode.key)+"' meta-focusReference='"+encodeURI(parentNode.key)+"'>";
 					nodeQueryString += node.verbalization.current[verbalizationIndex++];
 					nodeQueryString += "</span>";
 					nodeQueryString += "</span>";
@@ -248,7 +248,7 @@ function visitRenderer(key){
 				}
 
 				//content
-				nodeQueryString += "<span id='"+node.key+"' title='"+node.url+"' class='focusable predicate' meta-removeReference='"+node.key+"' meta-focusReference='"+node.key+"'>";
+				nodeQueryString += "<span id='"+encodeURI(node.key)+"' title='"+node.url+"' class='focusable predicate' meta-removeReference='"+encodeURI(node.key)+"' meta-focusReference='"+encodeURI(node.key)+"'>";
 				nodeQueryString += node.verbalization.current[verbalizationIndex++];
 				nodeQueryString += "</span>";
 
@@ -294,14 +294,14 @@ function visitRenderer(key){
 				var verbalizationIndex = 0;
 
 				//pre label
-				nodeQueryString += "<span class='focusable' meta-focusReference='"+node.key+"' meta-removeReference='"+node.key+"'>";
+				nodeQueryString += "<span class='focusable' meta-focusReference='"+encodeURI(node.key)+"' meta-removeReference='"+encodeURI(node.key)+"'>";
 				nodeQueryString += node.verbalization.current[verbalizationIndex++];
 
 				//eventually not or optional
 				var parentNode = queryLogicStructure[node.parent];
 				if(parentNode != undefined && parentNode.type == 'operator' && (parentNode.label == 'not' || parentNode.label == 'optional')){
-					nodeQueryString += "<span class='focusable' meta-removeReference='"+parentNode.key+"' meta-focusReference='"+parentNode.key+"'>";
-					nodeQueryString += "<span id='"+parentNode.key+"' class='focusable operator' meta-removeReference='"+parentNode.key+"' meta-focusReference='"+parentNode.key+"'>";
+					nodeQueryString += "<span class='focusable' meta-removeReference='"+encodeURI(parentNode.key)+"' meta-focusReference='"+encodeURI(parentNode.key)+"'>";
+					nodeQueryString += "<span id='"+encodeURI(parentNode.key)+"' class='focusable operator' meta-removeReference='"+encodeURI(parentNode.key)+"' meta-focusReference='"+encodeURI(parentNode.key)+"'>";
 					nodeQueryString += node.verbalization.current[verbalizationIndex++];
 					nodeQueryString += "</span>";
 					nodeQueryString += "</span>";
@@ -311,7 +311,7 @@ function visitRenderer(key){
 				}
 
 				//content
-				nodeQueryString += "<span id='"+node.key+"' title='"+node.url+"' class='focusable predicate' meta-removeReference='"+node.key+"' meta-focusReference='"+node.key+"'>";
+				nodeQueryString += "<span id='"+encodeURI(node.key)+"' title='"+node.url+"' class='focusable predicate' meta-removeReference='"+encodeURI(node.key)+"' meta-focusReference='"+encodeURI(node.key)+"'>";
 				nodeQueryString += node.verbalization.current[verbalizationIndex++];
 				nodeQueryString += "</span>";
 
@@ -331,7 +331,7 @@ function visitRenderer(key){
 				case 'or' : 
 				case 'xor' : 
 					var verbalizationIndex = 0;
-					nodeQueryString += "<span class='focusable' meta-focusReference='"+node.key+"' meta-removeReference='"+node.key+"'><span id='"+node.key+"' meta-focusReference='"+node.key+"' meta-removeReference='"+node.key+"' class='focusable operator'>" + node.verbalization.current[verbalizationIndex++] + "</span></span>";
+					nodeQueryString += "<span class='focusable' meta-focusReference='"+encodeURI(node.key)+"' meta-removeReference='"+encodeURI(node.key)+"'><span id='"+encodeURI(node.key)+"' meta-focusReference='"+encodeURI(node.key)+"' meta-removeReference='"+encodeURI(node.key)+"' class='focusable operator'>" + node.verbalization.current[verbalizationIndex++] + "</span></span>";
 					break;
 
 				case 'not' :
@@ -360,19 +360,19 @@ function visitRenderer(key){
 				case 'after' : 
 					var verbalizationIndex = 0;
 					//pre label
-					nodeQueryString += "<span class='focusable' meta-focusReference='"+node.key+"' meta-removeReference='"+node.key+"'>";
+					nodeQueryString += "<span class='focusable' meta-focusReference='"+encodeURI(node.key)+"' meta-removeReference='"+encodeURI(node.key)+"'>";
 					nodeQueryString += node.verbalization.current[verbalizationIndex++];
 
 					//eventually not or optional
 					var parentNode = queryLogicStructure[node.parent];
 					if(parentNode != undefined && parentNode.type == 'operator' && (parentNode.label == 'not' || parentNode.label == 'optional')){
-						nodeQueryString += "<span id='"+parentNode.key+"' class='focusable operator' meta-removeReference='"+parentNode.key+"' meta-focusReference='"+parentNode.key+"'>";
+						nodeQueryString += "<span id='"+encodeURI(parentNode.key)+"' class='focusable operator' meta-removeReference='"+encodeURI(parentNode.key)+"' meta-focusReference='"+parentencodeURI(node.key)+"'>";
 						nodeQueryString += node.verbalization.current[verbalizationIndex++];
 						nodeQueryString += "</span>";
 					}
 
 					//content
-					nodeQueryString += "<span id='"+node.key+"' class='focusable operator' meta-removeReference='"+node.key+"' meta-focusReference='"+node.key+"'>";
+					nodeQueryString += "<span id='"+encodeURI(node.key)+"' class='focusable operator' meta-removeReference='"+encodeURI(node.key)+"' meta-focusReference='"+encodeURI(node.key)+"'>";
 					nodeQueryString += node.verbalization.current[verbalizationIndex++];
 					nodeQueryString += "</span>";
 
@@ -389,21 +389,21 @@ function visitRenderer(key){
 				case 'range date' : 
 					//due figli senza ul e con and in mezzo
 					//pre label
-					nodeQueryString += "<span class='focusable' meta-focusReference='"+node.key+"' meta-removeReference='"+node.key+"'>";
+					nodeQueryString += "<span class='focusable' meta-focusReference='"+encodeURI(node.key)+"' meta-removeReference='"+encodeURI(node.key)+"'>";
 					nodeQueryString += node.verbalization.current[verbalizationIndex++];
 
 					//eventually not or optional
 					var parentNode = queryLogicStructure[node.parent];
 					if(parentNode != undefined && parentNode.type == 'operator' && (parentNode.label == 'not' || parentNode.label == 'optional')){
-						nodeQueryString += "<span class='focusable' meta-removeReference='"+parentNode.key+"' meta-focusReference='"+parentNode.key+"'>";					
-						nodeQueryString += "<span id='"+parentNode.key+"' class='focusable operator' meta-removeReference='"+parentNode.key+"' meta-focusReference='"+parentNode.key+"'>";
+						nodeQueryString += "<span class='focusable' meta-removeReference='"+encodeURI(parentNode.key)+"' meta-focusReference='"+encodeURI(parentNode.key)+"'>";					
+						nodeQueryString += "<span id='"+encodeURI(parentNode.key)+"' class='focusable operator' meta-removeReference='"+encodeURI(parentNode.key)+"' meta-focusReference='"+encodeURI(parentNode.key)+"'>";
 						nodeQueryString += node.verbalization.current[verbalizationIndex++];
 						nodeQueryString += "</span>";
 						nodeQueryString += "</span>";
 					}
 
 					//content
-					nodeQueryString += "<span id='"+node.key+"' class='focusable operator' meta-removeReference='"+node.key+"' meta-focusReference='"+node.key+"'>";
+					nodeQueryString += "<span id='"+encodeURI(node.key)+"' class='focusable operator' meta-removeReference='"+encodeURI(node.key)+"' meta-focusReference='"+encodeURI(node.key)+"'>";
 					nodeQueryString += node.verbalization.current[verbalizationIndex++];
 					nodeQueryString += "</span>";
 
