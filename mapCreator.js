@@ -856,13 +856,13 @@ MapCreator.prototype.selectedResult = function(result){
 
 	updateAndNotifyFocus(key);
 
-	if(queryBuilder == null)
-		queryBuilder = new QueryBuilder;
-	queryBuilder.updateQuery(rootQueryLogicMap, queryLogicMap);
-
 	if(queryVerbalizator == null)
 		queryVerbalizator = new QueryVerbalizator;
 	queryVerbalizator.updateQuery(rootQueryLogicMap, queryLogicMap, elementOnFocus);
+
+	if(queryBuilder == null)
+		queryBuilder = new QueryBuilder;
+	queryBuilder.updateQuery(rootQueryLogicMap, queryLogicMap);
 
 	return key;
 	

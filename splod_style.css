@@ -85,6 +85,10 @@ span.barred {
 	text-decoration-line: line-through;
 }
 
+span.optionalBlock{
+	font-style: italic;
+}
+
 #queryNaturalLanguage ul{
 	padding-left: 0.8em;
 	margin: 0;

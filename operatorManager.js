@@ -97,7 +97,10 @@ var OperatorManager = function () {
 		'after': ['not', 'optional'],
 		'range date': ['not', 'optional'],
 
-		'limit': ['limit']
+		'limit': ['limit'],
+
+		'not' :[],
+		'optional':[]
 
 	};
 
@@ -107,6 +110,11 @@ var OperatorManager = function () {
 OperatorManager.prototype.queryResult = function(select, labelSelect, keySelect, results){
 
 	var result = results[0];
+
+	for(var i=0; i<keySelect.length; i++){
+		savedResult[keySelect[i]] = {};
+		literalLang[keySelect[i]] = [];
+	}
 
 	for(field in result){
 		var arrayIndex = $.inArray('?'+field, select);
@@ -120,12 +128,19 @@ OperatorManager.prototype.queryResult = function(select, labelSelect, keySelect,
 
 		for(field in result){
 
+			var cachedResult = {};
+			cachedResult.value = result[field].value;
+
 			var type = result[field].type;
 			// from uri to label for better user experience
 			if(type == 'uri'){
 				result[field].url = result[field].value;
 				result[field].value = createLabel(result[field].value);
+
+				cachedResult.url = result[field].url;
 			}
+
+			var currentResultDatatype = '';
 
 			var arrayIndex = $.inArray('?'+field, select);
 			switch(type){
@@ -133,12 +148,10 @@ OperatorManager.prototype.queryResult = function(select, labelSelect, keySelect,
 				case 'anyURI':
 					var url = result[field].url;
 					if((url.toLowerCase()).match(/^https?:\/\/(?:[a-z\-]+\.)+[a-z]{2,6}(?:\/[^\/#?]+)+\.(?:jpe?g|gif|png|svg)/)!=null){
-						if($.inArray('img', resultDatatype[keySelect[arrayIndex]].datatype)<0)
-							resultDatatype[keySelect[arrayIndex]].datatype.push('img');
+						currentResultDatatype = 'img';
 					}
 					else{
-						if($.inArray('uri', resultDatatype[keySelect[arrayIndex]].datatype)<0)
-							resultDatatype[keySelect[arrayIndex]].datatype.push('uri');
+						currentResultDatatype = 'uri';
 					}
 					break;
 				
@@ -161,53 +174,26 @@ OperatorManager.prototype.queryResult = function(select, labelSelect, keySelect,
 							break;			
 						*/
 						case 'gYear':
-							if($.inArray('gYear', resultDatatype[keySelect[arrayIndex]].datatype)<0)
-								resultDatatype[keySelect[arrayIndex]].datatype.push('gYear');
-							break;
 						case 'gMonth':
-							if($.inArray('gMonth', resultDatatype[keySelect[arrayIndex]].datatype)<0)
-								resultDatatype[keySelect[arrayIndex]].datatype.push('gMonth');
-							break;
 						case 'gDay':
-							if($.inArray('gDay', resultDatatype[keySelect[arrayIndex]].datatype)<0)
-								resultDatatype[keySelect[arrayIndex]].datatype.push('gDay');
-							break;
 						case 'gMonthDay':
-							if($.inArray('gMonthDay', resultDatatype[keySelect[arrayIndex]].datatype)<0)
-								resultDatatype[keySelect[arrayIndex]].datatype.push('gMonthDay');
-							break;
 						case 'gYearMonth':
-							if($.inArray('gYearMonth', resultDatatype[keySelect[arrayIndex]].datatype)<0)
-								resultDatatype[keySelect[arrayIndex]].datatype.push('gYearMonth');
-							break;
 						case 'date':
-							if($.inArray('date', resultDatatype[keySelect[arrayIndex]].datatype)<0)
-								resultDatatype[keySelect[arrayIndex]].datatype.push('date');
-							break;
 						case 'dateTime':
-							if($.inArray('dateTime', resultDatatype[keySelect[arrayIndex]].datatype)<0)
-								resultDatatype[keySelect[arrayIndex]].datatype.push('dateTime');
-							break;
 						case 'time':
-							if($.inArray('time', resultDatatype[keySelect[arrayIndex]].datatype)<0)
-								resultDatatype[keySelect[arrayIndex]].datatype.push('time');
+						case 'boolean':
+							currentResultDatatype = datatype;
 							break;
 						case 'langString':
-							if($.inArray('string', resultDatatype[keySelect[arrayIndex]].datatype)<0)
-								resultDatatype[keySelect[arrayIndex]].datatype.push('string');
+							currentResultDatatype = 'string';
 							break;
-						case 'boolean':
-							if($.inArray('boolean', resultDatatype[keySelect[arrayIndex]].datatype)<0)
-								resultDatatype[keySelect[arrayIndex]].datatype.push('boolean');
-							break;
+							
 						default : 
 							if($.isNumeric(result[field].value)){
-								if($.inArray('number', resultDatatype[keySelect[arrayIndex]].datatype)<0)
-									resultDatatype[keySelect[arrayIndex]].datatype.push('number');
+								currentResultDatatype = 'number';
 							}
 							else{
-								if($.inArray('string', resultDatatype[keySelect[arrayIndex]].datatype)<0)
-									resultDatatype[keySelect[arrayIndex]].datatype.push('string');
+								currentResultDatatype = 'string';
 							}
 							//console.log('type : typed-literal, datatype:' +datatype);
 							break;
@@ -216,53 +202,63 @@ OperatorManager.prototype.queryResult = function(select, labelSelect, keySelect,
 					break;
 
 				case 'literal':
-					if($.inArray('literal', resultDatatype[keySelect[arrayIndex]].datatype)<0)
-						resultDatatype[keySelect[arrayIndex]].datatype.push('literal');
-					break;
-
 				case 'boolean': 
-					if($.inArray('boolean', resultDatatype[keySelect[arrayIndex]].datatype)<0)
-						resultDatatype[keySelect[arrayIndex]].datatype.push('boolean');
+					currentResultDatatype = type;
 					break;
 
 				default : 
 					if($.isNumeric(result[field].value)){
-						if($.inArray('number', resultDatatype[keySelect[arrayIndex]].datatype)<0)
-							resultDatatype[keySelect[arrayIndex]].datatype.push('number');
+						currentResultDatatype = 'number';
 					}
 					else{
-						if($.inArray('string', resultDatatype[keySelect[arrayIndex]].datatype)<0)
-							resultDatatype[keySelect[arrayIndex]].datatype.push('string');
+						currentResultDatatype = 'string';	
 					}
 					//console.log('type:' +type);
 					break;
 
 			}
 
+			if($.inArray(currentResultDatatype, resultDatatype[keySelect[arrayIndex]].datatype)<0)
+				resultDatatype[keySelect[arrayIndex]].datatype.push(currentResultDatatype);
+
+			if(!(currentResultDatatype in savedResult[keySelect[arrayIndex]]))
+				savedResult[keySelect[arrayIndex]][currentResultDatatype] = [];
+			savedResult[keySelect[arrayIndex]][currentResultDatatype].push(cachedResult);
+
+			if(type == 'literal'){
+				
+				resultLiteralLang[result[field].value] = (result[field])['xml:lang']; //more equals save last
+
+				var langIndex = valInArray((result[field])['xml:lang'], literalLang[keySelect[arrayIndex]]);
+				if(langIndex<0){
+					var newLang = {value:(result[field])['xml:lang'], occurrences:1};
+					literalLang[keySelect[arrayIndex]].push(newLang);
+				}
+				else{
+					literalLang[keySelect[arrayIndex]][langIndex].occurrences++;
+				}
+				
+			}
 		}
 
 	});
-
+console.log(resultLiteralLang);
 	//console.log(resultDatatype);
 
 	if(changedFocus)
 		manageUpdateOperatorViewer();
 	
-	saveResults(select, keySelect, results);
+	sortAndAggregateResults(select, keySelect, results);
 }
 
 OperatorManager.prototype.selectedReusableResult = function(result, fromInput){
-	var operator = pendingQuery[0].value;
+	var operator = pendingQuery[0];
 
 	var type;
-	if(operator == 'limit'){
+	if(operator.value == 'limit'){
 		type = 'number';
 	}else if(onFocus in resultDatatype){
-		type = resultDatatype[onFocus].datatype;
-		if(type.length > 1)
-			type = 'string';
-		else
-			type = type[0];
+		type = operator.datatype;
 	}else{
 		type = null;
 	}
@@ -308,7 +304,7 @@ OperatorManager.prototype.selectedReusableResult = function(result, fromInput){
 		lang = resultLiteralLang[value];
 	pendingQuery.push({value: value, datatype:type, lang:lang});
 
-	var isComplete = parameterNumberOperator[operator]==pendingQuery.length;
+	var isComplete = parameterNumberOperator[operator.value]==pendingQuery.length;
 
 	if(isComplete){
 		var resultsKey = mapCreator.selectedOperator(pendingQuery);
@@ -320,9 +316,9 @@ OperatorManager.prototype.selectedReusableResult = function(result, fromInput){
 
 }
 
-OperatorManager.prototype.selectedOperator = function(operator){
+OperatorManager.prototype.selectedOperator = function(operator, datatype){
 	pendingQuery = [];
-	pendingQuery.push({value: operator});
+	pendingQuery.push({value: operator, datatype: datatype});
 
 	var isComplete = parameterNumberOperator[operator]==pendingQuery.length;
 
@@ -335,22 +331,23 @@ OperatorManager.prototype.selectedOperator = function(operator){
 }
 
 OperatorManager.prototype.getResultToCompleteOperator = function(){
-	var operator = pendingQuery[0].value;
+	var operator = pendingQuery[0];
 	var operatorField = onFocus;
 	if(operator == 'limit'){
 		results = [];
 	}else if(operatorField in resultDatatype){ 
-		if(resultDatatype[operatorField].datatype=='literal' && operator == 'lang')
+		if(operator.datatype=='literal' && operator.value == 'lang')
 			results = literalLang[operatorField];
-		else results = savedResult[operatorField];
+		else 
+			results = savedResult[operatorField][operator.datatype];
 	}else{
 		results = [];
 	}
-	var type = getTypeByOperator(operatorField, operator);
+	var type = getTypeByOperator(operatorField, operator.value, operator.datatype);
 	return {type:type, results: results};
 }
 
-function getTypeByOperator(operatorField, operator){
+function getTypeByOperator(operatorField, operator, datatype){
 
 	var results;
 	var type = '';
@@ -358,45 +355,36 @@ function getTypeByOperator(operatorField, operator){
 	if(operator == 'limit'){
 		type = 'number';
 	}
-	else if(operatorField in resultDatatype){
-		var datatype = resultDatatype[operatorField].datatype;
-		console.log(datatype);
-
-		if(datatype.length>1)
-			datatype = 'string';
-		else
-			datatype = datatype[0];
-		switch(datatype){
-			case 'img':
-			case 'uri':
-				type = null;
-				break;
-			case 'gYear':
-			case 'gMonth':
-			case 'gDay':
-			case 'gMonthDay':
-			case 'gYearMonth':
-			case 'date':
-				type = 'date';
-				break;
-			case 'dateTime':
-				type = 'dateTime';
-				break;
-			case 'time':
-				type = 'time';
-				break;
-			case 'string':
-			case 'literal':
-			case 'boolean':
-				type = 'text';
-				break;
-			case 'number':
-				type = 'number';
-				break;
-		}
-	}else{
-		type = null;
+	
+	switch(datatype){
+		case 'img':
+		case 'uri':
+			type = null;
+			break;
+		case 'gYear':
+		case 'gMonth':
+		case 'gDay':
+		case 'gMonthDay':
+		case 'gYearMonth':
+		case 'date':
+			type = 'date';
+			break;
+		case 'dateTime':
+			type = 'dateTime';
+			break;
+		case 'time':
+			type = 'time';
+			break;
+		case 'string':
+		case 'literal':
+		case 'boolean':
+			type = 'text';
+			break;
+		case 'number':
+			type = 'number';
+			break;
 	}
+	
 	return type;
 }
 
@@ -436,88 +424,38 @@ OperatorManager.prototype.discardOperator = function(){
 	pendingQuery = [];
 }
 
-function saveResults(select, keySelect, results){
+function sortAndAggregateResults(select, keySelect, results){
 
-	if(results.length == 0){
-		return;
-	}
+	for(field in savedResult){
+		for(datatype in savedResult[field]){
+			sort(savedResult[field][datatype], datatype);
 
-	for(var i=0; i<keySelect.length; i++){
-		savedResult[keySelect[i]] = [];
-		literalLang[keySelect[i]] = [];
-	}
+			var originalArray = savedResult[field][datatype];
+			var newArray = [];
 
-	$.each(results, function(index){
-
-		var element = results[index];
-
-		for(field in element){
-			var cachedResult = {};
-			cachedResult.value = element[field].value;
-
-			var type = element[field].type;
-			if(type == 'uri'){
-				cachedResult.url = element[field].url;
+			var current;
+			var j=0;
+			while(j<originalArray.length){
+				current = originalArray[j];
+				var k=j+1;
+				var occurrences = 1;
+				while(k<originalArray.length && 
+						originalArray[k].value == current.value && originalArray[k].url == current.url){
+					occurrences++;
+					k++;
+				}
+				j=k;
+				current.occurrences = occurrences;
+				newArray.push(current);
 			}
 
-			var index = $.inArray('?'+field, select);
-			savedResult[keySelect[index]].push(cachedResult);
-
-			if(type == 'literal'){
-				
-				resultLiteralLang[element[field].value] = (element[field])['xml:lang']; //more equals save last
-
-				var langIndex = valInArray((element[field])['xml:lang'], literalLang[keySelect[index]]);
-				if(langIndex<0){
-					var newLang = {value:(element[field])['xml:lang'], occurrences:1};
-					literalLang[keySelect[index]].push(newLang);
-				}
-				else{
-					literalLang[keySelect[index]][langIndex].occurrences++;
-				}
-				
-			}
-
-
-
+			savedResult[field][datatype]=newArray;
 		}
-
-	});
-
+	}
+	
 	for(var i=0; i<keySelect.length; i++){
-		var datatype;
-		if(resultDatatype[keySelect[i]].datatype.length>1)
-			datatype = 'string';
-		else
-			datatype = resultDatatype[keySelect[i]].datatype[0];
-		sort(savedResult[keySelect[i]], datatype);
 		sort(literalLang[keySelect[i]], 'string');
 	}
-
-	for(var i=0; i<keySelect.length; i++){
-		var originalArray = savedResult[keySelect[i]];
-		var newArray = [];
-
-		var current;
-		var j=0;
-		while(j<originalArray.length){
-			current = originalArray[j];
-			var k=j+1;
-			var occurrences = 1;
-			while(k<originalArray.length && 
-					originalArray[k].value == current.value && originalArray[k].url == current.url){
-				occurrences++;
-				k++;
-			}
-			j=k;
-			current.occurrences = occurrences;
-			newArray.push(current);
-		}
-
-		savedResult[keySelect[i]]=newArray;
-
-	}
-
 }
 
 function sort(arr, datatype){
@@ -573,12 +511,12 @@ function manageUpdateOperatorViewer(){
 	var operatorList = [];
 
 	if(onFocus==null){
-		renderOperatorList([]);
+		renderOperatorList([{list : [], datatype:null}]);
 		return;
 	}
 
 	if(onFocus=='limit'){//focus on every or everything or number applied as resultLimit
-		renderOperatorList(operatorMap[onFocus]);
+		renderOperatorList([{list : operatorMap[onFocus], datatype:'number'}]);
 		return;
 	}
 	
@@ -594,31 +532,32 @@ function manageUpdateOperatorViewer(){
 		}else{
 			results = [];
 		} 
-		var type = getTypeByOperator(operatorField, operator);
+		var type = getTypeByOperator(operatorField, operator, node.datatype);
 		renderReusableResultListFromResult({type:type, results:results});
 		return;
 	}
 	
 	if(node.type == 'operator' && (node.label in operatorMap)){ //onFocus is an operator 
-		renderOperatorList(operatorMap[node.label]);
+		renderOperatorList([{list : operatorMap[node.label], datatype:null}]);
 		return;
 	}
 				
 	//concept or predicate that fired operator
-	if(node.type == 'predicate' && node.direction == 'direct'){
-		operatorList.push('not');
-		operatorList.push('optional');
+	if(node.type == 'predicate'){
+		var parentNode = mapCreator.getNodeByKey(node.parent);
+		if(parentNode.type!='everything'){
+			operatorList.push({list:['not', 'optional'], datatype:null});
+		}
 	}
 
 	if(mapCreator.isRefinement(onFocus)){
-		operatorList.push('not');
-		operatorList.push('optional');
+		operatorList.push({list:['not', 'optional'], datatype:null});
 		onFocus = mapCreator.getTopElement(onFocus);
 	}
 	//from here onFocus could be the concept or his ancestor
 	if(onFocus in resultDatatype){
 		for(var i=0; i<resultDatatype[onFocus].datatype.length; i++){
-			operatorList = operatorList.concat(operatorMap[resultDatatype[onFocus].datatype[i]]);
+			operatorList.push({list:operatorMap[resultDatatype[onFocus].datatype[i]], datatype:resultDatatype[onFocus].datatype[i]});
 		}
 	}	
 
@@ -633,11 +572,7 @@ OperatorManager.prototype.changedReusableResult = function(result, fromInput){
 
 	var type;
 	if(onFocusNode.relatedTo in resultDatatype){
-		type = resultDatatype[onFocusNode.relatedTo].datatype;
-		if(type.length > 1)
-			type = 'string';
-		else
-			type = type[0];
+		type = onFocusNode.datatype;
 	}else{
 		type = null;
 	}
@@ -697,10 +632,10 @@ function cacheResultToChange(resultsKey){
 		var resultNode = mapCreator.getNodeByKey(resultsKey[i]);
 		var operatorNode = mapCreator.getNodeByKey(resultNode.parent);
 
-		if(resultDatatype[resultNode.relatedTo].datatype=='literal' && operatorNode.label == 'lang')
+		if(resultNode.datatype=='literal' && operatorNode.label == 'lang')
 			cachedResult[resultNode.key] = literalLang[resultNode.relatedTo];
 		else
-			cachedResult[resultNode.key] = savedResult[resultNode.relatedTo];
+			cachedResult[resultNode.key] = savedResult[resultNode.relatedTo][resultNode.datatype];
 	}
 }
 

@@ -26,7 +26,7 @@
 		<link href="Materialize/fonts/roboto/Roboto-Regular.woff2" rel="application/x-font-woff">		
 		<link href="Materialize/css/materialize.min.css" rel="stylesheet">
 		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-		<link href="martina_style.css" rel="stylesheet">
+		<link href="splod_style.css" rel="stylesheet">
 
 	</head>
 	<body>
@@ -46,7 +46,7 @@
                    title="Remove all the highlighted"
                    onmouseover="highlightElementsToRemove();" 
                    onmouseleave="removeHighlightElementsToRemove();" 
-                   onclick="removeHighlightElements($('.highlighted').attr('meta-removereference'))">highlight_off</i>
+                   onclick="removeHighlightElements(decodeURIComponent($('.highlighted').attr('meta-removereference')))">highlight_off</i>
                 </span>
 		      </div>
 		     </div>

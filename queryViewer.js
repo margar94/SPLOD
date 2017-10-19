@@ -41,7 +41,9 @@ function renderQuery(){
 	if(queryLogicStructureRoot != null){
 
 		queryString = languageManager.getQueryStartVerbalization();
+		queryString += '<span meta-focusReference="limit" meta-removeReference="limit" class="focusable">';
 		queryString += '<span id="limit" meta-focusReference="limit" meta-removeReference="limit" class="focusable operator">every </span>';
+		queryString += '</span>';
 
 		queryString += visitRenderer(queryLogicStructureRoot);
 
@@ -131,10 +133,10 @@ function visitRenderer(key){
 			var verbalizationIndex = 0;
 
 			//pre label
-			nodeQueryString += '<span class="focusable" meta-focusReference="'+encodeURIComponent(node.key)+'" meta-removeReference="'+node.parent+'">';
+			nodeQueryString += '<span class="focusable" meta-focusReference="'+encodeURIComponent(node.key)+'" meta-removeReference="'+encodeURIComponent(node.parent)+'">';
 
 			//content
-			nodeQueryString += '<span id="'+encodeURIComponent(node.key)+'" class="focusable reusableResult" meta-removeReference="'+node.parent+'" meta-focusReference="'+encodeURIComponent(node.key)+'">';
+			nodeQueryString += '<span id="'+encodeURIComponent(node.key)+'" class="focusable reusableResult" meta-removeReference="'+encodeURIComponent(node.parent)+'" meta-focusReference="'+encodeURIComponent(node.key)+'">';
 			nodeQueryString += node.verbalization.current[verbalizationIndex++];
 			nodeQueryString += '</span>';
 
@@ -366,8 +368,10 @@ function visitRenderer(key){
 					//eventually not or optional
 					var parentNode = queryLogicStructure[node.parent];
 					if(parentNode != undefined && parentNode.type == "operator" && (parentNode.label == "not" || parentNode.label == "optional")){
-						nodeQueryString += '<span id="'+encodeURIComponent(parentNode.key)+'" class="focusable operator" meta-removeReference="'+encodeURIComponent(parentNode.key)+'" meta-focusReference="'+parentencodeURIComponent(node.key)+'">';
+						nodeQueryString += '<span class="focusable" meta-removeReference="'+encodeURIComponent(parentNode.key)+'" meta-focusReference="'+encodeURIComponent(parentNode.key)+'">';
+						nodeQueryString += '<span id="'+encodeURIComponent(parentNode.key)+'" class="focusable operator" meta-removeReference="'+encodeURIComponent(parentNode.key)+'" meta-focusReference="'+encodeURIComponent(parentNode.key)+'">';
 						nodeQueryString += node.verbalization.current[verbalizationIndex++];
+						nodeQueryString += '</span>';
 						nodeQueryString += '</span>';
 					}
 
@@ -454,7 +458,7 @@ function renderFocus(){
 	}
 
 	//onfocus != null
-	document.getElementById(onFocus).className +=" highlighted";
+	document.getElementById(encodeURIComponent(onFocus)).className +=" highlighted";
 
 	if(onFocus == "limit"){
 		$("#focus").text(" " + $("#limit").text());
@@ -508,7 +512,7 @@ function attachEvents(){
 		$(this).addClass("highlighted");
 
 		//changeFocus notification
-		onFocus = $(this).attr("meta-focusReference");
+		onFocus = decodeURIComponent($(this).attr("meta-focusReference"));
 
 		var number = queryLogicStructure[onFocus].index; 
 		var focusLabel = languageManager.getOrdinalNumber(number) + ' ' + queryLogicStructure[onFocus].label;
