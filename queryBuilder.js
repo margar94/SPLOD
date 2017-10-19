@@ -152,14 +152,12 @@ function visitSPARQL(key){
 					case 'predicate':
 						if(parentNode.direction == 'direct'){
 							node.variable = parentNode.variable;
+						}else if(parentNode.direction == 'reverse'){
+							nodeSelect.push(node.variable);
+							nodeLabelSelect.push(node.label);
+							nodeKeySelect.push(node.key);
 						}
 						break; 
-
-					default : //only reverse predicate is permitted
-						nodeSelect.push(node.variable);
-						nodeLabelSelect.push(node.label);
-						nodeKeySelect.push(node.key);
-						break;
 				} 
 			}else{
 				nodeSelect.push(node.variable);
