@@ -542,8 +542,17 @@ function manageUpdateOperatorViewer(){
 	//concept or predicate that fired operator
 	if(node.type == 'predicate'){
 		var parentNode = mapCreator.getNodeByKey(node.parent);
+		operatorList.push({list:['optional'], datatype:null});
 		if(parentNode.type!='everything'){
-			operatorList.push({list:['not', 'optional'], datatype:null});
+			operatorList.push({list:['not'], datatype:null});
+		}else{
+			for(var i=0; i<parentNode.children.length; i=i+2){
+				var childNode = mapCreator.getNodeByKey(parentNode.children[i]);
+				if(childNode.key!=node.key && !(childNode.type=='operator' && childNode.label =='not')){
+					operatorList.push({list:['not'], datatype:null});
+					break;
+				}
+			}
 		}
 	}
 

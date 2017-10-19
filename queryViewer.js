@@ -43,9 +43,10 @@ function renderQuery(){
 		queryString = languageManager.getQueryStartVerbalization();
 		queryString += '<span meta-focusReference="limit" meta-removeReference="limit" class="focusable">';
 		queryString += '<span id="limit" meta-focusReference="limit" meta-removeReference="limit" class="focusable operator">';
-		if(resultLimit == null)
+		if(!resultLimit)
 			 queryString += 'every ';
-		else queryString += resultLimit+' '
+		else 
+			queryString += resultLimit+' '
 		queryString += '</span>';
 		queryString += '</span>';
 
