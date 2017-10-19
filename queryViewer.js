@@ -41,13 +41,13 @@ function renderQuery(){
 	if(queryLogicStructureRoot != null){
 
 		queryString = languageManager.getQueryStartVerbalization();
-		queryString += "<span id='limit' meta-focusReference='limit' meta-removeReference='limit' class='focusable operator'>every </span>";
+		queryString += '<span id="limit" meta-focusReference="limit" meta-removeReference="limit" class="focusable operator">every </span>';
 
 		queryString += visitRenderer(queryLogicStructureRoot);
 
 	}
 
-	$('#queryNaturalLanguage')[0].innerHTML = queryString;
+	$("#queryNaturalLanguage")[0].innerHTML = queryString;
 	removeFocusable();
 
 	//update box with focus from user
@@ -59,40 +59,40 @@ function renderQuery(){
 
 function visitRenderer(key){
 	var node = queryLogicStructure[key];
-	var nodeQueryString = '';
+	var nodeQueryString = "";
 
 	switch(node.type){
 
-		case 'concept':
+		case "concept":
 			var verbalizationIndex = 0;
 
 			//pre label
-			nodeQueryString += "<span class='focusable' meta-focusReference='"+encodeURI(node.key)+"' meta-removeReference='"+encodeURI(node.key)+"'>";
+			nodeQueryString += '<span class="focusable" meta-focusReference="'+encodeURIComponent(node.key)+'" meta-removeReference="'+encodeURIComponent(node.key)+'">';
 			nodeQueryString += node.verbalization.current[verbalizationIndex++];
 
 			//eventually not or optional
 			var parentNode = queryLogicStructure[node.parent];
-			if(parentNode != undefined && parentNode.type == 'operator' && (parentNode.label == 'not' || parentNode.label == 'optional')){
-				nodeQueryString += "<span class='focusable' meta-removeReference='"+encodeURI(parentNode.key)+"' meta-focusReference='"+encodeURI(parentNode.key)+"'>";
-				nodeQueryString += "<span id='"+encodeURI(parentNode.key)+"' class='focusable operator' meta-removeReference='"+encodeURI(parentNode.key)+"' meta-focusReference='"+encodeURI(parentNode.key)+"'>";
+			if(parentNode != undefined && parentNode.type == "operator" && (parentNode.label == "not" || parentNode.label == "optional")){
+				nodeQueryString += '<span class="focusable" meta-removeReference="'+encodeURIComponent(parentNode.key)+'" meta-focusReference="'+encodeURIComponent(parentNode.key)+'">';
+				nodeQueryString += '<span id="'+encodeURIComponent(parentNode.key)+'" class="focusable operator" meta-removeReference="'+encodeURIComponent(parentNode.key)+'" meta-focusReference="'+encodeURIComponent(parentNode.key)+'">';
 				nodeQueryString += node.verbalization.current[verbalizationIndex++];
-				nodeQueryString += "</span>";
-				nodeQueryString += "</span>";
+				nodeQueryString += '</span>';
+				nodeQueryString += '</span>';
 
 				//article
 				nodeQueryString += node.verbalization.current[verbalizationIndex++];
 			}
 
 			//content
-			nodeQueryString += "<span id='"+encodeURI(node.key)+"' title='"+node.url+"' class='focusable concept' meta-removeReference='"+encodeURI(node.key)+"' meta-focusReference='"+encodeURI(node.key)+"'>";
+			nodeQueryString += '<span id="'+encodeURIComponent(node.key)+'" title="'+node.url+'" class="focusable concept" meta-removeReference="'+encodeURIComponent(node.key)+'" meta-focusReference="'+encodeURIComponent(node.key)+'">';
 			nodeQueryString += node.verbalization.current[verbalizationIndex++];
-			nodeQueryString += "</span>";
+			nodeQueryString += '</span>';
 
 			//post label
 			nodeQueryString += node.verbalization.current[verbalizationIndex++];
 
 			if(addBarred)
-				nodeQueryString += "<span class='barred'>";
+				nodeQueryString += '<span class="barred">';
 
 			var addUl;
 			(node.children.length >= 2)?addUl = true : addUl = false;
@@ -100,163 +100,163 @@ function visitRenderer(key){
 
 			//children
 			if(addUl)
-				nodeQueryString += "<ul>"; 
+				nodeQueryString += '<ul>'; 
 
 			for(var i=0; i<node.children.length;i++){
 				if(addUl){
 					if(i==0 || (i%2)==1)
-						nodeQueryString += '<li>';
+						nodeQueryString += "<li>";
 				}
 
 				nodeQueryString += visitRenderer(node.children[i]);
 
 				if(addUl){
 					if(i==node.children.length-1 || (i%2)==0)
-						nodeQueryString += '</li>';
+						nodeQueryString += "</li>";
 				}
 			}
 
 			if(addUl)
-				nodeQueryString += "</ul>"; 
+				nodeQueryString += '</ul>'; 
 
 			if(addBarred){
-				nodeQueryString += "</span>";
+				nodeQueryString += '</span>';
 				addBarred = false;
 			}
 
-			nodeQueryString += "</span>";
+			nodeQueryString += '</span>';
 			break;
 
-		case 'result':
+		case "result":
 			var verbalizationIndex = 0;
 
 			//pre label
-			nodeQueryString += "<span class='focusable' meta-focusReference='"+encodeURI(node.key)+"' meta-removeReference='"+node.parent+"'>";
+			nodeQueryString += '<span class="focusable" meta-focusReference="'+encodeURIComponent(node.key)+'" meta-removeReference="'+node.parent+'">';
 
 			//content
-			nodeQueryString += "<span id='"+encodeURI(node.key)+"' class='focusable reusableResult' meta-removeReference='"+node.parent+"' meta-focusReference='"+encodeURI(node.key)+"'>";
+			nodeQueryString += '<span id="'+encodeURIComponent(node.key)+'" class="focusable reusableResult" meta-removeReference="'+node.parent+'" meta-focusReference="'+encodeURIComponent(node.key)+'">';
 			nodeQueryString += node.verbalization.current[verbalizationIndex++];
-			nodeQueryString += "</span>";
+			nodeQueryString += '</span>';
 
 			if(addBarred)
-				nodeQueryString += "<span class='barred'>";
+				nodeQueryString += '<span class="barred">';
 
 			var addUl;
 			(node.children.length >= 2)?addUl = true : addUl = false;
 
 			//children
 			if(addUl)
-				nodeQueryString += "<ul>"; 
+				nodeQueryString += '<ul>'; 
 
 			for(var i=0; i<node.children.length;i++){
 				if(addUl){
 					if(i==0 || (i%2)==1)
-						nodeQueryString += '<li>';
+						nodeQueryString += "<li>";
 				}
 
 				nodeQueryString += visitRenderer(node.children[i]);
 
 				if(addUl){
 					if(i==node.children.length-1 || (i%2)==0)
-						nodeQueryString += '</li>';
+						nodeQueryString += "</li>";
 				}
 			}
 
 			if(addUl)
-				nodeQueryString += "</ul>"; 
+				nodeQueryString += '</ul>'; 
 
 			if(addBarred){
-				nodeQueryString += "</span>";
+				nodeQueryString += '</span>';
 				addBarred = false;
 			}
 
-			nodeQueryString += "</span>";
+			nodeQueryString += '</span>';
 			break;
 
-		case 'everything':
-		case 'something':
+		case "everything":
+		case "something":
 			var verbalizationIndex = 0;
 			var metaRemoveReference;
-			if(node.type == 'everything')
-				metaRemoveReference = encodeURI(node.key);
-			else if(node.type == 'something')
+			if(node.type == "everything")
+				metaRemoveReference = encodeURIComponent(node.key);
+			else if(node.type == "something")
 				metaRemoveReference = node.parent;
 			
 
-			nodeQueryString += "<span class='focusable' meta-focusReference='"+encodeURI(node.key)+"' meta-removeReference='"+metaRemoveReference+"'>";
+			nodeQueryString += '<span class="focusable" meta-focusReference="'+encodeURIComponent(node.key)+'" meta-removeReference="'+metaRemoveReference+'">';
 
 			//content
-			nodeQueryString += "<span id='"+encodeURI(node.key)+"' class='focusable specialNode' meta-removeReference='"+metaRemoveReference+"' meta-focusReference='"+encodeURI(node.key)+"'>";
+			nodeQueryString += '<span id="'+encodeURIComponent(node.key)+'" class="focusable specialNode" meta-removeReference="'+metaRemoveReference+'" meta-focusReference="'+encodeURIComponent(node.key)+'">';
 			nodeQueryString += node.verbalization.current[verbalizationIndex++];
-			nodeQueryString += "</span>";
+			nodeQueryString += '</span>';
 
 			if(addBarred)
-				nodeQueryString += "<span class='barred'>";
+				nodeQueryString += '<span class="barred">';
 
 			var addUl;
 			(node.children.length >= 2)?addUl = true : addUl = false;
 
 			//children
 			if(addUl)
-				nodeQueryString += "<ul>"; 
+				nodeQueryString += '<ul>'; 
 
 			for(var i=0; i<node.children.length;i++){
 				if(addUl){
 					if(i==0 || (i%2)==1)
-						nodeQueryString += '<li>';
+						nodeQueryString += "<li>";
 				}
 
 				nodeQueryString += visitRenderer(node.children[i]);
 
 				if(addUl){
 					if(i==node.children.length-1 || (i%2)==0)
-						nodeQueryString += '</li>';
+						nodeQueryString += "</li>";
 				}
 			}
 
 			if(addUl)
-				nodeQueryString += "</ul>"; 
+				nodeQueryString += '</ul>'; 
 
 			if(addBarred){
-				nodeQueryString += "</span>";
+				nodeQueryString += '</span>';
 				addBarred = false;
 			}
 
-			nodeQueryString += "</span>";
+			nodeQueryString += '</span>';
 			break;
 
-		case 'predicate':
-			if(node.direction == 'direct'){
+		case "predicate":
+			if(node.direction == "direct"){
 
 				var verbalizationIndex = 0;
 
 				//pre label
-				nodeQueryString += "<span class='focusable' meta-focusReference='"+encodeURI(node.key)+"' meta-removeReference='"+encodeURI(node.key)+"'>";
+				nodeQueryString += '<span class="focusable" meta-focusReference="'+encodeURIComponent(node.key)+'" meta-removeReference="'+encodeURIComponent(node.key)+'">';
 				nodeQueryString += node.verbalization.current[verbalizationIndex++];
 
 				//eventually not or optional
 				var parentNode = queryLogicStructure[node.parent];
-				if(parentNode != undefined && parentNode.type == 'operator' && (parentNode.label == 'not' || parentNode.label == 'optional')){
-					nodeQueryString += "<span class='focusable' meta-removeReference='"+encodeURI(parentNode.key)+"' meta-focusReference='"+encodeURI(parentNode.key)+"'>";
-					nodeQueryString += "<span id='"+encodeURI(parentNode.key)+"' class='focusable operator' meta-removeReference='"+encodeURI(parentNode.key)+"' meta-focusReference='"+encodeURI(parentNode.key)+"'>";
+				if(parentNode != undefined && parentNode.type == "operator" && (parentNode.label == "not" || parentNode.label == "optional")){
+					nodeQueryString += '<span class="focusable" meta-removeReference="'+encodeURIComponent(parentNode.key)+'" meta-focusReference="'+encodeURIComponent(parentNode.key)+'">';
+					nodeQueryString += '<span id="'+encodeURIComponent(parentNode.key)+'" class="focusable operator" meta-removeReference="'+encodeURIComponent(parentNode.key)+'" meta-focusReference="'+encodeURIComponent(parentNode.key)+'">';
 					nodeQueryString += node.verbalization.current[verbalizationIndex++];
-					nodeQueryString += "</span>";
-					nodeQueryString += "</span>";
+					nodeQueryString += '</span>';
+					nodeQueryString += '</span>';
 
 					//article
 					nodeQueryString += node.verbalization.current[verbalizationIndex++];
 				}
 
 				//content
-				nodeQueryString += "<span id='"+encodeURI(node.key)+"' title='"+node.url+"' class='focusable predicate' meta-removeReference='"+encodeURI(node.key)+"' meta-focusReference='"+encodeURI(node.key)+"'>";
+				nodeQueryString += '<span id="'+encodeURIComponent(node.key)+'" title="'+node.url+'" class="focusable predicate" meta-removeReference="'+encodeURIComponent(node.key)+'" meta-focusReference="'+encodeURIComponent(node.key)+'">';
 				nodeQueryString += node.verbalization.current[verbalizationIndex++];
-				nodeQueryString += "</span>";
+				nodeQueryString += '</span>';
 
 				//post label
 				nodeQueryString += node.verbalization.current[verbalizationIndex++];
 
 				if(addBarred)
-					nodeQueryString += "<span class='barred'>";
+					nodeQueryString += '<span class="barred">';
 
 				var addUl;
 				(node.children.length >= 2)?addUl = true : addUl = false;
@@ -264,56 +264,56 @@ function visitRenderer(key){
 
 				//children
 				if(addUl)
-					nodeQueryString += "<ul>"; 
+					nodeQueryString += '<ul>'; 
 
 				for(var i=0; i<node.children.length;i++){
 					if(addUl){
 						if(i==0 || (i%2)==1)
-							nodeQueryString += '<li>';
+							nodeQueryString += "<li>";
 					}
 
 					nodeQueryString += visitRenderer(node.children[i]);
 
 					if(addUl){
 						if(i==node.children.length-1 || (i%2)==0)
-							nodeQueryString += '</li>';
+							nodeQueryString += "</li>";
 					}
 				}
 
 				if(addUl)
-					nodeQueryString += "</ul>"; 
+					nodeQueryString += '</ul>'; 
 
 				if(addBarred){
-					nodeQueryString += "</span>";
+					nodeQueryString += '</span>';
 					addBarred = false;
 				}
 
-				nodeQueryString += "</span>";
+				nodeQueryString += '</span>';
 
-			}else if(node.direction == 'reverse'){
+			}else if(node.direction == "reverse"){
 				var verbalizationIndex = 0;
 
 				//pre label
-				nodeQueryString += "<span class='focusable' meta-focusReference='"+encodeURI(node.key)+"' meta-removeReference='"+encodeURI(node.key)+"'>";
+				nodeQueryString += '<span class="focusable" meta-focusReference="'+encodeURIComponent(node.key)+'" meta-removeReference="'+encodeURIComponent(node.key)+'">';
 				nodeQueryString += node.verbalization.current[verbalizationIndex++];
 
 				//eventually not or optional
 				var parentNode = queryLogicStructure[node.parent];
-				if(parentNode != undefined && parentNode.type == 'operator' && (parentNode.label == 'not' || parentNode.label == 'optional')){
-					nodeQueryString += "<span class='focusable' meta-removeReference='"+encodeURI(parentNode.key)+"' meta-focusReference='"+encodeURI(parentNode.key)+"'>";
-					nodeQueryString += "<span id='"+encodeURI(parentNode.key)+"' class='focusable operator' meta-removeReference='"+encodeURI(parentNode.key)+"' meta-focusReference='"+encodeURI(parentNode.key)+"'>";
+				if(parentNode != undefined && parentNode.type == "operator" && (parentNode.label == "not" || parentNode.label == "optional")){
+					nodeQueryString += '<span class="focusable" meta-removeReference="'+encodeURIComponent(parentNode.key)+'" meta-focusReference="'+encodeURIComponent(parentNode.key)+'">';
+					nodeQueryString += '<span id="'+encodeURIComponent(parentNode.key)+'" class="focusable operator" meta-removeReference="'+encodeURIComponent(parentNode.key)+'" meta-focusReference="'+encodeURIComponent(parentNode.key)+'">';
 					nodeQueryString += node.verbalization.current[verbalizationIndex++];
-					nodeQueryString += "</span>";
-					nodeQueryString += "</span>";
+					nodeQueryString += '</span>';
+					nodeQueryString += '</span>';
 
 					//article
 					nodeQueryString += node.verbalization.current[verbalizationIndex++];
 				}
 
 				//content
-				nodeQueryString += "<span id='"+encodeURI(node.key)+"' title='"+node.url+"' class='focusable predicate' meta-removeReference='"+encodeURI(node.key)+"' meta-focusReference='"+encodeURI(node.key)+"'>";
+				nodeQueryString += '<span id="'+encodeURIComponent(node.key)+'" title="'+node.url+'" class="focusable predicate" meta-removeReference="'+encodeURIComponent(node.key)+'" meta-focusReference="'+encodeURIComponent(node.key)+'">';
 				nodeQueryString += node.verbalization.current[verbalizationIndex++];
-				nodeQueryString += "</span>";
+				nodeQueryString += '</span>';
 
 				//post label
 				nodeQueryString += node.verbalization.current[verbalizationIndex++];
@@ -321,60 +321,60 @@ function visitRenderer(key){
 				//it has only a something child
 				nodeQueryString += visitRenderer(node.children[0]);
 
-				nodeQueryString += "</span>";
+				nodeQueryString += '</span>';
 			}
 			break;
 		
-		case 'operator':
+		case "operator":
 			switch(node.label){
-				case 'and' :
-				case 'or' : 
-				case 'xor' : 
+				case "and" :
+				case "or" : 
+				case "xor" : 
 					var verbalizationIndex = 0;
-					nodeQueryString += "<span class='focusable' meta-focusReference='"+encodeURI(node.key)+"' meta-removeReference='"+encodeURI(node.key)+"'><span id='"+encodeURI(node.key)+"' meta-focusReference='"+encodeURI(node.key)+"' meta-removeReference='"+encodeURI(node.key)+"' class='focusable operator'>" + node.verbalization.current[verbalizationIndex++] + "</span></span>";
+					nodeQueryString += '<span class="focusable" meta-focusReference="'+encodeURIComponent(node.key)+'" meta-removeReference="'+encodeURIComponent(node.key)+'"><span id="'+encodeURIComponent(node.key)+'" meta-focusReference="'+encodeURIComponent(node.key)+'" meta-removeReference="'+encodeURIComponent(node.key)+'" class="focusable operator">' + node.verbalization.current[verbalizationIndex++] + '</span></span>';
 					break;
 
-				case 'not' :
+				case "not" :
 					addBarred = true;
 					nodeQueryString += visitRenderer(node.children[0]);
 					break;
-				case 'optional' :
-					nodeQueryString += "<span class='optionalBlock'>";
+				case "optional" :
+					nodeQueryString += '<span class="optionalBlock">';
 					nodeQueryString += visitRenderer(node.children[0]);
-					nodeQueryString += "</span>";
+					nodeQueryString += '</span>';
 					break;
 		
-				case '<' :
-				case '<=' : 
-				case '>' : 
-				case '>=' : 
-				case '=' : 
-				case 'is url' : 
-				case 'is string' : 
-				case 'starts with' : 
-				case 'ends with' : 
-				case 'contains' : 
-				case 'lang' : 
-				case 'is date' : 
-				case 'before' : 
-				case 'after' : 
+				case "<" :
+				case "<=" : 
+				case ">" : 
+				case ">=" : 
+				case "=" : 
+				case "is url" : 
+				case "is string" : 
+				case "starts with" : 
+				case "ends with" : 
+				case "contains" : 
+				case "lang" : 
+				case "is date" : 
+				case "before" : 
+				case "after" : 
 					var verbalizationIndex = 0;
 					//pre label
-					nodeQueryString += "<span class='focusable' meta-focusReference='"+encodeURI(node.key)+"' meta-removeReference='"+encodeURI(node.key)+"'>";
+					nodeQueryString += '<span class="focusable" meta-focusReference="'+encodeURIComponent(node.key)+'" meta-removeReference="'+encodeURIComponent(node.key)+'">';
 					nodeQueryString += node.verbalization.current[verbalizationIndex++];
 
 					//eventually not or optional
 					var parentNode = queryLogicStructure[node.parent];
-					if(parentNode != undefined && parentNode.type == 'operator' && (parentNode.label == 'not' || parentNode.label == 'optional')){
-						nodeQueryString += "<span id='"+encodeURI(parentNode.key)+"' class='focusable operator' meta-removeReference='"+encodeURI(parentNode.key)+"' meta-focusReference='"+parentencodeURI(node.key)+"'>";
+					if(parentNode != undefined && parentNode.type == "operator" && (parentNode.label == "not" || parentNode.label == "optional")){
+						nodeQueryString += '<span id="'+encodeURIComponent(parentNode.key)+'" class="focusable operator" meta-removeReference="'+encodeURIComponent(parentNode.key)+'" meta-focusReference="'+parentencodeURIComponent(node.key)+'">';
 						nodeQueryString += node.verbalization.current[verbalizationIndex++];
-						nodeQueryString += "</span>";
+						nodeQueryString += '</span>';
 					}
 
 					//content
-					nodeQueryString += "<span id='"+encodeURI(node.key)+"' class='focusable operator' meta-removeReference='"+encodeURI(node.key)+"' meta-focusReference='"+encodeURI(node.key)+"'>";
+					nodeQueryString += '<span id="'+encodeURIComponent(node.key)+'" class="focusable operator" meta-removeReference="'+encodeURIComponent(node.key)+'" meta-focusReference="'+encodeURIComponent(node.key)+'">';
 					nodeQueryString += node.verbalization.current[verbalizationIndex++];
-					nodeQueryString += "</span>";
+					nodeQueryString += '</span>';
 
 					//post label
 					nodeQueryString += node.verbalization.current[verbalizationIndex++];
@@ -382,30 +382,30 @@ function visitRenderer(key){
 					//they have only a child
 					nodeQueryString += visitRenderer(node.children[0]);
 
-					nodeQueryString += "</span>";
+					nodeQueryString += '</span>';
 					break;
 
-				case 'range' : 
-				case 'range date' : 
+				case "range" : 
+				case "range date" : 
 					//due figli senza ul e con and in mezzo
 					//pre label
-					nodeQueryString += "<span class='focusable' meta-focusReference='"+encodeURI(node.key)+"' meta-removeReference='"+encodeURI(node.key)+"'>";
+					nodeQueryString += '<span class="focusable" meta-focusReference="'+encodeURIComponent(node.key)+'" meta-removeReference="'+encodeURIComponent(node.key)+'">';
 					nodeQueryString += node.verbalization.current[verbalizationIndex++];
 
 					//eventually not or optional
 					var parentNode = queryLogicStructure[node.parent];
-					if(parentNode != undefined && parentNode.type == 'operator' && (parentNode.label == 'not' || parentNode.label == 'optional')){
-						nodeQueryString += "<span class='focusable' meta-removeReference='"+encodeURI(parentNode.key)+"' meta-focusReference='"+encodeURI(parentNode.key)+"'>";					
-						nodeQueryString += "<span id='"+encodeURI(parentNode.key)+"' class='focusable operator' meta-removeReference='"+encodeURI(parentNode.key)+"' meta-focusReference='"+encodeURI(parentNode.key)+"'>";
+					if(parentNode != undefined && parentNode.type == "operator" && (parentNode.label == "not" || parentNode.label == "optional")){
+						nodeQueryString += '<span class="focusable" meta-removeReference="'+encodeURIComponent(parentNode.key)+'" meta-focusReference="'+encodeURIComponent(parentNode.key)+'">';					
+						nodeQueryString += '<span id="'+encodeURIComponent(parentNode.key)+'" class="focusable operator" meta-removeReference="'+encodeURIComponent(parentNode.key)+'" meta-focusReference="'+encodeURIComponent(parentNode.key)+'">';
 						nodeQueryString += node.verbalization.current[verbalizationIndex++];
-						nodeQueryString += "</span>";
-						nodeQueryString += "</span>";
+						nodeQueryString += '</span>';
+						nodeQueryString += '</span>';
 					}
 
 					//content
-					nodeQueryString += "<span id='"+encodeURI(node.key)+"' class='focusable operator' meta-removeReference='"+encodeURI(node.key)+"' meta-focusReference='"+encodeURI(node.key)+"'>";
+					nodeQueryString += '<span id="'+encodeURIComponent(node.key)+'" class="focusable operator" meta-removeReference="'+encodeURIComponent(node.key)+'" meta-focusReference="'+encodeURIComponent(node.key)+'">';
 					nodeQueryString += node.verbalization.current[verbalizationIndex++];
-					nodeQueryString += "</span>";
+					nodeQueryString += '</span>';
 
 					//post label
 					nodeQueryString += node.verbalization.current[verbalizationIndex++];
@@ -413,11 +413,11 @@ function visitRenderer(key){
 					//they have only a child
 					nodeQueryString += visitRenderer(node.children[0]);
 
-					nodeQueryString += "and ";
+					nodeQueryString += 'and ';
 
 					nodeQueryString += visitRenderer(node.children[1]);
 
-					nodeQueryString += "</span>";
+					nodeQueryString += '</span>';
 					break;
 			}
 			break;
@@ -448,22 +448,22 @@ function renderFocus(){
 		fillConcepts();
 		fillPredicates();
 
-		$('#focus').text(languageManager.getFocusInitialVerbalization());
+		$("#focus").text(languageManager.getFocusInitialVerbalization());
 
 		return;
 	}
 
 	//onfocus != null
-	document.getElementById(onFocus).className +=' highlighted';
+	document.getElementById(onFocus).className +=" highlighted";
 
-	if(onFocus == 'limit'){
-		$('#focus').text(' ' + $('#limit').text());
-		updateBoxesFromOperator('limit');
-	}else{//it's a node of the map
+	if(onFocus == "limit"){
+		$("#focus").text(" " + $("#limit").text());
+		updateBoxesFromOperator("limit");
+	}else{//it"s a node of the map
 		//focus text
 		var number = queryLogicStructure[onFocus].index; 
-		var focusLabel = languageManager.getOrdinalNumber(number) + " " + queryLogicStructure[onFocus].label;
-		$('#focus').text(' ' + focusLabel);
+		var focusLabel = languageManager.getOrdinalNumber(number) + ' ' + queryLogicStructure[onFocus].label;
+		$("#focus").text(" " + focusLabel);
 
 		updateBoxes(queryLogicStructure[onFocus]);	
 	}
@@ -473,27 +473,27 @@ function renderFocus(){
 function updateBoxes(focusNode){
 
 	switch(focusNode.type){
-		case 'concept':
+		case "concept":
 			updateBoxesFromConcept(focusNode.url, focusNode.label);
 			break;
-		case 'predicate':
-			if(focusNode.direction == 'direct')
+		case "predicate":
+			if(focusNode.direction == "direct")
 				updateBoxesFromDirectPredicate(focusNode.url, focusNode.label);
 			else 
 				updateBoxesFromReversePredicate(focusNode.url, focusNode.label);
 			break;
-		case 'something':
+		case "something":
 			var parent = queryLogicStructure[focusNode.parent];
 			updateBoxesFromSomething(parent.url, parent.label);
 			break;
-		case 'everything':
+		case "everything":
 			fillConcepts();
 			fillPredicates();
 			break;
-		case 'operator':
+		case "operator":
 			updateBoxesFromOperator();
 			break;
-		case 'result':
+		case "result":
 			updateBoxesFromResult();
 			break;
 	}
@@ -502,18 +502,18 @@ function updateBoxes(focusNode){
 function attachEvents(){
 
 	//all focusable except for limit
-	$('.focusable:not(#limit)').click(function(e){
+	$(".focusable:not(#limit)").click(function(e){
 		e.stopPropagation();
-		$('.highlighted').removeClass('highlighted');
-		$(this).addClass('highlighted');
+		$(".highlighted").removeClass("highlighted");
+		$(this).addClass("highlighted");
 
 		//changeFocus notification
-		onFocus = $(this).attr('meta-focusReference');
+		onFocus = $(this).attr("meta-focusReference");
 
 		var number = queryLogicStructure[onFocus].index; 
-		var focusLabel = languageManager.getOrdinalNumber(number) + " " + queryLogicStructure[onFocus].label;
-		$('#focus').text(' ' + focusLabel);
-		$('#operatorsSpinner').show();
+		var focusLabel = languageManager.getOrdinalNumber(number) + ' ' + queryLogicStructure[onFocus].label;
+		$("#focus").text(" " + focusLabel);
+		$("#operatorsSpinner").show();
 
 		mapCreator.changeFocus(onFocus);
 
@@ -524,59 +524,59 @@ function attachEvents(){
 			}
 			activeAjaxRequest = [];
 		}
-		//don't kill user query
+		//don"t kill user query
 
 		updateBoxes(queryLogicStructure[onFocus]);	
 	});
 
-	$('#limit').click(function(e){
+	$("#limit").click(function(e){
 		e.stopPropagation();
 
-		$('.highlighted').removeClass('highlighted');
-		$(this).addClass('highlighted');
+		$(".highlighted").removeClass("highlighted");
+		$(this).addClass("highlighted");
 
 		//changeFocus notification
-		onFocus = $(this).attr('meta-focusReference');
+		onFocus = $(this).attr("meta-focusReference");
 
-		$('#focus').text($(this).text());
+		$("#focus").text($(this).text());
 
 		mapCreator.changeFocus(onFocus);
 
 		updateBoxesFromOperator(onFocus);
 	});
 
-	$('.barred').click(function(e){
+	$(".barred").click(function(e){
 		e.stopPropagation();
 	});
 
 }
 
 function removeFocusable(){
-	var focusable = $('.barred .focusable');
+	var focusable = $(".barred .focusable");
 	
 	$.each(focusable, function(index){
-		focusable[index].classList.remove("focusable");
+		focusable[index].classList.remove('focusable');
 	});
 }
 
 function showUserQueryBox(){
-	if($('#openSparqlQuery').text() == 'arrow_back'){
+	if($("#openSparqlQuery").text() == "arrow_back"){
 
-		$('#openSparqlQuery').text('arrow_forward');
-		$('#querySparqlText').show();
-		document.getElementById('querySparqlBox').className = document.getElementById('querySparqlBox').className.replace(/s1/, 's6');
-		document.getElementById('queryBox').className = document.getElementById('queryBox').className.replace(/s11/, 's6');
+		$("#openSparqlQuery").text("arrow_forward");
+		$("#querySparqlText").show();
+		document.getElementById("querySparqlBox").className = document.getElementById("querySparqlBox").className.replace(/s1/, "s6");
+		document.getElementById("queryBox").className = document.getElementById("queryBox").className.replace(/s11/, "s6");
 		
 	}else{
 
-		$('#openSparqlQuery').text('arrow_back');
-		$('#querySparqlText').hide();
-		document.getElementById('querySparqlBox').className = document.getElementById('querySparqlBox').className.replace(/s6/, 's1');
-		document.getElementById('queryBox').className = document.getElementById('queryBox').className.replace(/s6/, 's11');
+		$("#openSparqlQuery").text("arrow_back");
+		$("#querySparqlText").hide();
+		document.getElementById("querySparqlBox").className = document.getElementById("querySparqlBox").className.replace(/s6/, "s1");
+		document.getElementById("queryBox").className = document.getElementById("queryBox").className.replace(/s6/, "s11");
 	}
 }
 
 QueryViewer.prototype.renderUserQuery = function(sparqlQueryArray){
-	var sparqlQuery = sparqlQueryArray.join('\n');
-	$('#querySparqlText').text(sparqlQuery);
+	var sparqlQuery = sparqlQueryArray.join("\n");
+	$("#querySparqlText").text(sparqlQuery);
 }
