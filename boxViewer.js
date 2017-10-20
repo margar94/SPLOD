@@ -338,5 +338,6 @@ function hierarchyOn(){
 
 function removeHighlightElements(keyToRemove){
 	$('#tableResultSpinner').show();
-	mapCreator.removeElement(keyToRemove);
+	if(keyToRemove != 'undefined')
+		mapCreator.removeElement(keyToRemove);
 }
