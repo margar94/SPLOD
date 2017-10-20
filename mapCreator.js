@@ -96,8 +96,8 @@ MapCreator.prototype.selectedConcept = function(selectedUrl, selectedLabel) {
 			//update map
 			var indexSomething = $.inArray(precLogicElement.key, queryLogicMap[precLogicElement.parent].children);
 			queryLogicMap[precLogicElement.parent].children[indexSomething] = newLogicElement.key;
-			delete queryLogicMap[precLogicElement.key];
-			
+			decreaseIndexIfIAmLast(precLogicElement);
+			delete queryLogicMap[precLogicElement.key];		
 
 		}else{ // concept refining parent node
 
@@ -359,12 +359,14 @@ MapCreator.prototype.removeElement = function(key){
 
 					//if I have to remove everything node...
 					if(everythingNode.children.length==0){
+						decreaseIndexIfIAmLast(everythingNode);
 						delete queryLogicMap[everythingNode.key];
 
 						rootQueryLogicMap = null;
 						elementOnFocus = null;
 
 					}else if(everythingNode.children.length==1 && everythingNode.counterDirectPredicatesChildren==0){
+						decreaseIndexIfIAmLast(everythingNode);
 						delete queryLogicMap[everythingNode.key];
 
 						queryLogicMap[everythingNode.children[0]].parent = null;
@@ -387,6 +389,8 @@ MapCreator.prototype.removeElement = function(key){
 			if(node.type == 'something'){
 				node = queryLogicMap[node.parent];
 				cleanMyParentList(node);
+
+				decreaseIndexIfIAmLast(node);
 				delete queryLogicMap[node.key];
 
 				elementOnFocus = node.parent;
@@ -461,11 +465,15 @@ function substituteMeWithSomethingNode(key){
 							  parent:node.parent, children:[]};
 	queryLogicMap[somethingKey] = somethingLogic;
 
-	for(var i=0; i<node.children.length; i++)
+	for(var i=0; i<node.children.length; i++){
+		decreaseIndexIfIAmLast(queryLogicMap[node.children[i]]);
 		delete queryLogicMap[node.children[i]];
+	}
 
 	var index = $.inArray(node.key, queryLogicMap[node.parent].children);
 	queryLogicMap[node.parent].children[index] = somethingKey;
+	
+	decreaseIndexIfIAmLast(node);
 	delete queryLogicMap[node.key];
 
 	return somethingKey;
@@ -483,6 +491,7 @@ function removeMeAndMyDescendents(node){
 			visitStack.push(queryLogicMap[currentNode.children[i]]);
 		}
 
+		decreaseIndexIfIAmLast(currentNode);
 		delete queryLogicMap[currentNode.key];
 
 	}
@@ -494,11 +503,15 @@ function cleanMyParentList(node){
 	var index = $.inArray(node.key, childrenList);
 	if(childrenList.length>1){
 		if(index==0){
+			decreaseIndexIfIAmLast(queryLogicMap[childrenList[index+1]]);
 			delete queryLogicMap[childrenList[index+1]];
+			
 			childrenList.splice(index, 2);//removed me and 'and' after me
 		}
 		else{
+			decreaseIndexIfIAmLast(queryLogicMap[childrenList[index-1]]);
 			delete queryLogicMap[childrenList[index-1]];
+			
 			queryLogicMap[node.parent].children.splice(index-1, 2);//removed me and 'and' before me
 		}
 	}else{
@@ -549,6 +562,7 @@ function removeOperator(node){
 			var index = $.inArray(node.key, queryLogicMap[node.parent].children);
 			queryLogicMap[node.parent].children[index] = child.key;
 			
+			decreaseIndexIfIAmLast(node);
 			delete queryLogicMap[node.key];
 
 			updateAndNotifyFocus(child.key);
@@ -580,6 +594,7 @@ function removeOperator(node){
 			var index = $.inArray(node.key, queryLogicMap[node.parent].children);
 			queryLogicMap[node.parent].children[index] = conjunctionKey;
 			
+			decreaseIndexIfIAmLast(node);
 			delete queryLogicMap[node.key];
 
 			updateAndNotifyFocus(conjunctionKey);
@@ -609,6 +624,7 @@ function removeOperator(node){
 			var index = $.inArray(node.key, queryLogicMap[node.parent].children);
 			queryLogicMap[node.parent].children[index] = conjunctionKey;
 			
+			decreaseIndexIfIAmLast(node);
 			delete queryLogicMap[node.key];
 
 			updateAndNotifyFocus(conjunctionKey);
@@ -786,6 +802,7 @@ MapCreator.prototype.selectedOperator = function(pendingQuery){
 			var index = $.inArray(elementOnFocus, queryLogicMap[elementOnFocusNode.parent].children);
 			queryLogicMap[elementOnFocusNode.parent].children[index] = conjunctionKey;
 			
+			decreaseIndexIfIAmLast(queryLogicMap[elementOnFocus]);
 			delete queryLogicMap[elementOnFocus];
 
 			updateAndNotifyFocus(conjunctionKey);
@@ -851,7 +868,8 @@ MapCreator.prototype.selectedResult = function(result){
 	var elementOnFocusNode = queryLogicMap[elementOnFocus];
 	var index = $.inArray(elementOnFocus, queryLogicMap[elementOnFocusNode.parent].children);
 	queryLogicMap[elementOnFocusNode.parent].children[index] = key;
-	
+		
+	decreaseIndexIfIAmLast(queryLogicMap[elementOnFocus]);
 	delete queryLogicMap[elementOnFocus];
 
 	updateAndNotifyFocus(key);
@@ -876,5 +894,10 @@ function initializeMap(){
 	if(tableResultManager == null)
 		tableResultManager = new TableResultManager;
 	tableResultManager.resetTable();
+}
+
+function decreaseIndexIfIAmLast(node){
+	if(node.index == indexMap[node.url])
+		indexMap[node.url] = indexMap[node.url]-1;
 }
 
