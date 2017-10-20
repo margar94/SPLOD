@@ -13,6 +13,8 @@ function renderResult(select, labelSelect, results){
 
 function renderOperatorList(operators){
 
+	//$('#operatorsBox .card-title').text(languageManager.getBoxTitle('operator'));
+
 	$('#pendingQuerySpan').empty();
 	var operatorList = $('#operatorList');
 	operatorList.empty();
@@ -24,7 +26,6 @@ function renderOperatorList(operators){
 		var datatype = datatypeOperators.datatype;
 		var datatypeOperatorList = datatypeOperators.list;
 
-		$("<li/>").appendTo(operatorList);
 		for(var j = 0; j<datatypeOperatorList.length;j++){
 			var li = $("<li/>")
 			.attr('class', 'collection-item addToQuery')
@@ -44,7 +45,8 @@ function renderOperatorList(operators){
 					}
 				});
 		}
-		$("<li/>").appendTo(operatorList);
+		if(i != operators.length)
+			$("<hr/>").appendTo(operatorList);
 	}
 
 	/*$.each(operators, function(index){
@@ -129,6 +131,16 @@ function renderReusableResultListFromResult(reusableResults){
 function renderReusableResultList(reusableResults, onClickButtonFunction, onClickLiFunction){
 
 	var operatorList = $('#operatorList').hide();
+
+	//change box title
+	$('#operatorsBox .card-title')
+		.text(languageManager.getBoxTitle('result'));
+
+	var iconWarning = $('<i/>')
+		.attr('class', 'small material-icons') 
+		.text('warning')
+		.attr('title', languageManager.getReusableResultWarning())
+		.appendTo($('#operatorsBox .card-title'));
 
 	var reusableResultList = $('#reusableResultList');
 	reusableResultList.empty();

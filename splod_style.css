@@ -315,6 +315,11 @@ div#contentOperatorBox{
 	color: #bdbdbd;
 }
 
+#operatorsBox .card-title i{
+	margin-left: 5px;
+    vertical-align: bottom;
+}
+
 div#operatorsBox .card-action{
 	background-color:#bdbdbd;
 }
