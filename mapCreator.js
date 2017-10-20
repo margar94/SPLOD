@@ -314,7 +314,7 @@ function updateAndNotifyFocus(key){
 MapCreator.prototype.removeElement = function(key){
 
 	if(key=='limit'){
-		resultLimit = false;
+		resultLimit = defaultResultLimit;
 
 		if(operatorManager == null)
 			operatorManager = new OperatorManager;

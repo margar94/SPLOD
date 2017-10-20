@@ -22,6 +22,7 @@ var activeAjaxRequest;
 var userAjaxRequest;
 
 var resultLimit;
+var defaultResultLimit = 100;
 
 var cachedUserQuery;
 
@@ -56,7 +57,7 @@ var QueryExecutor = function (selectedEndpoint, selectedGraph) {
 	activeAjaxRequest = [];
 	userAjaxRequest = null;
 
-	resultLimit = 100;
+	resultLimit = defaultResultLimit;
 
 	operatorManager = new OperatorManager();
 	tableResultManager = new TableResultManager();
@@ -224,6 +225,29 @@ QueryExecutor.prototype.getPredicateStats = function(pred, callback){
 		" WHERE { " + 
 			" GRAPH " + graph + " { " +
 				" ?s <"+pred+"> ?o . "+
+				"}" +
+			" } ";  
+
+   	queryUrl = endpoint+"?query="+ encodeURIComponent(query) +"&format=json";
+    $.ajax({
+        url: queryUrl,
+        method:'post',
+        success: function( data ) {
+        	var arrayData = data.results.bindings;
+        	callback(arrayData[0]['number'].value);
+        }
+    });	
+}
+
+/*
+	SELECT (COUNT(?s) AS ?totalNumberOfNames)
+	WHERE { ?s a dbo:Activity. }
+*/
+QueryExecutor.prototype.getConceptStats = function(concept, callback){
+	var query = " SELECT (COUNT(?s) AS ?number) " +
+		" WHERE { " + 
+			" GRAPH " + graph + " { " +
+				" ?s a <"+concept+"> . "+
 				"}" +
 			" } ";  
 
