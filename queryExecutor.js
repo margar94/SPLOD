@@ -270,6 +270,8 @@ QueryExecutor.prototype.getEntitySubclasses = function(url, limit, callback) {
 	var submap={};
 	if(url in classHierarchyMap){
 		submap = buildSubmapHierarchy(url);
+	}else{
+		submap[url] = {url:url, label: createLabel(url), children : [], parent:[], numberOfInstances:0};
 	}
 	callback([url], submap);
 }
@@ -598,7 +600,8 @@ function manageClassHierarchy(data){
 			label = element.label_superclass;
 			if(label == undefined)
 				label = createLabel(element.superclass.value);
-			else label = element.label_superclass.value;
+			else 
+				label = element.label_superclass.value;
 
 			classHierarchyMap[element.superclass.value] = {url:element.superclass.value, label: label, children : [], parent:[], numberOfInstances:0};
 		}
@@ -610,7 +613,8 @@ function manageClassHierarchy(data){
 			var subclass_label = element.label_subclass;
 			if(subclass_label == undefined)
 				subclass_label = createLabel(element.subclass.value);
-			else subclass_label = element.label_subclass.value;
+			else 
+				subclass_label = element.label_subclass.value;
 
 			classHierarchyMap[element.subclass.value] = {url:element.subclass.value, label: subclass_label, children : [], numberOfInstances:0, parent: []};
 
@@ -655,7 +659,8 @@ function getResultMap(arrayData){
 		label = element.label;
 		if(label == undefined)
 			label = createLabel(element.url.value);
-		else label = element.url.value;
+		else 
+			label = element.url.value;
 
 		if(element.url.value in classHierarchyMap){
 			map = updateMap(element.url.value, label, map);
