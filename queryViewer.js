@@ -187,7 +187,7 @@ function visitRenderer(key){
 			if(node.type == "everything")
 				metaRemoveReference = encodeURIComponent(node.key);
 			else if(node.type == "something")
-				metaRemoveReference = node.parent;
+				metaRemoveReference = encodeURIComponent(node.parent);
 			
 
 			nodeQueryString += '<span class="focusable" meta-focusReference="'+encodeURIComponent(node.key)+'" meta-removeReference="'+metaRemoveReference+'">';

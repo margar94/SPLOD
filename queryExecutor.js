@@ -56,7 +56,7 @@ var QueryExecutor = function (selectedEndpoint, selectedGraph) {
 	activeAjaxRequest = [];
 	userAjaxRequest = null;
 
-	resultLimit = false;
+	resultLimit = 100;
 
 	operatorManager = new OperatorManager();
 	tableResultManager = new TableResultManager();
@@ -76,13 +76,15 @@ QueryExecutor.prototype.getAllEntities = function(callback) {
 					" SELECT DISTINCT * " +
 					" WHERE { " + 
 						" GRAPH " + graph + " { " +
-							" ?subclass a owl:Class ; rdfs:subClassOf ?superclass. " +
-							" OPTIONAL {?superclass rdfs:label ?label_superclass. " +
-							" ?subclass rdfs:label ?label_subclass. " +
-							" FILTER ((lang(?label_superclass) = '" + language + "') &&  (lang(?label_subclass) = '" + language + "')) }" +
+							" {?subclass a owl:Class} UNION {?subclass a rdfs:Class} " + 
+							" OPTIONAL{?subclass rdfs:label ?label_subclass. " +
+								" FILTER (lang(?label_subclass) = '" + language + "')} " +
+							" OPTIONAL{?subclass rdfs:subClassOf ?superclass. " +
+								" OPTIONAL {?superclass rdfs:label ?label_superclass. " +
+									" FILTER (lang(?label_superclass) = '" + language + "')}}" +
 						" } " +
 					" } ";
-		
+
 	   	queryUrl = endpoint+"?query="+ encodeURIComponent(query) +"&format=json";
 	    $.ajax({
 	        url: queryUrl,
@@ -92,14 +94,11 @@ QueryExecutor.prototype.getAllEntities = function(callback) {
 
 				query2 = " prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
 					" prefix owl: <http://www.w3.org/2002/07/owl#> " +
-					" SELECT ?class (count(?class) as ?numberOfInstances)  " +
+					" SELECT ?class (count(?instance) as ?numberOfInstances)  " +
 					" WHERE { " + 
 						" GRAPH " + graph + " { " +
-							" {?istance a ?class. "+
-							" ?class a owl:Class. "+
-							" FILTER(!EXISTS{?class rdfs:subClassOf ?superclass.}) } UNION" +
-							" {?istance a ?subclass. "+
-							" ?subclass a owl:Class ; rdfs:subClassOf ?class. }" +
+							" ?instance a ?class . " +
+							" {?class a owl:Class} UNION {?class a rdfs:Class} " +
 						" } " +
 					" } " +
 					" group by ?class ";
@@ -156,7 +155,8 @@ QueryExecutor.prototype.getAllDirectPredicates = function(limit, callback) {
 						" ?s a ?c. " +
 						" FILTER (?c = ?class){ " +
 							" SELECT ?class{ " +
-								" ?class a owl:Class; rdfs:subClassOf ?super. " +
+								" {?class a owl:Class}UNION {?class a rdfs:Class} "+
+								" ?class rdfs:subClassOf ?super. " +
 							" } " +
 							" GROUP BY ?class " +
 							" LIMIT 1 " +
@@ -190,7 +190,8 @@ QueryExecutor.prototype.getAllReversePredicates = function(limit, callback) {
 					" ?o a ?c. " +
 					" FILTER (?c = ?class){ " +
 						" SELECT ?class{ " +
-							" ?class a owl:Class; rdfs:subClassOf ?super. " +
+							" {?class a owl:Class}UNION {?class a rdfs:Class} "+
+							" ?class rdfs:subClassOf ?super. " +
 						" } " +
 						" GROUP BY ?class " +
 						" LIMIT 1 " +
@@ -212,38 +213,7 @@ QueryExecutor.prototype.getAllReversePredicates = function(limit, callback) {
 	        callback(managePredicateMap(result));
         }
     });	
-	
 }
-
-
-
-
-/*
-
-QueryExecutor.prototype.getAllPredicatesStats = function(limit, callback){
-
-	var query = " SELECT ?property (COUNT(?property) AS ?propTotal) " +
-		" WHERE { " + 
-			" GRAPH " + graph + " { " +
-				" ?s ?property ?o . "+
-				"}" +
-			" } " +
-		" GROUP BY ?property " ;
-	if(limit)
-		query += "LIMIT " + limit;  
-
-   	queryUrl = endpoint+"?query="+ encodeURIComponent(query) +"&format=json";
-    $.ajax({
-        url: queryUrl,
-        method:'post',
-        success: function( data ) {
-        	var arrayData = data.results.bindings;
-        	callback(managePropertyStats(arrayData));
-        }
-    });	
-}
-
-*/
 
 /*
 	SELECT (COUNT(?o) AS ?totalNumberOfNames)
@@ -267,12 +237,6 @@ QueryExecutor.prototype.getPredicateStats = function(pred, callback){
         }
     });	
 }
-
-
-
-
-
-
 
 /*
 	Get entity subclasses.
@@ -385,40 +349,9 @@ QueryExecutor.prototype.getConceptsFromDirectPredicate = function(predicate, lim
 
 		        	var arrayData = data.results.bindings;
 				    var subMap = getResultMap(arrayData);
-
-
-		        	query2 = " prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
-						" prefix owl: <http://www.w3.org/2002/07/owl#> " +
-						" SELECT ?class (count(?class) as ?numberOfInstances)  " +
-						" WHERE { " + 
-							" GRAPH " + graph + " { " +
-								" ?o a ?class. " +
-								" ?s  <"+predicate+"> ?o. " +
-								" OPTIONAL {?class rdfs:label ?label. " +
-								" FILTER (lang(?label) = '" + language + "')} " +
-							" } " +
-						" } " +
-						" group by ?class";
-			
-				   	queryUrl2 = endpoint+"?query="+ encodeURIComponent(query2) +"&format=json";
-				    var xhr2 = $.ajax({
-				        url: queryUrl2,
-				        method:'post',
-				        success: function( data, textStatus, jqXHR ) {
-					        //remove this request from pending queries
-			        		var index = $.inArray(jqXHR, activeAjaxRequest);
-			        		if(index != -1)
-			        			activeAjaxRequest.splice(index, 1);
-
-				        	var arrayData = data.results.bindings;					
-				        	subMap = addInstancesOccurenceClassHierarchy(arrayData, subMap);
-				        	//subMap = cleanMap(subMap);
-
-				        	var mapRoots = getMapRoots(subMap);
-				        	callback(mapRoots, subMap);	
-				        }
-				    });	
-				    activeAjaxRequest.push(xhr2);
+					var mapRoots = getMapRoots(subMap);
+				    callback(mapRoots, subMap);	
+				      
 		        }
 		    });	
 
@@ -452,43 +385,10 @@ QueryExecutor.prototype.getConceptsFromReversePredicate = function(predicate, li
 		        	if(index != -1)
 		        		activeAjaxRequest.splice(index, 1);
 
-
 					var arrayData = data.results.bindings;
 				    var subMap = getResultMap(arrayData);
-
-				    query2 = " prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
-						" prefix owl: <http://www.w3.org/2002/07/owl#> " +
-						" SELECT ?class (count(?class) as ?numberOfInstances)  " +
-						" WHERE { " + 
-							" GRAPH " + graph + " { " +
-								" ?o a ?class. " +
-								" ?s  <"+predicate+"> ?o. " +
-								" OPTIONAL {?class rdfs:label ?label. " +
-								" FILTER (lang(?label) = '" + language + "')} " +
-							" } " +
-						" } " +
-						" group by ?class ";
-			
-				   	queryUrl2 = endpoint+"?query="+ encodeURIComponent(query2) +"&format=json";
-
-				   	var xhr2 = $.ajax({
-				        url: queryUrl2,
-				        method:'post',
-				        success: function( data, textStatus, jqXHR ) {
-					        //remove this request from pending queries
-			        		var index = $.inArray(jqXHR, activeAjaxRequest);
-			        		if(index != -1)
-			        			activeAjaxRequest.splice(index, 1);
-
-				        	var arrayData = data.results.bindings;					
-				        	subMap = addInstancesOccurenceClassHierarchy(arrayData, subMap);
-				        	//subMap = cleanMap(subMap);
-
-				        	var mapRoots = getMapRoots(subMap);
-				        	callback(mapRoots, subMap);	
-				        }
-				    });	
-				    activeAjaxRequest.push(xhr2);
+				    var mapRoots = getMapRoots(subMap);
+				    callback(mapRoots, subMap);	
         }
     });	
     activeAjaxRequest.push(xhr);
@@ -598,11 +498,8 @@ QueryExecutor.prototype.executeUserQuery = function(querySPARQL){
 							querySPARQL.where.join(' ') +
 						" } " +
 					" } ";
-		if(resultLimit)
-			query += "LIMIT " + resultLimit; 
-		else{
-			query += "LIMIT 100"; 
-		} 
+		
+		query += "LIMIT " + resultLimit; 
 
 		cachedUserQuery = [];
 		cachedUserQuery.push("SELECT " + querySPARQL.select.join(' '));
@@ -877,12 +774,4 @@ function managePredicateMap(result){
 		predicateMap[result[i].url] = {url: result[i].url, label: result[i].label, numberOfInstances: 0};
 	}	
 	return predicateMap;
-}
-
-function managePropertyStats(result){
-	var map = {};
-	for(var i = 0;i<result.length;i++){
-		map[result[i].property.value] = result[i].propTotal.value;
-	}
-	return map;
 }
