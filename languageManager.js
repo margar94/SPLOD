@@ -477,9 +477,44 @@ LanguageManager.prototype.getQueryInitialVerbalization = function(){
 	return 'Give me...';
 }
 
+LanguageManager.prototype.getFocusLabel = function(){
+	return 'Focus: ';
+}
+
 //Initialization of focus
 LanguageManager.prototype.getFocusInitialVerbalization = function(){
-	return ' -';
+	return '-';
+}
+
+LanguageManager.prototype.getTabTitle = function(tabType){
+	var title = '';
+	switch(tabType){
+		case 'concept' : title = 'Concepts'; break;
+		case 'predicate' : title = 'Predicates'; break;
+		case 'operator' : title = 'Operators'; break;
+		case 'table result' : title = 'Table result'; break;
+		case 'settings' : title = 'Settings'; break;
+		case 'direct predicate' : title = 'Direct'; break;
+		case 'reverse predicate' : title = 'Reverse'; break;
+	}
+	return title;
+}
+
+LanguageManager.prototype.getBoxTitle = function(boxType){
+	var title = '';
+	switch(boxType){
+		case 'concept' : title = 'Concepts'; break;
+		case 'predicate' : title = 'Predicates'; break;
+		case 'operator' : title = 'Operators'; break;
+		case 'table result' : title = 'Table result'; break;
+		case 'settings' : title = 'Settings'; break;
+		case 'result' : title = 'Reusable result'; break;
+	}
+	return title;
+}
+
+LanguageManager.prototype.getReusableResultWarning = function(){
+	return 'WARNING';
 }
 
 LanguageManager.prototype.getOperatorLabelVerbalization = function(operator){	

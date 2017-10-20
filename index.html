@@ -37,10 +37,9 @@
 		    <div id="queryBox" class="col s11"> 
 		     <div class="card">
 		      <div id="queryNaturalLanguage" class="card-content">
-		       <span id="span1">Give me...</span>
 		      </div>
 		      <div class="card-action blue white-text">
-		       <span class="white-text"> Focus: <span id="focus">-</span> </span>
+		       <span class="white-text"> <span id="focusLabel"> </span> <span id="focus"></span> </span>
                   <span class="right">
                   <i class="small material-icons white-text" id="removeButton" 
                    title="Remove all the highlighted"
@@ -76,7 +75,8 @@
 		      <ul id="myTabs" class="tabs black-text">
 		   		<!--start concepts-->
 		        <li class="tab col s12" id="conceptsTab" onclick="$('#myTabs').css('border-right-color', '#00e676')">	
-		        	<a href="#conceptsBox">Concepts
+		        	<a href="#conceptsBox">
+		        		<span id="conceptsTabTitle"></span> 
 			        	<div id="conceptsSpinner" class="preloader-wrapper mySpinner active">
 						    <div class="spinner-layer spinner-blue-only">
 						      <div class="circle-clipper left">
@@ -93,7 +93,8 @@
 		        <!--end concepts-->
 		        <!--start predicates-->
 		        <li class="tab col s12" id="predicatesTab" onclick="$('#myTabs').css('border-right-color', '#7c4dff ')">
-		        	<a href="#predicatesBox">Predicates
+		        	<a href="#predicatesBox">
+		        		<span id="predicatesTabTitle"></span>
 		        		<div id="predicatesSpinner" class="preloader-wrapper mySpinner active">
 						    <div class="spinner-layer spinner-blue-only">
 						      <div class="circle-clipper left">
@@ -110,7 +111,8 @@
 		        <!--end predicates-->
 		        <!--start operators-->
 		        <li class="tab col s12" id="operatorsTab" onclick="$('#myTabs').css('border-right-color', '#bdbdbd')">
-		        	<a href="#operatorsBox">Operators
+		        	<a href="#operatorsBox">
+		        		<span id="operatorsTabTitle"></span>
 		        		<div id="operatorsSpinner" class="preloader-wrapper mySpinner active">
 						    <div class="spinner-layer spinner-blue-only">
 						      <div class="circle-clipper left">
@@ -127,7 +129,8 @@
 		        <!--end operators-->
 		        <!--start result table-->
 		        <li class="tab col s12" id="tableResultTab" onclick="$('#myTabs').css('border-right-color', '#f44336')">
-		        	<a href="#tableResultBox">Table Result
+		        	<a href="#tableResultBox">
+		        		<span id="tableResultTabTitle"></span>
 		        		<div id="tableResultSpinner" class="preloader-wrapper mySpinner active">
 						    <div class="spinner-layer spinner-blue-only">
 						      <div class="circle-clipper left">
@@ -168,7 +171,10 @@
 
 		        <!--start settings-->
 		        <li class="tab col s12" id="settingsTab" onclick="$('#myTabs').css('border-right-color', '#2196f3')">
-		        	<a href="#settingsBox"><i class="tiny material-icons" id="settings">settings</i> Settings</a>
+		        	<a href="#settingsBox">
+		        		<i class="tiny material-icons" id="settings">settings</i> 
+		        		<span id="settingsTabTitle"></span>
+		     		</a>
 		        </li>
 		        <!--end settings-->
 		      </ul>
@@ -182,7 +188,7 @@
 		        	<!--start concepts content-->
 		        	<div id="conceptsBox" class="card">
 			            <div class="card-content ">
-			              	<span class="card-title">Concepts</span>
+			              	<span class="card-title"><span id="conceptsBoxTitle"></span></span>
 		              		<!--search-->
 		              	  	<div class="card">
 	            				<div class=" valign-wrapper ">
@@ -214,7 +220,7 @@
 			        <!--start predicates content-->
 			        <div id="predicatesBox" class="card">
 			            <div class="card-content ">
-			              	<span class="card-title">Predicate</span>
+			              	<span class="card-title"><span id="predicatesBoxTitle"></span></span>
 			              	<!--search-->
 		              	  	<div class="card">
 	            				<div class=" valign-wrapper ">
@@ -232,8 +238,17 @@
 			              	<!--end search-->
 
 						  	<ul class="tabs tabs-fixed-width" id="predicatesTab">
-						  		<li class="tab"><a class="active" href="#direct">Direct</a></li>
-				        		<li class="tab"><a href="#reverse">Reverse</a></li>
+						  		<li class="tab">
+						  			<a class="active" href="#direct">
+						  				<span id="directPredicateTabTitle"></span>
+						  			</a>
+						  		</li>
+				        		<li class="tab">
+				        			<a href="#reverse">
+				        				<span id="reversePredicateTabTitle">
+				        				</span>
+				        			</a>
+				        		</li>
 						  	</ul>
 						</div>
 						<!--direct predocate-->
@@ -257,7 +272,7 @@
 					<!--start operators content-->
 					<div id="operatorsBox" class="card">
 			            <div class="card-content">
-			              <span class="card-title">Operators</span>
+			              <span class="card-title"><span id="operatorsBoxTitle"></span></span>
 			              <span id="pendingQuerySpan"></span>
 			              <div id="contentOperatorBox">
 				              <ul id="operatorList" class="collection"></ul>
@@ -272,7 +287,7 @@
 			        <!--start table result content-->
 			        <div id="tableResultBox" class="card">
 			            <div class="card-content ">
-			            	<span class="card-title">Table result</span>
+			            	<span class="card-title"><span id="tableResultBoxTitle"></span></span>
 			              	<div class="row">
 								<div id="fieldsCollectionNavBar" class="col s2">
 									<ul id="fieldsCollection" class="collection"></ul>
@@ -291,7 +306,7 @@
 			        <!--start settings content-->
 			        <div id="settingsBox" class="card">
 			            <div class="card-content ">
-			              <span class="card-title">Settings</span>
+			              <span class="card-title"><span id="settingsBoxTitle"></span></span>
 			            </div>
 			        </div>
 			        <!--end settings content-->
