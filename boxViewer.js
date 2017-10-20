@@ -229,11 +229,15 @@ function renderDirectPredicates(directMap){
 			.html('info')
 			.attr('meta-url', element.url)
 			.appendTo(li)
-			.on('click', function(){
+			.on('click', function(evt){
 				boxFiller.getPredicateStats($(this).attr('meta-url'), function(numberOfInstances){
 					console.log(numberOfInstances);
+					var badge = $("<span/>")
+						.attr('class', 'new badge')
+						.attr('data-badge-caption', '')
+						.text(numberOfInstances);
 
-					//manage stats
+					$(evt.target).replaceWith(badge);
 				});
 			});
 

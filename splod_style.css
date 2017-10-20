@@ -294,6 +294,7 @@ div#predicatesBox .card-action{
 
 i.predicateInfo{
 	color: #7c4dff;
+	cursor: pointer;
 }
 
 
