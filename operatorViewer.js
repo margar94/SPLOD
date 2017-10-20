@@ -44,9 +44,9 @@ function renderOperatorList(operators){
 						$('#tableResultSpinner').show();
 					}
 				});
+				if(j == datatypeOperatorList.length-1)
+					li.addClass('operatorListSeparator');
 		}
-		if(i != operators.length)
-			$("<hr/>").appendTo(operatorList);
 	}
 
 	/*$.each(operators, function(index){
