@@ -154,11 +154,31 @@ function iterativePreorderVisit(concept, concepts, toAppend, level){
 				mapCreator.selectedConcept($(this).attr('meta-url'), $(this).attr('meta-label'));
 			});
 		
-	var badge = $("<span/>")
+	var badge;
+	if(concepts[concept].numberOfInstances == 0){
+		//not the first interaction
+		badge = $("<i/>")
+			.attr('class', 'tiny material-icons right conceptInfo')
+			.html('info')
+			.attr('meta-url', concepts[concept].url)
+			.appendTo(li)
+			.on('click', function(evt){
+				boxFiller.getConceptStats($(this).attr('meta-url'), function(numberOfInstances){
+					var badge = $("<span/>")
+						.attr('class', 'new badge')
+						.attr('data-badge-caption', '')
+						.text(numberOfInstances);
+
+					$(evt.target).replaceWith(badge);
+				});
+			});
+	}else{
+		badge = $("<span/>")
 		.attr('class', 'new badge')
 		.attr('data-badge-caption', '')
 		.text(concepts[concept].numberOfInstances)
 		.appendTo(li);
+	}
 		
 	if(children.length>0){
 		var div = $("<div/>")

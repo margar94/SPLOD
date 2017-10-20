@@ -154,4 +154,8 @@ function createTable(select, labelSelect, results){
 	});
 
 	$('#tableResultSpinner').hide();
+	
+	$('#previewTableResult').attr('srcdoc', "<link href='Materialize/fonts/roboto/Roboto-Regular.woff' rel='application/x-font-woff'><link href='Materialize/fonts/roboto/Roboto-Regular.woff2' rel='application/x-font-woff'>	<link href='Materialize/css/materialize.min.css' rel='stylesheet'><div style='-webkit-transform:scale(1,0.1);-webkit-transform-origin:0 0'>"+ resultsTable[0].outerHTML+"</div>");
+	//$('#previewTableResult').attr('src', '#resultsTable');
+	console.log($('#previewTableResult'));
 }

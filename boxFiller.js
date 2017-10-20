@@ -151,6 +151,12 @@ BoxFiller.prototype.getPredicateStats = function(predicateUrl, callback){
 	});
 }
 
+BoxFiller.prototype.getConceptStats = function(conceptUrl, callback){
+	executor.getConceptStats(conceptUrl, function(number){
+		callback(number);
+	});
+}
+
 function addStatsToPredicate(directData, reverseData, stats){
 	
 	for(key in directData){
