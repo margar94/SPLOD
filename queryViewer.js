@@ -10,7 +10,11 @@ var onFocus;
 
 var addBarred;
 
-function initQueryViewer(){}
+function initQueryViewer(){
+	$("#queryNaturalLanguage")[0].innerHTML = languageManager.getQueryInitialVerbalization();
+	$("#focusLabel")[0].innerHTML = languageManager.getFocusLabel();
+	$("#focus")[0].innerHTML = languageManager.getFocusInitialVerbalization();
+}
 
 var QueryViewer= function () {
 	if(QueryViewer.prototype._singletonInstance){

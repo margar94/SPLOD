@@ -17,6 +17,20 @@ function initBoxViewer(){
 
 	hierarchyOnFlag = true;
 	$("#hierarchySpan").html('<i class="small material-icons white-text right" style="margin:0" onClick="hierarchyOff();">format_list_bulleted</i>');
+
+	$("#conceptsTabTitle").html(languageManager.getTabTitle('concept'));
+	$("#predicatesTabTitle").html(languageManager.getTabTitle('predicate'));
+	$("#operatorsTabTitle").html(languageManager.getTabTitle('operator'));
+	$("#tableResultTabTitle").html(languageManager.getTabTitle('table result'));
+	$("#settingsTabTitle").html(languageManager.getTabTitle('settings'));
+	$("#directPredicateTabTitle").html(languageManager.getTabTitle('direct predicate'));
+	$("#reversePredicateTabTitle").html(languageManager.getTabTitle('reverse predicate'));
+
+	$("#conceptsBoxTitle").html(languageManager.getBoxTitle('concept'));
+	$("#predicatesBoxTitle").html(languageManager.getBoxTitle('predicate'));
+	$("#operatorsBoxTitle").html(languageManager.getBoxTitle('operator'));
+	$("#tableResultBoxTitle").html(languageManager.getBoxTitle('table result'));
+	$("#settingsBoxTitle").html(languageManager.getBoxTitle('settings'));
 }
 
 function fillConcepts(){
