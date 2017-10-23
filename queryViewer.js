@@ -504,6 +504,7 @@ function visitRenderer(key){
 
 				case "range" : 
 				case "range date" : 
+					var verbalizationIndex = 0;
 					//due figli senza ul e con and in mezzo
 					//pre label
 					nodeQueryString += '<span class="focusable" meta-focusReference="'+encodeURIComponent(node.key)+'" meta-removeReference="'+encodeURIComponent(node.key)+'">';
