@@ -4,6 +4,8 @@ var queryLogicStructureRoot;
 var visitStack;
 var queryString;
 
+var resultQuery;
+
 var mapCreator;
 
 var onFocus;
@@ -26,6 +28,9 @@ var QueryViewer= function () {
 	queryLogicStructure = {}; 
 	visitStack = [];
 
+	cachedResultQuery = {};
+	resultQuery = '';
+
 	addBarred = false;
 
 	QueryViewer.prototype._singletonInstance = this;
@@ -37,6 +42,7 @@ QueryViewer.prototype.updateQuery = function(queryRoot, queryMap, focus){
 	queryLogicStructure = queryMap;
 	onFocus = focus;
 	queryString = languageManager.getQueryInitialVerbalization();
+	resultQuery = languageManager.getQueryInitialVerbalization();
 	addBarred = false;
 	renderQuery();
 }
@@ -45,16 +51,25 @@ function renderQuery(){
 	if(queryLogicStructureRoot != null){
 
 		queryString = languageManager.getQueryStartVerbalization();
+		resultQuery = languageManager.getQueryStartVerbalization();
 		queryString += '<span meta-focusReference="limit" meta-removeReference="limit" class="focusable">';
 		queryString += '<span id="limit" meta-focusReference="limit" meta-removeReference="limit" class="focusable operator">';
-		if(!resultLimit)
+		if(!resultLimit){
 			 queryString += 'every ';
-		else 
-			queryString += resultLimit+' '
+			 resultQuery += '<span>every </span>';
+		}
+		else{ 
+			queryString += resultLimit+' ';
+			resultQuery += '<span>'+resultLimit+' </span>';
+		}
 		queryString += '</span>';
 		queryString += '</span>';
 
-		queryString += visitRenderer(queryLogicStructureRoot);
+		var temp = visitRenderer(queryLogicStructureRoot);
+		queryString += temp.queryString;
+		resultQuery += temp.resultString;
+
+		console.log(resultQuery);
 
 	}
 
@@ -71,6 +86,7 @@ function renderQuery(){
 function visitRenderer(key){
 	var node = queryLogicStructure[key];
 	var nodeQueryString = "";
+	var nodeResultQuery = "";
 
 	switch(node.type){
 
@@ -79,63 +95,82 @@ function visitRenderer(key){
 
 			//pre label
 			nodeQueryString += '<span class="focusable" meta-focusReference="'+encodeURIComponent(node.key)+'" meta-removeReference="'+encodeURIComponent(node.key)+'">';
-			nodeQueryString += node.verbalization.current[verbalizationIndex++];
+			nodeQueryString += node.verbalization.current[verbalizationIndex];
+			nodeResultQuery += '<span>'+node.verbalization.current[verbalizationIndex++];
 
 			//eventually not or optional
 			var parentNode = queryLogicStructure[node.parent];
 			if(parentNode != undefined && parentNode.type == "operator" && (parentNode.label == "not" || parentNode.label == "optional")){
 				nodeQueryString += '<span class="focusable" meta-removeReference="'+encodeURIComponent(parentNode.key)+'" meta-focusReference="'+encodeURIComponent(parentNode.key)+'">';
 				nodeQueryString += '<span id="'+encodeURIComponent(parentNode.key)+'" class="focusable operator" meta-removeReference="'+encodeURIComponent(parentNode.key)+'" meta-focusReference="'+encodeURIComponent(parentNode.key)+'">';
-				nodeQueryString += node.verbalization.current[verbalizationIndex++];
+				nodeQueryString += node.verbalization.current[verbalizationIndex];
+				nodeResultQuery += '<span> <span class="operator">'+node.verbalization.current[verbalizationIndex++]+'</span></span>';
 				nodeQueryString += '</span>';
 				nodeQueryString += '</span>';
 
 				//article
-				nodeQueryString += node.verbalization.current[verbalizationIndex++];
+				nodeQueryString += node.verbalization.current[verbalizationIndex];
+				nodeResultQuery += node.verbalization.current[verbalizationIndex++]
 			}
 
 			//content
 			nodeQueryString += '<span id="'+encodeURIComponent(node.key)+'" title="'+node.url+'" class="focusable concept" meta-removeReference="'+encodeURIComponent(node.key)+'" meta-focusReference="'+encodeURIComponent(node.key)+'">';
-			nodeQueryString += node.verbalization.current[verbalizationIndex++];
+			nodeQueryString += node.verbalization.current[verbalizationIndex];
+			nodeResultQuery += '<span class="concept">'+node.verbalization.current[verbalizationIndex++]+'</span>';
 			nodeQueryString += '</span>';
 
 			//post label
-			nodeQueryString += node.verbalization.current[verbalizationIndex++];
+			nodeQueryString += node.verbalization.current[verbalizationIndex];
+			nodeResultQuery += node.verbalization.current[verbalizationIndex];
 
-			if(addBarred)
+			if(addBarred){
 				nodeQueryString += '<span class="barred">';
+				nodeResultQuery += '<span class="barred">';
+			}
 
 			var addUl;
 			(node.children.length >= 2)?addUl = true : addUl = false;
 
 
 			//children
-			if(addUl)
+			if(addUl){
 				nodeQueryString += '<ul>'; 
+				nodeResultQuery += '<ul>'; 
+			}
 
 			for(var i=0; i<node.children.length;i++){
 				if(addUl){
-					if(i==0 || (i%2)==1)
+					if(i==0 || (i%2)==1){
 						nodeQueryString += "<li>";
+						nodeResultQuery += "<li>";
+					}
 				}
 
-				nodeQueryString += visitRenderer(node.children[i]);
+				var temp = visitRenderer(node.children[i]);
+				nodeQueryString += temp.queryString;
+				nodeResultQuery += temp.resultString;
 
 				if(addUl){
-					if(i==node.children.length-1 || (i%2)==0)
+					if(i==node.children.length-1 || (i%2)==0){
 						nodeQueryString += "</li>";
+						nodeResultQuery += "</li>";
+					}
 				}
 			}
 
-			if(addUl)
+			if(addUl){
 				nodeQueryString += '</ul>'; 
+				nodeResultQuery += '</ul>';
+			}
 
 			if(addBarred){
 				nodeQueryString += '</span>';
+				nodeResultQuery += '</span>';
 				addBarred = false;
 			}
 
 			nodeQueryString += '</span>';
+			nodeResultQuery += '</span>';
 			break;
 
 		case "result":
@@ -143,45 +178,61 @@ function visitRenderer(key){
 
 			//pre label
 			nodeQueryString += '<span class="focusable" meta-focusReference="'+encodeURIComponent(node.key)+'" meta-removeReference="'+encodeURIComponent(node.parent)+'">';
+			nodeResultQuery += '<span>';
 
 			//content
 			nodeQueryString += '<span id="'+encodeURIComponent(node.key)+'" class="focusable reusableResult" meta-removeReference="'+encodeURIComponent(node.parent)+'" meta-focusReference="'+encodeURIComponent(node.key)+'">';
-			nodeQueryString += node.verbalization.current[verbalizationIndex++];
+			nodeQueryString += node.verbalization.current[verbalizationIndex];
+			nodeResultQuery += '<span class="reusableResult">'+node.verbalization.current[verbalizationIndex++]+'</span>';
 			nodeQueryString += '</span>';
 
-			if(addBarred)
+			if(addBarred){
 				nodeQueryString += '<span class="barred">';
+				nodeResultQuery += '<span class="barred">';
+			}
 
 			var addUl;
 			(node.children.length >= 2)?addUl = true : addUl = false;
 
 			//children
-			if(addUl)
+			if(addUl){
 				nodeQueryString += '<ul>'; 
+				nodeResultQuery += '<ul>'; 
+			}
 
 			for(var i=0; i<node.children.length;i++){
 				if(addUl){
-					if(i==0 || (i%2)==1)
+					if(i==0 || (i%2)==1){
 						nodeQueryString += "<li>";
+						nodeResultQuery += "<li>";
+					}
 				}
 
-				nodeQueryString += visitRenderer(node.children[i]);
+				var temp = visitRenderer(node.children[i]);
+				nodeQueryString += temp.queryString;
+				nodeResultQuery += temp.resultString;
 
 				if(addUl){
-					if(i==node.children.length-1 || (i%2)==0)
+					if(i==node.children.length-1 || (i%2)==0){
 						nodeQueryString += "</li>";
+						nodeResultQuery += "</li>";
+					}
 				}
 			}
 
-			if(addUl)
+			if(addUl){
 				nodeQueryString += '</ul>'; 
+				nodeResultQuery += '</ul>'; 
+			}
 
 			if(addBarred){
 				nodeQueryString += '</span>';
+				nodeResultQuery += '</span>';
 				addBarred = false;
 			}
 
 			nodeQueryString += '</span>';
+			nodeResultQuery += '</span>';
 			break;
 
 		case "everything":
@@ -195,45 +246,61 @@ function visitRenderer(key){
 			
 
 			nodeQueryString += '<span class="focusable" meta-focusReference="'+encodeURIComponent(node.key)+'" meta-removeReference="'+metaRemoveReference+'">';
+			nodeResultQuery += '<span>';
 
 			//content
 			nodeQueryString += '<span id="'+encodeURIComponent(node.key)+'" class="focusable specialNode" meta-removeReference="'+metaRemoveReference+'" meta-focusReference="'+encodeURIComponent(node.key)+'">';
-			nodeQueryString += node.verbalization.current[verbalizationIndex++];
+			nodeQueryString += node.verbalization.current[verbalizationIndex];
+			nodeResultQuery += '<span class="specialNode">'+node.verbalization.current[verbalizationIndex++]+'</span>';
 			nodeQueryString += '</span>';
 
-			if(addBarred)
+			if(addBarred){
 				nodeQueryString += '<span class="barred">';
+				nodeResultQuery += '<span class="barred">';
+			}
 
 			var addUl;
 			(node.children.length >= 2)?addUl = true : addUl = false;
 
 			//children
-			if(addUl)
-				nodeQueryString += '<ul>'; 
+			if(addUl){
+				nodeQueryString += '<ul>';
+				nodeResultQuery += '<ul>'; 
+			}
 
 			for(var i=0; i<node.children.length;i++){
 				if(addUl){
-					if(i==0 || (i%2)==1)
+					if(i==0 || (i%2)==1){
 						nodeQueryString += "<li>";
+						nodeResultQuery += "<li>";
+					}
 				}
 
-				nodeQueryString += visitRenderer(node.children[i]);
+				var temp = visitRenderer(node.children[i]);
+				nodeQueryString += temp.queryString;
+				nodeResultQuery += temp.resultString;
 
 				if(addUl){
-					if(i==node.children.length-1 || (i%2)==0)
+					if(i==node.children.length-1 || (i%2)==0){
 						nodeQueryString += "</li>";
+						nodeResultQuery += "</li>";
+					}
 				}
 			}
 
-			if(addUl)
+			if(addUl){
 				nodeQueryString += '</ul>'; 
+				nodeResultQuery += '</ul>'; 
+			}
 
 			if(addBarred){
 				nodeQueryString += '</span>';
+				nodeResultQuery += '</span>';
 				addBarred = false;
 			}
 
 			nodeQueryString += '</span>';
+			nodeResultQuery += '</span>';
 			break;
 
 		case "predicate":
@@ -243,96 +310,124 @@ function visitRenderer(key){
 
 				//pre label
 				nodeQueryString += '<span class="focusable" meta-focusReference="'+encodeURIComponent(node.key)+'" meta-removeReference="'+encodeURIComponent(node.key)+'">';
-				nodeQueryString += node.verbalization.current[verbalizationIndex++];
+				nodeQueryString += node.verbalization.current[verbalizationIndex];
+				nodeResultQuery += '<span>'+node.verbalization.current[verbalizationIndex++];
 
 				//eventually not or optional
 				var parentNode = queryLogicStructure[node.parent];
 				if(parentNode != undefined && parentNode.type == "operator" && (parentNode.label == "not" || parentNode.label == "optional")){
 					nodeQueryString += '<span class="focusable" meta-removeReference="'+encodeURIComponent(parentNode.key)+'" meta-focusReference="'+encodeURIComponent(parentNode.key)+'">';
 					nodeQueryString += '<span id="'+encodeURIComponent(parentNode.key)+'" class="focusable operator" meta-removeReference="'+encodeURIComponent(parentNode.key)+'" meta-focusReference="'+encodeURIComponent(parentNode.key)+'">';
-					nodeQueryString += node.verbalization.current[verbalizationIndex++];
+					nodeQueryString += node.verbalization.current[verbalizationIndex];
+					nodeResultQuery += '<span><span class="operator">'+node.verbalization.current[verbalizationIndex++]+'</span></span>';
 					nodeQueryString += '</span>';
 					nodeQueryString += '</span>';
 
 					//article
-					nodeQueryString += node.verbalization.current[verbalizationIndex++];
+					nodeQueryString += node.verbalization.current[verbalizationIndex];
+					nodeResultQuery += node.verbalization.current[verbalizationIndex++];
 				}
 
 				//content
 				nodeQueryString += '<span id="'+encodeURIComponent(node.key)+'" title="'+node.url+'" class="focusable predicate" meta-removeReference="'+encodeURIComponent(node.key)+'" meta-focusReference="'+encodeURIComponent(node.key)+'">';
-				nodeQueryString += node.verbalization.current[verbalizationIndex++];
+				nodeQueryString += node.verbalization.current[verbalizationIndex];
+				nodeResultQuery += '<span class="prediate">'+node.verbalization.current[verbalizationIndex++]+'</span>';
 				nodeQueryString += '</span>';
 
 				//post label
-				nodeQueryString += node.verbalization.current[verbalizationIndex++];
+				nodeQueryString += node.verbalization.current[verbalizationIndex];
+				nodeResultQuery += node.verbalization.current[verbalizationIndex++];
 
-				if(addBarred)
+				if(addBarred){
 					nodeQueryString += '<span class="barred">';
+					nodeResultQuery += '<span class="barred">';
+				}
 
 				var addUl;
 				(node.children.length >= 2)?addUl = true : addUl = false;
 
 
 				//children
-				if(addUl)
+				if(addUl){
 					nodeQueryString += '<ul>'; 
+					nodeResultQuery += '<ul>'; 
+				}
 
 				for(var i=0; i<node.children.length;i++){
 					if(addUl){
-						if(i==0 || (i%2)==1)
+						if(i==0 || (i%2)==1){
 							nodeQueryString += "<li>";
+							nodeResultQuery += "<li>";
+						}
 					}
 
-					nodeQueryString += visitRenderer(node.children[i]);
+					var temp = visitRenderer(node.children[i]);
+					nodeQueryString += temp.queryString;
+					nodeResultQuery += temp.resultString;
 
 					if(addUl){
-						if(i==node.children.length-1 || (i%2)==0)
+						if(i==node.children.length-1 || (i%2)==0){
 							nodeQueryString += "</li>";
+							nodeResultQuery += "</li>";
+						}
 					}
 				}
 
-				if(addUl)
+				if(addUl){
 					nodeQueryString += '</ul>'; 
+					nodeResultQuery += '</ul>';
+				}
 
 				if(addBarred){
 					nodeQueryString += '</span>';
+					nodeResultQuery += '</span>';
 					addBarred = false;
 				}
 
 				nodeQueryString += '</span>';
+				nodeResultQuery += '</span>';
 
 			}else if(node.direction == "reverse"){
 				var verbalizationIndex = 0;
 
 				//pre label
 				nodeQueryString += '<span class="focusable" meta-focusReference="'+encodeURIComponent(node.key)+'" meta-removeReference="'+encodeURIComponent(node.key)+'">';
-				nodeQueryString += node.verbalization.current[verbalizationIndex++];
+				nodeQueryString += node.verbalization.current[verbalizationIndex];
+				nodeResultQuery += '<span>'+node.verbalization.current[verbalizationIndex++];
+
 
 				//eventually not or optional
 				var parentNode = queryLogicStructure[node.parent];
 				if(parentNode != undefined && parentNode.type == "operator" && (parentNode.label == "not" || parentNode.label == "optional")){
 					nodeQueryString += '<span class="focusable" meta-removeReference="'+encodeURIComponent(parentNode.key)+'" meta-focusReference="'+encodeURIComponent(parentNode.key)+'">';
 					nodeQueryString += '<span id="'+encodeURIComponent(parentNode.key)+'" class="focusable operator" meta-removeReference="'+encodeURIComponent(parentNode.key)+'" meta-focusReference="'+encodeURIComponent(parentNode.key)+'">';
-					nodeQueryString += node.verbalization.current[verbalizationIndex++];
+					nodeQueryString += node.verbalization.current[verbalizationIndex];
+					nodeResultQuery += '<span><span class="operator">'+node.verbalization.current[verbalizationIndex++]+'</span></span>';
 					nodeQueryString += '</span>';
 					nodeQueryString += '</span>';
 
 					//article
-					nodeQueryString += node.verbalization.current[verbalizationIndex++];
+					nodeQueryString += node.verbalization.current[verbalizationIndex];
+					nodeResultQuery += node.verbalization.current[verbalizationIndex++]
 				}
 
 				//content
 				nodeQueryString += '<span id="'+encodeURIComponent(node.key)+'" title="'+node.url+'" class="focusable predicate" meta-removeReference="'+encodeURIComponent(node.key)+'" meta-focusReference="'+encodeURIComponent(node.key)+'">';
-				nodeQueryString += node.verbalization.current[verbalizationIndex++];
+				nodeQueryString += node.verbalization.current[verbalizationIndex];
+				nodeResultQuery += '<span class="predicate">'+node.verbalization.current[verbalizationIndex++]+'</span>';
 				nodeQueryString += '</span>';
 
 				//post label
-				nodeQueryString += node.verbalization.current[verbalizationIndex++];
+				nodeQueryString += node.verbalization.current[verbalizationIndex];
+				nodeResultQuery += node.verbalization.current[verbalizationIndex++];
 
 				//it has only a something child
-				nodeQueryString += visitRenderer(node.children[0]);
+				var temp = visitRenderer(node.children[0]);
+				nodeQueryString += temp.queryString;
+				nodeResultQuery += temp.resultString;
 
 				nodeQueryString += '</span>';
+				nodeResultQuery += '</span>';
 			}
 			break;
 		
@@ -342,16 +437,21 @@ function visitRenderer(key){
 				case "or" : 
 				case "xor" : 
 					var verbalizationIndex = 0;
-					nodeQueryString += '<span class="focusable" meta-focusReference="'+encodeURIComponent(node.key)+'" meta-removeReference="'+encodeURIComponent(node.key)+'"><span id="'+encodeURIComponent(node.key)+'" meta-focusReference="'+encodeURIComponent(node.key)+'" meta-removeReference="'+encodeURIComponent(node.key)+'" class="focusable operator">' + node.verbalization.current[verbalizationIndex++] + '</span></span>';
+					nodeQueryString += '<span class="focusable" meta-focusReference="'+encodeURIComponent(node.key)+'" meta-removeReference="'+encodeURIComponent(node.key)+'"><span id="'+encodeURIComponent(node.key)+'" meta-focusReference="'+encodeURIComponent(node.key)+'" meta-removeReference="'+encodeURIComponent(node.key)+'" class="focusable operator">' + node.verbalization.current[verbalizationIndex] + '</span></span>';
+					nodeResultQuery += '<span><span class="operator">'+node.verbalization.current[verbalizationIndex++]+'</span></span>';
 					break;
 
 				case "not" :
 					addBarred = true;
-					nodeQueryString += visitRenderer(node.children[0]);
+					var temp = visitRenderer(node.children[0]);
+					nodeQueryString += temp.queryString;
+					nodeResultQuery += temp.resultString;
 					break;
 				case "optional" :
 					nodeQueryString += '<span class="optionalBlock">';
-					nodeQueryString += visitRenderer(node.children[0]);
+					var temp = visitRenderer(node.children[0]);
+					nodeQueryString += temp.queryString;
+					nodeResultQuery += '<span  class="optionalBlock">'+temp.resultString+'</span>';
 					nodeQueryString += '</span>';
 					break;
 		
@@ -372,30 +472,37 @@ function visitRenderer(key){
 					var verbalizationIndex = 0;
 					//pre label
 					nodeQueryString += '<span class="focusable" meta-focusReference="'+encodeURIComponent(node.key)+'" meta-removeReference="'+encodeURIComponent(node.key)+'">';
-					nodeQueryString += node.verbalization.current[verbalizationIndex++];
+					nodeQueryString += node.verbalization.current[verbalizationIndex];
+					nodeResultQuery += '<span>'+node.verbalization.current[verbalizationIndex++];
 
 					//eventually not or optional
 					var parentNode = queryLogicStructure[node.parent];
 					if(parentNode != undefined && parentNode.type == "operator" && (parentNode.label == "not" || parentNode.label == "optional")){
 						nodeQueryString += '<span class="focusable" meta-removeReference="'+encodeURIComponent(parentNode.key)+'" meta-focusReference="'+encodeURIComponent(parentNode.key)+'">';
 						nodeQueryString += '<span id="'+encodeURIComponent(parentNode.key)+'" class="focusable operator" meta-removeReference="'+encodeURIComponent(parentNode.key)+'" meta-focusReference="'+encodeURIComponent(parentNode.key)+'">';
-						nodeQueryString += node.verbalization.current[verbalizationIndex++];
+						nodeQueryString += node.verbalization.current[verbalizationIndex];
+						nodeResultQuery += '<span><span class="operator">'+node.verbalization.current[verbalizationIndex++]+'</span></span>';
 						nodeQueryString += '</span>';
 						nodeQueryString += '</span>';
 					}
 
 					//content
 					nodeQueryString += '<span id="'+encodeURIComponent(node.key)+'" class="focusable operator" meta-removeReference="'+encodeURIComponent(node.key)+'" meta-focusReference="'+encodeURIComponent(node.key)+'">';
-					nodeQueryString += node.verbalization.current[verbalizationIndex++];
+					nodeQueryString += node.verbalization.current[verbalizationIndex];
+					nodeResultQuery += '<span class="operator">'+node.verbalization.current[verbalizationIndex++]+'</span>';
 					nodeQueryString += '</span>';
 
 					//post label
-					nodeQueryString += node.verbalization.current[verbalizationIndex++];
+					nodeQueryString += node.verbalization.current[verbalizationIndex];
+					nodeResultQuery += node.verbalization.current[verbalizationIndex++];
 
 					//they have only a child
-					nodeQueryString += visitRenderer(node.children[0]);
+					var temp = visitRenderer(node.children[0]);
+					nodeQueryString += temp.queryString;
+					nodeResultQuery += temp.resultString;
 
 					nodeQueryString += '</span>';
+					nodeResultQuery += '</span>';
 					break;
 
 				case "range" : 
@@ -403,40 +510,51 @@ function visitRenderer(key){
 					//due figli senza ul e con and in mezzo
 					//pre label
 					nodeQueryString += '<span class="focusable" meta-focusReference="'+encodeURIComponent(node.key)+'" meta-removeReference="'+encodeURIComponent(node.key)+'">';
-					nodeQueryString += node.verbalization.current[verbalizationIndex++];
+					nodeQueryString += node.verbalization.current[verbalizationIndex];
+					nodeResultQuery += '<span>'+node.verbalization.current[verbalizationIndex++];
 
 					//eventually not or optional
 					var parentNode = queryLogicStructure[node.parent];
 					if(parentNode != undefined && parentNode.type == "operator" && (parentNode.label == "not" || parentNode.label == "optional")){
 						nodeQueryString += '<span class="focusable" meta-removeReference="'+encodeURIComponent(parentNode.key)+'" meta-focusReference="'+encodeURIComponent(parentNode.key)+'">';					
 						nodeQueryString += '<span id="'+encodeURIComponent(parentNode.key)+'" class="focusable operator" meta-removeReference="'+encodeURIComponent(parentNode.key)+'" meta-focusReference="'+encodeURIComponent(parentNode.key)+'">';
-						nodeQueryString += node.verbalization.current[verbalizationIndex++];
+						nodeQueryString += node.verbalization.current[verbalizationIndex];
+						nodeResultQuery += '<span><span class="operator">'+node.verbalization.current[verbalizationIndex++]+'</span></span>';
 						nodeQueryString += '</span>';
 						nodeQueryString += '</span>';
 					}
 
 					//content
 					nodeQueryString += '<span id="'+encodeURIComponent(node.key)+'" class="focusable operator" meta-removeReference="'+encodeURIComponent(node.key)+'" meta-focusReference="'+encodeURIComponent(node.key)+'">';
-					nodeQueryString += node.verbalization.current[verbalizationIndex++];
+					nodeQueryString += node.verbalization.current[verbalizationIndex];
+					nodeResultQuery += '<span class="operator">'+node.verbalization.current[verbalizationIndex++]+'</span>';
 					nodeQueryString += '</span>';
 
 					//post label
-					nodeQueryString += node.verbalization.current[verbalizationIndex++];
+					nodeQueryString += node.verbalization.current[verbalizationIndex];
+					nodeResultQuery += node.verbalization.current[verbalizationIndex++];
 
 					//they have only a child
-					nodeQueryString += visitRenderer(node.children[0]);
+					var temp = visitRenderer(node.children[0]);
+					nodeQueryString += temp.queryString;
+					nodeResultQuery += temp.resultQuery;
 
 					nodeQueryString += 'and ';
+					nodeResultQuery += 'and ';
 
-					nodeQueryString += visitRenderer(node.children[1]);
+					var temp = visitRenderer(node.children[1]);
+					nodeQueryString += temp.queryString;
+					nodeResultQuery += temp.resultString;
 
 					nodeQueryString += '</span>';
+					nodeResultQuery += '</span>';
 					break;
 			}
 			break;
 	}
 
-	return nodeQueryString;
+	return {queryString: nodeQueryString,
+			resultString: nodeResultQuery};
 }
 
 function renderFocus(){
@@ -592,4 +710,8 @@ function showUserQueryBox(){
 QueryViewer.prototype.renderUserQuery = function(sparqlQueryArray){
 	var sparqlQuery = sparqlQueryArray.join("\n");
 	$("#querySparqlText").text(sparqlQuery);
+}
+
+QueryViewer.prototype.getCachedQuery = function(){
+	return resultQuery;
 }

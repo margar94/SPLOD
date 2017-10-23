@@ -11,6 +11,7 @@ var queryBuilder = null;
 var queryVerbalizator = null;
 var operatorManager = null;
 var tableResultManager = null;
+var queryViewer = null;
 
 var elementOnFocus;
 
@@ -732,6 +733,10 @@ MapCreator.prototype.selectedOperator = function(pendingQuery){
 							   parent:key, children: [], datatype: resultDatatype,
 							   lang: resultLang,
 							   relatedTo: elementOnFocus};
+
+				if(queryViewer == null)
+					queryViewer = new QueryViewer();
+				newLogicChildren.cachedQuery = queryViewer.getCachedQuery();
 				queryLogicMap[keyChildren] = newLogicChildren;
 
 				newLogicElement.children.push(keyChildren);

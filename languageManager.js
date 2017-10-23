@@ -586,4 +586,12 @@ LanguageManager.prototype.getPredicateVerbalization = function(predicateLabel, d
 	return label; 
 }
 
+LanguageManager.prototype.getHint = function(about){
 
+	switch(about){
+		case 'reusableResult': 
+			hint = '';
+	}
+
+	return hint;
+}
