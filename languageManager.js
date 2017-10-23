@@ -595,3 +595,14 @@ LanguageManager.prototype.getHint = function(about){
 
 	return hint;
 }
+
+LanguageManager.prototype.getSelectTitle = function(select){
+ var label; 
+
+ switch(select){
+  case 'label lang': label = 'Select label language'; break;
+  case 'system lang': label = 'Select system language'; break;
+ }
+
+ return label;
+}
