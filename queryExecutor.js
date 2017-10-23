@@ -101,7 +101,6 @@ var QueryExecutor = function (selectedEndpoint, selectedGraph) {
 			        method:'post',
 			        success: function( data ) {
 			        	var arrayData = data.results.bindings;
-<<<<<<< HEAD
 			        	classHierarchyMap = addInstancesOccurenceClassHierarchy(arrayData, classHierarchyMap);
 			        	classHierarchyMap = cleanMap(classHierarchyMap);
 			        	var mapRoots = getMapRoots(classHierarchyMap);
