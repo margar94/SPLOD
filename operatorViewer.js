@@ -125,6 +125,7 @@ function renderReusableResultListFromResult(reusableResults){
 					operatorManager.changedReusableResult([$(this).attr('meta-value')], false);
 				}
 
+	showHint(languageManager.getHintOperatorManager('reusableResult')+reusableResults.cachedQuery);
 	renderReusableResultList(reusableResults, onClickButtonFunction, onClickLiFunction);
 }
 

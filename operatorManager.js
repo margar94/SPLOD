@@ -530,7 +530,7 @@ function manageUpdateOperatorViewer(){
 			results = [];
 		} 
 		var type = getTypeByOperator(operatorField, operator, node.datatype);
-		renderReusableResultListFromResult({type:type, results:results});
+		renderReusableResultListFromResult({type:type, results:results, cachedQuery: node.cachedQuery});
 		return;
 	}
 	

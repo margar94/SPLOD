@@ -41,3 +41,11 @@ function filter(inputName, boxName) {
 function isImage(url){
     return ((url.toLowerCase()).match(/^https?:\/\/(?:[a-z\-]+\.)+[a-z]{2,6}(?:\/[^\/#?]+)+\.(?:jpe?g|gif|png|svg)/)!=null);
 }
+
+
+fuction showHint(hint){
+    $('#hintBox').text(hint)
+        .show();
+        
+    setTimeout(function(){ $('#hintBox').hide() }, 10000);
+}
