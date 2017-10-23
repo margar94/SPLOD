@@ -204,9 +204,7 @@
 	            				<div class=" valign-wrapper ">
 				            		<span class="input-field col s11 m11 l11 mySearch">
 						              	<input type="search" id="searchConceptsBox" 
-											onkeyup="filter('searchConceptsBox', 'conceptsListBox')" 
-											title="Type in a concept">
-										<label for="searchConceptsBox">Search for a concept</label>
+											onkeyup="filter('searchConceptsBox', 'conceptsList')" >
 									</span>
 									<span class="col s2 m2 l2 right">
 										<i class="material-icons"> search</i>
@@ -234,11 +232,9 @@
 			              	<!--search-->
 		              	  	<div class="card">
 	            				<div class=" valign-wrapper ">
-				            		<span class="input-field col s11 m11 l11 mySearch">
+	            					<span class="input-field col s11 m11 l11 mySearch">
 						              	<input type="search" id="searchPredicatesBox" 
-											onkeyup="filter('searchPredicatesBox', 'directPredicatesList');filter('searchPredicatesBox', 'reversePredicatesList');" 
-											title="Type in a predicate">
-										<label for="searchPredicatesBox">Search for a predicate</label>
+											onkeyup="filter('searchPredicatesBox', 'directPredicatesList');filter('searchPredicatesBox', 'reversePredicatesList');" >
 									</span>
 									<span class="col s2 m2 l2 right">
 										<i class="material-icons"> search</i>
@@ -285,6 +281,19 @@
 			              <span class="card-title"><span id="operatorsBoxTitle"></span></span>
 			              <span id="pendingQuerySpan"></span>
 			              <div id="contentOperatorBox">
+			              	  	<!--search-->
+			              	  	<div class="card" id="searchReusableResultCard">
+		            				<div class=" valign-wrapper ">
+		            					<span class="input-field col s11 m11 l11 mySearch">
+						              		<input type="search" id="searchReusableResultBox" 
+												onkeyup="filter('searchReusableResultBox', 'reusableResultList')">
+										</span>
+										<span class="col s2 m2 l2 right">
+											<i class="material-icons"> search</i>
+										</span>
+									</div>
+							  	</div>
+							  	<!--end search-->
 				              <ul id="operatorList" class="collection"></ul>
 				              <ul id="reusableResultList" class="collection"></ul>
 				          </div>

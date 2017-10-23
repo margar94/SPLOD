@@ -23,13 +23,14 @@ function removeHighlightElementsToRemove(){
 }
 
 function filter(inputName, boxName) {
-    var input, filter, box, li, text, i;
-    input = document.getElementById(inputName);
-    filter = input.value.toLowerCase();
-   	box = document.getElementById(boxName);
-    li = box.getElementsByTagName("li");
-    for (i = 0; i < li.length; i++) {
-        text = li[i].innerHTML;
+    var filter, li, liContent, text;
+
+    filter = $('#'+inputName).val().toLowerCase();
+    li = $('#'+boxName+" li");
+    liContent = $('#'+boxName+" .liContent");
+
+    for (var i = 0; i < li.length; i++) {
+        text = liContent[i].innerText;
         if (text.toLowerCase().indexOf(filter) > -1) {
             li[i].style.display = "";
         } else {

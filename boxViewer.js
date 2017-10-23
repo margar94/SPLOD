@@ -87,6 +87,12 @@ function initBoxViewer(){
 	$("#numConceptsLabel").html(languageManager.getSelectTitle('num concepts'));
 	$("#numPredicatesLabel").html(languageManager.getSelectTitle('num predicates'));
 
+	placeholder="Search for a concept..."
+	$("#searchConceptsBox").attr("placeholder", languageManager.getInputPlaceholder('concept'));
+	$("#searchPredicatesBox").attr("placeholder", languageManager.getInputPlaceholder('predicate'));
+	$("#searchReusableResultsBox").attr("placeholder", languageManager.getInputPlaceholder('result'));
+	$("#searchReusableResultCard").hide();
+
 	conceptsLimit = false;
 	predicatesLimit = 100;
 
@@ -175,14 +181,18 @@ function renderConceptsList(roots, concepts){
 				.attr('title', concept.url)
 				.attr('meta-url', concept.url)
 				.attr('meta-label', concept.label)
-				.text(concept.label)
 				.appendTo(conceptsList)		
 				.on('click', function(){
 					$('#operatorsSpinner').show();
 					$('#tableResultSpinner').show();
 					mapCreator.selectedConcept($(this).attr('meta-url'), $(this).attr('meta-label'));
 				});
-			
+
+			var span = $('<span/>')
+				.attr('class', 'liContent')
+				.text(concept.label)
+				.appendTo(li);
+
 			var badge = $("<span/>")
 				.attr('class', 'new badge')
 				.attr('data-badge-caption', '')
@@ -218,6 +228,7 @@ function iterativePreorderVisit(concept, concepts, toAppend, level){
 	}
 
 	var span = $("<span/>")
+			.attr('class', 'liContent')
 			.attr('title', concepts[concept].url)
 			.attr('meta-url', concepts[concept].url)
 			.attr('meta-label', concepts[concept].label)
@@ -307,7 +318,7 @@ function renderDirectPredicates(directMap){
 
 		var span = $("<span/>")
 			.attr('title', element.url)
-			.attr('class', 'addToQuery')
+			.attr('class', 'addToQuery liContent')
 			.attr('meta-url', element.url)
 			.attr('meta-label', element.label)
 			.attr('meta-predicateDirection', 'direct') 
@@ -354,7 +365,7 @@ function renderReversePredicates(reverseArray){
 		element = reverseArray[index];
 
 		var li = $("<li/>")
-			.attr('class', 'collection-item addToQuery withMargin')
+			.attr('class', 'collection-item addToQuery withMargin liContent')
 			.attr('title', element.url)
 			.attr('meta-url', element.url)
 			.attr('meta-label', element.label)

@@ -513,8 +513,16 @@ enLanguageManager.prototype.getBoxTitle = function(boxType){
 	return title;
 }
 
-enLanguageManager.prototype.getReusableResultWarning = function(){
-	return 'WARNING';
+enLanguageManager.prototype.getInputPlaceholder = function(inputType){
+	var placeholder;
+
+	switch(inputType){
+		case 'concept' : placeholder = "Search for a concept"; break;
+		case 'predicate' : placeholder = "Search for a predicate"; break;
+		case 'result' : placeholder = "Search for a result"; break;
+	}
+
+	return placeholder;
 }
 
 enLanguageManager.prototype.getOperatorLabelVerbalization = function(operator){	
