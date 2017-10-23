@@ -7,11 +7,14 @@ var graph;
 var query, query2; 
 var queryUrl, queryUrl2;
 
+var labelLang = 'en';
 
 var operatorManager;
 var tableResultManager;
 var queryViewer;
 
+var language_classHierarchyMap;
+var language_classHierarchyMapRoots;
 
 //var directPredicateMap;
 
@@ -44,7 +47,10 @@ var QueryExecutor = function (selectedEndpoint, selectedGraph) {
 
 	cachedUserQuery = [];
 
+	//labelLang = 'en';
 
+	language_classHierarchyMap = {};
+	language_classHierarchyMapRoots = [];
 
 	directPredicateMap = {};
 
@@ -64,6 +70,10 @@ var QueryExecutor = function (selectedEndpoint, selectedGraph) {
 /*
 	Get classe's hierarchy. 
 */
+QueryExecutor.prototype.getAllEntities = function(limit, callback) {
+	if(!(labelLang in language_classHierarchyMap)){
+		language_classHierarchyMap[labelLang] = {};
+
 		query = " prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
 					" prefix owl: <http://www.w3.org/2002/07/owl#> " +
 					" SELECT DISTINCT * " +
@@ -71,10 +81,15 @@ var QueryExecutor = function (selectedEndpoint, selectedGraph) {
 						" GRAPH " + graph + " { " +
 							" {?subclass a owl:Class} UNION {?subclass a rdfs:Class} " + 
 							" OPTIONAL{?subclass rdfs:label ?label_subclass. " +
+								" FILTER (lang(?label_subclass) = '" + labelLang + "')} " +
 							" OPTIONAL{?subclass rdfs:subClassOf ?superclass. " +
 								" OPTIONAL {?superclass rdfs:label ?label_superclass. " +
+									" FILTER (lang(?label_superclass) = '" + labelLang + "')}}" +
 						" } " +
 					" } ";
+
+		if(limit)
+			query += "LIMIT " + limit;  
 
 	   	queryUrl = endpoint+"?query="+ encodeURIComponent(query) +"&format=json";
 	    $.ajax({
@@ -101,26 +116,19 @@ var QueryExecutor = function (selectedEndpoint, selectedGraph) {
 			        method:'post',
 			        success: function( data ) {
 			        	var arrayData = data.results.bindings;
-			        	classHierarchyMap = addInstancesOccurenceClassHierarchy(arrayData, classHierarchyMap);
-			        	classHierarchyMap = cleanMap(classHierarchyMap);
-			        	var mapRoots = getMapRoots(classHierarchyMap);
-			        	classHierarchyMapRoots = mapRoots;
-						callback(classHierarchyMapRoots, classHierarchyMap);
-			        },
-			        error: function(jqXHR, textStatus, errorThrown){
-			        	console.log(textStatus);
-			        	callback([], {});
+			        	language_classHierarchyMap[labelLang] = addInstancesOccurenceClassHierarchy(arrayData, language_classHierarchyMap[labelLang]);
+			        	language_classHierarchyMap[labelLang] = cleanMap(language_classHierarchyMap[labelLang]);
+			        	var mapRoots = getMapRoots(language_classHierarchyMap[labelLang]);
+			        	language_classHierarchyMapRoots[labelLang] = mapRoots;
+						callback(language_classHierarchyMapRoots[labelLang], language_classHierarchyMap[labelLang]);
 			        }
 			    });	
-			},
-			error: function(jqXHR, textStatus, errorThrown){
-				console.log(textStatus);
-				callback([], {});
 			}
 		});
 
 	}
 	else{
+		callback(language_classHierarchyMapRoots[labelLang], language_classHierarchyMap[labelLang]);
 	}
 }
 
@@ -160,6 +168,7 @@ QueryExecutor.prototype.getAllDirectPredicates = function(limit, callback) {
 							" LIMIT 1 " +
 						" } " +
 						" OPTIONAL {?url rdfs:label ?label. " +
+						" FILTER (lang(?label) = '" + labelLang + "')} " +
 					" } " +
 				" } ";
 					
@@ -173,11 +182,7 @@ QueryExecutor.prototype.getAllDirectPredicates = function(limit, callback) {
 	        success: function( data ) {
 	        	var result = getUrlAndLabelFromResult(data);
 	        	callback(managePredicateMap(result));
-	        },
-			error: function(jqXHR, textStatus, errorThrown){
-				console.log(textStatus);
-				callback({});
-			}
+	        }
 	    });	
 }
 
@@ -198,6 +203,7 @@ QueryExecutor.prototype.getAllReversePredicates = function(limit, callback) {
 						" LIMIT 1 " +
 					" } " +
 					" OPTIONAL {?url rdfs:label ?label. " +
+					" FILTER (lang(?label) = '" + labelLang + "')} " +
 				" } " +
 			" } ";
 				
@@ -211,11 +217,7 @@ QueryExecutor.prototype.getAllReversePredicates = function(limit, callback) {
         success: function( data ) {
 			var result = getUrlAndLabelFromResult(data);
 	        callback(managePredicateMap(result));
-        },
-		error: function(jqXHR, textStatus, errorThrown){
-			console.log(textStatus);
-			callback({});
-		}
+        }
     });	
 }
 
@@ -238,11 +240,7 @@ QueryExecutor.prototype.getPredicateStats = function(pred, callback){
         success: function( data ) {
         	var arrayData = data.results.bindings;
         	callback(arrayData[0]['number'].value);
-        },
-		error: function(jqXHR, textStatus, errorThrown){
-			console.log(textStatus);
-			callback('');
-		}
+        }
     });	
 }
 
@@ -265,11 +263,7 @@ QueryExecutor.prototype.getConceptStats = function(concept, callback){
         success: function( data ) {
         	var arrayData = data.results.bindings;
         	callback(arrayData[0]['number'].value);
-        },
-		error: function(jqXHR, textStatus, errorThrown){
-			console.log(textStatus);
-			callback('');
-		}
+        }
     });	
 }
 
@@ -279,6 +273,8 @@ QueryExecutor.prototype.getConceptStats = function(concept, callback){
 */
 QueryExecutor.prototype.getEntitySubclasses = function(url, limit, callback) {
 	var submap={};
+	if(url in language_classHierarchyMap[labelLang]){
+		submap = buildSubmapHierarchy(url, limit);
 	}else{
 		submap[url] = {url:url, label: createLabel(url), children : [], parent:[], numberOfInstances:0};
 	}
@@ -300,6 +296,7 @@ QueryExecutor.prototype.getDirectPredicatesFromConcept = function(entity, limit,
 								" ?s a <"+entity+">. " +
 							" } LIMIT 20000 }" +
 						" OPTIONAL {?url rdfs:label ?label. " +
+						" FILTER (lang(?label) = '" + labelLang + "')} " +
 					" } " +
 				" } ";
 	if(limit)
@@ -310,17 +307,11 @@ QueryExecutor.prototype.getDirectPredicatesFromConcept = function(entity, limit,
 		        url: queryUrl,
 		        method:'post',
 		        success: function( data, textStatus, jqXHR ) {
-					callback(getUrlAndLabelFromResult(data));
-		        },
-				error: function(jqXHR, textStatus, errorThrown){
-					console.log(textStatus);
-					callback([]);
-				},
-				complete: function(jqXHR){
-					var index = $.inArray(jqXHR, activeAjaxRequest);
+		        	var index = $.inArray(jqXHR, activeAjaxRequest);
 		        	if(index != -1)
 		        		activeAjaxRequest.splice(index, 1);
-				}
+					callback(getUrlAndLabelFromResult(data));
+		        }
 		    });	
     activeAjaxRequest.push(xhr);
 }
@@ -339,6 +330,7 @@ QueryExecutor.prototype.getReversePredicatesFromConcept = function(entity, limit
 								" ?s a <"+entity+">. " +
 							" } LIMIT 20000 }" +
 						" OPTIONAL {?url rdfs:label ?label. " +
+						" FILTER (lang(?label) = '" + labelLang + "')} " +
 					" } " +
 				" } ";
 	if(limit)
@@ -349,17 +341,11 @@ QueryExecutor.prototype.getReversePredicatesFromConcept = function(entity, limit
 		        url: queryUrl,
 		        method:'post',
 		        success: function( data, textStatus, jqXHR ) {
-		        	callback(getUrlAndLabelFromResult(data));
-		        },
-				error: function(jqXHR, textStatus, errorThrown){
-					console.log(textStatus);
-					callback([]);
-				},
-				complete: function(jqXHR){
-					var index = $.inArray(jqXHR, activeAjaxRequest);
+		        	var index = $.inArray(jqXHR, activeAjaxRequest);
 		        	if(index != -1)
 		        		activeAjaxRequest.splice(index, 1);
-				}
+					callback(getUrlAndLabelFromResult(data));
+		        }
 		    });	
 
     activeAjaxRequest.push(xhr);
@@ -376,6 +362,7 @@ QueryExecutor.prototype.getConceptsFromDirectPredicate = function(predicate, lim
 						" ?o a ?url. " +
 						" ?s  <"+predicate+"> ?o. " +
 						" OPTIONAL {?url rdfs:label ?label. " +
+						" FILTER (lang(?label) = '" + labelLang + "')} " +
 					" } " +
 				" } ";
 	if(limit)
@@ -386,21 +373,17 @@ QueryExecutor.prototype.getConceptsFromDirectPredicate = function(predicate, lim
 		        url: queryUrl,
 		        method:'post',
 		        success: function(data, textStatus, jqXHR ) {
+		        	//remove this request from pending queries
+		        	var index = $.inArray(jqXHR, activeAjaxRequest);
+		        	if(index != -1)
+		        		activeAjaxRequest.splice(index, 1);
+
 		        	var arrayData = data.results.bindings;
 				    var subMap = getResultMap(arrayData);
 					var mapRoots = getMapRoots(subMap);
 				    callback(mapRoots, subMap);	
 				      
-		        },
-				error: function(jqXHR, textStatus, errorThrown){
-					console.log(textStatus);
-					callback([], {});
-				},
-				complete: function(jqXHR){
-					var index = $.inArray(jqXHR, activeAjaxRequest);
-		        	if(index != -1)
-		        		activeAjaxRequest.splice(index, 1);
-				}
+		        }
 		    });	
 
     activeAjaxRequest.push(xhr);
@@ -418,6 +401,7 @@ QueryExecutor.prototype.getConceptsFromReversePredicate = function(predicate, li
 						" ?o a ?url. " +
 						" ?s  <"+predicate+"> ?o. " +
 						" OPTIONAL {?url rdfs:label ?label. " +
+						" FILTER (lang(?label) = '" + labelLang + "')} " +
 					" } " +
 				" } ";
 	if(limit)
@@ -428,20 +412,15 @@ QueryExecutor.prototype.getConceptsFromReversePredicate = function(predicate, li
         url: queryUrl,
         method:'post',
         success: function( data, textStatus, jqXHR ) {
-        	var arrayData = data.results.bindings;
-		    var subMap = getResultMap(arrayData);
-		    var mapRoots = getMapRoots(subMap);
-		    callback(mapRoots, subMap);	
-        },
-		error: function(jqXHR, textStatus, errorThrown){
-			console.log(textStatus);
-			callback([], {});
-		},
-		complete: function(jqXHR){
-			var index = $.inArray(jqXHR, activeAjaxRequest);
-        	if(index != -1)
-        		activeAjaxRequest.splice(index, 1);
-		}
+		        	var index = $.inArray(jqXHR, activeAjaxRequest);
+		        	if(index != -1)
+		        		activeAjaxRequest.splice(index, 1);
+
+					var arrayData = data.results.bindings;
+				    var subMap = getResultMap(arrayData);
+				    var mapRoots = getMapRoots(subMap);
+				    callback(mapRoots, subMap);	
+        }
     });	
     activeAjaxRequest.push(xhr);
 }
@@ -477,6 +456,7 @@ QueryExecutor.prototype.getDirectPredicatesFromPredicate = function(predicate, l
 							" LIMIT 1 " +
 						" } " +
 						" OPTIONAL {?url rdfs:label ?label. " +
+						" FILTER (lang(?label) = '" + labelLang + "')} " +
 					" } " +
 				" } ";
 	if(limit)
@@ -487,17 +467,11 @@ QueryExecutor.prototype.getDirectPredicatesFromPredicate = function(predicate, l
         url: queryUrl,
         method:'post',
         success: function( data, textStatus, jqXHR ) {
-		    callback(getUrlAndLabelFromResult(data));
-        },
-		error: function(jqXHR, textStatus, errorThrown){
-			console.log(textStatus);
-			callback([]);
-		},
-		complete: function(jqXHR){
-			var index = $.inArray(jqXHR, activeAjaxRequest);
-        	if(index != -1)
-        		activeAjaxRequest.splice(index, 1);
-		}
+		        	var index = $.inArray(jqXHR, activeAjaxRequest);
+		        	if(index != -1)
+		        		activeAjaxRequest.splice(index, 1);
+					callback(getUrlAndLabelFromResult(data));
+        }
     });	
 
     activeAjaxRequest.push(xhr);
@@ -518,6 +492,7 @@ QueryExecutor.prototype.getReversePredicatesFromPredicate = function(predicate, 
 							" LIMIT 1 " +
 						" } " +
 						" OPTIONAL {?url rdfs:label ?label. " +
+						" FILTER (lang(?label) = '" + labelLang + "')} " +
 					" } " +
 				" } ";
 	if(limit)
@@ -528,17 +503,11 @@ QueryExecutor.prototype.getReversePredicatesFromPredicate = function(predicate, 
         url: queryUrl,
         method:'post',
         success: function( data, textStatus, jqXHR ) {
-		    callback(getUrlAndLabelFromResult(data));
-        },
-		error: function(jqXHR, textStatus, errorThrown){
-			console.log(textStatus);
-			callback([]);
-		},
-		complete: function(jqXHR){
-			var index = $.inArray(jqXHR, activeAjaxRequest);
-        	if(index != -1)
-        		activeAjaxRequest.splice(index, 1);
-		}
+		        	var index = $.inArray(jqXHR, activeAjaxRequest);
+		        	if(index != -1)
+		        		activeAjaxRequest.splice(index, 1);
+					callback(getUrlAndLabelFromResult(data));
+        }
     });	
    activeAjaxRequest.push(xhr);
 }
@@ -576,17 +545,11 @@ QueryExecutor.prototype.executeUserQuery = function(querySPARQL){
 	        url: queryUrl,
 	        method:'post',
 	        success: function( data, textStatus, jqXHR ) {
-				operatorManager.queryResult(querySPARQL.select, querySPARQL.labelSelect, querySPARQL.keySelect, data.results.bindings);
-	        	tableResultManager.updateTable(querySPARQL.select, querySPARQL.labelSelect, data.results.bindings);
-	        },
-			error: function(jqXHR, textStatus, errorThrown){
-				console.log(textStatus);
-				operatorManager.queryResult(querySPARQL.select, querySPARQL.labelSelect, querySPARQL.keySelect, []);
-		        tableResultManager.updateTable(querySPARQL.select, querySPARQL.labelSelect, []);
-			},
-			complete: function(jqXHR){
-				userAjaxRequest = null;				
-			}
+		        	userAjaxRequest = null;
+
+					operatorManager.queryResult(querySPARQL.select, querySPARQL.labelSelect, querySPARQL.keySelect, data.results.bindings);
+		        	tableResultManager.updateTable(querySPARQL.select, querySPARQL.labelSelect, data.results.bindings);
+	        }
 	    });
 	    userAjaxRequest=xhr;
 	}
@@ -602,6 +565,9 @@ QueryExecutor.prototype.changeEndpoint = function (selectedEndpoint, selectedGra
 	graph = selectedGraph;
 }
 
+/*QueryExecutor.prototype.changeLanguage = function (selectedLanguage) {
+	labelLang = selectedLanguage;
+}*/
 
 /*
 	Handle response of GetAllEntitis function: it creates an array with entities' url and label.
@@ -634,6 +600,7 @@ function manageClassHierarchy(data){
 	$.each(arrayData, function(index){
 		element = arrayData[index];
 
+		if(!(element.superclass.value in language_classHierarchyMap[labelLang])){
 		
 			label = element.label_superclass;
 			if(label == undefined)
@@ -641,9 +608,12 @@ function manageClassHierarchy(data){
 			else 
 				label = element.label_superclass.value;
 
+			language_classHierarchyMap[labelLang][element.superclass.value] = {url:element.superclass.value, label: label, children : [], parent:[], numberOfInstances:0};
 		}
 
+		language_classHierarchyMap[labelLang][element.superclass.value].children.push(element.subclass.value);
 
+		if(!(element.subclass.value in language_classHierarchyMap[labelLang])){
 
 			var subclass_label = element.label_subclass;
 			if(subclass_label == undefined)
@@ -651,14 +621,17 @@ function manageClassHierarchy(data){
 			else 
 				subclass_label = element.label_subclass.value;
 
+			language_classHierarchyMap[labelLang][element.subclass.value] = {url:element.subclass.value, label: subclass_label, children : [], numberOfInstances:0, parent: []};
 
 		}
+		language_classHierarchyMap[labelLang][element.subclass.value].parent.push(element.superclass.value);
 
 	});
 
 
 }
 
+function buildSubmapHierarchy(selectedClass, limit){
 
 	//ATTENZIONE controllare che sia nella mappa
 	var elementStack = [];
@@ -668,9 +641,16 @@ function manageClassHierarchy(data){
 	var currentElement;
 	var children;
 
+	var counter=0;
+
 	while(elementStack.length!=0){
 		currentElement = elementStack.pop();
+		submap[currentElement] = $.extend(true, {}, language_classHierarchyMap[labelLang][currentElement]);
+		
+		if(++counter == limit)
+			return submap;
 
+		children = language_classHierarchyMap[labelLang][currentElement].children;
 
 		for(var i=0; i<children.length; i++)
 			elementStack.push(children[i]);
@@ -692,6 +672,7 @@ function getResultMap(arrayData){
 		else 
 			label = element.url.value;
 
+		if(element.url.value in language_classHierarchyMap[labelLang]){
 			map = updateMap(element.url.value, label, map);
 
 		}else{
@@ -722,8 +703,10 @@ function updateMap(url, label, map){
 
 	while(elementStack.length!=0){
 		currentElement = elementStack.pop();
+		map[currentElement] = $.extend(true, {}, language_classHierarchyMap[labelLang][currentElement]);
 		map[currentElement].numberOfInstances = 0;
 		
+		children = language_classHierarchyMap[labelLang][currentElement].children;
 
 		for(var i=0; i<children.length; i++)
 			elementStack.push(children[i]);
