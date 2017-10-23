@@ -121,9 +121,17 @@ QueryExecutor.prototype.getAllEntities = function(limit, callback) {
 			        	var mapRoots = getMapRoots(language_classHierarchyMap[labelLang]);
 			        	language_classHierarchyMapRoots[labelLang] = mapRoots;
 						callback(language_classHierarchyMapRoots[labelLang], language_classHierarchyMap[labelLang]);
+			        },
+			        error: function(jqXHR, textStatus, errorThrown){
+			        	console.log(textStatus);
+			        	callback([], {});
 			        }
 			    });	
-			}
+			},
+	        error: function(jqXHR, textStatus, errorThrown){
+	        	console.log(textStatus);
+	        	callback([], {});
+	        }
 		});
 
 	}
@@ -182,6 +190,10 @@ QueryExecutor.prototype.getAllDirectPredicates = function(limit, callback) {
 	        success: function( data ) {
 	        	var result = getUrlAndLabelFromResult(data);
 	        	callback(managePredicateMap(result));
+	        },
+	        error: function(jqXHR, textStatus, errorThrown){
+	        	console.log(textStatus);
+	        	callback({});
 	        }
 	    });	
 }
@@ -217,6 +229,10 @@ QueryExecutor.prototype.getAllReversePredicates = function(limit, callback) {
         success: function( data ) {
 			var result = getUrlAndLabelFromResult(data);
 	        callback(managePredicateMap(result));
+        },
+        error: function(jqXHR, textStatus, errorThrown){
+        	console.log(textStatus);
+        	callback({});
         }
     });	
 }
@@ -240,7 +256,11 @@ QueryExecutor.prototype.getPredicateStats = function(pred, callback){
         success: function( data ) {
         	var arrayData = data.results.bindings;
         	callback(arrayData[0]['number'].value);
-        }
+        },
+		error: function(jqXHR, textStatus, errorThrown){
+			console.log(textStatus);
+			callback('');
+		}
     });	
 }
 
@@ -263,7 +283,11 @@ QueryExecutor.prototype.getConceptStats = function(concept, callback){
         success: function( data ) {
         	var arrayData = data.results.bindings;
         	callback(arrayData[0]['number'].value);
-        }
+        },
+		error: function(jqXHR, textStatus, errorThrown){
+			console.log(textStatus);
+			callback('');
+		}
     });	
 }
 
@@ -307,11 +331,17 @@ QueryExecutor.prototype.getDirectPredicatesFromConcept = function(entity, limit,
 		        url: queryUrl,
 		        method:'post',
 		        success: function( data, textStatus, jqXHR ) {
-		        	var index = $.inArray(jqXHR, activeAjaxRequest);
+					callback(getUrlAndLabelFromResult(data));
+		        },
+				error: function(jqXHR, textStatus, errorThrown){
+					console.log(textStatus);
+					callback([]);
+				},
+				complete: function(jqXHR){
+					var index = $.inArray(jqXHR, activeAjaxRequest);
 		        	if(index != -1)
 		        		activeAjaxRequest.splice(index, 1);
-					callback(getUrlAndLabelFromResult(data));
-		        }
+				}
 		    });	
     activeAjaxRequest.push(xhr);
 }
@@ -341,11 +371,17 @@ QueryExecutor.prototype.getReversePredicatesFromConcept = function(entity, limit
 		        url: queryUrl,
 		        method:'post',
 		        success: function( data, textStatus, jqXHR ) {
-		        	var index = $.inArray(jqXHR, activeAjaxRequest);
+		        	callback(getUrlAndLabelFromResult(data));
+		        },
+				error: function(jqXHR, textStatus, errorThrown){
+					console.log(textStatus);
+					callback([]);
+				},
+				complete: function(jqXHR){
+					var index = $.inArray(jqXHR, activeAjaxRequest);
 		        	if(index != -1)
 		        		activeAjaxRequest.splice(index, 1);
-					callback(getUrlAndLabelFromResult(data));
-		        }
+				}
 		    });	
 
     activeAjaxRequest.push(xhr);
@@ -373,17 +409,21 @@ QueryExecutor.prototype.getConceptsFromDirectPredicate = function(predicate, lim
 		        url: queryUrl,
 		        method:'post',
 		        success: function(data, textStatus, jqXHR ) {
-		        	//remove this request from pending queries
-		        	var index = $.inArray(jqXHR, activeAjaxRequest);
-		        	if(index != -1)
-		        		activeAjaxRequest.splice(index, 1);
-
 		        	var arrayData = data.results.bindings;
 				    var subMap = getResultMap(arrayData);
 					var mapRoots = getMapRoots(subMap);
 				    callback(mapRoots, subMap);	
 				      
-		        }
+		        },
+				error: function(jqXHR, textStatus, errorThrown){
+					console.log(textStatus);
+					callback([], {});
+				},
+				complete: function(jqXHR){
+					var index = $.inArray(jqXHR, activeAjaxRequest);
+		        	if(index != -1)
+		        		activeAjaxRequest.splice(index, 1);
+				}
 		    });	
 
     activeAjaxRequest.push(xhr);
@@ -412,15 +452,20 @@ QueryExecutor.prototype.getConceptsFromReversePredicate = function(predicate, li
         url: queryUrl,
         method:'post',
         success: function( data, textStatus, jqXHR ) {
-		        	var index = $.inArray(jqXHR, activeAjaxRequest);
-		        	if(index != -1)
-		        		activeAjaxRequest.splice(index, 1);
-
-					var arrayData = data.results.bindings;
-				    var subMap = getResultMap(arrayData);
-				    var mapRoots = getMapRoots(subMap);
-				    callback(mapRoots, subMap);	
-        }
+        	var arrayData = data.results.bindings;
+		    var subMap = getResultMap(arrayData);
+		    var mapRoots = getMapRoots(subMap);
+		    callback(mapRoots, subMap);	
+        },
+		error: function(jqXHR, textStatus, errorThrown){
+			console.log(textStatus);
+			callback([], {});
+		},
+		complete: function(jqXHR){
+			var index = $.inArray(jqXHR, activeAjaxRequest);
+        	if(index != -1)
+        		activeAjaxRequest.splice(index, 1);
+		}
     });	
     activeAjaxRequest.push(xhr);
 }
@@ -467,11 +512,17 @@ QueryExecutor.prototype.getDirectPredicatesFromPredicate = function(predicate, l
         url: queryUrl,
         method:'post',
         success: function( data, textStatus, jqXHR ) {
-		        	var index = $.inArray(jqXHR, activeAjaxRequest);
-		        	if(index != -1)
-		        		activeAjaxRequest.splice(index, 1);
-					callback(getUrlAndLabelFromResult(data));
-        }
+		    callback(getUrlAndLabelFromResult(data));
+        },
+		error: function(jqXHR, textStatus, errorThrown){
+			console.log(textStatus);
+			callback([]);
+		},
+		complete: function(jqXHR){
+			var index = $.inArray(jqXHR, activeAjaxRequest);
+        	if(index != -1)
+        		activeAjaxRequest.splice(index, 1);
+		}
     });	
 
     activeAjaxRequest.push(xhr);
@@ -503,11 +554,17 @@ QueryExecutor.prototype.getReversePredicatesFromPredicate = function(predicate, 
         url: queryUrl,
         method:'post',
         success: function( data, textStatus, jqXHR ) {
-		        	var index = $.inArray(jqXHR, activeAjaxRequest);
-		        	if(index != -1)
-		        		activeAjaxRequest.splice(index, 1);
-					callback(getUrlAndLabelFromResult(data));
-        }
+		    callback(getUrlAndLabelFromResult(data));
+        },
+		error: function(jqXHR, textStatus, errorThrown){
+			console.log(textStatus);
+			callback([]);
+		},
+		complete: function(jqXHR){
+			var index = $.inArray(jqXHR, activeAjaxRequest);
+        	if(index != -1)
+        		activeAjaxRequest.splice(index, 1);
+		}
     });	
    activeAjaxRequest.push(xhr);
 }
@@ -549,6 +606,13 @@ QueryExecutor.prototype.executeUserQuery = function(querySPARQL){
 
 					operatorManager.queryResult(querySPARQL.select, querySPARQL.labelSelect, querySPARQL.keySelect, data.results.bindings);
 		        	tableResultManager.updateTable(querySPARQL.select, querySPARQL.labelSelect, data.results.bindings);
+	        },
+	        error: function(jqXHR, textStatus, errorThrown) {
+		        	userAjaxRequest = null;
+		        	console.log(textStatus);
+
+					operatorManager.queryResult(querySPARQL.select, querySPARQL.labelSelect, querySPARQL.keySelect, []);
+		        	tableResultManager.updateTable(querySPARQL.select, querySPARQL.labelSelect, []);
 	        }
 	    });
 	    userAjaxRequest=xhr;
