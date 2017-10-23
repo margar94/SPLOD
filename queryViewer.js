@@ -68,9 +68,6 @@ function renderQuery(){
 		var temp = visitRenderer(queryLogicStructureRoot);
 		queryString += temp.queryString;
 		resultQuery += temp.resultString;
-
-		console.log(resultQuery);
-
 	}
 
 	$("#queryNaturalLanguage")[0].innerHTML = queryString;
@@ -121,7 +118,7 @@ function visitRenderer(key){
 
 			//post label
 			nodeQueryString += node.verbalization.current[verbalizationIndex];
-			nodeResultQuery += node.verbalization.current[verbalizationIndex];
+			nodeResultQuery += node.verbalization.current[verbalizationIndex++];
 
 			if(addBarred){
 				nodeQueryString += '<span class="barred">';
@@ -331,7 +328,7 @@ function visitRenderer(key){
 				//content
 				nodeQueryString += '<span id="'+encodeURIComponent(node.key)+'" title="'+node.url+'" class="focusable predicate" meta-removeReference="'+encodeURIComponent(node.key)+'" meta-focusReference="'+encodeURIComponent(node.key)+'">';
 				nodeQueryString += node.verbalization.current[verbalizationIndex];
-				nodeResultQuery += '<span class="prediate">'+node.verbalization.current[verbalizationIndex++]+'</span>';
+				nodeResultQuery += '<span class="predicate">'+node.verbalization.current[verbalizationIndex++]+'</span>';
 				nodeQueryString += '</span>';
 
 				//post label

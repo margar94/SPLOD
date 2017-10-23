@@ -80,6 +80,8 @@ function initBoxViewer(){
 	$("#tableResultBoxTitle").html(languageManager.getBoxTitle('table result'));
 	$("#settingsBoxTitle").html(languageManager.getBoxTitle('settings'));
 
+	$("#hintBox").hide();
+
 	$("#labelLangSelectLabel").html(languageManager.getSelectTitle('label lang'));
 	$("#systemLangSelectLabel").html(languageManager.getSelectTitle('system lang'));
 	$("#numConceptsLabel").html(languageManager.getSelectTitle('num concepts'));

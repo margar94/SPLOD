@@ -44,8 +44,9 @@ function isImage(url){
 
 
 function showHint(hint){
-    $('#hintBox').text(hint)
-        .show();
+    $('#hintBoxContent').html(hint);
+
+    $('#hintBox').show();
         
     setTimeout(function(){ $('#hintBox').hide() }, 10000);
 }

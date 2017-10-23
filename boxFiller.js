@@ -15,14 +15,12 @@ var BoxFiller= function () {
 };
 
 BoxFiller.prototype.retrieveConcepts = function(limit, callback) {
-console.log(limit);
 	executor.getAllEntities(limit, function(roots, map){
 		callback(roots, map);
 	});
 }
 
 BoxFiller.prototype.retrievePredicates = function(limit, callback) {
-console.log(limit);
 
 	//if($.isEmptyObject(directData) || $.isEmptyObject(reverseData) || $.isEmptyObject(stats)){
 
@@ -68,8 +66,7 @@ BoxFiller.prototype.updateConceptsFromConcept = function(entityUrl, entityLabel,
 	});
 }
 
-BoxFiller.prototype.updatePredicatesFromConcept = function(predUrl, predLabel, predicateDirection, limit, callback){
-console.log(limit);
+BoxFiller.prototype.updatePredicatesFromConcept = function(predUrl, predLabel, limit, callback){
 		
 	var directData;
 	var reverseData;
@@ -97,21 +94,18 @@ console.log(limit);
 }
 
 BoxFiller.prototype.updateConceptsFromDirectPredicate = function(predUrl, predLabel, limit, callback){
-	console.log(limit);
 	executor.getConceptsFromDirectPredicate(predUrl, limit, function(roots, map){
 		callback(roots, map);
 	});
 }
 
 BoxFiller.prototype.updateConceptsFromReversePredicate = function(predUrl, predLabel, limit, callback){
-	console.log(limit);
 	executor.getConceptsFromReversePredicate(predUrl, limit, function(roots, map){
 		callback(roots, map);
 	});
 }
 
 BoxFiller.prototype.updatePredicatesFromPredicate = function(predUrl, predLabel, predicateDirection, limit, callback){
-console.log(limit);
 	var directData;
 	var reverseData;
 

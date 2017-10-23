@@ -125,7 +125,7 @@ function renderReusableResultListFromResult(reusableResults){
 					operatorManager.changedReusableResult([$(this).attr('meta-value')], false);
 				}
 
-	showHint(languageManager.getHintOperatorManager('reusableResult')+reusableResults.cachedQuery);
+	showHint(languageManager.getHintOperatorManager('reusableResult')+"<br>"+reusableResults.cachedQuery);
 	renderReusableResultList(reusableResults, onClickButtonFunction, onClickLiFunction);
 }
 
@@ -136,12 +136,6 @@ function renderReusableResultList(reusableResults, onClickButtonFunction, onClic
 	//change box title
 	$('#operatorsBox .card-title')
 		.text(languageManager.getBoxTitle('result'));
-
-	var iconWarning = $('<i/>')
-		.attr('class', 'small material-icons') 
-		.text('warning')
-		.attr('title', languageManager.getReusableResultWarning())
-		.appendTo($('#operatorsBox .card-title'));
 
 	var reusableResultList = $('#reusableResultList');
 	reusableResultList.empty();

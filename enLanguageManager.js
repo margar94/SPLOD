@@ -586,7 +586,7 @@ enLanguageManager.prototype.getPredicateVerbalization = function(predicateLabel,
 	return label; 
 }
 
-enLanguageManager.prototype.getHintOperatormanager = function(about){
+enLanguageManager.prototype.getHintOperatorManager = function(about){
 
 	switch(about){
 		case 'reusableResult': 
