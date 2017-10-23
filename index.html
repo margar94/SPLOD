@@ -5,8 +5,7 @@
         <script src="queryExecutor.js"></script>
 
         <script src="tableResultManager.js"></script>
-		<script src="operatorManager.js"></script>
-		<script src="languageManager.js"></script>	
+		<script src="operatorManager.js"></script>			
 		<script src="queryVerbalizator.js"></script>
 		<script src="queryBuilder.js"></script>
 		<script src="mapCreator.js"></script>
@@ -20,6 +19,8 @@
 		<script src="utilLogicLayer.js"></script>
 		<script src="utilPresentationLayer.js"></script>
 
+		<script src="languageManager.js"></script>
+		<script src="enLanguageManager.js"></script>
 
 		<script src="Materialize/js/materialize.min.js"></script>
 		<link href="Materialize/fonts/roboto/Roboto-Regular.woff" rel="application/x-font-woff">	
@@ -67,7 +68,16 @@
 	    </div>
 	    <!--end first row-->
 
-	    <!--start second row-->
+	    <div class="row">
+	    	<div id="hintBox" class="col s12"> 
+		     <div class="card">
+		      <div id="hintBoxContent" class="card-content">
+		      </div>
+		     </div>
+		    </div>
+	    </div>
+
+	    <!--start third row-->
 		<div class="row">
 
 			<!--start navBar-->
@@ -194,9 +204,7 @@
 	            				<div class=" valign-wrapper ">
 				            		<span class="input-field col s11 m11 l11 mySearch">
 						              	<input type="search" id="searchConceptsBox" 
-											onkeyup="filter('searchConceptsBox', 'conceptsListBox')" 
-											title="Type in a concept">
-										<label for="searchConceptsBox">Search for a concept</label>
+											onkeyup="filter('searchConceptsBox', 'conceptsList')" >
 									</span>
 									<span class="col s2 m2 l2 right">
 										<i class="material-icons"> search</i>
@@ -224,11 +232,9 @@
 			              	<!--search-->
 		              	  	<div class="card">
 	            				<div class=" valign-wrapper ">
-				            		<span class="input-field col s11 m11 l11 mySearch">
+	            					<span class="input-field col s11 m11 l11 mySearch">
 						              	<input type="search" id="searchPredicatesBox" 
-											onkeyup="filter('searchPredicatesBox', 'directPredicatesList');filter('searchPredicatesBox', 'reversePredicatesList');" 
-											title="Type in a predicate">
-										<label for="searchPredicatesBox">Search for a predicate</label>
+											onkeyup="filter('searchPredicatesBox', 'directPredicatesList');filter('searchPredicatesBox', 'reversePredicatesList');" >
 									</span>
 									<span class="col s2 m2 l2 right">
 										<i class="material-icons"> search</i>
@@ -275,6 +281,19 @@
 			              <span class="card-title"><span id="operatorsBoxTitle"></span></span>
 			              <span id="pendingQuerySpan"></span>
 			              <div id="contentOperatorBox">
+			              	  	<!--search-->
+			              	  	<div class="card" id="searchReusableResultCard">
+		            				<div class=" valign-wrapper ">
+		            					<span class="input-field col s11 m11 l11 mySearch">
+						              		<input type="search" id="searchReusableResultBox" 
+												onkeyup="filter('searchReusableResultBox', 'reusableResultList')">
+										</span>
+										<span class="col s2 m2 l2 right">
+											<i class="material-icons"> search</i>
+										</span>
+									</div>
+							  	</div>
+							  	<!--end search-->
 				              <ul id="operatorList" class="collection"></ul>
 				              <ul id="reusableResultList" class="collection"></ul>
 				          </div>
@@ -306,7 +325,39 @@
 			        <!--start settings content-->
 			        <div id="settingsBox" class="card">
 			            <div class="card-content ">
-			              <span class="card-title"><span id="settingsBoxTitle"></span></span>
+			              <span class="card-title"><span id="settingsBoxTitle" ></span></span>
+			              <div class="row">
+
+			              	<div class="input-field col s12">
+							    <select id="labelLangSelect" onChange="changeLabelLanguage()">
+							    </select>
+							    <label id="labelLangSelectLabel"></label>
+							</div>
+
+							<div class="input-field col s12">
+							    <select id="systemLangSelect" onChange="changeSystemLanguage()">
+							    </select>
+							    <label id="systemLangSelectLabel"></label>
+							</div>
+			          	   
+
+					        <div class="input-field col s6">
+					          <input id="numConcepts" type="number" min="1" onChange="setLimit('concept')">
+					          <label for="numConcepts" id ="numConceptsLabel"></label>
+					        </div>
+					        <!--<div class="col s1">
+					          <i class="small material-icons blue-text" onClick="setLimit('concept')">check_circle</i>
+					        </div>-->
+
+					        <div class="input-field col s6">
+					          <input id="numPredicates" type="number" min="1" onChange="setLimit('predicate')">
+					          <label for="numPredicates" id="numPredicatesLabel"></label>
+					         </div>
+					        <!--<div class="col s1">  
+					          <i class="small material-icons blue-text" onClick="setLimit('predicate')">check_circle</i>
+					        </div>-->
+
+					       </div>
 			            </div>
 			        </div>
 			        <!--end settings content-->
@@ -336,11 +387,6 @@
 			initQueryViewer();
 			initOperatorViewer();
 			initTableResultViewer();
-
-			fillConcepts();
-			fillPredicates();
-
-
 		});
 
 	</script>

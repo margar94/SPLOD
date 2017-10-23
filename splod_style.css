@@ -28,18 +28,18 @@ div .card-action i{
 
 /*Search bar*/
 
-input {
-  border-bottom: none!important;
-  box-shadow: none!important;
+span.mySearch input {
+  	border-bottom: none!important;
+  	box-shadow: none!important;
+  	margin: 0 !important;
 }
 
-span.mySearch input{
-	margin-bottom: auto !important;
+span.mySearch {
+	margin: 0 !important;
 }
 
 .input-field label:not(.label-icon).active{
 	transform: translateY(-4px) scale(0.8);
-	
 }
 
 

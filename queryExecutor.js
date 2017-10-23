@@ -7,14 +7,11 @@ var graph;
 var query, query2; 
 var queryUrl, queryUrl2;
 
-var language;
 
 var operatorManager;
 var tableResultManager;
 var queryViewer;
 
-var classHierarchyMap;
-var classHierarchyMapRoots;
 
 //var directPredicateMap;
 
@@ -47,10 +44,7 @@ var QueryExecutor = function (selectedEndpoint, selectedGraph) {
 
 	cachedUserQuery = [];
 
-	language = 'en';
 
-	classHierarchyMap = {};
-	classHierarchyMapRoots = [];
 
 	directPredicateMap = {};
 
@@ -70,8 +64,6 @@ var QueryExecutor = function (selectedEndpoint, selectedGraph) {
 /*
 	Get classe's hierarchy. 
 */
-QueryExecutor.prototype.getAllEntities = function(callback) {
-	if($.isEmptyObject(classHierarchyMap)){
 		query = " prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
 					" prefix owl: <http://www.w3.org/2002/07/owl#> " +
 					" SELECT DISTINCT * " +
@@ -79,10 +71,8 @@ QueryExecutor.prototype.getAllEntities = function(callback) {
 						" GRAPH " + graph + " { " +
 							" {?subclass a owl:Class} UNION {?subclass a rdfs:Class} " + 
 							" OPTIONAL{?subclass rdfs:label ?label_subclass. " +
-								" FILTER (lang(?label_subclass) = '" + language + "')} " +
 							" OPTIONAL{?subclass rdfs:subClassOf ?superclass. " +
 								" OPTIONAL {?superclass rdfs:label ?label_superclass. " +
-									" FILTER (lang(?label_superclass) = '" + language + "')}}" +
 						" } " +
 					" } ";
 
@@ -111,6 +101,7 @@ QueryExecutor.prototype.getAllEntities = function(callback) {
 			        method:'post',
 			        success: function( data ) {
 			        	var arrayData = data.results.bindings;
+<<<<<<< HEAD
 			        	classHierarchyMap = addInstancesOccurenceClassHierarchy(arrayData, classHierarchyMap);
 			        	classHierarchyMap = cleanMap(classHierarchyMap);
 			        	var mapRoots = getMapRoots(classHierarchyMap);
@@ -131,7 +122,6 @@ QueryExecutor.prototype.getAllEntities = function(callback) {
 
 	}
 	else{
-		callback(classHierarchyMapRoots, classHierarchyMap);
 	}
 }
 
@@ -171,7 +161,6 @@ QueryExecutor.prototype.getAllDirectPredicates = function(limit, callback) {
 							" LIMIT 1 " +
 						" } " +
 						" OPTIONAL {?url rdfs:label ?label. " +
-						" FILTER (lang(?label) = '" + language + "')} " +
 					" } " +
 				" } ";
 					
@@ -210,7 +199,6 @@ QueryExecutor.prototype.getAllReversePredicates = function(limit, callback) {
 						" LIMIT 1 " +
 					" } " +
 					" OPTIONAL {?url rdfs:label ?label. " +
-					" FILTER (lang(?label) = '" + language + "')} " +
 				" } " +
 			" } ";
 				
@@ -292,8 +280,6 @@ QueryExecutor.prototype.getConceptStats = function(concept, callback){
 */
 QueryExecutor.prototype.getEntitySubclasses = function(url, limit, callback) {
 	var submap={};
-	if(url in classHierarchyMap){
-		submap = buildSubmapHierarchy(url);
 	}else{
 		submap[url] = {url:url, label: createLabel(url), children : [], parent:[], numberOfInstances:0};
 	}
@@ -315,7 +301,6 @@ QueryExecutor.prototype.getDirectPredicatesFromConcept = function(entity, limit,
 								" ?s a <"+entity+">. " +
 							" } LIMIT 20000 }" +
 						" OPTIONAL {?url rdfs:label ?label. " +
-						" FILTER (lang(?label) = '" + language + "')} " +
 					" } " +
 				" } ";
 	if(limit)
@@ -355,7 +340,6 @@ QueryExecutor.prototype.getReversePredicatesFromConcept = function(entity, limit
 								" ?s a <"+entity+">. " +
 							" } LIMIT 20000 }" +
 						" OPTIONAL {?url rdfs:label ?label. " +
-						" FILTER (lang(?label) = '" + language + "')} " +
 					" } " +
 				" } ";
 	if(limit)
@@ -393,7 +377,6 @@ QueryExecutor.prototype.getConceptsFromDirectPredicate = function(predicate, lim
 						" ?o a ?url. " +
 						" ?s  <"+predicate+"> ?o. " +
 						" OPTIONAL {?url rdfs:label ?label. " +
-						" FILTER (lang(?label) = '" + language + "')} " +
 					" } " +
 				" } ";
 	if(limit)
@@ -436,7 +419,6 @@ QueryExecutor.prototype.getConceptsFromReversePredicate = function(predicate, li
 						" ?o a ?url. " +
 						" ?s  <"+predicate+"> ?o. " +
 						" OPTIONAL {?url rdfs:label ?label. " +
-						" FILTER (lang(?label) = '" + language + "')} " +
 					" } " +
 				" } ";
 	if(limit)
@@ -496,7 +478,6 @@ QueryExecutor.prototype.getDirectPredicatesFromPredicate = function(predicate, l
 							" LIMIT 1 " +
 						" } " +
 						" OPTIONAL {?url rdfs:label ?label. " +
-						" FILTER (lang(?label) = '" + language + "')} " +
 					" } " +
 				" } ";
 	if(limit)
@@ -538,7 +519,6 @@ QueryExecutor.prototype.getReversePredicatesFromPredicate = function(predicate, 
 							" LIMIT 1 " +
 						" } " +
 						" OPTIONAL {?url rdfs:label ?label. " +
-						" FILTER (lang(?label) = '" + language + "')} " +
 					" } " +
 				" } ";
 	if(limit)
@@ -623,9 +603,6 @@ QueryExecutor.prototype.changeEndpoint = function (selectedEndpoint, selectedGra
 	graph = selectedGraph;
 }
 
-QueryExecutor.prototype.changeLanguage = function (selectedLanguage) {
-	language = selectedLanguage;
-}
 
 /*
 	Handle response of GetAllEntitis function: it creates an array with entities' url and label.
@@ -658,7 +635,6 @@ function manageClassHierarchy(data){
 	$.each(arrayData, function(index){
 		element = arrayData[index];
 
-		if(!(element.superclass.value in classHierarchyMap)){
 		
 			label = element.label_superclass;
 			if(label == undefined)
@@ -666,12 +642,9 @@ function manageClassHierarchy(data){
 			else 
 				label = element.label_superclass.value;
 
-			classHierarchyMap[element.superclass.value] = {url:element.superclass.value, label: label, children : [], parent:[], numberOfInstances:0};
 		}
 
-		classHierarchyMap[element.superclass.value].children.push(element.subclass.value);
 
-		if(!(element.subclass.value in classHierarchyMap)){
 
 			var subclass_label = element.label_subclass;
 			if(subclass_label == undefined)
@@ -679,17 +652,14 @@ function manageClassHierarchy(data){
 			else 
 				subclass_label = element.label_subclass.value;
 
-			classHierarchyMap[element.subclass.value] = {url:element.subclass.value, label: subclass_label, children : [], numberOfInstances:0, parent: []};
 
 		}
-		classHierarchyMap[element.subclass.value].parent.push(element.superclass.value);
 
 	});
 
 
 }
 
-function buildSubmapHierarchy(selectedClass){
 
 	//ATTENZIONE controllare che sia nella mappa
 	var elementStack = [];
@@ -701,9 +671,7 @@ function buildSubmapHierarchy(selectedClass){
 
 	while(elementStack.length!=0){
 		currentElement = elementStack.pop();
-		submap[currentElement] = $.extend(true, {}, classHierarchyMap[currentElement]);
 
-		children = classHierarchyMap[currentElement].children;
 
 		for(var i=0; i<children.length; i++)
 			elementStack.push(children[i]);
@@ -725,7 +693,6 @@ function getResultMap(arrayData){
 		else 
 			label = element.url.value;
 
-		if(element.url.value in classHierarchyMap){
 			map = updateMap(element.url.value, label, map);
 
 		}else{
@@ -756,10 +723,8 @@ function updateMap(url, label, map){
 
 	while(elementStack.length!=0){
 		currentElement = elementStack.pop();
-		map[currentElement] = $.extend(true, {}, classHierarchyMap[currentElement]);
 		map[currentElement].numberOfInstances = 0;
 		
-		children = classHierarchyMap[currentElement].children;
 
 		for(var i=0; i<children.length; i++)
 			elementStack.push(children[i]);

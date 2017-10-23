@@ -8,6 +8,54 @@ var hierarchyOnFlag;
 var lastMap;
 var lastRootMap;
 
+/*
+	To get all label's lang : 
+
+	prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
+	SELECT DISTINCT ?lang
+	WHERE {
+	?s rdfs:label ?label. 
+	BIND (lang(?label) AS ?lang)
+	}ORDER BY ?lang
+*/
+var labelLangList = [{langCode : 'ar'}, 
+					 {langCode : 'be'},
+					 {langCode : 'bg'},
+					 {langCode : 'bn'},
+					 {langCode : 'ca'},
+					 {langCode : 'cs'},
+					 {langCode : 'de'},
+					 {langCode : 'el'},
+					 {langCode : 'en'},
+					 {langCode : 'es'},
+					 {langCode : 'eu'},
+					 {langCode : 'fr'},
+					 {langCode : 'ga'},
+					 {langCode : 'gl'},
+					 {langCode : 'hi'},
+					 {langCode : 'hy'},
+					 {langCode : 'in'},
+					 {langCode : 'it'},
+					 {langCode : 'ja'},
+					 {langCode : 'ko'},
+					 {langCode : 'kr'},
+					 {langCode : 'lv'},
+					 {langCode : 'nl'},
+					 {langCode : 'pl'},
+					 {langCode : 'pt'},
+					 {langCode : 'ro'},
+					 {langCode : 'ru'},
+					 {langCode : 'sk'},
+					 {langCode : 'sl'},
+					 {langCode : 'sr'},
+					 {langCode : 'tr'},
+					 {langCode : 'zh'}];
+
+var systemLangList = [{langCode : 'en'}];
+
+var conceptsLimit;
+var predicatesLimit;
+
 function initBoxViewer(){
 	boxFiller = new BoxFiller();
 	languageManager = new LanguageManager();
@@ -31,11 +79,31 @@ function initBoxViewer(){
 	$("#operatorsBoxTitle").html(languageManager.getBoxTitle('operator'));
 	$("#tableResultBoxTitle").html(languageManager.getBoxTitle('table result'));
 	$("#settingsBoxTitle").html(languageManager.getBoxTitle('settings'));
+
+	$("#hintBox").hide();
+
+	$("#labelLangSelectLabel").html(languageManager.getSelectTitle('label lang'));
+	$("#systemLangSelectLabel").html(languageManager.getSelectTitle('system lang'));
+	$("#numConceptsLabel").html(languageManager.getSelectTitle('num concepts'));
+	$("#numPredicatesLabel").html(languageManager.getSelectTitle('num predicates'));
+
+	placeholder="Search for a concept..."
+	$("#searchConceptsBox").attr("placeholder", languageManager.getInputPlaceholder('concept'));
+	$("#searchPredicatesBox").attr("placeholder", languageManager.getInputPlaceholder('predicate'));
+	$("#searchReusableResultsBox").attr("placeholder", languageManager.getInputPlaceholder('result'));
+	$("#searchReusableResultCard").hide();
+
+	conceptsLimit = false;
+	predicatesLimit = 100;
+
+	fillConcepts();
+	fillPredicates();
+	fillSettings();
 }
 
 function fillConcepts(){
 	$('#conceptsSpinner').show();
-	boxFiller.retrieveConcepts(function (rootMap, map){
+	boxFiller.retrieveConcepts(conceptsLimit, function (rootMap, map){
 		lastMap = map;
 		lastRootMap = rootMap;
 		renderConcept(rootMap, map);
@@ -49,14 +117,14 @@ function updateBoxesFromConcept(conceptUrl, conceptLabel){
 	$('#conceptsSpinner').show();
 	$('#predicatesSpinner').show();
 
-	boxFiller.updateConceptsFromConcept(conceptUrl, conceptLabel, renderConcept);
+	boxFiller.updateConceptsFromConcept(conceptUrl, conceptLabel, conceptsLimit, renderConcept);
 	
-	boxFiller.updatePredicatesFromConcept(conceptUrl, conceptLabel, false, renderPredicates);
+	boxFiller.updatePredicatesFromConcept(conceptUrl, conceptLabel, predicatesLimit, renderPredicates);
 }
 
 function fillPredicates(){
 	$('#predicatesSpinner').show();
-	boxFiller.retrievePredicates(function (predicates){
+	boxFiller.retrievePredicates(predicatesLimit, function (predicates){
 		renderPredicates(predicates);
 	});
 }
@@ -68,8 +136,8 @@ function updateBoxesFromDirectPredicate(predicateUrl, predicateLabel){
 	$('#conceptsSpinner').show();
 	$('#predicatesSpinner').show();
 
-	boxFiller.updateConceptsFromDirectPredicate(predicateUrl, predicateLabel, renderConcept);
-	boxFiller.updatePredicatesFromPredicate(predicateUrl, predicateLabel, 'direct', renderPredicates);
+	boxFiller.updateConceptsFromDirectPredicate(predicateUrl, predicateLabel, conceptsLimit, renderConcept);
+	boxFiller.updatePredicatesFromPredicate(predicateUrl, predicateLabel, 'direct', predicatesLimit, renderPredicates);
 }
 
 function updateBoxesFromReversePredicate(predicateUrl, predicateLabel){
@@ -79,8 +147,8 @@ function updateBoxesFromReversePredicate(predicateUrl, predicateLabel){
 	$('#conceptsSpinner').show();
 	$('#predicatesSpinner').show();
 
-	boxFiller.updateConceptsFromReversePredicate(predicateUrl, predicateLabel, renderConcept);
-	boxFiller.updatePredicatesFromPredicate(predicateUrl, predicateLabel, 'reverse', renderPredicates);
+	boxFiller.updateConceptsFromReversePredicate(predicateUrl, predicateLabel, conceptsLimit, renderConcept);
+	boxFiller.updatePredicatesFromPredicate(predicateUrl, predicateLabel, 'reverse', predicatesLimit, renderPredicates);
 }
 
 function renderConcept(rootMap, map){
@@ -113,14 +181,18 @@ function renderConceptsList(roots, concepts){
 				.attr('title', concept.url)
 				.attr('meta-url', concept.url)
 				.attr('meta-label', concept.label)
-				.text(concept.label)
 				.appendTo(conceptsList)		
 				.on('click', function(){
 					$('#operatorsSpinner').show();
 					$('#tableResultSpinner').show();
 					mapCreator.selectedConcept($(this).attr('meta-url'), $(this).attr('meta-label'));
 				});
-			
+
+			var span = $('<span/>')
+				.attr('class', 'liContent')
+				.text(concept.label)
+				.appendTo(li);
+
 			var badge = $("<span/>")
 				.attr('class', 'new badge')
 				.attr('data-badge-caption', '')
@@ -156,6 +228,7 @@ function iterativePreorderVisit(concept, concepts, toAppend, level){
 	}
 
 	var span = $("<span/>")
+			.attr('class', 'liContent')
 			.attr('title', concepts[concept].url)
 			.attr('meta-url', concepts[concept].url)
 			.attr('meta-label', concepts[concept].label)
@@ -245,7 +318,7 @@ function renderDirectPredicates(directMap){
 
 		var span = $("<span/>")
 			.attr('title', element.url)
-			.attr('class', 'addToQuery')
+			.attr('class', 'addToQuery liContent')
 			.attr('meta-url', element.url)
 			.attr('meta-label', element.label)
 			.attr('meta-predicateDirection', 'direct') 
@@ -292,7 +365,7 @@ function renderReversePredicates(reverseArray){
 		element = reverseArray[index];
 
 		var li = $("<li/>")
-			.attr('class', 'collection-item addToQuery withMargin')
+			.attr('class', 'collection-item addToQuery withMargin liContent')
 			.attr('title', element.url)
 			.attr('meta-url', element.url)
 			.attr('meta-label', element.label)
@@ -313,6 +386,80 @@ function renderReversePredicates(reverseArray){
 	});
 }
 
+function fillSettings(){
+	fillLabelLang();
+	fillSystemLang();
+	fillNumberOfConceptsAndPredicates();
+}
+
+function fillLabelLang(){
+	var labelLangSelect = $('#labelLangSelect');
+
+	$.each(labelLangList, function(langKey){
+		var lang = labelLangList[langKey];
+		var option = $("<option/>")
+			.attr('value', lang.langCode)
+			.text(lang.langCode)
+			.appendTo(labelLangSelect);
+	});
+
+	$('#labelLangSelect option[value="'+labelLang+'"]').attr('selected', 'selected');
+
+	$('#labelLangSelect').material_select();
+}
+
+function fillSystemLang(){
+	var systemLangSelect = $('#systemLangSelect');
+
+	$.each(systemLangList, function(langKey){
+		var lang = systemLangList[langKey];
+		var option = $("<option/>")
+			.attr('value', lang.langCode)
+			.text(lang.langCode)
+			.appendTo(systemLangSelect);
+	});
+
+	$('#systemLangSelect option[value="'+systemLang+'"]').attr('selected', 'selected');
+
+	$('#systemLangSelect').material_select();
+
+}
+
+function fillNumberOfConceptsAndPredicates(){
+	if(conceptsLimit)
+		$('#numConcepts').attr('placeholder', conceptsLimit);
+	if(predicatesLimit)
+		$('#numPredicates').attr('placeholder', predicatesLimit);
+}
+
+function changeLabelLanguage(){
+	labelLang = $('#labelLangSelect').find(":selected").val();
+	
+	initBoxViewer();
+	initQueryViewer();
+	initOperatorViewer();
+	initTableResultViewer();
+}
+
+function setLimit(type){
+	if(type == 'concept')
+		conceptsLimit = $('#numConcepts').val();
+	else if(type == 'predicate')
+		predicatesLimit = $('#numPredicates').val();
+
+console.log(conceptsLimit);
+console.log(predicatesLimit);
+}
+
+function changeSystemLanguage(){
+	systemLang = $('#systemLangSelect').find(":selected").val();
+
+	initBoxViewer();
+	initQueryViewer();
+	initOperatorViewer();
+	initTableResultViewer();
+}
+
 function updateBoxesFromSomething(predicateUrl, predicateLabel){
 	$("#searchConceptsBox").val('');
 	$("#searchPredicatesBox").val('');
@@ -320,8 +467,8 @@ function updateBoxesFromSomething(predicateUrl, predicateLabel){
 	$('#conceptsSpinner').show();
 	$('#predicatesSpinner').show();
 
-	boxFiller.updateConceptsFromReversePredicate(predicateUrl, predicateLabel, renderConcept);
-	boxFiller.updatePredicatesFromPredicate(predicateUrl, predicateLabel, 'reverse', renderPredicates);	
+	boxFiller.updateConceptsFromReversePredicate(predicateUrl, predicateLabel, conceptsLimit, renderConcept);
+	boxFiller.updatePredicatesFromPredicate(predicateUrl, predicateLabel, 'reverse', predicatesLimit, renderPredicates);	
 }
 
 function updateBoxesFromOperator(operator){

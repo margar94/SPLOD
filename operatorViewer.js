@@ -13,7 +13,8 @@ function renderResult(select, labelSelect, results){
 
 function renderOperatorList(operators){
 
-	//$('#operatorsBox .card-title').text(languageManager.getBoxTitle('operator'));
+	$('#operatorsBox .card-title').text(languageManager.getBoxTitle('operator'));
+	$('#searchReusableResultCard').hide();
 
 	$('#pendingQuerySpan').empty();
 	var operatorList = $('#operatorList');
@@ -125,23 +126,19 @@ function renderReusableResultListFromResult(reusableResults){
 					operatorManager.changedReusableResult([$(this).attr('meta-value')], false);
 				}
 
-	showHint(languageManager.getHintOperatorManager('reusableResult')+reusableResults.cachedQuery);
+	showHint(languageManager.getHintOperatorManager('reusableResult')+"<br>"+reusableResults.cachedQuery);
 	renderReusableResultList(reusableResults, onClickButtonFunction, onClickLiFunction);
 }
 
 function renderReusableResultList(reusableResults, onClickButtonFunction, onClickLiFunction){
 
 	var operatorList = $('#operatorList').hide();
+	$("#searchReusableResultBox").val('');
+	$('#searchReusableResultCard').show();
 
 	//change box title
 	$('#operatorsBox .card-title')
 		.text(languageManager.getBoxTitle('result'));
-
-	var iconWarning = $('<i/>')
-		.attr('class', 'small material-icons') 
-		.text('warning')
-		.attr('title', languageManager.getReusableResultWarning())
-		.appendTo($('#operatorsBox .card-title'));
 
 	var reusableResultList = $('#reusableResultList');
 	reusableResultList.empty();
@@ -180,18 +177,17 @@ function renderReusableResultList(reusableResults, onClickButtonFunction, onClic
 				break;
 		}
 
-		for(var i = 0; i<inputClass.length; i++){
-
+		if(type=='number'){
 			var div = $('<div/>')
 				.attr('class', 'input-field userValueDiv col s10 m10 l10');
 
 			var input = $("<input/>")
-				.attr('type', 'text')
-				.attr('class', inputClass[i]+' userValue')
-				.attr('id', 'userValue_'+[i]);
+				.attr('type', 'number')
+				.attr('class', 'userValue')
+				.attr('id', 'userValue_0');
 
 			var label = $('<label/>')
-				.attr('for', 'userValue_'+[i])
+				.attr('for', 'userValue_0')
 				.text(languageManager.getUserInputHint());
 
 			
@@ -199,6 +195,28 @@ function renderReusableResultList(reusableResults, onClickButtonFunction, onClic
 			label.appendTo(div);
 
 			div.appendTo(userInputDiv);
+		}
+		else{
+			for(var i = 0; i<inputClass.length; i++){
+
+				var div = $('<div/>')
+					.attr('class', 'input-field userValueDiv col s10 m10 l10');
+
+				var input = $("<input/>")
+					.attr('type', 'text')
+					.attr('class', inputClass[i]+' userValue')
+					.attr('id', 'userValue_'+[i]);
+
+				var label = $('<label/>')
+					.attr('for', 'userValue_'+[i])
+					.text(languageManager.getUserInputHint());
+
+				
+				input.appendTo(div);
+				label.appendTo(div);
+
+				div.appendTo(userInputDiv);
+			}
 		}
 
 		var button = $('<i/>')
@@ -249,9 +267,12 @@ function renderReusableResultList(reusableResults, onClickButtonFunction, onClic
 		var li = $("<li/>")
 		.attr('class', 'collection-item addToQuery')
 		.attr('meta-label', element.value)
-		.attr('meta-value', element.value)
-		.text(element.value);
+		.attr('meta-value', element.value);
 
+		var span = $("<span/>")
+			.attr('class', 'liContent')
+			.text(element.value)
+			.appendTo(li);
 
 		if('url' in element){
 			li.attr('meta-url', element.url)
