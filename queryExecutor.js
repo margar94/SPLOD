@@ -7,14 +7,14 @@ var graph;
 var query, query2; 
 var queryUrl, queryUrl2;
 
-var language;
+var labelLang = 'en';
 
 var operatorManager;
 var tableResultManager;
 var queryViewer;
 
-var classHierarchyMap;
-var classHierarchyMapRoots;
+var language_classHierarchyMap;
+var language_classHierarchyMapRoots;
 
 //var directPredicateMap;
 
@@ -47,10 +47,10 @@ var QueryExecutor = function (selectedEndpoint, selectedGraph) {
 
 	cachedUserQuery = [];
 
-	language = 'en';
+	//labelLang = 'en';
 
-	classHierarchyMap = {};
-	classHierarchyMapRoots = [];
+	language_classHierarchyMap = {};
+	language_classHierarchyMapRoots = [];
 
 	directPredicateMap = {};
 
@@ -70,8 +70,10 @@ var QueryExecutor = function (selectedEndpoint, selectedGraph) {
 /*
 	Get classe's hierarchy. 
 */
-QueryExecutor.prototype.getAllEntities = function(callback) {
-	if($.isEmptyObject(classHierarchyMap)){
+QueryExecutor.prototype.getAllEntities = function(limit, callback) {
+	if(!(labelLang in language_classHierarchyMap)){
+		language_classHierarchyMap[labelLang] = {};
+
 		query = " prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
 					" prefix owl: <http://www.w3.org/2002/07/owl#> " +
 					" SELECT DISTINCT * " +
@@ -79,12 +81,15 @@ QueryExecutor.prototype.getAllEntities = function(callback) {
 						" GRAPH " + graph + " { " +
 							" {?subclass a owl:Class} UNION {?subclass a rdfs:Class} " + 
 							" OPTIONAL{?subclass rdfs:label ?label_subclass. " +
-								" FILTER (lang(?label_subclass) = '" + language + "')} " +
+								" FILTER (lang(?label_subclass) = '" + labelLang + "')} " +
 							" OPTIONAL{?subclass rdfs:subClassOf ?superclass. " +
 								" OPTIONAL {?superclass rdfs:label ?label_superclass. " +
-									" FILTER (lang(?label_superclass) = '" + language + "')}}" +
+									" FILTER (lang(?label_superclass) = '" + labelLang + "')}}" +
 						" } " +
 					" } ";
+
+		if(limit)
+			query += "LIMIT " + limit;  
 
 	   	queryUrl = endpoint+"?query="+ encodeURIComponent(query) +"&format=json";
 	    $.ajax({
@@ -111,11 +116,11 @@ QueryExecutor.prototype.getAllEntities = function(callback) {
 			        method:'post',
 			        success: function( data ) {
 			        	var arrayData = data.results.bindings;
-			        	classHierarchyMap = addInstancesOccurenceClassHierarchy(arrayData, classHierarchyMap);
-			        	classHierarchyMap = cleanMap(classHierarchyMap);
-			        	var mapRoots = getMapRoots(classHierarchyMap);
-			        	classHierarchyMapRoots = mapRoots;
-						callback(classHierarchyMapRoots, classHierarchyMap);
+			        	language_classHierarchyMap[labelLang] = addInstancesOccurenceClassHierarchy(arrayData, language_classHierarchyMap[labelLang]);
+			        	language_classHierarchyMap[labelLang] = cleanMap(language_classHierarchyMap[labelLang]);
+			        	var mapRoots = getMapRoots(language_classHierarchyMap[labelLang]);
+			        	language_classHierarchyMapRoots[labelLang] = mapRoots;
+						callback(language_classHierarchyMapRoots[labelLang], language_classHierarchyMap[labelLang]);
 			        }
 			    });	
 			}
@@ -123,7 +128,7 @@ QueryExecutor.prototype.getAllEntities = function(callback) {
 
 	}
 	else{
-		callback(classHierarchyMapRoots, classHierarchyMap);
+		callback(language_classHierarchyMapRoots[labelLang], language_classHierarchyMap[labelLang]);
 	}
 }
 
@@ -163,7 +168,7 @@ QueryExecutor.prototype.getAllDirectPredicates = function(limit, callback) {
 							" LIMIT 1 " +
 						" } " +
 						" OPTIONAL {?url rdfs:label ?label. " +
-						" FILTER (lang(?label) = '" + language + "')} " +
+						" FILTER (lang(?label) = '" + labelLang + "')} " +
 					" } " +
 				" } ";
 					
@@ -198,7 +203,7 @@ QueryExecutor.prototype.getAllReversePredicates = function(limit, callback) {
 						" LIMIT 1 " +
 					" } " +
 					" OPTIONAL {?url rdfs:label ?label. " +
-					" FILTER (lang(?label) = '" + language + "')} " +
+					" FILTER (lang(?label) = '" + labelLang + "')} " +
 				" } " +
 			" } ";
 				
@@ -268,8 +273,8 @@ QueryExecutor.prototype.getConceptStats = function(concept, callback){
 */
 QueryExecutor.prototype.getEntitySubclasses = function(url, limit, callback) {
 	var submap={};
-	if(url in classHierarchyMap){
-		submap = buildSubmapHierarchy(url);
+	if(url in language_classHierarchyMap[labelLang]){
+		submap = buildSubmapHierarchy(url, limit);
 	}else{
 		submap[url] = {url:url, label: createLabel(url), children : [], parent:[], numberOfInstances:0};
 	}
@@ -291,7 +296,7 @@ QueryExecutor.prototype.getDirectPredicatesFromConcept = function(entity, limit,
 								" ?s a <"+entity+">. " +
 							" } LIMIT 20000 }" +
 						" OPTIONAL {?url rdfs:label ?label. " +
-						" FILTER (lang(?label) = '" + language + "')} " +
+						" FILTER (lang(?label) = '" + labelLang + "')} " +
 					" } " +
 				" } ";
 	if(limit)
@@ -325,7 +330,7 @@ QueryExecutor.prototype.getReversePredicatesFromConcept = function(entity, limit
 								" ?s a <"+entity+">. " +
 							" } LIMIT 20000 }" +
 						" OPTIONAL {?url rdfs:label ?label. " +
-						" FILTER (lang(?label) = '" + language + "')} " +
+						" FILTER (lang(?label) = '" + labelLang + "')} " +
 					" } " +
 				" } ";
 	if(limit)
@@ -357,7 +362,7 @@ QueryExecutor.prototype.getConceptsFromDirectPredicate = function(predicate, lim
 						" ?o a ?url. " +
 						" ?s  <"+predicate+"> ?o. " +
 						" OPTIONAL {?url rdfs:label ?label. " +
-						" FILTER (lang(?label) = '" + language + "')} " +
+						" FILTER (lang(?label) = '" + labelLang + "')} " +
 					" } " +
 				" } ";
 	if(limit)
@@ -396,7 +401,7 @@ QueryExecutor.prototype.getConceptsFromReversePredicate = function(predicate, li
 						" ?o a ?url. " +
 						" ?s  <"+predicate+"> ?o. " +
 						" OPTIONAL {?url rdfs:label ?label. " +
-						" FILTER (lang(?label) = '" + language + "')} " +
+						" FILTER (lang(?label) = '" + labelLang + "')} " +
 					" } " +
 				" } ";
 	if(limit)
@@ -451,7 +456,7 @@ QueryExecutor.prototype.getDirectPredicatesFromPredicate = function(predicate, l
 							" LIMIT 1 " +
 						" } " +
 						" OPTIONAL {?url rdfs:label ?label. " +
-						" FILTER (lang(?label) = '" + language + "')} " +
+						" FILTER (lang(?label) = '" + labelLang + "')} " +
 					" } " +
 				" } ";
 	if(limit)
@@ -487,7 +492,7 @@ QueryExecutor.prototype.getReversePredicatesFromPredicate = function(predicate, 
 							" LIMIT 1 " +
 						" } " +
 						" OPTIONAL {?url rdfs:label ?label. " +
-						" FILTER (lang(?label) = '" + language + "')} " +
+						" FILTER (lang(?label) = '" + labelLang + "')} " +
 					" } " +
 				" } ";
 	if(limit)
@@ -560,9 +565,9 @@ QueryExecutor.prototype.changeEndpoint = function (selectedEndpoint, selectedGra
 	graph = selectedGraph;
 }
 
-QueryExecutor.prototype.changeLanguage = function (selectedLanguage) {
-	language = selectedLanguage;
-}
+/*QueryExecutor.prototype.changeLanguage = function (selectedLanguage) {
+	labelLang = selectedLanguage;
+}*/
 
 /*
 	Handle response of GetAllEntitis function: it creates an array with entities' url and label.
@@ -595,7 +600,7 @@ function manageClassHierarchy(data){
 	$.each(arrayData, function(index){
 		element = arrayData[index];
 
-		if(!(element.superclass.value in classHierarchyMap)){
+		if(!(element.superclass.value in language_classHierarchyMap[labelLang])){
 		
 			label = element.label_superclass;
 			if(label == undefined)
@@ -603,12 +608,12 @@ function manageClassHierarchy(data){
 			else 
 				label = element.label_superclass.value;
 
-			classHierarchyMap[element.superclass.value] = {url:element.superclass.value, label: label, children : [], parent:[], numberOfInstances:0};
+			language_classHierarchyMap[labelLang][element.superclass.value] = {url:element.superclass.value, label: label, children : [], parent:[], numberOfInstances:0};
 		}
 
-		classHierarchyMap[element.superclass.value].children.push(element.subclass.value);
+		language_classHierarchyMap[labelLang][element.superclass.value].children.push(element.subclass.value);
 
-		if(!(element.subclass.value in classHierarchyMap)){
+		if(!(element.subclass.value in language_classHierarchyMap[labelLang])){
 
 			var subclass_label = element.label_subclass;
 			if(subclass_label == undefined)
@@ -616,17 +621,17 @@ function manageClassHierarchy(data){
 			else 
 				subclass_label = element.label_subclass.value;
 
-			classHierarchyMap[element.subclass.value] = {url:element.subclass.value, label: subclass_label, children : [], numberOfInstances:0, parent: []};
+			language_classHierarchyMap[labelLang][element.subclass.value] = {url:element.subclass.value, label: subclass_label, children : [], numberOfInstances:0, parent: []};
 
 		}
-		classHierarchyMap[element.subclass.value].parent.push(element.superclass.value);
+		language_classHierarchyMap[labelLang][element.subclass.value].parent.push(element.superclass.value);
 
 	});
 
 
 }
 
-function buildSubmapHierarchy(selectedClass){
+function buildSubmapHierarchy(selectedClass, limit){
 
 	//ATTENZIONE controllare che sia nella mappa
 	var elementStack = [];
@@ -636,11 +641,16 @@ function buildSubmapHierarchy(selectedClass){
 	var currentElement;
 	var children;
 
+	var counter=0;
+
 	while(elementStack.length!=0){
 		currentElement = elementStack.pop();
-		submap[currentElement] = $.extend(true, {}, classHierarchyMap[currentElement]);
+		submap[currentElement] = $.extend(true, {}, language_classHierarchyMap[labelLang][currentElement]);
+		
+		if(++counter == limit)
+			return submap;
 
-		children = classHierarchyMap[currentElement].children;
+		children = language_classHierarchyMap[labelLang][currentElement].children;
 
 		for(var i=0; i<children.length; i++)
 			elementStack.push(children[i]);
@@ -662,7 +672,7 @@ function getResultMap(arrayData){
 		else 
 			label = element.url.value;
 
-		if(element.url.value in classHierarchyMap){
+		if(element.url.value in language_classHierarchyMap[labelLang]){
 			map = updateMap(element.url.value, label, map);
 
 		}else{
@@ -693,10 +703,10 @@ function updateMap(url, label, map){
 
 	while(elementStack.length!=0){
 		currentElement = elementStack.pop();
-		map[currentElement] = $.extend(true, {}, classHierarchyMap[currentElement]);
+		map[currentElement] = $.extend(true, {}, language_classHierarchyMap[labelLang][currentElement]);
 		map[currentElement].numberOfInstances = 0;
 		
-		children = classHierarchyMap[currentElement].children;
+		children = language_classHierarchyMap[labelLang][currentElement].children;
 
 		for(var i=0; i<children.length; i++)
 			elementStack.push(children[i]);

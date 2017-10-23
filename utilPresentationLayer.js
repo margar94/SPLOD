@@ -43,7 +43,7 @@ function isImage(url){
 }
 
 
-fuction showHint(hint){
+function showHint(hint){
     $('#hintBox').text(hint)
         .show();
         

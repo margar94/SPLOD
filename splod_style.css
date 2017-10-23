@@ -28,7 +28,7 @@ div .card-action i{
 
 /*Search bar*/
 
-input {
+span.mySearch input {
   border-bottom: none!important;
   box-shadow: none!important;
 }
