@@ -16,6 +16,8 @@ function initQueryViewer(){
 	$("#queryNaturalLanguage")[0].innerHTML = languageManager.getQueryInitialVerbalization();
 	$("#focusLabel")[0].innerHTML = languageManager.getFocusLabel();
 	$("#focus")[0].innerHTML = languageManager.getFocusInitialVerbalization();
+	$("#querySparqlText").text('');
+	$("#querySparqlText").hide();
 }
 
 var QueryViewer= function () {
@@ -578,6 +580,7 @@ function renderFocus(){
 		fillPredicates();
 
 		$("#focus").text(languageManager.getFocusInitialVerbalization());
+		$("#querySparqlText").text('');
 
 		return;
 	}

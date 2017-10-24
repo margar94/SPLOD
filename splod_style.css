@@ -52,7 +52,7 @@ span.mySearch {
 }
 
 #firstrow .card{
-	
+	display:grid;
 	flex-grow:1;
 	position: relative !important;
     width: 100%;
