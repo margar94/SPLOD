@@ -43,16 +43,34 @@ span.mySearch {
 }
 
 
+.flex {
+    display:flex;
+}
+
+#firstrow{
+	align-items: stretch;
+}
+
+#firstrow .card{
+	
+	flex-grow:1;
+	position: relative !important;
+    width: 100%;
+    margin-bottom: 10px;
+    height: auto !important;
+}
+
+#firstrow .firstrowAction{
+    align-self: flex-end;
+    margin-bottom: 0 !important;
+}
+
+
 
 /*Natural language query*/
 
 div#queryBox{
 	margin-top: 30px;
-}
-
-#sparqlQuery{
-	margin-top: -40px;
-	float:right;
 }
 
 span.highlighted {
@@ -95,7 +113,7 @@ span.optionalBlock{
 }
 
 #removeButton {
-	height: 20px;
+	margin:0;
 }
 
 #removeButton:hover{
@@ -117,8 +135,6 @@ div#querySparqlText{
 	 display:none;
 	 overflow: auto;
 }
-
-
 
 /*Left bar*/
 
@@ -232,6 +248,25 @@ div#querySparqlText{
 
 ul#fieldsCollection {
 	margin-top:0;
+}
+
+#previewTableResult td, #previewTableResult th{
+	padding:0;
+}
+
+#previewTableResult hr{
+	margin:0;
+	border-width: 0.5px;
+}
+
+#previewTableResult tr{
+	height: 2px;
+}
+
+#previewTableResult th{
+	font-size: 4px;
+  	text-align: -webkit-center;
+  	color:grey;
 }
 
 /*Concepts box*/

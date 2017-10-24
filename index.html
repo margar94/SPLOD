@@ -33,33 +33,40 @@
 	<body>
 	 <div id="controlet">	
 		<!--<div class="container">-->
-		<div class="row">
+		<div class="row flex" id="firstrow">
 			<!--end query natural language box--> 
-		    <div id="queryBox" class="col s11"> 
+		    <div id="queryBox" class="col s11 flex"> 
 		     <div class="card">
 		      <div id="queryNaturalLanguage" class="card-content">
 		      </div>
-		      <div class="card-action blue white-text">
-		       <span class="white-text"> <span id="focusLabel"> </span> <span id="focus"></span> </span>
-                  <span class="right">
-                  <i class="small material-icons white-text" id="removeButton" 
-                   title="Remove all the highlighted"
-                   onmouseover="highlightElementsToRemove();" 
-                   onmouseleave="removeHighlightElementsToRemove();" 
-                   onclick="removeHighlightElements(decodeURIComponent($('.highlighted').attr('meta-removereference')))">highlight_off</i>
-                </span>
+		      <div class="card-action blue valign-wrapper firstrowAction">
+
+		       <span class="col s11 white-text"> 
+		       		<span id="focusLabel"> </span> 
+		       		<span id="focus"></span>
+		       </span>
+
+		       <span class="col s1 " >
+					<i class="small material-icons white-text right" id="removeButton" 
+	                   title="Remove all the highlighted"
+	                   onmouseover="highlightElementsToRemove();" 
+	                   onmouseleave="removeHighlightElementsToRemove();" 
+	                   onclick="removeHighlightElements(decodeURIComponent($('.highlighted').attr('meta-removereference')))">highlight_off</i>
+				</span>
+                  
 		      </div>
 		     </div>
 		    </div>
 		    <!--end query natural language box--> 
 
 		    <!--start query sparql box--> 
-		    <div id="querySparqlBox" class="col s1"> 
+		    <div id="querySparqlBox" class="col s1 flex"> 
 		     	<div class="card">
 			      	<div id="querySparql" class="card-content">
 			       		<div id="querySparqlText"></div>
 			      	</div>
-			      	<div class="card-action blue white-text"><i class="small material-icons white-text" id="openSparqlQuery" onclick="showUserQueryBox();">arrow_back</i>
+			      	<div class="card-action blue white-text firstrowAction">
+			      		<i class="small material-icons white-text" id="openSparqlQuery" onclick="showUserQueryBox();">arrow_back</i>
 			      	</div>
 		     	</div>
 		    </div>

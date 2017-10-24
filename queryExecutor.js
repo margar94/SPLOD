@@ -47,8 +47,6 @@ var QueryExecutor = function (selectedEndpoint, selectedGraph) {
 
 	cachedUserQuery = [];
 
-	//labelLang = 'en';
-
 	language_classHierarchyMap = {};
 	language_classHierarchyMapRoots = [];
 
@@ -64,80 +62,86 @@ var QueryExecutor = function (selectedEndpoint, selectedGraph) {
 	queryViewer = new QueryViewer();
 
 	QueryExecutor.prototype._singletonInstance = this;
-	
 };
 
 /*
 	Get classe's hierarchy. 
 */
 QueryExecutor.prototype.getAllEntities = function(limit, callback) {
-	if(!(labelLang in language_classHierarchyMap)){
-		language_classHierarchyMap[labelLang] = {};
+	if(labelLang in language_classHierarchyMap){
+		if(!limit){
+			callback(language_classHierarchyMapRoots[labelLang], language_classHierarchyMap[labelLang]);
+			return;
+		}else if(Object.keys(language_classHierarchyMap[labelLang]).length>=limit){
+			var map = cut(language_classHierarchyMap[labelLang], limit);
+			var roots = getMapRoots(map);
+			callback(roots, map);
+			return;
+		}
+	} 
 
-		query = " prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
-					" prefix owl: <http://www.w3.org/2002/07/owl#> " +
-					" SELECT DISTINCT * " +
-					" WHERE { " + 
-						" GRAPH " + graph + " { " +
-							" {?subclass a owl:Class} UNION {?subclass a rdfs:Class} " + 
-							" OPTIONAL{?subclass rdfs:label ?label_subclass. " +
-								" FILTER (lang(?label_subclass) = '" + labelLang + "')} " +
-							" OPTIONAL{?subclass rdfs:subClassOf ?superclass. " +
-								" OPTIONAL {?superclass rdfs:label ?label_superclass. " +
-									" FILTER (lang(?label_superclass) = '" + labelLang + "')}}" +
-						" } " +
-					" } ";
+	language_classHierarchyMap[labelLang] = {};
 
-		if(limit)
-			query += "LIMIT " + limit;  
-
-	   	queryUrl = endpoint+"?query="+ encodeURIComponent(query) +"&format=json";
-	    $.ajax({
-	        url: queryUrl,
-	        method:'post',
-	        success: function( data ) {
-	        	manageClassHierarchy(data);
-
-				query2 = " prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
-					" prefix owl: <http://www.w3.org/2002/07/owl#> " +
-					" SELECT ?class (count(?instance) as ?numberOfInstances)  " +
-					" WHERE { " + 
-						" GRAPH " + graph + " { " +
-							" ?instance a ?class . " +
-							" {?class a owl:Class} UNION {?class a rdfs:Class} " +
-						" } " +
+	query = " prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
+				" prefix owl: <http://www.w3.org/2002/07/owl#> " +
+				" SELECT DISTINCT * " +
+				" WHERE { " + 
+					" GRAPH " + graph + " { " +
+						" {?subclass a owl:Class} UNION {?subclass a rdfs:Class} " + 
+						" OPTIONAL{?subclass rdfs:label ?label_subclass. " +
+							" FILTER (lang(?label_subclass) = '" + labelLang + "')} " +
+						" OPTIONAL{?subclass rdfs:subClassOf ?superclass. " +
+							" OPTIONAL {?superclass rdfs:label ?label_superclass. " +
+								" FILTER (lang(?label_superclass) = '" + labelLang + "')}}" +
 					" } " +
-					" group by ?class ";
+				" } ";
 
-		
-			   	queryUrl2 = endpoint+"?query="+ encodeURIComponent(query2) +"&format=json";
-			    $.ajax({
-			        url: queryUrl2,
-			        method:'post',
-			        success: function( data ) {
-			        	var arrayData = data.results.bindings;
-			        	language_classHierarchyMap[labelLang] = addInstancesOccurenceClassHierarchy(arrayData, language_classHierarchyMap[labelLang]);
-			        	language_classHierarchyMap[labelLang] = cleanMap(language_classHierarchyMap[labelLang]);
-			        	var mapRoots = getMapRoots(language_classHierarchyMap[labelLang]);
-			        	language_classHierarchyMapRoots[labelLang] = mapRoots;
-						callback(language_classHierarchyMapRoots[labelLang], language_classHierarchyMap[labelLang]);
-			        },
-			        error: function(jqXHR, textStatus, errorThrown){
-			        	console.log(textStatus);
-			        	callback([], {});
-			        }
-			    });	
-			},
-	        error: function(jqXHR, textStatus, errorThrown){
-	        	console.log(textStatus);
-	        	callback([], {});
-	        }
-		});
+	if(limit)
+		query += "LIMIT " + limit;  
 
-	}
-	else{
-		callback(language_classHierarchyMapRoots[labelLang], language_classHierarchyMap[labelLang]);
-	}
+   	queryUrl = endpoint+"?query="+ encodeURIComponent(query) +"&format=json";
+    $.ajax({
+        url: queryUrl,
+        method:'post',
+        success: function( data ) {
+        	manageClassHierarchy(data);
+
+			query2 = " prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
+				" prefix owl: <http://www.w3.org/2002/07/owl#> " +
+				" SELECT ?class (count(?instance) as ?numberOfInstances)  " +
+				" WHERE { " + 
+					" GRAPH " + graph + " { " +
+						" ?instance a ?class . " +
+						" {?class a owl:Class} UNION {?class a rdfs:Class} " +
+					" } " +
+				" } " +
+				" group by ?class ";
+
+	
+		   	queryUrl2 = endpoint+"?query="+ encodeURIComponent(query2) +"&format=json";
+		    $.ajax({
+		        url: queryUrl2,
+		        method:'post',
+		        success: function( data ) {
+		        	var arrayData = data.results.bindings;
+		        	language_classHierarchyMap[labelLang] = addInstancesOccurenceClassHierarchy(arrayData, language_classHierarchyMap[labelLang]);
+		        	language_classHierarchyMap[labelLang] = cleanMap(language_classHierarchyMap[labelLang]);
+		        	var mapRoots = getMapRoots(language_classHierarchyMap[labelLang]);
+		        	language_classHierarchyMapRoots[labelLang] = mapRoots;
+					callback(language_classHierarchyMapRoots[labelLang], language_classHierarchyMap[labelLang]);
+		        },
+		        error: function(jqXHR, textStatus, errorThrown){
+		        	console.log(textStatus);
+		        	callback([], {});
+		        }
+		    });	
+		},
+        error: function(jqXHR, textStatus, errorThrown){
+        	console.log(textStatus);
+        	callback([], {});
+        }
+	});
+
 }
 
 /*
@@ -550,7 +554,7 @@ QueryExecutor.prototype.getReversePredicatesFromPredicate = function(predicate, 
 		query += "LIMIT " + limit;  
 	
    	queryUrl = endpoint+"?query="+ encodeURIComponent(query) +"&format=json";
-   var xhr = $.ajax({
+    var xhr = $.ajax({
         url: queryUrl,
         method:'post',
         success: function( data, textStatus, jqXHR ) {
@@ -656,7 +660,6 @@ function getUrlAndLabelFromResult(data) {
 }
 
 function manageClassHierarchy(data){
-
 	var arrayData = data.results.bindings;
 	var element; 
 	var label;
@@ -691,38 +694,80 @@ function manageClassHierarchy(data){
 		language_classHierarchyMap[labelLang][element.subclass.value].parent.push(element.superclass.value);
 
 	});
+}
 
+function cut(originalMap, limit){
+	var stack = $.extend(true, [], language_classHierarchyMapRoots[labelLang]); 
 
+	var map = {};
+	var current;
+
+	var counter = 0;
+	while(stack.length!=0){
+		//limit could be false
+		if(counter == limit)
+			return map;
+
+		current = stack.pop();
+		if(!(current in map)){
+			map[current] = $.extend(true, {}, originalMap[current]);
+			map[current].children = [];
+
+			counter++;
+
+			stack = originalMap[current].children.concat(stack);
+		}
+
+		for(var i=0; i<map[current].parent.length; i++){
+			if(map[current].parent[i] in map && $.inArray(current, map[map[current].parent[i]].children)<0)
+				map[map[current].parent[i]].children.push(current);
+		}
+		
+	}
+
+	return map;
 }
 
 function buildSubmapHierarchy(selectedClass, limit){
-
 	//ATTENZIONE controllare che sia nella mappa
-	var elementStack = [];
-	elementStack.push(selectedClass);
 
-	var submap = {};
-	var currentElement;
-	var children;
+	var map = {};
+	map[selectedClass] = $.extend(true, {}, language_classHierarchyMap[labelLang][selectedClass]);
+	map[selectedClass].children = [];
+	map[selectedClass].parent = [];
 
-	var counter=0;
-
-	while(elementStack.length!=0){
-		currentElement = elementStack.pop();
-		submap[currentElement] = $.extend(true, {}, language_classHierarchyMap[labelLang][currentElement]);
+	var counter=1;
 		
-		if(++counter == limit)
-			return submap;
+	var stack = $.extend(true, [], language_classHierarchyMap[labelLang][selectedClass].children);
+	
+	var current;	
+	while(stack.length!=0){
 
-		children = language_classHierarchyMap[labelLang][currentElement].children;
+		//limit could be false
+		if(counter == limit)
+			return map;
 
-		for(var i=0; i<children.length; i++)
-			elementStack.push(children[i]);
+		current = stack.pop();
+
+		if(!(current in map)){
+			map[current] = $.extend(true, {}, language_classHierarchyMap[labelLang][current]);
+			map[current].children = [];
+			
+			counter++;
+		
+			stack = language_classHierarchyMap[labelLang][current].children.concat(stack);
+		}
+
+		for(var i=0; i<map[current].parent.length; i++){
+			if(map[current].parent[i] in map && $.inArray(current, map[map[current].parent[i]].children)<0)
+				map[map[current].parent[i]].children.push(current);
+		}
+	
 	}
-
-	return submap;
+	return map;
 }
 
+//concepts from direct and reverse predicate
 function getResultMap(arrayData){
 	var map = {};
 	var label;
@@ -736,9 +781,10 @@ function getResultMap(arrayData){
 		else 
 			label = element.url.value;
 
+		//it doesn't clone map entry, but it clone entry status
 		if(element.url.value in language_classHierarchyMap[labelLang]){
-			map = updateMap(element.url.value, label, map);
-
+			map[element.url.value] = $.extend(true, {}, language_classHierarchyMap[labelLang][element.url.value]);
+			map[element.url.value].children = [];
 		}else{
 			map[element.url.value] = {url: element.url.value, label: label, children: [], parent: [], numberOfInstances:0};
 		}
@@ -755,7 +801,6 @@ function getResultMap(arrayData){
 	}
 
 	return map;
-
 }
 
 function updateMap(url, label, map){
