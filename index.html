@@ -145,27 +145,31 @@
 		        </li>
 		        <!--end operators-->
 		        <!--start result table-->
-		        <li class="tab col s12" id="tableResultTab" onclick="$('#myTabs').css('border-right-color', '#f44336')">
-		        	<a href="#tableResultBox">
-		        		<span id="tableResultTabTitle"></span>
-		        		<div id="tableResultSpinner" class="preloader-wrapper mySpinner active">
-						    <div class="spinner-layer spinner-blue-only">
-						      <div class="circle-clipper left">
-						        <div class="circle"></div>
-						      </div><div class="gap-patch">
-						        <div class="circle"></div>
-						      </div><div class="circle-clipper right">
-						        <div class="circle"></div>
-						      </div>
-						    </div>
-						</div>
-						<div class="col s12">
-							<!--<iframe id="previewTableResult" srcdoc="">
-								
-							</iframe>-->
-						</div>
-		        	</a>
-		        </li>
+		        <li class="tab col s12" id="tableResultTab" 
+		        	onclick="$('#myTabs').css('border-right-color', '#f44336')" style="height: 200px;padding-bottom: 10px;">
+	           		<a href="#tableResultBox" style="padding: 0;">
+	           			<span id="tableResultTabTitle"></span>
+	           			<div id="tableResultSpinner" class="preloader-wrapper mySpinner active">
+		          			<div class="spinner-layer spinner-blue-only">
+		            			<div class="circle-clipper left">
+		              				<div class="circle"></div>
+		            			</div>
+			            		<div class="gap-patch">
+			              			<div class="circle"></div>
+			            		</div>
+			            		<div class="circle-clipper right">
+			              			<div class="circle"></div>
+			            		</div>
+			          		</div>
+		      			</div>
+	      				<div class="col s12">
+	       					<!--<div style="margin:2px">-->
+	     					<table id="previewTableResult" style="height:100px;">
+	      					</table>
+	    					 <!--</div>-->
+	      				</div>
+	           		</a>
+		    	</li>
 		        <!--end result table-->
 
 
