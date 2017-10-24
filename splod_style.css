@@ -65,6 +65,10 @@ span.mySearch {
     margin-bottom: 0 !important;
 }
 
+#querySparql.card-content{
+	overflow:auto;
+}
+
 
 
 /*Natural language query*/
