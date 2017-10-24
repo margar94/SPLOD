@@ -146,7 +146,7 @@
 		        <!--end operators-->
 		        <!--start result table-->
 		        <li class="tab col s12" id="tableResultTab" 
-		        	onclick="$('#myTabs').css('border-right-color', '#f44336')" style="height: 200px;padding-bottom: 10px;">
+		        	onclick="$('#myTabs').css('border-right-color', '#f44336')" style="height: 250px;">
 	           		<a href="#tableResultBox" style="padding: 0;">
 	           			<span id="tableResultTabTitle"></span>
 	           			<div id="tableResultSpinner" class="preloader-wrapper mySpinner active">
@@ -317,15 +317,16 @@
 			        <!--start table result content-->
 			        <div id="tableResultBox" class="card">
 			            <div class="card-content ">
-			            	<span class="card-title"><span id="tableResultBoxTitle"></span></span>
-			              	<div class="row">
-								<div id="fieldsCollectionNavBar" class="col s2">
-									<ul id="fieldsCollection" class="collection"></ul>
-								</div>
-								<div class="col s10">
-									<div id="resultsTableBox" class=" col s12 scrollableTableContent">
-										<table id="resultsTable" class="striped centered"></table>
-									</div>
+			            	<span class="card-title">
+			            		<span id="tableResultBoxTitle"></span>
+			            		<a class='dropdown-button btn right red' data-activates='fieldsCollection'>
+			            			Visible field
+			            		</a>
+			            		<ul id="fieldsCollection" class="collection dropdown-content"></ul>
+			            	</span>
+			              	<div class="row col s12">
+								<div id="resultsTableBox" class=" col s12 scrollableTableContent">
+									<table id="resultsTable" class="striped centered"></table>
 								</div>
 							</div>
 						</div>
