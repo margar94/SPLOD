@@ -560,7 +560,7 @@ function renderFocus(){
 	//kill all pending query
 	var size = activeAjaxRequest.length;
 	if(size != 0){
-		for(var i=0; i<size;i++){
+		for(var i=size-1; i>=0;i--){
 			activeAjaxRequest[i].abort();
 		}
 		activeAjaxRequest = [];
@@ -648,7 +648,7 @@ function attachEvents(){
 
 		var size = activeAjaxRequest.length;
 		if(size != 0){
-			for(var i=0; i<size;i++){
+			for(var i=size-1; i>=0;i--){
 				activeAjaxRequest[i].abort();
 			}
 			activeAjaxRequest = [];

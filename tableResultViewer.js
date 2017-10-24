@@ -89,27 +89,41 @@ function manageFields(){
 }
 
 function createTable(select, labelSelect, results){
-	//console.log(results);
+
+
+	var previewTable = $("#previewTableResult")
+	previewTable.empty();
+	var previewThead = $("<thead/>");
 
 	var resultsTable = $('#resultsTable');
 	resultsTable.empty();
 	var thead = $("<thead/>");
 
 	var tr = $("<tr/>");
+	var previewTr = $("<tr/>");	
 	for(field in labelSelect){
 		var th = $("<th/>")
 			.attr('class', labelSelect[field].className)
 			.text(labelSelect[field].label)
 			.appendTo(tr);
+
+		var previewTh = $("<th/>")
+			.text('label')
+			.appendTo(previewTr);
 	}
 	tr.appendTo(thead);
 	thead.appendTo(resultsTable);
 
+	previewTr.appendTo(previewThead);
+	previewThead.appendTo(previewTable);
+
 	var tbody = $("<tbody/>");
+	var previewTbody = $("<tbody/>");
 	
 	$.each(results, function(index){
 		var element = results[index];
 		var tr = $("<tr/>");
+		var previewTr = $("<tr/>");
 
 		for(var i=0; i<select.length; i++) {
 			var field = select[i].substring(1);
@@ -119,6 +133,10 @@ function createTable(select, labelSelect, results){
 					.text(element[field].value)
 					.attr('class', labelSelect[i].className)
 					.appendTo(tr);
+
+				var previewTd = $("<td/>")
+					.html("<hr>")
+					.appendTo(previewTr);
 					
 				if(element[field].type == 'uri'){
 					td.attr('title', element[field].url);
@@ -128,6 +146,8 @@ function createTable(select, labelSelect, results){
 							.attr('width', '200px')
 							.attr('src', element[field].url)
 							.appendTo(td);
+
+						previewTd.css('background-color', '#2196F3');
 					}
 					else{
 						var a = $("<a/>")
@@ -143,19 +163,31 @@ function createTable(select, labelSelect, results){
 				var td = $("<td/>")
 					.text("")
 					.appendTo(tr);
+
+				var previewTd = $("<td/>")
+					.text("")
+					.appendTo(previewTr);
 			}
 		}
 		tr.appendTo(tbody);
+		if(index < 100){
+			previewTr.appendTo(previewTbody);
+		}
 	});
+
 	tbody.appendTo(resultsTable);
+	previewTbody.appendTo(previewTable);
 
 	$.each(cachedFieldsToHide, function(index){
 		$('.'+cachedFieldsToHide[index]).hide();
 	});
 
 	$('#tableResultSpinner').hide();
+
+	//<link href='Materialize/css/materialize.min.css' rel='stylesheet'><link href='splod_style.css' rel='stylesheet'> table, tr,th {border: 1px black solid;}
 	
-	$('#previewTableResult').attr('srcdoc', "<link href='Materialize/fonts/roboto/Roboto-Regular.woff' rel='application/x-font-woff'><link href='Materialize/fonts/roboto/Roboto-Regular.woff2' rel='application/x-font-woff'>	<link href='Materialize/css/materialize.min.css' rel='stylesheet'><div style='-webkit-transform:scale(1,0.1);-webkit-transform-origin:0 0'>"+ resultsTable[0].outerHTML+"</div>");
+	//"<html><head><link href='Materialize/css/materialize.min.css' rel='stylesheet'><style>hr{border-style: solid;border-width: 8px !important;}</style></head><body><div style='-webkit-transform:scale(1,0.05);-webkit-transform-origin:0 0'>"+previewTable[0].outerHTML+"</div></body></html>"
+	//$('#previewTableResult').html(previewTable[0].outerHTML );
 	//$('#previewTableResult').attr('src', '#resultsTable');
-	console.log($('#previewTableResult'));
+	//console.log($('#previewTableResult'));
 }
