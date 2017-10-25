@@ -140,6 +140,11 @@ div#querySparqlText{
 	 overflow: auto;
 }
 
+div#querySparqlBox .SPARQLhighlighted{
+	background-color: #bbdefb;
+	border-radius: 4px;
+}
+
 /*Left bar*/
 
 #myTabs {

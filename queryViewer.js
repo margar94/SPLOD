@@ -642,6 +642,10 @@ function attachEvents(){
 		//changeFocus notification
 		onFocus = decodeURIComponent($(this).attr("meta-focusReference"));
 
+		//highlight sparql query
+		$("#querySparqlText .SPARQLhighlighted").removeClass("SPARQLhighlighted");
+		$("#querySparqlText span[meta-relatedto~='"+$(this).attr("meta-focusReference")+"']").addClass("SPARQLhighlighted");
+
 		var number = queryLogicStructure[onFocus].index; 
 		var focusLabel = languageManager.getOrdinalNumber(number) + ' ' + queryLogicStructure[onFocus].label;
 		$("#focus").text(" " + focusLabel);
@@ -669,6 +673,10 @@ function attachEvents(){
 
 		//changeFocus notification
 		onFocus = $(this).attr("meta-focusReference");
+
+		//highlight sparql query
+		$("#querySparqlText .SPARQLhighlighted").removeClass("SPARQLhighlighted");
+		$("#querySparqlText span[meta-relatedto='"+onFocus+"']").addClass("SPARQLhighlighted");
 
 		$("#focus").text($(this).text());
 
@@ -709,8 +717,31 @@ function showUserQueryBox(){
 }
 
 QueryViewer.prototype.renderUserQuery = function(sparqlQueryArray){
-	var sparqlQuery = sparqlQueryArray.join("\n");
-	$("#querySparqlText").text(sparqlQuery);
+	var sparqlQuery = "";
+	//sparqlQueryArray.join("\n");
+	var obj;
+	sparqlQuery += "<span>"+sparqlQueryArray[0]+"</span><br>";
+	sparqlQuery += "<span>"+sparqlQueryArray[1]+"</span><br>";
+
+	for(var i = 2; i<sparqlQueryArray.length-2; i++){
+		obj = sparqlQueryArray[i];
+		console.log(obj);
+		sparqlQuery += "<span meta-relatedTo='";
+		for(var j = 0; j<obj.relatedTo.length; j++){
+			sparqlQuery += encodeURIComponent(obj.relatedTo[j])+" ";
+		}
+		sparqlQuery += "'>";
+		var text =  obj.content.join(' ').replace(/</g, '&lt').replace(/>/g, '&gt');
+		sparqlQuery += text;
+		sparqlQuery += "</span>";
+		sparqlQuery += "<br>";
+	}
+	sparqlQuery += "<span>"+sparqlQueryArray[sparqlQueryArray.length-2]+"</span>";
+	sparqlQuery += "<span meta-relatedTo='limit'>"+sparqlQueryArray[sparqlQueryArray.length-1]+"</span>";
+
+	$("#querySparqlText").html(sparqlQuery);
+	
+	$("#querySparqlText span[meta-relatedto~='"+encodeURIComponent(onFocus)+"']").addClass("SPARQLhighlighted");
 }
 
 QueryViewer.prototype.getCachedQuery = function(){
