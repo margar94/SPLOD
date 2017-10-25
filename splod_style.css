@@ -111,6 +111,10 @@ span.optionalBlock{
 	font-style: italic;
 }
 
+#queryNaturalLanguage, #queryNaturalLanguageFocus{
+	overflow-x: auto;
+}
+
 #queryNaturalLanguage ul{
 	padding-left: 0.8em;
 	margin: 0;
