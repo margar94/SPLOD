@@ -71,7 +71,7 @@ function createFieldsSelectionList(labelSelect){
 		var fieldCheck = $("<input/>")
 			.attr('type', 'checkbox')
 			.attr('id', labelSelect[field].className)
-			.attr('name', 'visibleFields')
+			.attr('name', languageManager.getButtonLabel('visibleFields'))
 			.appendTo(li)
 			.on('click', manageFields);
 

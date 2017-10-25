@@ -570,6 +570,9 @@ enLanguageManager.prototype.getButtonLabel = function(button){
 		case 'discardButton':
 			label = 'Discard operator';
 			break;
+		case 'visibleFields':
+			label = 'Visible fields';
+			break;
 	}
 
 	return label;

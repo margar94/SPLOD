@@ -580,14 +580,15 @@ QueryExecutor.prototype.executeUserQuery = function(querySPARQL){
 		operatorManager.queryResult(querySPARQL.select, querySPARQL.labelSelect, querySPARQL.keySelect, []);
 	else{
 		//console.log(querySPARQL.where);
-		/*$.each(querySPARQL.where, function(index){
-			querySPARQL.where[index] = querySPARQL.where[index].join(' ')
-		});*/
-		querySPARQL.where.join(' ');
+		var where = '';
+		$.each(querySPARQL.where, function(index){
+			where += querySPARQL.where[index].content.join(' ')
+		});
+
 		query = " SELECT " + querySPARQL.select.join(' ') +
 					" WHERE { " + 
 						" GRAPH " + graph + " { " +
-							querySPARQL.where.join(' ') +
+							where +
 						" } " +
 					" } ";
 		
