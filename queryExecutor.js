@@ -599,6 +599,7 @@ QueryExecutor.prototype.executeUserQuery = function(querySPARQL){
 		cachedUserQuery.push("WHERE { ");
 		cachedUserQuery = cachedUserQuery.concat(querySPARQL.where);
 		cachedUserQuery.push("} ");
+		cachedUserQuery.push("LIMIT " + resultLimit);
 		queryViewer.renderUserQuery(cachedUserQuery);
 		console.log(query);
 		
