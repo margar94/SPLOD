@@ -101,6 +101,7 @@ function initBoxViewer(){
 	fillSettings();
 }
 
+//get and render concepts
 function fillConcepts(){
 	$('#conceptsSpinner').show();
 	boxFiller.retrieveConcepts(conceptsLimit, function (rootMap, map){
@@ -110,45 +111,16 @@ function fillConcepts(){
 	});
 }
 
-function updateBoxesFromConcept(conceptUrl, conceptLabel){
+function updateBoxesFromConcept(conceptUrl){
 	$("#searchConceptsBox").val('');
 	$("#searchPredicatesBox").val('');
 	
 	$('#conceptsSpinner').show();
 	$('#predicatesSpinner').show();
 
-	boxFiller.updateConceptsFromConcept(conceptUrl, conceptLabel, conceptsLimit, renderConcept);
+	boxFiller.updateConceptsFromConcept(conceptUrl, conceptsLimit, renderConcept);
 	
-	boxFiller.updatePredicatesFromConcept(conceptUrl, conceptLabel, predicatesLimit, renderPredicates);
-}
-
-function fillPredicates(){
-	$('#predicatesSpinner').show();
-	boxFiller.retrievePredicates(predicatesLimit, function (predicates){
-		renderPredicates(predicates);
-	});
-}
-
-function updateBoxesFromDirectPredicate(predicateUrl, predicateLabel){
-	$("#searchConceptsBox").val('');
-	$("#searchPredicatesBox").val('');
-
-	$('#conceptsSpinner').show();
-	$('#predicatesSpinner').show();
-
-	boxFiller.updateConceptsFromDirectPredicate(predicateUrl, predicateLabel, conceptsLimit, renderConcept);
-	boxFiller.updatePredicatesFromPredicate(predicateUrl, predicateLabel, 'direct', predicatesLimit, renderPredicates);
-}
-
-function updateBoxesFromReversePredicate(predicateUrl, predicateLabel){
-	$("#searchConceptsBox").val('');
-	$("#searchPredicatesBox").val('');
-
-	$('#conceptsSpinner').show();
-	$('#predicatesSpinner').show();
-
-	boxFiller.updateConceptsFromReversePredicate(predicateUrl, predicateLabel, conceptsLimit, renderConcept);
-	boxFiller.updatePredicatesFromPredicate(predicateUrl, predicateLabel, 'reverse', predicatesLimit, renderPredicates);
+	boxFiller.updatePredicatesFromConcept(conceptUrl, predicatesLimit, renderPredicates);
 }
 
 function renderConcept(rootMap, map){
@@ -289,6 +261,34 @@ function iterativePreorderVisit(concept, concepts, toAppend, level){
 	}
 }
 
+//get and render predicates
+function fillPredicates(){
+	$('#predicatesSpinner').show();
+	boxFiller.retrievePredicates(predicatesLimit, function (predicates){
+		renderPredicates(predicates);
+	});
+}
+
+function updateBoxesFromDirectPredicate(predicateUrl){
+	$("#searchConceptsBox").val('');
+	$("#searchPredicatesBox").val('');
+
+	$('#conceptsSpinner').show();
+	$('#predicatesSpinner').show();
+
+	boxFiller.updateConceptsFromDirectPredicate(predicateUrl, conceptsLimit, renderConcept);
+	boxFiller.updatePredicatesFromDirectPredicate(predicateUrl, predicatesLimit, renderPredicates);
+}
+
+function updateBoxesFromReversePredicate(){
+	$("#searchConceptsBox").val('');
+	$("#searchPredicatesBox").val('');
+
+	$("#conceptsList").empty();
+	$("#directPredicatesList").empty();	
+	$("#reversePredicatesList").empty();		
+}
+
 function renderPredicates(predicates){
 	/*var predicatesList = $("#predicatesList");
 	predicatesList.empty();*/
@@ -299,8 +299,7 @@ function renderPredicates(predicates){
 	renderDirectPredicates(directArray);
 	renderReversePredicates(reverseArray);
 
-	$('#predicatesSpinner').hide();
-	
+	$('#predicatesSpinner').hide();	
 }
 
 function renderDirectPredicates(directMap){
@@ -386,6 +385,37 @@ function renderReversePredicates(reverseArray){
 	});
 }
 
+//manage update boxes when focus is on 'something' node
+function updateBoxesFromSomething(predicateUrl){
+	$("#searchConceptsBox").val('');
+	$("#searchPredicatesBox").val('');
+
+	$('#conceptsSpinner').show();
+	$('#predicatesSpinner').show();
+
+	boxFiller.updateConceptsFromSomething(predicateUrl, conceptsLimit, renderConcept);
+	boxFiller.updatePredicatesFromSomething(predicateUrl, predicatesLimit, renderPredicates);	
+}
+
+//manage update boxes when focus is on an operator
+function updateBoxesFromOperator(){
+	$("#conceptsList").empty();
+	$("#directPredicatesList").empty();	
+	$("#reversePredicatesList").empty();	
+}
+
+//manage update boxes when focus is on an result
+function updateBoxesFromResult(resultUrl){
+	$("#searchConceptsBox").val('');
+	$("#searchPredicatesBox").val('');
+
+	$("#conceptsList").empty();
+	
+	$('#predicatesSpinner').show();	
+	boxFiller.updatePredicatesFromResult(resultUrl, predicatesLimit, renderPredicates);
+}
+
+//manage settings
 function fillSettings(){
 	fillLabelLang();
 	fillSystemLang();
@@ -422,7 +452,6 @@ function fillSystemLang(){
 	$('#systemLangSelect option[value="'+systemLang+'"]').attr('selected', 'selected');
 
 	$('#systemLangSelect').material_select();
-
 }
 
 function fillNumberOfConceptsAndPredicates(){
@@ -446,9 +475,6 @@ function setLimit(type){
 		conceptsLimit = $('#numConcepts').val();
 	else if(type == 'predicate')
 		predicatesLimit = $('#numPredicates').val();
-
-console.log(conceptsLimit);
-console.log(predicatesLimit);
 }
 
 function changeSystemLanguage(){
@@ -458,29 +484,6 @@ function changeSystemLanguage(){
 	initQueryViewer();
 	initOperatorViewer();
 	initTableResultViewer();
-}
-
-function updateBoxesFromSomething(predicateUrl, predicateLabel){
-	$("#searchConceptsBox").val('');
-	$("#searchPredicatesBox").val('');
-
-	$('#conceptsSpinner').show();
-	$('#predicatesSpinner').show();
-
-	boxFiller.updateConceptsFromReversePredicate(predicateUrl, predicateLabel, conceptsLimit, renderConcept);
-	boxFiller.updatePredicatesFromPredicate(predicateUrl, predicateLabel, 'reverse', predicatesLimit, renderPredicates);	
-}
-
-function updateBoxesFromOperator(operator){
-	$("#conceptsList").empty();
-	$("#directPredicatesList").empty();	
-	$("#reversePredicatesList").empty();	
-}
-
-function updateBoxesFromResult(){
-	$("#conceptsList").empty();
-	$("#directPredicatesList").empty();	
-	$("#reversePredicatesList").empty();	
 }
 
 function hierarchyOff(){
@@ -497,6 +500,7 @@ function hierarchyOn(){
 	renderConcept(lastRootMap, lastMap);
 }
 
+//delete highlighted element in natural language query
 function removeHighlightElements(keyToRemove){
 	$('#tableResultSpinner').show();
 	if(keyToRemove != 'undefined')

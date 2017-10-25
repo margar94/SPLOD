@@ -64,9 +64,7 @@ var QueryExecutor = function (selectedEndpoint, selectedGraph) {
 	QueryExecutor.prototype._singletonInstance = this;
 };
 
-/*
-	Get classe's hierarchy. 
-*/
+//concepts
 QueryExecutor.prototype.getAllEntities = function(limit, callback) {
 	if(labelLang in language_classHierarchyMap){
 		if(!limit){
@@ -141,9 +139,106 @@ QueryExecutor.prototype.getAllEntities = function(limit, callback) {
         	callback([], {});
         }
 	});
-
 }
 
+/*
+	Get entity subclasses.
+	@url : url of superclass  
+*/
+QueryExecutor.prototype.getEntitySubclasses = function(url, limit, callback) {
+	var submap={};
+	if(url in language_classHierarchyMap[labelLang]){
+		submap = buildSubmapHierarchy(url, limit);
+	}else{
+		submap[url] = {url:url, label: createLabel(url), children : [], parent:[], numberOfInstances:0};
+	}
+	callback([url], submap);
+}
+
+/*
+	This function get all subject of the selected predicate.
+*/
+QueryExecutor.prototype.getConceptsFromDirectPredicate = function(predicate, limit, callback) {
+	query = " prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
+				" SELECT DISTINCT ?url ?label " +
+				" WHERE { " + 
+					" GRAPH " + graph + " { " +	
+						" ?o a ?url. " +
+						" ?s  <"+predicate+"> ?o. " +
+						" OPTIONAL {?url rdfs:label ?label. " +
+						" FILTER (lang(?label) = '" + labelLang + "')} " +
+					" } " +
+				" } ";
+	if(limit)
+		query += "LIMIT " + limit;  
+	
+   	queryUrl = endpoint+"?query="+ encodeURIComponent(query) +"&format=json";
+    var xhr = $.ajax({
+		        url: queryUrl,
+		        method:'post',
+		        success: function(data, textStatus, jqXHR ) {
+		        	var arrayData = data.results.bindings;
+				    var subMap = getResultMap(arrayData);
+					var mapRoots = getMapRoots(subMap);
+				    callback(mapRoots, subMap);	
+				      
+		        },
+				error: function(jqXHR, textStatus, errorThrown){
+					console.log(textStatus);
+					callback([], {});
+				},
+				complete: function(jqXHR){
+					var index = $.inArray(jqXHR, activeAjaxRequest);
+		        	if(index != -1)
+		        		activeAjaxRequest.splice(index, 1);
+				}
+		    });	
+
+    activeAjaxRequest.push(xhr);
+}
+
+/*
+	This function get all object of the selected predicate.
+*/
+QueryExecutor.prototype.getConceptsFromSomething = function(predicate, limit, callback) {
+	query = " prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
+				" prefix owl: <http://www.w3.org/2002/07/owl#> " +
+				" SELECT DISTINCT ?url ?label " +
+				" WHERE { " + 
+					" GRAPH " + graph + " { " +
+						" ?o a ?url. " +
+						" ?s  <"+predicate+"> ?o. " +
+						" OPTIONAL {?url rdfs:label ?label. " +
+						" FILTER (lang(?label) = '" + labelLang + "')} " +
+					" } " +
+				" } ";
+	if(limit)
+		query += "LIMIT " + limit;  
+	
+   	queryUrl = endpoint+"?query="+ encodeURIComponent(query) +"&format=json";
+    var xhr = $.ajax({
+        url: queryUrl,
+        method:'post',
+        success: function( data, textStatus, jqXHR ) {
+        	var arrayData = data.results.bindings;
+		    var subMap = getResultMap(arrayData);
+		    var mapRoots = getMapRoots(subMap);
+		    callback(mapRoots, subMap);	
+        },
+		error: function(jqXHR, textStatus, errorThrown){
+			console.log(textStatus);
+			callback([], {});
+		},
+		complete: function(jqXHR){
+			var index = $.inArray(jqXHR, activeAjaxRequest);
+        	if(index != -1)
+        		activeAjaxRequest.splice(index, 1);
+		}
+    });	
+    activeAjaxRequest.push(xhr);
+}
+
+//predicates
 /*
 	SELECT DISTINCT ?property
 	WHERE
@@ -161,7 +256,6 @@ QueryExecutor.prototype.getAllEntities = function(limit, callback) {
 		FILTER (lang(?label) = 'en')}
 	}
 */
-
 QueryExecutor.prototype.getAllDirectPredicates = function(limit, callback) {
 
 		query = " prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> " + 
@@ -239,74 +333,6 @@ QueryExecutor.prototype.getAllReversePredicates = function(limit, callback) {
         	callback({});
         }
     });	
-}
-
-/*
-	SELECT (COUNT(?o) AS ?totalNumberOfNames)
-	WHERE { ?s dbp:name ?o }
-*/
-QueryExecutor.prototype.getPredicateStats = function(pred, callback){
-	var query = " SELECT (COUNT(?o) AS ?number) " +
-		" WHERE { " + 
-			" GRAPH " + graph + " { " +
-				" ?s <"+pred+"> ?o . "+
-				"}" +
-			" } ";  
-
-   	queryUrl = endpoint+"?query="+ encodeURIComponent(query) +"&format=json";
-    $.ajax({
-        url: queryUrl,
-        method:'post',
-        success: function( data ) {
-        	var arrayData = data.results.bindings;
-        	callback(arrayData[0]['number'].value);
-        },
-		error: function(jqXHR, textStatus, errorThrown){
-			console.log(textStatus);
-			callback('');
-		}
-    });	
-}
-
-/*
-	SELECT (COUNT(?s) AS ?totalNumberOfNames)
-	WHERE { ?s a dbo:Activity. }
-*/
-QueryExecutor.prototype.getConceptStats = function(concept, callback){
-	var query = " SELECT (COUNT(?s) AS ?number) " +
-		" WHERE { " + 
-			" GRAPH " + graph + " { " +
-				" ?s a <"+concept+"> . "+
-				"}" +
-			" } ";  
-
-   	queryUrl = endpoint+"?query="+ encodeURIComponent(query) +"&format=json";
-    $.ajax({
-        url: queryUrl,
-        method:'post',
-        success: function( data ) {
-        	var arrayData = data.results.bindings;
-        	callback(arrayData[0]['number'].value);
-        },
-		error: function(jqXHR, textStatus, errorThrown){
-			console.log(textStatus);
-			callback('');
-		}
-    });	
-}
-
-/*
-	Get entity subclasses.
-	@url : url of superclass  
-*/
-QueryExecutor.prototype.getEntitySubclasses = function(url, limit, callback) {
-	var submap={};
-	if(url in language_classHierarchyMap[labelLang]){
-		submap = buildSubmapHierarchy(url, limit);
-	}else{
-		submap[url] = {url:url, label: createLabel(url), children : [], parent:[], numberOfInstances:0};
-	}
-	callback([url], submap);
 }
 
 /*
@@ -388,89 +414,6 @@ QueryExecutor.prototype.getReversePredicatesFromConcept = function(entity, limit
 				}
 		    });	
 
-    activeAjaxRequest.push(xhr);
-}
-
-/*
-	This function get all subject of the selected predicate.
-*/
-QueryExecutor.prototype.getConceptsFromDirectPredicate = function(predicate, limit, callback) {
-	query = " prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
-				" SELECT DISTINCT ?url ?label " +
-				" WHERE { " + 
-					" GRAPH " + graph + " { " +	
-						" ?o a ?url. " +
-						" ?s  <"+predicate+"> ?o. " +
-						" OPTIONAL {?url rdfs:label ?label. " +
-						" FILTER (lang(?label) = '" + labelLang + "')} " +
-					" } " +
-				" } ";
-	if(limit)
-		query += "LIMIT " + limit;  
-	
-   	queryUrl = endpoint+"?query="+ encodeURIComponent(query) +"&format=json";
-    var xhr = $.ajax({
-		        url: queryUrl,
-		        method:'post',
-		        success: function(data, textStatus, jqXHR ) {
-		        	var arrayData = data.results.bindings;
-				    var subMap = getResultMap(arrayData);
-					var mapRoots = getMapRoots(subMap);
-				    callback(mapRoots, subMap);	
-				      
-		        },
-				error: function(jqXHR, textStatus, errorThrown){
-					console.log(textStatus);
-					callback([], {});
-				},
-				complete: function(jqXHR){
-					var index = $.inArray(jqXHR, activeAjaxRequest);
-		        	if(index != -1)
-		        		activeAjaxRequest.splice(index, 1);
-				}
-		    });	
-
-    activeAjaxRequest.push(xhr);
-}
-
-/*
-	This function get all object of the selected predicate.
-*/
-QueryExecutor.prototype.getConceptsFromReversePredicate = function(predicate, limit, callback) {
-	query = " prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
-				" prefix owl: <http://www.w3.org/2002/07/owl#> " +
-				" SELECT DISTINCT ?url ?label " +
-				" WHERE { " + 
-					" GRAPH " + graph + " { " +
-						" ?o a ?url. " +
-						" ?s  <"+predicate+"> ?o. " +
-						" OPTIONAL {?url rdfs:label ?label. " +
-						" FILTER (lang(?label) = '" + labelLang + "')} " +
-					" } " +
-				" } ";
-	if(limit)
-		query += "LIMIT " + limit;  
-	
-   	queryUrl = endpoint+"?query="+ encodeURIComponent(query) +"&format=json";
-    var xhr = $.ajax({
-        url: queryUrl,
-        method:'post',
-        success: function( data, textStatus, jqXHR ) {
-        	var arrayData = data.results.bindings;
-		    var subMap = getResultMap(arrayData);
-		    var mapRoots = getMapRoots(subMap);
-		    callback(mapRoots, subMap);	
-        },
-		error: function(jqXHR, textStatus, errorThrown){
-			console.log(textStatus);
-			callback([], {});
-		},
-		complete: function(jqXHR){
-			var index = $.inArray(jqXHR, activeAjaxRequest);
-        	if(index != -1)
-        		activeAjaxRequest.splice(index, 1);
-		}
-    });	
     activeAjaxRequest.push(xhr);
 }
 
@@ -573,13 +516,134 @@ QueryExecutor.prototype.getReversePredicatesFromPredicate = function(predicate, 
    activeAjaxRequest.push(xhr);
 }
 
-//querySPARQL = {select:[], labelSelect:[], keySelect:[], where: [], limit}
+QueryExecutor.prototype.getDirectPredicatesFromResult = function(result, limit, callback) {
+	query = " prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
+				" SELECT DISTINCT ?url ?label " +
+				" WHERE { " + 
+					" GRAPH " + graph + " { " +
+						" <"+result+"> ?url ?o. " +
+						" OPTIONAL {?url rdfs:label ?label. " +
+						" FILTER (lang(?label) = '" + labelLang + "')} " +
+					" } " +
+				" } ";
+	if(limit)
+		query += "LIMIT " + limit;  
+	
+   	queryUrl = endpoint+"?query="+ encodeURIComponent(query) +"&format=json";
+    var xhr = $.ajax({
+		        url: queryUrl,
+		        method:'post',
+		        success: function( data, textStatus, jqXHR ) {
+					callback(getUrlAndLabelFromResult(data));
+		        },
+				error: function(jqXHR, textStatus, errorThrown){
+					console.log(textStatus);
+					callback([]);
+				},
+				complete: function(jqXHR){
+					var index = $.inArray(jqXHR, activeAjaxRequest);
+		        	if(index != -1)
+		        		activeAjaxRequest.splice(index, 1);
+				}
+		    });	
+    activeAjaxRequest.push(xhr);
+}
+
+QueryExecutor.prototype.getReversePredicatesFromResult = function(result, limit, callback) {
+	query = " prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
+				" SELECT DISTINCT ?url ?label " +
+				" WHERE { " + 
+					" GRAPH " + graph + " { " +
+						" ?o ?url <"+result+">. " +
+						" OPTIONAL {?url rdfs:label ?label. " +
+						" FILTER (lang(?label) = '" + labelLang + "')} " +
+					" } " +
+				" } ";
+	if(limit)
+		query += "LIMIT " + limit;  
+	
+   	queryUrl = endpoint+"?query="+ encodeURIComponent(query) +"&format=json";
+    var xhr = $.ajax({
+		        url: queryUrl,
+		        method:'post',
+		        success: function( data, textStatus, jqXHR ) {
+		        	callback(getUrlAndLabelFromResult(data));
+		        },
+				error: function(jqXHR, textStatus, errorThrown){
+					console.log(textStatus);
+					callback([]);
+				},
+				complete: function(jqXHR){
+					var index = $.inArray(jqXHR, activeAjaxRequest);
+		        	if(index != -1)
+		        		activeAjaxRequest.splice(index, 1);
+				}
+		    });	
+
+    activeAjaxRequest.push(xhr);
+}
+
+//live stats
+/*
+	SELECT (COUNT(?o) AS ?totalNumberOfNames)
+	WHERE { ?s dbp:name ?o }
+*/
+QueryExecutor.prototype.getPredicateStats = function(pred, callback){
+	var query = " SELECT (COUNT(?o) AS ?number) " +
+		" WHERE { " + 
+			" GRAPH " + graph + " { " +
+				" ?s <"+pred+"> ?o . "+
+				"}" +
+			" } ";  
+
+   	queryUrl = endpoint+"?query="+ encodeURIComponent(query) +"&format=json";
+    $.ajax({
+        url: queryUrl,
+        method:'post',
+        success: function( data ) {
+        	var arrayData = data.results.bindings;
+        	callback(arrayData[0]['number'].value);
+        },
+		error: function(jqXHR, textStatus, errorThrown){
+			console.log(textStatus);
+			callback('');
+		}
+    });	
+}
+
+/*
+	SELECT (COUNT(?s) AS ?totalNumberOfNames)
+	WHERE { ?s a dbo:Activity. }
+*/
+QueryExecutor.prototype.getConceptStats = function(concept, callback){
+	var query = " SELECT (COUNT(?s) AS ?number) " +
+		" WHERE { " + 
+			" GRAPH " + graph + " { " +
+				" ?s a <"+concept+"> . "+
+				"}" +
+			" } ";  
+
+   	queryUrl = endpoint+"?query="+ encodeURIComponent(query) +"&format=json";
+    $.ajax({
+        url: queryUrl,
+        method:'post',
+        success: function( data ) {
+        	var arrayData = data.results.bindings;
+        	callback(arrayData[0]['number'].value);
+        },
+		error: function(jqXHR, textStatus, errorThrown){
+			console.log(textStatus);
+			callback('');
+		}
+    });	
+}
+
+//querySPARQL = {select:[], labelSelect:[], keySelect:[], where: []}
 QueryExecutor.prototype.executeUserQuery = function(querySPARQL){
 
 	if(querySPARQL.select.length == 0)
 		operatorManager.queryResult(querySPARQL.select, querySPARQL.labelSelect, querySPARQL.keySelect, []);
 	else{
-		//console.log(querySPARQL.where);
 		var where = '';
 		$.each(querySPARQL.where, function(index){
 			where += querySPARQL.where[index].content.join(' ')

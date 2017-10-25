@@ -590,7 +590,7 @@ function renderFocus(){
 
 	if(onFocus == "limit"){
 		$("#focus").text(" " + $("#limit").text());
-		updateBoxesFromOperator("limit");
+		updateBoxesFromOperator();
 	}else{//it"s a node of the map
 		//focus text
 		var number = queryLogicStructure[onFocus].index; 
@@ -606,17 +606,17 @@ function updateBoxes(focusNode){
 
 	switch(focusNode.type){
 		case "concept":
-			updateBoxesFromConcept(focusNode.url, focusNode.label);
+			updateBoxesFromConcept(focusNode.url);
 			break;
 		case "predicate":
 			if(focusNode.direction == "direct")
-				updateBoxesFromDirectPredicate(focusNode.url, focusNode.label);
+				updateBoxesFromDirectPredicate(focusNode.url);
 			else 
-				updateBoxesFromReversePredicate(focusNode.url, focusNode.label);
+				updateBoxesFromReversePredicate();
 			break;
 		case "something":
 			var parent = queryLogicStructure[focusNode.parent];
-			updateBoxesFromSomething(parent.url, parent.label);
+			updateBoxesFromSomething(parent.url); //pred is reverse predicate
 			break;
 		case "everything":
 			fillConcepts();
@@ -626,7 +626,7 @@ function updateBoxes(focusNode){
 			updateBoxesFromOperator();
 			break;
 		case "result":
-			updateBoxesFromResult();
+			updateBoxesFromResult(focusNode.url);
 			break;
 	}
 }
@@ -682,7 +682,7 @@ function attachEvents(){
 
 		mapCreator.changeFocus(onFocus);
 
-		updateBoxesFromOperator(onFocus);
+		updateBoxesFromOperator();
 	});
 
 	$(".barred").click(function(e){
