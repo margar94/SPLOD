@@ -516,12 +516,40 @@ QueryExecutor.prototype.getReversePredicatesFromPredicate = function(predicate, 
    activeAjaxRequest.push(xhr);
 }
 
-QueryExecutor.prototype.getDirectPredicatesFromResult = function(result, limit, callback) {
+QueryExecutor.prototype.getDirectPredicatesFromResult = function(url, datatype, lang, limit, callback) {
+	var result;
+	switch(datatype){
+		case 'uri':
+		case 'img':
+			result = "<"+url+">";
+			break;
+		case 'number':
+		case 'boolean': //?
+			result = url;
+			break;
+		case 'string':
+			result = '"' + url + '"';
+			break;
+		case 'literal':
+			result = '"' + url + '"@'+lang;
+			break;
+		case 'gYear':
+		case 'gMonth':
+		case 'gDay':
+		case 'gMonthDay':
+		case 'gYearMonth':
+		case 'date':
+		case 'dateTime':
+		case 'time': 
+			result = 'xsd:'+datatype+'("'+url+'")';
+			break;
+	}
+
 	query = " prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
 				" SELECT DISTINCT ?url ?label " +
 				" WHERE { " + 
 					" GRAPH " + graph + " { " +
-						" <"+result+"> ?url ?o. " +
+						  result +" ?url ?o. " +
 						" OPTIONAL {?url rdfs:label ?label. " +
 						" FILTER (lang(?label) = '" + labelLang + "')} " +
 					" } " +
@@ -549,12 +577,40 @@ QueryExecutor.prototype.getDirectPredicatesFromResult = function(result, limit, 
     activeAjaxRequest.push(xhr);
 }
 
-QueryExecutor.prototype.getReversePredicatesFromResult = function(result, limit, callback) {
+QueryExecutor.prototype.getReversePredicatesFromResult = function(url, datatype, lang, limit, callback) {
+	var result;
+	switch(datatype){
+		case 'uri':
+		case 'img':
+			result = "<"+url+">";
+			break;
+		case 'number':
+		case 'boolean': //?
+			result = url;
+			break;
+		case 'string':
+			result = '"' + url + '"';
+			break;
+		case 'literal':
+			result = '"' + url + '"@'+lang;
+			break;
+		case 'gYear':
+		case 'gMonth':
+		case 'gDay':
+		case 'gMonthDay':
+		case 'gYearMonth':
+		case 'date':
+		case 'dateTime':
+		case 'time': 
+			result = 'xsd:'+datatype+'("'+url+'")';
+			break;
+	}
+
 	query = " prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
 				" SELECT DISTINCT ?url ?label " +
 				" WHERE { " + 
 					" GRAPH " + graph + " { " +
-						" ?o ?url <"+result+">. " +
+						" ?o ?url "+result+". " +
 						" OPTIONAL {?url rdfs:label ?label. " +
 						" FILTER (lang(?label) = '" + labelLang + "')} " +
 					" } " +

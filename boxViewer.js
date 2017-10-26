@@ -405,14 +405,14 @@ function updateBoxesFromOperator(){
 }
 
 //manage update boxes when focus is on an result
-function updateBoxesFromResult(resultUrl){
+function updateBoxesFromResult(resultUrl, resultDatatype, resultLang){
 	$("#searchConceptsBox").val('');
 	$("#searchPredicatesBox").val('');
 
 	$("#conceptsList").empty();
 	
 	$('#predicatesSpinner').show();	
-	boxFiller.updatePredicatesFromResult(resultUrl, predicatesLimit, renderPredicates);
+	boxFiller.updatePredicatesFromResult(resultUrl, resultDatatype, resultLang, predicatesLimit, renderPredicates);
 }
 
 //manage settings

@@ -120,7 +120,6 @@ MapCreator.prototype.selectedConcept = function(selectedUrl, selectedLabel) {
 	queryBuilder.updateQuery(rootQueryLogicMap, queryLogicMap);
 
 	//console.log(elementsList);
-
 }
 
 /*
@@ -257,7 +256,6 @@ MapCreator.prototype.selectedPredicate = function(selectedUrl, selectedLabel, pr
 	queryBuilder.updateQuery(rootQueryLogicMap, queryLogicMap);
 
 	//console.log(queryLogicMap);
-
 }
 
 //update focus and notify operatorManager when USER change focus
@@ -267,7 +265,6 @@ MapCreator.prototype.changeFocus = function(newElementOnFocus){
 	if(operatorManager == null)
 		operatorManager = new OperatorManager;
 	operatorManager.changedFocus(elementOnFocus, true);
-
 }
 
 MapCreator.prototype.getNodeByKey = function(key){
@@ -416,8 +413,6 @@ MapCreator.prototype.removeElement = function(key){
 			queryBuilder = new QueryBuilder;
 		queryBuilder.updateQuery(rootQueryLogicMap, queryLogicMap);
 	}
-
-
 }
 
 function iReplaceASomethingNode(key){
@@ -494,7 +489,6 @@ function removeMeAndMyDescendents(node){
 
 		decreaseIndexIfIAmLast(currentNode);
 		delete queryLogicMap[currentNode.key];
-
 	}
 }
 
@@ -710,6 +704,7 @@ MapCreator.prototype.selectedOperator = function(pendingQuery){
 
 			parentNode.children.push(key);				
 
+			var resultOnFocus;
 			for(var i=1; i<pendingQuery.length; i++){
 				var resultValue = pendingQuery[i].value;
 				var resultDatatype = pendingQuery[i].datatype;
@@ -741,10 +736,12 @@ MapCreator.prototype.selectedOperator = function(pendingQuery){
 
 				newLogicElement.children.push(keyChildren);
 
+				resultOnFocus = keyChildren;
+
 				//keys to return 
 				resultsKey.push(keyChildren);
 			}	
-			updateAndNotifyFocus(elementOnFocus);
+			updateAndNotifyFocus(resultOnFocus);
 			break;
 
 		case 'not':
@@ -833,7 +830,7 @@ MapCreator.prototype.selectedOperator = function(pendingQuery){
 
 	}
 
-console.log(queryLogicMap);
+	console.log(queryLogicMap);
 
 	if(queryVerbalizator == null)
 		queryVerbalizator = new QueryVerbalizator;
@@ -844,10 +841,11 @@ console.log(queryLogicMap);
 	queryBuilder.updateQuery(rootQueryLogicMap, queryLogicMap);
 
 	return resultsKey;
-		//console.log(queryLogicMap);
-
 }
+
 MapCreator.prototype.selectedResult = function(result){
+	var elementOnFocusNode = queryLogicMap[elementOnFocus];
+
 	var verbalization = languageManager.verbalizeResult(result.value);
 
 	if(!(result.value in indexMap)){
@@ -860,24 +858,25 @@ MapCreator.prototype.selectedResult = function(result){
 	var index = indexMap[result.value];
 	var key = result.value + "_" + index;
 
-	queryLogicMap[elementOnFocus].key = key;
-	queryLogicMap[elementOnFocus].index = index;
-	queryLogicMap[elementOnFocus].url = result.value;
-	queryLogicMap[elementOnFocus].label = result.value;
-	queryLogicMap[elementOnFocus].verbalization = verbalization;
-	queryLogicMap[elementOnFocus].datatype = result.datatype;
-	queryLogicMap[elementOnFocus].lang = result.lang;
+	var newLogicElement = {key: key, index: index,
+				   url: result.value, label: result.value, 
+				   type:'result', direction: false,
+				   verbalization: verbalization, 
+				   parent:elementOnFocusNode.parent, children: [], 
+				   datatype: result.datatype, lang: result.lang,
+				   relatedTo: elementOnFocusNode.relatedTo,
+				   cachedQuery: elementOnFocusNode.cachedQuery};
 
-	queryLogicMap[key] = queryLogicMap[elementOnFocus];
+	queryLogicMap[key] = newLogicElement;
 
-	var elementOnFocusNode = queryLogicMap[elementOnFocus];
-	var index = $.inArray(elementOnFocus, queryLogicMap[elementOnFocusNode.parent].children);
-	queryLogicMap[elementOnFocusNode.parent].children[index] = key;
+	var indexInParent = $.inArray(elementOnFocus, queryLogicMap[elementOnFocusNode.parent].children);
+	queryLogicMap[elementOnFocusNode.parent].children[indexInParent] = key;
 		
-	decreaseIndexIfIAmLast(queryLogicMap[elementOnFocus]);
-	delete queryLogicMap[elementOnFocus];
+	removeMeAndMyDescendents(elementOnFocusNode);
 
 	updateAndNotifyFocus(key);
+
+	console.log(queryLogicMap);
 
 	if(queryVerbalizator == null)
 		queryVerbalizator = new QueryVerbalizator;
@@ -888,7 +887,6 @@ MapCreator.prototype.selectedResult = function(result){
 	queryBuilder.updateQuery(rootQueryLogicMap, queryLogicMap);
 
 	return key;
-	
 }
 
 function initializeMap(){

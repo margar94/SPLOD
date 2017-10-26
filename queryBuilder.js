@@ -56,6 +56,8 @@ function visitSPARQL(key){
 	var nodeQuery = {};
 	var childQuery = {};
 
+	console.log(node);
+
 	switch(node.type){
 		case 'everything' : 
 			var firstReverseChild = null;
@@ -486,6 +488,16 @@ function visitSPARQL(key){
 						operatorLabel = '=';
 					}
 					nodeWhere.push({relatedTo:tempRelatedTo, content:['FILTER(' + parentVariable + operatorLabel + '<'+queryLogicStructure[node.children[0]].label+'>' + ')']});
+					
+					queryLogicStructure[node.children[0]].variable = '<'+queryLogicStructure[node.children[0]].label+'>';
+
+					childQuery = visitSPARQL(node.children[0]); 
+
+					nodeSelect = nodeSelect.concat(childQuery.select);
+					nodeLabelSelect = nodeLabelSelect.concat(childQuery.labelSelect);
+					nodeKeySelect = nodeKeySelect.concat(childQuery.keySelect);
+					nodeWhere = nodeWhere.concat(childQuery.where);
+
 					break;
 				
 				case 'is string': 
@@ -500,10 +512,22 @@ function visitSPARQL(key){
 						operatorLabel = '=';
 					}
 
-					if(queryLogicStructure[node.children[0]].lang != null)
+					if(queryLogicStructure[node.children[0]].lang != null){
 						nodeWhere.push({relatedTo:tempRelatedTo, content:['FILTER(' + parentVariable + operatorLabel + '"'+queryLogicStructure[node.children[0]].label +'"@' + queryLogicStructure[node.children[0]].lang + ')']});
-					else
+						queryLogicStructure[node.children[0]].variable = '"'+queryLogicStructure[node.children[0]].label+'"@'+ queryLogicStructure[node.children[0]].lang;
+					}
+					else{
 						nodeWhere.push({relatedTo:tempRelatedTo, content:['FILTER(str(' + parentVariable +')'+ operatorLabel + '"'+queryLogicStructure[node.children[0]].label + '")']});
+						queryLogicStructure[node.children[0]].variable = '"'+queryLogicStructure[node.children[0]].label+'"';
+					}
+
+					childQuery = visitSPARQL(node.children[0]); 
+
+					nodeSelect = nodeSelect.concat(childQuery.select);
+					nodeLabelSelect = nodeLabelSelect.concat(childQuery.labelSelect);
+					nodeKeySelect = nodeKeySelect.concat(childQuery.keySelect);
+					nodeWhere = nodeWhere.concat(childQuery.where);
+
 					break;
 
 				case 'contains': 
@@ -516,6 +540,15 @@ function visitSPARQL(key){
 					}
 				
 					nodeWhere.push({relatedTo:tempRelatedTo, content:['FILTER(' + operatorLabel + '(xsd:string('+parentVariable+'),"'+queryLogicStructure[node.children[0]].label+'")' + ')']});
+					queryLogicStructure[node.children[0]].variable = '"'+queryLogicStructure[node.children[0]].label+'"';
+
+					childQuery = visitSPARQL(node.children[0]); 
+
+					nodeSelect = nodeSelect.concat(childQuery.select);
+					nodeLabelSelect = nodeLabelSelect.concat(childQuery.labelSelect);
+					nodeKeySelect = nodeKeySelect.concat(childQuery.keySelect);
+					nodeWhere = nodeWhere.concat(childQuery.where);
+
 					break;
 
 				case 'starts with':
@@ -530,6 +563,15 @@ function visitSPARQL(key){
 						operatorLabel = 'strStarts';
 					}
 					nodeWhere.push({relatedTo:tempRelatedTo, content:['FILTER(' + operatorLabel + '(xsd:string('+parentVariable+'),"'+queryLogicStructure[node.children[0]].label+'")' + ')']});
+					queryLogicStructure[node.children[0]].variable = '"'+queryLogicStructure[node.children[0]].label+'"';
+
+					childQuery = visitSPARQL(node.children[0]); 
+
+					nodeSelect = nodeSelect.concat(childQuery.select);
+					nodeLabelSelect = nodeLabelSelect.concat(childQuery.labelSelect);
+					nodeKeySelect = nodeKeySelect.concat(childQuery.keySelect);
+					nodeWhere = nodeWhere.concat(childQuery.where);
+
 					break;
 
 				case 'ends with': 
@@ -544,6 +586,15 @@ function visitSPARQL(key){
 						operatorLabel = 'strEnds';
 					}
 					nodeWhere.push({relatedTo:tempRelatedTo, content:['FILTER(' + operatorLabel + '(xsd:string('+parentVariable+'),"'+queryLogicStructure[node.children[0]].label+'")' + ')']});
+					queryLogicStructure[node.children[0]].variable = '"'+queryLogicStructure[node.children[0]].label+'"';
+
+					childQuery = visitSPARQL(node.children[0]); 
+
+					nodeSelect = nodeSelect.concat(childQuery.select);
+					nodeLabelSelect = nodeLabelSelect.concat(childQuery.labelSelect);
+					nodeKeySelect = nodeKeySelect.concat(childQuery.keySelect);
+					nodeWhere = nodeWhere.concat(childQuery.where);
+
 					break;
 
 				case 'lang': 
@@ -556,6 +607,15 @@ function visitSPARQL(key){
 					}
 					
 					nodeWhere.push({relatedTo:tempRelatedTo, content:['FILTER(' + operatorLabel + '('+parentVariable+')="'+queryLogicStructure[node.children[0]].label+'"' + ')']});
+					queryLogicStructure[node.children[0]].variable = '"'+queryLogicStructure[node.children[0]].label+'"';
+
+					childQuery = visitSPARQL(node.children[0]); 
+
+					nodeSelect = nodeSelect.concat(childQuery.select);
+					nodeLabelSelect = nodeLabelSelect.concat(childQuery.labelSelect);
+					nodeKeySelect = nodeKeySelect.concat(childQuery.keySelect);
+					nodeWhere = nodeWhere.concat(childQuery.where);
+
 					break;
 				
 				case '<': 
@@ -567,6 +627,15 @@ function visitSPARQL(key){
 						addNot=false;
 					}
 					nodeWhere.push({relatedTo:tempRelatedTo, content:['FILTER(' + parentVariable+' '+operatorLabel+' '+queryLogicStructure[node.children[0]].label + ')']});
+					queryLogicStructure[node.children[0]].variable = queryLogicStructure[node.children[0]].label;
+
+					childQuery = visitSPARQL(node.children[0]); 
+
+					nodeSelect = nodeSelect.concat(childQuery.select);
+					nodeLabelSelect = nodeLabelSelect.concat(childQuery.labelSelect);
+					nodeKeySelect = nodeKeySelect.concat(childQuery.keySelect);
+					nodeWhere = nodeWhere.concat(childQuery.where);
+
 					break;
 
 				case '<=':
@@ -578,6 +647,15 @@ function visitSPARQL(key){
 						addNot=false;
 					}
 					nodeWhere.push({relatedTo:tempRelatedTo, content:['FILTER(' + parentVariable+' '+operatorLabel+' '+queryLogicStructure[node.children[0]].label + ')']});
+					queryLogicStructure[node.children[0]].variable = queryLogicStructure[node.children[0]].label;
+
+					childQuery = visitSPARQL(node.children[0]); 
+
+					nodeSelect = nodeSelect.concat(childQuery.select);
+					nodeLabelSelect = nodeLabelSelect.concat(childQuery.labelSelect);
+					nodeKeySelect = nodeKeySelect.concat(childQuery.keySelect);
+					nodeWhere = nodeWhere.concat(childQuery.where);
+
 					break;
 
 				case '>':
@@ -589,6 +667,15 @@ function visitSPARQL(key){
 						addNot=false;
 					}
 					nodeWhere.push({relatedTo:tempRelatedTo, content:['FILTER(' + parentVariable+' '+operatorLabel+' '+queryLogicStructure[node.children[0]].label + ')']});
+					queryLogicStructure[node.children[0]].variable = queryLogicStructure[node.children[0]].label;
+
+					childQuery = visitSPARQL(node.children[0]); 
+
+					nodeSelect = nodeSelect.concat(childQuery.select);
+					nodeLabelSelect = nodeLabelSelect.concat(childQuery.labelSelect);
+					nodeKeySelect = nodeKeySelect.concat(childQuery.keySelect);
+					nodeWhere = nodeWhere.concat(childQuery.where);
+
 					break;
 
 				case '>=':
@@ -600,6 +687,15 @@ function visitSPARQL(key){
 						addNot=false;
 					}
 					nodeWhere.push({relatedTo:tempRelatedTo, content:['FILTER(' + parentVariable+' '+operatorLabel+' '+queryLogicStructure[node.children[0]].label + ')']});
+					queryLogicStructure[node.children[0]].variable = queryLogicStructure[node.children[0]].label;
+
+					childQuery = visitSPARQL(node.children[0]); 
+
+					nodeSelect = nodeSelect.concat(childQuery.select);
+					nodeLabelSelect = nodeLabelSelect.concat(childQuery.labelSelect);
+					nodeKeySelect = nodeKeySelect.concat(childQuery.keySelect);
+					nodeWhere = nodeWhere.concat(childQuery.where);
+
 					break;
 
 				case '=':
@@ -611,6 +707,15 @@ function visitSPARQL(key){
 						addNot=false;
 					}
 					nodeWhere.push({relatedTo:tempRelatedTo, content:['FILTER(' + parentVariable+' '+operatorLabel+' '+queryLogicStructure[node.children[0]].label + ')']});
+					queryLogicStructure[node.children[0]].variable = queryLogicStructure[node.children[0]].label;
+
+					childQuery = visitSPARQL(node.children[0]); 
+
+					nodeSelect = nodeSelect.concat(childQuery.select);
+					nodeLabelSelect = nodeLabelSelect.concat(childQuery.labelSelect);
+					nodeKeySelect = nodeKeySelect.concat(childQuery.keySelect);
+					nodeWhere = nodeWhere.concat(childQuery.where);
+
 					break;
 
 				case 'is date':
@@ -625,6 +730,15 @@ function visitSPARQL(key){
 					}
 					var conversionFunction = 'xsd:'+queryLogicStructure[node.children[0]].datatype;
 					nodeWhere.push({relatedTo:tempRelatedTo, content:['FILTER(' + parentVariable+ ' '+operatorLabel +' '+conversionFunction+'("'+queryLogicStructure[node.children[0]].label+'")' + ')']});
+					queryLogicStructure[node.children[0]].variable = conversionFunction+'("'+queryLogicStructure[node.children[0]].label+'")';
+
+					childQuery = visitSPARQL(node.children[0]); 
+
+					nodeSelect = nodeSelect.concat(childQuery.select);
+					nodeLabelSelect = nodeLabelSelect.concat(childQuery.labelSelect);
+					nodeKeySelect = nodeKeySelect.concat(childQuery.keySelect);
+					nodeWhere = nodeWhere.concat(childQuery.where);
+
 					break;
 
 				case 'range':
@@ -635,6 +749,17 @@ function visitSPARQL(key){
 					}else{
 						nodeWhere.push({relatedTo:[node.children[0],node.children[1], node.key], content:['FILTER(' + parentVariable+' >= '+queryLogicStructure[node.children[0]].label+' && '+parentVariable+' <= '+queryLogicStructure[node.children[1]].label + ')']});
 					}	
+					
+					for(var i=0; i<node.childre.length; i++){
+						queryLogicStructure[node.children[i]].variable = queryLogicStructure[node.children[i]].label;
+						childQuery = visitSPARQL(node.children[i]); 
+
+						nodeSelect = nodeSelect.concat(childQuery.select);
+						nodeLabelSelect = nodeLabelSelect.concat(childQuery.labelSelect);
+						nodeKeySelect = nodeKeySelect.concat(childQuery.keySelect);
+						nodeWhere = nodeWhere.concat(childQuery.where);
+					}
+
 					break;
 				case 'before':
 					var tempRelatedTo= [];
@@ -648,6 +773,15 @@ function visitSPARQL(key){
 					}
 					var conversionFunction = 'xsd:'+queryLogicStructure[node.children[0]].datatype;
 					nodeWhere.push({relatedTo:tempRelatedTo, content:['FILTER(' + parentVariable+ ' '+operatorLabel +' '+conversionFunction+'("'+queryLogicStructure[node.children[0]].label+'")' + ')']});
+					queryLogicStructure[node.children[0]].variable = conversionFunction+'("'+queryLogicStructure[node.children[0]].label+'")';
+
+					childQuery = visitSPARQL(node.children[0]); 
+
+					nodeSelect = nodeSelect.concat(childQuery.select);
+					nodeLabelSelect = nodeLabelSelect.concat(childQuery.labelSelect);
+					nodeKeySelect = nodeKeySelect.concat(childQuery.keySelect);
+					nodeWhere = nodeWhere.concat(childQuery.where);
+
 					break;
 
 				case 'after':
@@ -662,6 +796,15 @@ function visitSPARQL(key){
 					}
 					var conversionFunction = 'xsd:'+queryLogicStructure[node.children[0]].datatype;
 					nodeWhere.push({relatedTo:tempRelatedTo, content:['FILTER(' + parentVariable+ ' '+operatorLabel +' '+conversionFunction+'("'+queryLogicStructure[node.children[0]].label+'")' + ')']});
+					queryLogicStructure[node.children[0]].variable = conversionFunction+'("'+queryLogicStructure[node.children[0]].label+'")';
+
+					childQuery = visitSPARQL(node.children[0]); 
+
+					nodeSelect = nodeSelect.concat(childQuery.select);
+					nodeLabelSelect = nodeLabelSelect.concat(childQuery.labelSelect);
+					nodeKeySelect = nodeKeySelect.concat(childQuery.keySelect);
+					nodeWhere = nodeWhere.concat(childQuery.where);
+
 					break;
 				case 'range date':
 					var conversionFunction = 'xsd:'+queryLogicStructure[node.children[0]].datatype;
@@ -671,6 +814,17 @@ function visitSPARQL(key){
 					}else{
 						nodeWhere.push({relatedTo:[node.children[0], node.children[1], node.key], content:['FILTER(' + parentVariable+' >= '+conversionFunction+'("'+queryLogicStructure[node.children[0]].label+'") && '+parentVariable+' <= '+conversionFunction+'("'+queryLogicStructure[node.children[1]].label+'")' + ')']});
 					}	
+
+					for(var i=0; i<node.childre.length; i++){
+						queryLogicStructure[node.children[i]].variable = conversionFunction+'("'+queryLogicStructure[node.children[i]].label+'")';
+						childQuery = visitSPARQL(node.children[i]); 
+
+						nodeSelect = nodeSelect.concat(childQuery.select);
+						nodeLabelSelect = nodeLabelSelect.concat(childQuery.labelSelect);
+						nodeKeySelect = nodeKeySelect.concat(childQuery.keySelect);
+						nodeWhere = nodeWhere.concat(childQuery.where);
+					}
+
 					break;
 
 				case 'or':
@@ -774,6 +928,80 @@ function visitSPARQL(key){
 
 			break;
 		case 'result' : 
+			for(var i=0; i<node.children.length; i++){ 
+				childQuery = visitSPARQL(node.children[i]);
+
+				nodeSelect = nodeSelect.concat(childQuery.select);
+				nodeLabelSelect = nodeLabelSelect.concat(childQuery.labelSelect);
+				nodeKeySelect = nodeKeySelect.concat(childQuery.keySelect);
+
+				childWhere.push(childQuery.where);
+			}
+
+			if(node.children.length==1){
+				nodeWhere = nodeWhere.concat(childWhere[0]);
+			}
+
+			var child;
+			for(var i=1; i<node.children.length; i = i+2){ //only 'and' and 'or' nodes
+				child = queryLogicStructure[node.children[i]];
+
+				if(child.type=='operator' && child.label=='and'){
+					if(i==1 || 
+						(queryLogicStructure[node.children[i-2]].type=='operator' && queryLogicStructure[node.children[i-2]].label=='and') )
+							nodeWhere = nodeWhere.concat(childWhere[i-1]);
+
+						if(i==(node.children.length-2))
+							nodeWhere = nodeWhere.concat(childWhere[i+1]);
+				}else if(child.type=='operator' && child.label=='xor'){//or exclusive
+					nodeWhere = nodeWhere.concat(
+						[{relatedTo: [child.key], content:['{']}], 
+						[{relatedTo: childWhere[i-1][0].relatedTo.concat(child.key), content:childWhere[i-1][0].content}],
+						[{relatedTo: [child.key], content:['} UNION {']}], 
+						[{relatedTo: childWhere[i+1][0].relatedTo.concat(child.key), content:childWhere[i+1][0].content}],
+						[{relatedTo: [child.key], content:['}']}]
+						);
+				}else if(child.type=='operator' && child.label=='or'){//or inclusive
+					var j = i + 2;
+					var block = [];
+					block.push(childWhere[i-1]);
+					block.push(childWhere[i+1]);
+
+					while((j < node.children.length) && queryLogicStructure[node.children[j]].type == 'operator' && queryLogicStructure[node.children[j]].label == 'or'){
+						block.push(childWhere[j+1]);
+						j = j + 2;
+					}
+					i = j - 2;
+					
+					for(var z = 0; z < block.length; z++){
+
+						var fixedBlock = block.splice(0,1)[0];
+						nodeWhere = nodeWhere.concat(
+							[{relatedTo: [child.key], content:['{']}],
+							[{relatedTo: fixedBlock[0].relatedTo.concat(child.key), content:fixedBlock[0].content}]
+							);
+
+						block.splice(block.length,0,fixedBlock);
+
+						for(var numberOfOptional = 0; numberOfOptional < block.length-1; numberOfOptional++){
+							var optionalBlock = block.splice(0,1)[0];
+							nodeWhere = nodeWhere.concat(
+								[{relatedTo: [child.key], content:['OPTIONAL{']}],
+								[{relatedTo: optionalBlock[0].relatedTo.concat(child.key), content:optionalBlock[0].content}], 
+								[{relatedTo: [child.key], content:['}']}]
+								);
+							block.splice(block.length, 0, optionalBlock);
+						}
+
+						block.splice(block.length,0,(block.splice(0,1)[0]));
+
+						nodeWhere = nodeWhere.concat([{relatedTo: [child.key], content:['}']}]);
+						if(z != block.length-1)
+							nodeWhere = nodeWhere.concat([{relatedTo: [child.key], content:['UNION']}]);
+					}
+				}
+			}
+			
 			break;
 	}
 

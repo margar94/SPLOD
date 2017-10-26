@@ -626,7 +626,7 @@ function updateBoxes(focusNode){
 			updateBoxesFromOperator();
 			break;
 		case "result":
-			updateBoxesFromResult(focusNode.url);
+			updateBoxesFromResult(focusNode.url, focusNode.datatype, focusNode.lang);
 			break;
 	}
 }
