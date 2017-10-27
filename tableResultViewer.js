@@ -7,6 +7,8 @@ function initTableResultViewer(){
 
 	$('#tableResultSpinner').hide();
 
+	$('#visibleFieldsButton').text(languageManager.getButtonLabel('visibleFields'));
+
 	$('.dropdown-button').dropdown({
 	      inDuration: 300,
 	      outDuration: 225,
@@ -44,16 +46,9 @@ function createTableLabel(select, labelSelect){
 	var labelObj = {};
 
 	for(var i=0; i<labelSelect.length; i++){
-		var re = new RegExp("\\?"+labelSelect[i]+"_", "g");
-		var matches = stringSelect.match(re);
-		if(matches==null || matches.length==1){
-			labelObj = {label : labelSelect[i], className : labelSelect[i].replace(/[ ]/g, "_")};
-		}
-		else{
-			var splittedSelect = select[i].split('_');
-			var cardinalNumber = parseInt(splittedSelect[splittedSelect.length-1]);
-			labelObj = {label : languageManager.getOrdinalNumber(cardinalNumber) + " " +labelSelect[i], className : select[i].split('?')[1].replace(/[ ]/g, "_")};
-		}
+		var splittedSelect = select[i].split('_');
+		var cardinalNumber = parseInt(splittedSelect[splittedSelect.length-1]);
+		labelObj = {label : languageManager.getOrdinalNumber(cardinalNumber) + " " +labelSelect[i], className : select[i].split('?')[1]};
 		labels.push(labelObj);
 	}
 	return labels;
@@ -71,7 +66,7 @@ function createFieldsSelectionList(labelSelect){
 		var fieldCheck = $("<input/>")
 			.attr('type', 'checkbox')
 			.attr('id', labelSelect[field].className)
-			.attr('name', languageManager.getButtonLabel('visibleFields'))
+			.attr('name', 'visibleFields')
 			.appendTo(li)
 			.on('click', manageFields);
 
@@ -89,11 +84,13 @@ function createFieldsSelectionList(labelSelect){
 
 function manageFields(){
 	cachedFieldsToHide = [];
+
 	var fieldsToHide = $("input:checkbox[name=visibleFields]:not(:checked)");
 	$.each(fieldsToHide, function(index){
 		$('.'+fieldsToHide[index].id).hide();
 		cachedFieldsToHide.push(fieldsToHide[index].id);
 	});
+
 	var fieldsToShow = $("input:checkbox[name=visibleFields]:checked");
 	$.each(fieldsToShow, function(index){
 		$('.'+fieldsToShow[index].id).show();
@@ -102,7 +99,6 @@ function manageFields(){
 }
 
 function createTable(select, labelSelect, results){
-
 
 	var previewTable = $("#previewTableResult")
 	previewTable.empty();
@@ -192,7 +188,10 @@ function createTable(select, labelSelect, results){
 	previewTbody.appendTo(previewTable);
 
 	$.each(cachedFieldsToHide, function(index){
-		$('.'+cachedFieldsToHide[index]).hide();
+		if($.inArray("?"+cachedFieldsToHide[index], select)<0)
+			cachedFieldsToHide.splice(index, 1);
+		else
+			$('.'+cachedFieldsToHide[index]).hide();
 	});
 
 	$('#tableResultSpinner').hide();
