@@ -520,15 +520,44 @@ function fillHelp(){
 			.attr('class', 'collapsible-body')
 			.appendTo(li);
 
-		
+		var carouselDiv = $('<div/>')
+			.attr('class', 'carousel carousel-slider myCarousel-'+i)
+			.attr('data-indicators', 'true')
+			.appendTo(contentDiv);
+
+			
+
 		for(var j = 0; j < helpContent[i].content.length; j++){
-			var contentSpan = $('<span/>')
-				.text(helpContent[i].content[j])
+			var contentCarouselDiv = $('<div/>')
+				.attr('class', 'carousel-item')
+				.css('background-color', 'white')
+				.html('<p>'+helpContent[i].content[j]+'</p>')
 				//.css('display', 'none')
-				.appendTo(contentDiv);
+				.appendTo(carouselDiv);
 		}
 
 		if(helpContent[i].content.length != 1){
+
+			var leftArrow = $('<div/>')
+					.attr('class', 'carousel-fixed-item left-align ')
+					.html('<i class="material-icons">chevron_left</i>')
+					.attr('meta-carousel-index', i)
+					.css('cursor', 'pointer')
+					.on('click', function(){$('.myCarousel-'+$(this).attr('meta-carousel-index')).carousel('prev');})
+					.appendTo(carouselDiv);
+
+			var rightArrow = $('<div/>')
+					.attr('class', 'carousel-fixed-item right-align ')
+					.html('<i class="material-icons">chevron_right</i>')
+					.attr('meta-carousel-index', i)
+					.css('cursor', 'pointer')
+					.on('click', function(){
+
+						console.log
+						$('.myCarousel-'+$(this).attr('meta-carousel-index')).carousel('next');})
+					.appendTo(carouselDiv);	
+		}
+		/*if(helpContent[i].content.length != 1){
 
 			var ulPag = $('<ul/>')
 				.attr('class', 'pagination')
@@ -547,11 +576,13 @@ function fillHelp(){
 					liPag.attr('class', 'active')
 			}
 			
-		}
+		}*/
 
 		li.appendTo(helpUl);
 
 	}
+
+	$('.carousel.carousel-slider').carousel({fullWidth: true});
 }
 
 //delete highlighted element in natural language query

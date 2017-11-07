@@ -241,6 +241,22 @@ div#querySparqlBox .SPARQLhighlighted{
 	color: white;
 }
 
+.tabs #helpTab a:hover,
+.tabs #helpTab a.active{
+	background-color: #2196f3;
+	color: white;
+}
+
+.tabs #helpTab a,
+.tabs #helpTab a i{
+	color:#2196f3;
+}
+
+.tabs #helpTab a:hover i,
+.tabs #helpTab a.active i{
+	color: white;
+}
+
 #navBar{
 	padding-left: 0;
     padding-right: 0;
@@ -437,6 +453,25 @@ img.imgResult {
 	flex:1;
 }
 
+
+/*Help Box*/
+
+.carousel .indicators .indicator-item.active{
+	background-color: #2196f3;
+}
+
+.carousel .indicators .indicator-item{
+	background-color: rgba(33,150,243,0.5);
+}
+
+.carousel .indicators{
+}
+
+.carousel.carousel-slider .carousel-item{
+	padding-left:10%;
+	width: 90%;
+	height: 100%;
+}
 
 /*
 
