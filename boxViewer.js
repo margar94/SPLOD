@@ -71,6 +71,7 @@ function initBoxViewer(){
 	$("#operatorsTabTitle").html(languageManager.getTabTitle('operator'));
 	$("#tableResultTabTitle").html(languageManager.getTabTitle('table result'));
 	$("#settingsTabTitle").html(languageManager.getTabTitle('settings'));
+	$("#helpTabTitle").html(languageManager.getTabTitle('help'));
 	$("#directPredicateTabTitle").html(languageManager.getTabTitle('direct predicate'));
 	$("#reversePredicateTabTitle").html(languageManager.getTabTitle('reverse predicate'));
 
@@ -79,6 +80,7 @@ function initBoxViewer(){
 	$("#operatorsBoxTitle").html(languageManager.getBoxTitle('operator'));
 	$("#tableResultBoxTitle").html(languageManager.getBoxTitle('table result'));
 	$("#settingsBoxTitle").html(languageManager.getBoxTitle('settings'));
+	$("#helpBoxTitle").html(languageManager.getTabTitle('help'));
 
 	$("#hintBox").hide();
 
@@ -99,6 +101,7 @@ function initBoxViewer(){
 	fillConcepts();
 	fillPredicates();
 	fillSettings();
+	fillHelp();
 }
 
 //get and render concepts
@@ -498,6 +501,57 @@ function hierarchyOn(){
 	hierarchyOnFlag = true;
 	$("#hierarchySpan").html('<i class="small material-icons white-text right" style="margin:0" onClick="hierarchyOff();">format_list_bulleted</i>');
 	renderConcept(lastRootMap, lastMap);
+}
+
+function fillHelp(){
+	var helpUl = $('#helpUl');
+	var helpContent = languageManager.getHelpGuide();
+
+	for(var i = 0; i<helpContent.length; i++){
+
+		var li = $('<li/>');
+
+		var titleDiv = $('<div/>')
+			.attr('class', 'collapsible-header')
+			.text(helpContent[i].title)
+			.appendTo(li);
+
+		var contentDiv = $('<div/>')
+			.attr('class', 'collapsible-body')
+			.appendTo(li);
+
+		
+		for(var j = 0; j < helpContent[i].content.length; j++){
+			var contentSpan = $('<span/>')
+				.text(helpContent[i].content[j])
+				//.css('display', 'none')
+				.appendTo(contentDiv);
+		}
+
+		if(helpContent[i].content.length != 1){
+
+			var ulPag = $('<ul/>')
+				.attr('class', 'pagination')
+				//.html('<li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>')
+				.appendTo(contentDiv);
+
+			for(var j = 0; j < helpContent[i].content.length; j++){
+				var liPag = $('<li/>')
+					.attr('class', 'waves-effect')
+					.appendTo(ulPag);
+				var a = $('<a/>')
+					.text(j+1)
+					.appendTo(liPag);
+
+				if(j==0)
+					liPag.attr('class', 'active')
+			}
+			
+		}
+
+		li.appendTo(helpUl);
+
+	}
 }
 
 //delete highlighted element in natural language query
