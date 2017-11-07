@@ -496,6 +496,7 @@ enLanguageManager.prototype.getTabTitle = function(tabType){
 		case 'settings' : title = 'Settings'; break;
 		case 'direct predicate' : title = 'Direct'; break;
 		case 'reverse predicate' : title = 'Reverse'; break;
+		case 'help' : title = 'Help'; break;
 	}
 	return title;
 }
@@ -509,6 +510,7 @@ enLanguageManager.prototype.getBoxTitle = function(boxType){
 		case 'table result' : title = 'Table result'; break;
 		case 'settings' : title = 'Settings'; break;
 		case 'result' : title = 'Reusable result'; break;
+		case 'help' : title = 'Help'; break;
 	}
 	return title;
 }
@@ -619,3 +621,44 @@ enLanguageManager.prototype.getSelectTitle = function(select){
 
  return label;
 }
+
+enLanguageManager.prototype.getHelpGuide = function(){
+	var headers = [];
+
+	var overviewObj = {title : 'Overview', content : []};
+	//TODO
+	overviewObj.content.push('djcsgd w');
+	overviewObj.content.push('djcsgd w');
+	headers.push(overviewObj);
+
+	var boxesObj = {title : 'Boxes content : concepts, predicates, operators, table result, settings', content : []};
+	//TODO
+	boxesObj.content.push('djcsgd w');
+	headers.push(boxesObj);
+
+	var focusObj = {title : 'Focus : how it works', content : []};
+	//TODO
+	focusObj.content.push('Non funziono w');
+	focusObj.content.push('djcsgd w');
+	headers.push(focusObj);
+
+	var queryNLObj = {title : 'Query Natural Language', content : []};
+	//TODO
+	queryNLObj.content.push('Non funziono w');
+	queryNLObj.content.push('djcsgd w');
+	queryNLObj.content.push('djcsgd w');
+	headers.push(queryNLObj);
+
+	var querySPARQLObj = {title : 'Query SPARQL', content : []};
+	//TODO
+	querySPARQLObj.content.push('Non funziono w');
+	querySPARQLObj.content.push('djcsgd w');
+	querySPARQLObj.content.push('');
+	querySPARQLObj.content.push('djcsgd w');
+	headers.push(querySPARQLObj);
+
+	return headers;
+
+}
+
+
