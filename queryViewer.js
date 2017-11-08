@@ -741,7 +741,7 @@ QueryViewer.prototype.renderUserQuery = function(sparqlQueryArray){
 
 	$("#querySparqlText").html(sparqlQuery);
 	
-	$("#querySparqlText span[meta-relatedto~='"+encodeURIComponent(onFocus)+"']").addClass("SPARQLhighlighted");
+	$('#querySparqlText span[meta-relatedto~="'+encodeURIComponent(onFocus)+'"]').addClass("SPARQLhighlighted");
 }
 
 QueryViewer.prototype.getCachedQuery = function(){
