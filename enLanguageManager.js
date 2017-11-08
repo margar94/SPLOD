@@ -626,35 +626,28 @@ enLanguageManager.prototype.getHelpGuide = function(){
 	var headers = [];
 
 	var overviewObj = {title : 'Overview', content : []};
-	//TODO
-	overviewObj.content.push('djcsgd w');
-	overviewObj.content.push('djcsgd w');
+	overviewObj.content.push('<b>SPLOD</b> will help you to use LOD (linked open data) and create a table that you can use in next steps.<br>You can see some example explained step by step to create your first request.INSERT EXAMPLE');
 	headers.push(overviewObj);
 
 	var boxesObj = {title : 'Boxes content : concepts, predicates, operators, table result, settings', content : []};
-	//TODO
-	boxesObj.content.push('djcsgd w');
+	boxesObj.content.push('<b>Tab of concepts</b> contains all concepts <i>declared</i> in the endpoint that you selected in the first step. Concepts are <i>subject</i> or <i>object</i> in RDF data.IMG');
+	boxesObj.content.push('<b>Tab of predicates</b> contains all predicates <i>used</i> in the endpoint that you selected in the first step.IMG with direct and reverse predicate');
+	boxesObj.content.push('<b>Tab of operators</b> gives you the possibility to filter data or apply some operation to query structure such as change of retrieved results number.');
+	boxesObj.content.push('<b>Tab of table result</b> shows you query result. You can hide some fields. You can see results preview in the tab.');
+	boxesObj.content.push('<b>Tab of settings</b> gives you the possibility to <ul><li>change how many concepts do you want to see,</li><li>change how many predicates do you want to see,</li><li>change system\'s language,</li><li>change retrieved data language (not only results data, but also boxes content, if data labels are available in your language).</li></ul>');
 	headers.push(boxesObj);
 
-	var focusObj = {title : 'Focus : how it works', content : []};
-	//TODO
-	focusObj.content.push('Non funziono w');
-	focusObj.content.push('djcsgd w');
-	headers.push(focusObj);
-
 	var queryNLObj = {title : 'Query Natural Language', content : []};
-	//TODO
-	queryNLObj.content.push('Non funziono w');
-	queryNLObj.content.push('djcsgd w');
-	queryNLObj.content.push('djcsgd w');
+	queryNLObj.content.push('<b>SPLOD</b> trys to verbalize your interactions creating the same request that hopefylly you would ask to another person.<br>The colors will guide you to a friendly understanding of the request.<br>IMG EXAMPLE<br>Be careful with the barred words!<br>IMG EXAMPLE<br>');
 	headers.push(queryNLObj);
+
+	var focusObj = {title : 'Focus : how it works', content : []};
+	focusObj.content.push('According to the element on focus <b>SPLOD</b> will fill all boxes and build your request.<br>By your interaction the focus will be updated.<br>But you can still change it whenever you want.');
+	headers.push(focusObj);
 
 	var querySPARQLObj = {title : 'Query SPARQL', content : []};
 	//TODO
-	querySPARQLObj.content.push('Non funziono w');
-	querySPARQLObj.content.push('djcsgd w');
-	querySPARQLObj.content.push('');
-	querySPARQLObj.content.push('djcsgd w');
+	querySPARQLObj.content.push('<b>SPARQL</b> is the standard semantic query language used to retrieve LOD.<br>According to your interactions <b>SPLOD</b> will automatically buil the query.<br>You can learn about SPARQL thanks to the side by side boxes.<br>By changing the focus the system will highlight the related section in the query.');
 	headers.push(querySPARQLObj);
 
 	return headers;
