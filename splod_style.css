@@ -455,7 +455,7 @@ img.imgResult {
 
 
 /*Help Box*/
-
+/*
 .carousel .indicators .indicator-item.active{
 	background-color: #2196f3;
 }
@@ -465,12 +465,13 @@ img.imgResult {
 }
 
 .carousel .indicators{
-}
+}*/
 
 .carousel.carousel-slider .carousel-item{
-	padding-left:10%;
-	width: 90%;
-	height: 100%;
+	padding-left:9%;
+	padding-right:9%;
+	width: 100%;
+	height: 10em;
 }
 
 /*

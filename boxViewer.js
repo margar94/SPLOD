@@ -95,7 +95,7 @@ function initBoxViewer(){
 	$("#searchReusableResultsBox").attr("placeholder", languageManager.getInputPlaceholder('result'));
 	$("#searchReusableResultCard").hide();
 
-	conceptsLimit = false;
+	conceptsLimit = 500;
 	predicatesLimit = 100;
 
 	fillConcepts();
@@ -522,7 +522,7 @@ function fillHelp(){
 
 		var carouselDiv = $('<div/>')
 			.attr('class', 'carousel carousel-slider myCarousel-'+i)
-			.attr('data-indicators', 'true')
+			//.attr('data-indicators', 'true')
 			.appendTo(contentDiv);
 
 			
@@ -543,17 +543,19 @@ function fillHelp(){
 					.html('<i class="material-icons">chevron_left</i>')
 					.attr('meta-carousel-index', i)
 					.css('cursor', 'pointer')
-					.on('click', function(){$('.myCarousel-'+$(this).attr('meta-carousel-index')).carousel('prev');})
+					.css('top', '0')
+					.on('click', function(e){
+						$('.myCarousel-'+$(this).attr('meta-carousel-index')).carousel('prev');})
 					.appendTo(carouselDiv);
 
 			var rightArrow = $('<div/>')
-					.attr('class', 'carousel-fixed-item right-align ')
+					.attr('class', 'carousel-fixed-item right-align')
 					.html('<i class="material-icons">chevron_right</i>')
 					.attr('meta-carousel-index', i)
 					.css('cursor', 'pointer')
-					.on('click', function(){
-
-						console.log
+					.css('top', '0')
+					.css('margin-left', '50%')
+					.on('click', function(e){
 						$('.myCarousel-'+$(this).attr('meta-carousel-index')).carousel('next');})
 					.appendTo(carouselDiv);	
 		}
