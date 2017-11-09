@@ -122,7 +122,6 @@ function updateBoxesFromConcept(conceptUrl){
 	$('#predicatesSpinner').show();
 
 	boxFiller.updateConceptsFromConcept(conceptUrl, conceptsLimit, renderConcept);
-	
 	boxFiller.updatePredicatesFromConcept(conceptUrl, predicatesLimit, renderPredicates);
 }
 

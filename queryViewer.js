@@ -725,7 +725,7 @@ QueryViewer.prototype.renderUserQuery = function(sparqlQueryArray){
 
 	for(var i = 2; i<sparqlQueryArray.length-2; i++){
 		obj = sparqlQueryArray[i];
-		console.log(obj);
+
 		sparqlQuery += "<span meta-relatedTo='";
 		for(var j = 0; j<obj.relatedTo.length; j++){
 			sparqlQuery += encodeURIComponent(obj.relatedTo[j])+" ";

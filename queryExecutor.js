@@ -102,6 +102,7 @@ QueryExecutor.prototype.getAllEntities = function(limit, callback) {
         url: queryUrl,
         method:'post',
         success: function( data ) {
+        	//it builds initial concepts hierarchy
         	manageClassHierarchy(data);
 
 			query2 = " prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
@@ -122,6 +123,7 @@ QueryExecutor.prototype.getAllEntities = function(limit, callback) {
 		        method:'post',
 		        success: function( data ) {
 		        	var arrayData = data.results.bindings;
+		        	//it removes unused concepts
 		        	language_classHierarchyMap[labelLang] = addInstancesOccurenceClassHierarchy(arrayData, language_classHierarchyMap[labelLang]);
 		        	language_classHierarchyMap[labelLang] = cleanMap(language_classHierarchyMap[labelLang]);
 		        	var mapRoots = getMapRoots(language_classHierarchyMap[labelLang]);
@@ -178,7 +180,8 @@ QueryExecutor.prototype.getConceptsFromDirectPredicate = function(predicate, lim
 		        method:'post',
 		        success: function(data, textStatus, jqXHR ) {
 		        	var arrayData = data.results.bindings;
-				    var subMap = getResultMap(arrayData);
+				    //var subMap = getResultMap(arrayData);
+				    var subMap = manageResultMap(arrayData);
 					var mapRoots = getMapRoots(subMap);
 				    callback(mapRoots, subMap);	
 				      
@@ -221,7 +224,8 @@ QueryExecutor.prototype.getConceptsFromSomething = function(predicate, limit, ca
         method:'post',
         success: function( data, textStatus, jqXHR ) {
         	var arrayData = data.results.bindings;
-		    var subMap = getResultMap(arrayData);
+		    //var subMap = getResultMap(arrayData);
+		    var subMap = manageResultMap(arrayData);
 		    var mapRoots = getMapRoots(subMap);
 		    callback(mapRoots, subMap);	
         },
@@ -286,8 +290,9 @@ QueryExecutor.prototype.getAllDirectPredicates = function(limit, callback) {
 	        url: queryUrl,
 	     	method:'post',
 	        success: function( data ) {
-	        	var result = getUrlAndLabelFromResult(data);
-	        	callback(managePredicateMap(result));
+	        	//it builds map with url, label and stats
+	        	var arrayData = data.results.bindings;
+	        	callback(manageResultMap(arrayData));
 	        },
 	        error: function(jqXHR, textStatus, errorThrown){
 	        	console.log(textStatus);
@@ -325,8 +330,9 @@ QueryExecutor.prototype.getAllReversePredicates = function(limit, callback) {
         url: queryUrl,
         method:'post',
         success: function( data ) {
-			var result = getUrlAndLabelFromResult(data);
-	        callback(managePredicateMap(result));
+        	//it builds map with url, label and stats
+			var arrayData = data.results.bindings;
+	        callback(manageResultMap(arrayData));
         },
         error: function(jqXHR, textStatus, errorThrown){
         	console.log(textStatus);
@@ -361,7 +367,9 @@ QueryExecutor.prototype.getDirectPredicatesFromConcept = function(entity, limit,
 		        url: queryUrl,
 		        method:'post',
 		        success: function( data, textStatus, jqXHR ) {
-					callback(getUrlAndLabelFromResult(data));
+		        	//it builds map with url, label and stats
+					var arrayData = data.results.bindings;
+			        callback(manageResultMap(arrayData));
 		        },
 				error: function(jqXHR, textStatus, errorThrown){
 					console.log(textStatus);
@@ -401,7 +409,9 @@ QueryExecutor.prototype.getReversePredicatesFromConcept = function(entity, limit
 		        url: queryUrl,
 		        method:'post',
 		        success: function( data, textStatus, jqXHR ) {
-		        	callback(getUrlAndLabelFromResult(data));
+		        	//it builds map with url, label and stats
+					var arrayData = data.results.bindings;
+			        callback(manageResultMap(arrayData));
 		        },
 				error: function(jqXHR, textStatus, errorThrown){
 					console.log(textStatus);
@@ -459,7 +469,9 @@ QueryExecutor.prototype.getDirectPredicatesFromPredicate = function(predicate, l
         url: queryUrl,
         method:'post',
         success: function( data, textStatus, jqXHR ) {
-		    callback(getUrlAndLabelFromResult(data));
+		    //it builds map with url, label and stats
+			var arrayData = data.results.bindings;
+	        callback(manageResultMap(arrayData));
         },
 		error: function(jqXHR, textStatus, errorThrown){
 			console.log(textStatus);
@@ -501,7 +513,9 @@ QueryExecutor.prototype.getReversePredicatesFromPredicate = function(predicate, 
         url: queryUrl,
         method:'post',
         success: function( data, textStatus, jqXHR ) {
-		    callback(getUrlAndLabelFromResult(data));
+		    //it builds map with url, label and stats
+			var arrayData = data.results.bindings;
+	        callback(manageResultMap(arrayData));
         },
 		error: function(jqXHR, textStatus, errorThrown){
 			console.log(textStatus);
@@ -562,7 +576,9 @@ QueryExecutor.prototype.getDirectPredicatesFromResult = function(url, datatype, 
 		        url: queryUrl,
 		        method:'post',
 		        success: function( data, textStatus, jqXHR ) {
-					callback(getUrlAndLabelFromResult(data));
+					//it builds map with url, label and stats
+					var arrayData = data.results.bindings;
+			        callback(manageResultMap(arrayData));
 		        },
 				error: function(jqXHR, textStatus, errorThrown){
 					console.log(textStatus);
@@ -623,7 +639,9 @@ QueryExecutor.prototype.getReversePredicatesFromResult = function(url, datatype,
 		        url: queryUrl,
 		        method:'post',
 		        success: function( data, textStatus, jqXHR ) {
-		        	callback(getUrlAndLabelFromResult(data));
+		        	//it builds map with url, label and stats
+					var arrayData = data.results.bindings;
+			        callback(manageResultMap(arrayData));
 		        },
 				error: function(jqXHR, textStatus, errorThrown){
 					console.log(textStatus);
@@ -759,13 +777,8 @@ QueryExecutor.prototype.changeEndpoint = function (selectedEndpoint, selectedGra
 	labelLang = selectedLanguage;
 }*/
 
-/*
-	Handle response of GetAllEntitis function: it creates an array with entities' url and label.
-*/
-function getUrlAndLabelFromResult(data) {
-	
-	var arrayData = data.results.bindings;
-	var result = new Array();
+function manageResultMap(arrayData){
+	var resultMap = {};
 	var element;
 	var label;
 	
@@ -775,10 +788,10 @@ function getUrlAndLabelFromResult(data) {
 			label = createLabel(element.url.value);
 			element.label = {value:label};
 		}
-		result.push({url:element.url.value, label:element.label.value});
+		resultMap[element.url.value] = {url:element.url.value, label:element.label.value, numberOfInstances: 0, parent: [], children: []};
 	}
-	
-	return result;
+
+	return resultMap;
 }
 
 function manageClassHierarchy(data){
@@ -851,9 +864,12 @@ function cut(originalMap, limit){
 }
 
 function buildSubmapHierarchy(selectedClass, limit){
-	//ATTENZIONE controllare che sia nella mappa
-
 	var map = {};
+	if(!(selectedClass in language_classHierarchyMap[labelLang])){
+		map[selectedClass] = {url:selectedClass, label: createLabel(selectedClass), children : [], parent:[], numberOfInstances:0};
+		return map;
+	}
+
 	map[selectedClass] = $.extend(true, {}, language_classHierarchyMap[labelLang][selectedClass]);
 	map[selectedClass].children = [];
 	map[selectedClass].parent = [];
@@ -889,7 +905,7 @@ function buildSubmapHierarchy(selectedClass, limit){
 	return map;
 }
 
-//concepts from direct and reverse predicate
+//DELETE
 function getResultMap(arrayData){
 	var map = {};
 	var label;
@@ -898,6 +914,7 @@ function getResultMap(arrayData){
 		element = arrayData[index];
 
 		label = element.label;
+		console.log(label);
 		if(label == undefined)
 			label = createLabel(element.url.value);
 		else 
@@ -907,6 +924,7 @@ function getResultMap(arrayData){
 		if(element.url.value in language_classHierarchyMap[labelLang]){
 			map[element.url.value] = $.extend(true, {}, language_classHierarchyMap[labelLang][element.url.value]);
 			map[element.url.value].children = [];
+			map[element.url.value].numberOfInstances = 0;
 		}else{
 			map[element.url.value] = {url: element.url.value, label: label, children: [], parent: [], numberOfInstances:0};
 		}
@@ -919,30 +937,10 @@ function getResultMap(arrayData){
 			if(!(parents[i] in map))
 				map[key].parent.splice(i, 1);
 
+
 		}
 	}
 
-	return map;
-}
-
-function updateMap(url, label, map){
-	var elementStack = [];
-	elementStack.push(url);
-
-	var currentElement;
-	var children;
-
-	while(elementStack.length!=0){
-		currentElement = elementStack.pop();
-		map[currentElement] = $.extend(true, {}, language_classHierarchyMap[labelLang][currentElement]);
-		map[currentElement].numberOfInstances = 0;
-		
-		children = language_classHierarchyMap[labelLang][currentElement].children;
-
-		for(var i=0; i<children.length; i++)
-			elementStack.push(children[i]);
-	}
-	//map[url].parent = [];
 	return map;
 }
 
@@ -1038,10 +1036,3 @@ function getMapRoots(map){
 	return roots;
 }
 
-function managePredicateMap(result){
-	var predicateMap = {};
-	for(var i=0; i< result.length; i++){
-		predicateMap[result[i].url] = {url: result[i].url, label: result[i].label, numberOfInstances: 0};
-	}	
-	return predicateMap;
-}
