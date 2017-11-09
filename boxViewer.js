@@ -340,7 +340,6 @@ function renderDirectPredicates(directMap){
 			.appendTo(li)
 			.on('click', function(evt){
 				boxFiller.getPredicateStats($(this).attr('meta-url'), function(numberOfInstances){
-					console.log(numberOfInstances);
 					var badge = $("<span/>")
 						.attr('class', 'new badge')
 						.attr('data-badge-caption', '')
@@ -349,12 +348,6 @@ function renderDirectPredicates(directMap){
 					$(evt.target).replaceWith(badge);
 				});
 			});
-
-		/*var badge = $("<span/>")
-			.attr('class', 'new badge')
-			.attr('data-badge-caption', '')
-			.text(element.numberOfInstances)
-			.appendTo(li);*/
 	}
 }
 
@@ -380,11 +373,21 @@ function renderReversePredicates(reverseArray){
 				mapCreator.selectedPredicate($(this).attr('meta-url'), $(this).attr('meta-label'), $(this).attr('meta-predicateDirection'));
 			});
 
-		/*var badge = $("<span/>")
-			.attr('class', 'new badge')
-			.attr('data-badge-caption', '')
-			.text(element.numberOfInstances)
-			.appendTo(li);*/
+		var info = $("<i/>")
+			.attr('class', 'tiny material-icons right predicateInfo')
+			.html('info')
+			.attr('meta-url', element.url)
+			.appendTo(li)
+			.on('click', function(evt){
+				boxFiller.getPredicateStats($(this).attr('meta-url'), function(numberOfInstances){
+					var badge = $("<span/>")
+						.attr('class', 'new badge')
+						.attr('data-badge-caption', '')
+						.text(numberOfInstances);
+
+					$(evt.target).replaceWith(badge);
+				});
+			});
 	});
 }
 
