@@ -119,7 +119,7 @@ MapCreator.prototype.selectedConcept = function(selectedUrl, selectedLabel) {
 		queryBuilder = new QueryBuilder;
 	queryBuilder.updateQuery(rootQueryLogicMap, queryLogicMap);
 
-	//console.log(elementsList);
+	//console.log(queryLogicMap);
 }
 
 /*
@@ -166,7 +166,7 @@ MapCreator.prototype.selectedPredicate = function(selectedUrl, selectedLabel, pr
 		var everythingIndex = indexMap['everything'];
 
 		var everythingElement = {key: everythingKey, index: everythingIndex,
-							  url: everythingKey, label:'thing', 
+							  url: 'everything', label:'thing', 
 							  type:'everything', direction:false,
 							  verbalization:verbalizationEverything,
 							  parent:null, children:[key],
@@ -228,7 +228,8 @@ MapCreator.prototype.selectedPredicate = function(selectedUrl, selectedLabel, pr
 		var somethingIndex = indexMap['something'];
 
 		var somethingLogic = {key: somethingKey, index: somethingIndex,
-							  url: somethingKey, label:'thing', 
+							  //url: somethingKey, label:'thing', 
+							  url: 'something', label:'thing', 
 							  type:'something', direction:false,
 							  verbalization:verbalization,
 							  parent:null, children:[]};
@@ -455,7 +456,7 @@ function substituteMeWithSomethingNode(key){
 	// to remove all node.children element
 	// new element in logic map
 	var somethingLogic = {key: somethingKey, index: somethingIndex,
-							  url: somethingKey, label:'thing', 
+							  url: 'something', label:'thing', 
 							  type:'something', direction:false,
 							  verbalization:somethingVerbalization,
 							  parent:node.parent, children:[]};
@@ -830,7 +831,7 @@ MapCreator.prototype.selectedOperator = function(pendingQuery){
 
 	}
 
-	console.log(queryLogicMap);
+	//console.log(queryLogicMap);
 
 	if(queryVerbalizator == null)
 		queryVerbalizator = new QueryVerbalizator;
@@ -876,7 +877,7 @@ MapCreator.prototype.selectedResult = function(result){
 
 	updateAndNotifyFocus(key);
 
-	console.log(queryLogicMap);
+	//console.log(queryLogicMap);
 
 	if(queryVerbalizator == null)
 		queryVerbalizator = new QueryVerbalizator;
