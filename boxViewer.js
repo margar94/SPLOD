@@ -359,13 +359,19 @@ function renderReversePredicates(reverseArray){
 		element = reverseArray[index];
 
 		var li = $("<li/>")
-			.attr('class', 'collection-item addToQuery withMargin liContent')
+			.attr('class', 'collection-item withMargin')
+			.attr('id', element.url + "item")
+			.appendTo(reversePredicatesList);
+
+		var span = $("<span/>")
 			.attr('title', element.url)
+			.attr('class', 'addToQuery liContent')
 			.attr('meta-url', element.url)
 			.attr('meta-label', element.label)
-			.attr('meta-predicateDirection', 'reverse')
+			.attr('meta-predicateDirection', 'reverse') 
 			.text(languageManager.getPredicateVerbalization(element.label, 'reverse'))
-			.appendTo(reversePredicatesList)
+			.css('margin-left', '0.5em')
+			.appendTo(li)
 			.on('click', function(){
 				$('#operatorsSpinner').show();
 				$('#tableResultSpinner').show();
@@ -387,6 +393,7 @@ function renderReversePredicates(reverseArray){
 					$(evt.target).replaceWith(badge);
 				});
 			});
+
 	});
 }
 

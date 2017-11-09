@@ -67,10 +67,10 @@ var QueryExecutor = function (selectedEndpoint, selectedGraph) {
 //concepts
 QueryExecutor.prototype.getAllEntities = function(limit, callback) {
 	if(labelLang in language_classHierarchyMap){
-		if(!limit){
+		if(!limit || Object.keys(language_classHierarchyMap[labelLang]).length<=limit){
 			callback(language_classHierarchyMapRoots[labelLang], language_classHierarchyMap[labelLang]);
 			return;
-		}else if(Object.keys(language_classHierarchyMap[labelLang]).length>=limit){
+		}else{ // if(Object.keys(language_classHierarchyMap[labelLang]).length>limit)
 			var map = cut(language_classHierarchyMap[labelLang], limit);
 			var roots = getMapRoots(map);
 			callback(roots, map);
@@ -98,10 +98,10 @@ QueryExecutor.prototype.getAllEntities = function(limit, callback) {
 		query += "LIMIT " + limit;  
 
    	queryUrl = endpoint+"?query="+ encodeURIComponent(query) +"&format=json";
-    $.ajax({
+    var xhr = $.ajax({
         url: queryUrl,
         method:'post',
-        success: function( data ) {
+        success: function( data, textStatus, jqXHR ) {
         	//it builds initial concepts hierarchy
         	manageClassHierarchy(data);
 
@@ -132,15 +132,21 @@ QueryExecutor.prototype.getAllEntities = function(limit, callback) {
 		        },
 		        error: function(jqXHR, textStatus, errorThrown){
 		        	console.log(textStatus);
-		        	callback([], {});
-		        }
+		        	delete language_classHierarchyMapRoots[labelLang];
+		        },
+				complete: function(){
+					var index = $.inArray(jqXHR, activeAjaxRequest);
+		        	if(index != -1)
+		        		activeAjaxRequest.splice(index, 1);
+				}
 		    });	
 		},
         error: function(jqXHR, textStatus, errorThrown){
         	console.log(textStatus);
-        	callback([], {});
         }
 	});
+
+	activeAjaxRequest.push(xhr);
 }
 
 /*
@@ -286,7 +292,7 @@ QueryExecutor.prototype.getAllDirectPredicates = function(limit, callback) {
 			query += "LIMIT " + limit;  
 		
 	   	queryUrl = endpoint+"?query="+ encodeURIComponent(query) +"&format=json";
-	    $.ajax({
+	     var xhr = $.ajax({
 	        url: queryUrl,
 	     	method:'post',
 	        success: function( data ) {
@@ -297,8 +303,15 @@ QueryExecutor.prototype.getAllDirectPredicates = function(limit, callback) {
 	        error: function(jqXHR, textStatus, errorThrown){
 	        	console.log(textStatus);
 	        	callback({});
-	        }
-	    });	
+	        },
+	        complete: function(jqXHR){
+					var index = $.inArray(jqXHR, activeAjaxRequest);
+		        	if(index != -1)
+		        		activeAjaxRequest.splice(index, 1);
+				}
+		    });	
+	     
+    activeAjaxRequest.push(xhr);
 }
 
 QueryExecutor.prototype.getAllReversePredicates = function(limit, callback) {
@@ -326,7 +339,7 @@ QueryExecutor.prototype.getAllReversePredicates = function(limit, callback) {
 		query += "LIMIT " + limit;  
 	
    	queryUrl = endpoint+"?query="+ encodeURIComponent(query) +"&format=json";
-    $.ajax({
+    var xhr = $.ajax({
         url: queryUrl,
         method:'post',
         success: function( data ) {
@@ -337,8 +350,15 @@ QueryExecutor.prototype.getAllReversePredicates = function(limit, callback) {
         error: function(jqXHR, textStatus, errorThrown){
         	console.log(textStatus);
         	callback({});
-        }
-    });	
+        },
+   		complete: function(jqXHR){
+					var index = $.inArray(jqXHR, activeAjaxRequest);
+		        	if(index != -1)
+		        		activeAjaxRequest.splice(index, 1);
+				}
+		    });	
+
+    activeAjaxRequest.push(xhr);	
 }
 
 /*
