@@ -266,7 +266,6 @@ div#querySparqlBox .SPARQLhighlighted{
 #navBar{
 	padding-left: 0;
     padding-right: 0;
-    height: -webkit-fill-available;
     background-color: white;
     -webkit-box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 1px 5px 0 rgba(0,0,0,0.12), 0 3px 1px -2px rgba(0,0,0,0.2);
 	box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 1px 5px 0 rgba(0,0,0,0.12), 0 3px 1px -2px rgba(0,0,0,0.2);
@@ -305,6 +304,9 @@ ul#fieldsCollection {
 }
 
 /*Concepts box*/
+div#conceptsBox{
+	margin:0;
+}
 
 div#conceptsListBox {
 	height: 300px;
@@ -346,9 +348,12 @@ i.conceptInfo{
 
 
 /*Predicates box*/
+div#predicatesBox{
+	margin:0;
+}
 
 div#predicatesListBox {
-    height: 300px;
+    height: 280px;
     overflow: auto;
 }
 
@@ -376,11 +381,13 @@ i.predicateInfo{
 
 
 /*Operators box*/
+div#operatorsBox{
+	margin:0;
+}
 
 div#contentOperatorBox{
-	overflow: auto;
     height: 300px;
-}
+ }
 
 #operatorsBox .card-title{
 	color: #bdbdbd;
@@ -426,8 +433,13 @@ li.operatorListSeparator{
 
 /*Table results*/
 
-#resultsTableBox{
+#tableResultBox{
 	overflow:auto;
+	margin:0;
+}
+
+#tableResultBox .card-action{
+	background-color: #2196f3;
 }
 
 #visibleFieldsButton{
@@ -463,8 +475,23 @@ img.imgResult {
 	flex:1;
 }
 
+/*Settings Box*/
+div#settingsBox{
+	margin:0;
+}
+
+#settingsBox .card-action{
+	background-color: #2196f3;
+}
 
 /*Help Box*/
+div#helpBox{
+	margin:0;
+}
+
+#helpBox .card-action{
+	background-color: #2196f3;
+}
 /*
 .carousel .indicators .indicator-item.active{
 	background-color: #2196f3;
