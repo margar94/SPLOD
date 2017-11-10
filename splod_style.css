@@ -88,19 +88,25 @@ span.highlightRemove {
 }
 
 span.concept {
-	color: #00e676;
+	color: #1de9ae;
 	font-weight: bold;
 }
 
 span.predicate {
-	color: #7c4dff ;
+	color: #e91e63;
 	font-weight: bold;
 }
 
 span.operator {
-	text-decoration-line: underline;
+	border-bottom: 3px dashed #bdbdbd;
+	/*text-decoration-line: underline;
     text-decoration-color: #bdbdbd;
-    text-decoration-style: dashed;
+    text-decoration-style: dashed;*/
+}
+
+span.reusableResult {
+	color: grey;
+	font-weight: bold;
 }
 
 span.barred {
@@ -129,7 +135,7 @@ span.optionalBlock{
 }
 
 #queryNaturalLanguage span {
-	padding:3px !important; /*to fix highlighting with ul*/
+	/*padding:3px !important; to fix highlighting with ul*/
 }
 
 /*SPARQL query*/
@@ -145,7 +151,7 @@ div#querySparqlText{
 }
 
 div#querySparqlBox .SPARQLhighlighted{
-	background-color: #bbdefb;
+	background-color: #e6e6e6;
 	border-radius: 4px;
 }
 
@@ -153,7 +159,7 @@ div#querySparqlBox .SPARQLhighlighted{
 
 #myTabs {
 	display: table-cell;
-	border-right: 4px solid #00e676;
+	border-right: 4px solid #1de9ae;
 }
 
 #myTabs>li.indicator{
@@ -170,11 +176,11 @@ div#querySparqlBox .SPARQLhighlighted{
 }
 
 #myTabs li #conceptsSpinner .spinner-layer{
-	border-color: #1b5e20;
+	border-color: #039c87;
 }
 
 #myTabs li #predicatesSpinner .spinner-layer{
-	border-color: #1a237e;
+	border-color: #880e4f;
 } 
 
 #myTabs li #operatorsSpinner .spinner-layer{
@@ -182,27 +188,27 @@ div#querySparqlBox .SPARQLhighlighted{
 } 
 
 #myTabs li #tableResultSpinner .spinner-layer{
-	border-color: #b71c1c;
+	border-color: #01579b;
 } 
 
 .tabs #conceptsTab a:hover,
 .tabs #conceptsTab a.active{
-	background-color: #00e676;
+	background-color: #1de9ae;
 	color: white;
 }
 
 .tabs #conceptsTab a{
-	color:#00e676;
+	color:#1de9ae;
 }
 
 .tabs #predicatesTab a:hover,
 .tabs #predicatesTab a.active{
-	background-color: #7c4dff ;
+	background-color: #e91e63 ;
 	color: white;
 }
 
 .tabs #predicatesTab a{
-	color:#7c4dff;
+	color:#e91e63;
 }
 
 .tabs #operatorsTab a:hover,
@@ -217,12 +223,12 @@ div#querySparqlBox .SPARQLhighlighted{
 
 .tabs #tableResultTab a:hover,
 .tabs #tableResultTab a.active{
-	background-color: #f44336;
+	background-color: #2196f3;
 	color: white;
 }
 
 .tabs #tableResultTab a{
-	color:#f44336;
+	color:#2196f3;
 }
 
 .tabs #settingsTab a:hover,
@@ -308,11 +314,11 @@ div#conceptsListBox {
 }
 
 div#conceptsBox .card-action{
-	background-color:#00e676;
+	background-color:#1de9ae;
 }
 
 #conceptsBox .card-title{
-	color: #00e676;
+	color: #69f0ae;
 }
 
 #conceptsListBox ul{
@@ -333,7 +339,7 @@ div#conceptsBox .card-action{
 }
 
 i.conceptInfo{
-	color: #00e676;
+	color: #1de9ae;
 	cursor: pointer;
 }
 
@@ -347,23 +353,23 @@ div#predicatesListBox {
 }
 
 #predicatesBox .tabs .tab a, #predicatesBox .tabs .tab a:hover, #predicatesBox .tabs .tab a.active{
-	color: #7c4dff;
+	color: #e91e63;
 }
 
 #predicatesBox .indicator{
-	background-color: #7c4dff;
+	background-color: #e91e63;
 }
 
 #predicatesBox .card-title{
-	color: #7c4dff;
+	color: #e91e63;
 }
 
 div#predicatesBox .card-action{
-	background-color:#7c4dff;
+	background-color:#e91e63;
 }
 
 i.predicateInfo{
-	color: #7c4dff;
+	color: #e91e63;
 	cursor: pointer;
 }
 
@@ -422,6 +428,10 @@ li.operatorListSeparator{
 
 #resultsTableBox{
 	overflow:auto;
+}
+
+#visibleFieldsButton{
+	background-color: #2196f3;
 }
 
 img.imgResult {
@@ -484,8 +494,4 @@ img.imgResult {
     position: fixed;
     opacity: 0.3;
 }*/
-/*
-span.mySearch:not(browser-default):active.not([readonly])+label{
-	color:red;
-}
-*/
+

@@ -156,7 +156,7 @@ function createTable(select, labelSelect, results){
 							.attr('src', element[field].url)
 							.appendTo(td);
 
-						previewTd.css('background-color', '#2196F3');
+						previewTd.css('background-color', '#01579b');
 					}
 					else{
 						var a = $("<a/>")
