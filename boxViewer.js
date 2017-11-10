@@ -539,9 +539,7 @@ function fillHelp(){
 		for(var j = 0; j < helpContent[i].content.length; j++){
 			var contentCarouselDiv = $('<div/>')
 				.attr('class', 'carousel-item')
-				.css('background-color', 'white')
 				.html('<p>'+helpContent[i].content[j]+'</p>')
-				//.css('display', 'none')
 				.appendTo(carouselDiv);
 		}
 
@@ -551,8 +549,6 @@ function fillHelp(){
 					.attr('class', 'carousel-fixed-item left-align ')
 					.html('<i class="material-icons">chevron_left</i>')
 					.attr('meta-carousel-index', i)
-					.css('cursor', 'pointer')
-					.css('top', '0')
 					.on('click', function(e){
 						$('.myCarousel-'+$(this).attr('meta-carousel-index')).carousel('prev');})
 					.appendTo(carouselDiv);
@@ -561,9 +557,6 @@ function fillHelp(){
 					.attr('class', 'carousel-fixed-item right-align')
 					.html('<i class="material-icons">chevron_right</i>')
 					.attr('meta-carousel-index', i)
-					.css('cursor', 'pointer')
-					.css('top', '0')
-					.css('margin-left', '50%')
 					.on('click', function(e){
 						$('.myCarousel-'+$(this).attr('meta-carousel-index')).carousel('next');})
 					.appendTo(carouselDiv);	

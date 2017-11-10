@@ -492,6 +492,22 @@ div#helpBox{
 #helpBox .card-action{
 	background-color: #2196f3;
 }
+
+#helpBox .carousel-slider{
+	height: 190px !important;
+}
+
+#helpBox .carousel-item{
+	background-color: white;
+}
+#helpBox .left-align, #helpBox .right-align{
+	cursor: pointer;
+	top: 0;
+}
+
+#helpBox .right-align{
+	margin-left: 50%;
+}
 /*
 .carousel .indicators .indicator-item.active{
 	background-color: #2196f3;
