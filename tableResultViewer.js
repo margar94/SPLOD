@@ -161,6 +161,7 @@ function createTable(select, labelSelect, results){
 					else{
 						var a = $("<a/>")
 							.attr('href', element[field].url)
+							.attr('target', '_blank')
 							.appendTo(td);
 
 						var icon = $("<i class='material-icons tiny red-text'>")
