@@ -163,13 +163,13 @@ enLanguageManager.prototype.verbalizePredicate = function(predicateLabel, predic
 			verbalization.negated.push('not ');
 			verbalization.negated.push('');
 			verbalization.negated.push(predicateLabel + ' ');
-			verbalization.negated.push('');
+			verbalization.negated.push(postLabel);
 
 			verbalization.optional.push('that ');
 			verbalization.optional.push('optionally ');
 			verbalization.optional.push('');
 			verbalization.optional.push(predicateLabel + ' ');
-			verbalization.optional.push('');
+			verbalization.optional.push(postLabel);
 
 			verbalization.truncated.push('');
 			verbalization.truncated.push(predicateLabel + ' ');
@@ -262,11 +262,11 @@ enLanguageManager.prototype.endsWithPreposition = function(label){
 
 enLanguageManager.prototype.verbalizeOperator = function(operator){
 
-	verbalization = {
+	var verbalization = {
 		standard: ['that ', operator+' ', ''],
 		truncated: ['', operator+' ', ''],
-		negated: ['that is ', 'not ', operator+' ', ''],
-		optional : ['that is ', 'optionally ', operator+' ', '']};
+		negated: ['that is ', 'not ', '', operator+' ', ''],
+		optional : ['that is ', 'optionally ','', operator+' ', '']};
 
 	verbalization.current = verbalization.standard;
 
@@ -389,7 +389,7 @@ enLanguageManager.prototype.verbalizeOperator = function(operator){
 
 enLanguageManager.prototype.verbalizeResult = function(result){
 
-	verbalization = {
+	var verbalization = {
 		standard: [result+' '],
 		current: [result+' ']};
 
@@ -440,7 +440,7 @@ enLanguageManager.prototype.getOperatorStandardVerbalization = function(operator
 		case 'or':	
 			verbalization = ['or '];
 			break;
-		case 'or':	
+		case 'xor':	
 			verbalization = ['xor '];
 			break;
 		case 'not':
@@ -481,7 +481,6 @@ enLanguageManager.prototype.getFocusLabel = function(){
 	return 'Focus: ';
 }
 
-//Initialization of focus
 enLanguageManager.prototype.getFocusInitialVerbalization = function(){
 	return '-';
 }
@@ -627,7 +626,7 @@ enLanguageManager.prototype.getHelpGuide = function(){
 	var headers = [];
 
 	var overviewObj = {title : 'Overview', content : []};
-	overviewObj.content.push('<b>SPLOD</b> will help you to use LOD (linked open data) and create a table that you can use in next steps.<br>You can see some example explained step by step to create your first request.INSERT EXAMPLE');
+	overviewObj.content.push('<b>spLOD</b> will help you to use LOD (linked open data) and create a table that you can use in next steps.<br>You can see some example explained step by step to create your first request.INSERT EXAMPLE');
 	headers.push(overviewObj);
 
 	var boxesObj = {title : 'Boxes content : concepts, predicates, operators, table result, settings', content : []};
@@ -639,15 +638,15 @@ enLanguageManager.prototype.getHelpGuide = function(){
 	headers.push(boxesObj);
 
 	var queryNLObj = {title : 'Query Natural Language', content : []};
-	queryNLObj.content.push('<b>SPLOD</b> trys to verbalize your interactions creating the same request that hopefylly you would ask to another person.<br>The colors will guide you to a friendly understanding of the request.<br>IMG EXAMPLE<br>Be careful with the barred words!<br>IMG EXAMPLE<br>');
+	queryNLObj.content.push('<b>spLOD</b> tries to verbalize your interactions creating the same request that hopefully you would ask to another person.<br>The colors will guide you to a friendly understanding of the request.<br>IMG EXAMPLE<br>Be careful with the barred words!<br>IMG EXAMPLE<br>');
 	headers.push(queryNLObj);
 
 	var focusObj = {title : 'Focus : how it works', content : []};
-	focusObj.content.push('According to the element on focus <b>SPLOD</b> will fill all boxes and build your request.<br>By your interaction the focus will be updated.<br>But you can still change it whenever you want.');
+	focusObj.content.push('According to the element on focus <b>spLOD</b> will fill all boxes and build your request.<br>By your interaction the focus will be updated.<br>But you can still change it whenever you want.');
 	headers.push(focusObj);
 
 	var querySPARQLObj = {title : 'Query SPARQL', content : []};
-	querySPARQLObj.content.push('<b>SPARQL</b> is the standard semantic query language used to retrieve LOD.<br>According to your interactions <b>SPLOD</b> will automatically buil the query.<br>You can learn about SPARQL thanks to the side by side boxes.<br>By changing the focus the system will highlight the related section in the query.');
+	querySPARQLObj.content.push('<b>SPARQL</b> is the standard semantic query language used to retrieve LOD.<br>According to your interactions <b>spLOD</b> will automatically build the query.<br>You can learn about SPARQL thanks to the side by side boxes.<br>By changing the focus the system will highlight the related section in the query.');
 	headers.push(querySPARQLObj);
 
 	return headers;
