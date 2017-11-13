@@ -483,6 +483,10 @@ function visitRenderer(key){
 						nodeResultQuery += '<span><span class="operator">'+node.verbalization.current[verbalizationIndex++]+'</span></span>';
 						nodeQueryString += '</span>';
 						nodeQueryString += '</span>';
+
+						//post Not/Optional
+						nodeQueryString += node.verbalization.current[verbalizationIndex];
+						nodeResultQuery += node.verbalization.current[verbalizationIndex++];
 					}
 
 					//content
