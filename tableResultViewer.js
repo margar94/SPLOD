@@ -1,6 +1,10 @@
 var languageManager;
 var cachedFieldsToHide;
 
+var resultsToConvert;
+var labels;
+var datatypeInfo;
+
 function initTableResultViewer(){
 	cachedFieldsToHide = [];
 	languageManager = new LanguageManager();
@@ -34,11 +38,9 @@ function resetFieldsList(){
 
 function renderResultTable(select, labelSelect, results){
 
-	var labels = createTableLabel(select, labelSelect);
+	labels = createTableLabel(select, labelSelect);
 	createFieldsSelectionList(labels);
 	createTable(select, labels, results);
-
-	createResultsJSON(select, labels, results);
 
 }
 
@@ -101,7 +103,6 @@ function manageFields(){
 }
 
 function createTable(select, labelSelect, results){
-	console.log(results);
 
 	var previewTable = $("#previewTableResult")
 	previewTable.empty();
@@ -131,11 +132,16 @@ function createTable(select, labelSelect, results){
 
 	var tbody = $("<tbody/>");
 	var previewTbody = $("<tbody/>");
+
+	resultsToConvert = {};
+	var recordsObj = [];
 	
 	$.each(results, function(index){
 		var element = results[index];
 		var tr = $("<tr/>");
 		var previewTr = $("<tr/>");
+
+		var newElement = {};
 
 		for(var i=0; i<select.length; i++) {
 			var field = select[i].substring(1);
@@ -172,6 +178,19 @@ function createTable(select, labelSelect, results){
 							.appendTo(a);
 					}
 				}
+
+				newElement[labels[i].label] = element[field].value;
+				if('url' in element[field]){
+					if(!isImage(element[field].url))
+						newElement[labels[i].label+' url'] = element[field].url;
+					else
+						newElement[labels[i].label] = element[field].url;
+				}
+				if('xml:lang' in element[field]){
+					newElement[labels[i].label+' lang'] = element[field]['xml:lang'];
+				}
+
+
 			}else{
 				var td = $("<td/>")
 					.text("")
@@ -180,16 +199,24 @@ function createTable(select, labelSelect, results){
 				var previewTd = $("<td/>")
 					.text("")
 					.appendTo(previewTr);
+
+				newElement[labels[i].label] = null;
 			}
 		}
+
 		tr.appendTo(tbody);
 		if(index < 100){
 			previewTr.appendTo(previewTbody);
 		}
+
+		recordsObj.push(newElement);
 	});
 
 	tbody.appendTo(resultsTable);
 	previewTbody.appendTo(previewTable);
+
+	resultsToConvert.records = recordsObj;
+	addFieldsToJSON();
 
 	$.each(cachedFieldsToHide, function(index){
 		if($.inArray("?"+cachedFieldsToHide[index], select)<0)
@@ -208,46 +235,86 @@ function createTable(select, labelSelect, results){
 	//console.log($('#previewTableResult'));
 }
 
-function createResultsJSON(select, labels, results){
-	var resultsToConvert = {};
+function saveDatatype(keySelect, datatype){
+	datatypeInfo = {};
+	datatypeInfo.keySelect = keySelect;
+	datatypeInfo.datatype = datatype;
+}
 
-	var recordsObj = [];
-	$.each(results, function(index){
-		var element = results[index];
+function addFieldsToJSON(){
+	
+	resultsToConvert.fields = [];
+	for(field in resultsToConvert.records[0]){
+		var tempField = {};
+		tempField.id = field;
 
-		var newElement = {};
+		var simpleLabels = [];
+		for(var i = 0; i < labels.length; i++){
+			simpleLabels.push(labels[i].label);
+		}
+		var index = $.inArray(field, simpleLabels);
 
-		for(var i=0; i<select.length; i++) {
-			var field = select[i].substring(1);
-			
-			if(field in element){
+		if(index < 0){
+			tempField.type = "text";
+		}else{
+			if(datatypeInfo.datatype[datatypeInfo.keySelect[index]].length>1)
+				tempField.type = "text";
+			else{
+				switch(datatypeInfo.datatype[datatypeInfo.keySelect[index]]){
+					case 'img' : 
+					case 'uri':
+					case 'gMonth':
+					case 'gDay':
+					case 'gMonthDay':
+					case 'gYearMonth':
+					case 'date':
+					case 'dateTime':
+					case 'time':
+					case 'boolean':
+					case 'literal':
+					case 'boolean': 
+					case 'string':
+						tempField.type = "text";
+						break;
+					
+					case 'gYear':
+					case 'number':
+						tempField.type = "numeric";
+						break;
 
-				newElement[labels[i].label] = element[field].value;
-				if('url' in element[field]){
-					if(!isImage(element[field].url))
-						newElement[labels[i].label+' url'] = element[field].url;
-					else
-						newElement[labels[i].label] = element[field].url;
+					default : 
+						//check if first is numeric (but if the other are string?)
+						if($.isNumeric(resultsToConvert.records[0][field]))
+							tempField.type = "numeric";
+						else tempField.type = "text";
+						break;
 				}
-				if('xml:lang' in element[field]){
-					newElement[labels[i].label+' lang'] = element[field]['xml:lang'];
-				}
-			}else{
-				newElement[labels[i].label] = null;
 			}
 		}
-
-		recordsObj.push(newElement);
-	});
-	resultsToConvert.records = recordsObj;
-
-	resultsToConvert.fields = [];
-	for(field in recordsObj[0]){
-		var tempField = {};
-		tempField.type = "text";
-		tempField.id = field;
 		resultsToConvert.fields.push(tempField);
 	}
 
 	console.log(resultsToConvert);
+}
+
+
+function createJson(){
+	//add other fields
+	var query = "";
+	$.each(cachedUserQuery, function(index){
+		if($.type(cachedUserQuery[index]) === 'object')
+			query += cachedUserQuery[index].content.join(' ') + " ";
+		else
+			query += cachedUserQuery[index] + " ";
+	});
+	resultsToConvert.querySPARQL = query;
+
+	/*
+	var jsonObj = 'data='+JSON.stringify(resultsToConvert);  
+	$.ajax({
+	   type: "POST",
+	   url: "buildJson.php", 
+	   data: jsonObj,      
+	   success: function() {} 
+	});*/
 }

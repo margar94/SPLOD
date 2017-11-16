@@ -246,6 +246,7 @@ OperatorManager.prototype.queryResult = function(select, labelSelect, keySelect,
 		manageUpdateOperatorViewer();
 	
 	sortAndAggregateResults(select, keySelect, results);
+	saveDatatype(keySelect, resultDatatype);
 }
 
 OperatorManager.prototype.selectedReusableResult = function(result, fromInput){
