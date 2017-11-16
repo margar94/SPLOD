@@ -1,17 +1,17 @@
 <?php
-/* Smarty version 3.1.29, created on 2017-11-14 01:58:49
+/* Smarty version 3.1.29, created on 2017-11-15 07:43:51
   from "C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\views\components\drag_and_drop_item.html" */
 
 if ($_smarty_tpl->smarty->ext->_validateCompiled->decodeProperties($_smarty_tpl, array (
   'has_nocache_code' => false,
   'version' => '3.1.29',
-  'unifunc' => 'content_5a0abe596728e1_07186448',
+  'unifunc' => 'content_5a0c60b7175283_53416998',
   'file_dependency' => 
   array (
     '84bbe4546b3a45d6e75c158c63b5fe36c4faba26' => 
     array (
       0 => 'C:\\Users\\Utente\\Documents\\GitHub\\SPLOD\\oxwall\\ow_system_plugins\\base\\views\\components\\drag_and_drop_item.html',
-      1 => 1510588878,
+      1 => 1470306056,
       2 => 'file',
     ),
   ),
@@ -19,7 +19,7 @@ if ($_smarty_tpl->smarty->ext->_validateCompiled->decodeProperties($_smarty_tpl,
   array (
   ),
 ),false)) {
-function content_5a0abe596728e1_07186448 ($_smarty_tpl) {
+function content_5a0c60b7175283_53416998 ($_smarty_tpl) {
 if (!is_callable('smarty_block_block_decorator')) require_once 'C:\\Users\\Utente\\Documents\\GitHub\\SPLOD\\oxwall\\ow_smarty\\plugin\\block.block_decorator.php';
 ?>
 <div class="ow_dnd_widget <?php echo $_smarty_tpl->tpl_vars['box']->value['uniqName'];?>

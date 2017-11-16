@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin>
+	<name>spLOD - example</name>
+	<key>example</key>
+	<description>First try</description>
+    <author>team spLOD</author>
+    <authorEmail>plugins@oxwall.org</authorEmail>
+	<authorUrl>http://www.skalfa.com</authorUrl>
+	<developerKey>d97f068d306cb40d2f883d888ce6b870</developerKey>
+    <build>1</build>
+    <copyright>(C) 2009 Skalfa LLC. All rights reserved.</copyright>
+	<license>The BSD License</license>
+    <licenseUrl>http://www.opensource.org/licenses/bsd-license.php</licenseUrl>
+</plugin>

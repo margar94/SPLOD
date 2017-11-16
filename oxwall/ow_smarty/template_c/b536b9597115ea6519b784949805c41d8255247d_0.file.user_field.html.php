@@ -1,11 +1,11 @@
 <?php
-/* Smarty version 3.1.29, created on 2017-11-14 01:58:39
+/* Smarty version 3.1.29, created on 2017-11-15 07:43:44
   from "C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\mailbox\views\components\user_field.html" */
 
 if ($_smarty_tpl->smarty->ext->_validateCompiled->decodeProperties($_smarty_tpl, array (
   'has_nocache_code' => false,
   'version' => '3.1.29',
-  'unifunc' => 'content_5a0abe4f6d9cc1_68844373',
+  'unifunc' => 'content_5a0c60b0da0f52_50027963',
   'file_dependency' => 
   array (
     'b536b9597115ea6519b784949805c41d8255247d' => 
@@ -19,7 +19,7 @@ if ($_smarty_tpl->smarty->ext->_validateCompiled->decodeProperties($_smarty_tpl,
   array (
   ),
 ),false)) {
-function content_5a0abe4f6d9cc1_68844373 ($_smarty_tpl) {
+function content_5a0c60b0da0f52_50027963 ($_smarty_tpl) {
 if (!is_callable('smarty_function_text')) require_once 'C:\\Users\\Utente\\Documents\\GitHub\\SPLOD\\oxwall\\ow_smarty\\plugin\\function.text.php';
 echo $_smarty_tpl->tpl_vars['input']->value;?>
 

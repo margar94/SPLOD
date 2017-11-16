@@ -1,17 +1,17 @@
 <?php
-/* Smarty version 3.1.29, created on 2017-11-14 01:58:39
+/* Smarty version 3.1.29, created on 2017-11-15 07:43:44
   from "C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\views\components\file_attachment.html" */
 
 if ($_smarty_tpl->smarty->ext->_validateCompiled->decodeProperties($_smarty_tpl, array (
   'has_nocache_code' => false,
   'version' => '3.1.29',
-  'unifunc' => 'content_5a0abe4f6743a9_42964900',
+  'unifunc' => 'content_5a0c60b0d106b8_28876259',
   'file_dependency' => 
   array (
     '50984a44c313d73ed246182aec5ca7b228e3c78f' => 
     array (
       0 => 'C:\\Users\\Utente\\Documents\\GitHub\\SPLOD\\oxwall\\ow_system_plugins\\base\\views\\components\\file_attachment.html',
-      1 => 1510588878,
+      1 => 1470306056,
       2 => 'file',
     ),
   ),
@@ -19,7 +19,7 @@ if ($_smarty_tpl->smarty->ext->_validateCompiled->decodeProperties($_smarty_tpl,
   array (
   ),
 ),false)) {
-function content_5a0abe4f6743a9_42964900 ($_smarty_tpl) {
+function content_5a0c60b0d106b8_28876259 ($_smarty_tpl) {
 ?>
 <div id="<?php echo $_smarty_tpl->tpl_vars['data']->value['uid'];?>
 ">

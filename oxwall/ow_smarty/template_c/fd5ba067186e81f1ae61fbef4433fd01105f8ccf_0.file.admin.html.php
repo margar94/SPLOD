@@ -1,17 +1,17 @@
 <?php
-/* Smarty version 3.1.29, created on 2017-11-14 01:58:49
+/* Smarty version 3.1.29, created on 2017-11-15 07:43:44
   from "C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_themes\simplicity\master_pages\admin.html" */
 
 if ($_smarty_tpl->smarty->ext->_validateCompiled->decodeProperties($_smarty_tpl, array (
   'has_nocache_code' => false,
   'version' => '3.1.29',
-  'unifunc' => 'content_5a0abe59856f53_37696949',
+  'unifunc' => 'content_5a0c60b0b08dc3_93262291',
   'file_dependency' => 
   array (
     'fd5ba067186e81f1ae61fbef4433fd01105f8ccf' => 
     array (
       0 => 'C:\\Users\\Utente\\Documents\\GitHub\\SPLOD\\oxwall\\ow_themes\\simplicity\\master_pages\\admin.html',
-      1 => 1510588880,
+      1 => 1470306120,
       2 => 'file',
     ),
   ),
@@ -19,7 +19,7 @@ if ($_smarty_tpl->smarty->ext->_validateCompiled->decodeProperties($_smarty_tpl,
   array (
   ),
 ),false)) {
-function content_5a0abe59856f53_37696949 ($_smarty_tpl) {
+function content_5a0c60b0b08dc3_93262291 ($_smarty_tpl) {
 if (!is_callable('smarty_block_style')) require_once 'C:\\Users\\Utente\\Documents\\GitHub\\SPLOD\\oxwall\\ow_smarty\\plugin\\block.style.php';
 if (!is_callable('smarty_function_component')) require_once 'C:\\Users\\Utente\\Documents\\GitHub\\SPLOD\\oxwall\\ow_smarty\\plugin\\function.component.php';
 if (!is_callable('smarty_function_add_content')) require_once 'C:\\Users\\Utente\\Documents\\GitHub\\SPLOD\\oxwall\\ow_smarty\\plugin\\function.add_content.php';

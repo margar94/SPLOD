@@ -1,17 +1,17 @@
 <?php
-/* Smarty version 3.1.29, created on 2017-11-14 01:58:39
+/* Smarty version 3.1.29, created on 2017-11-15 07:43:45
   from "C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\views\components\console_dropdown_list.html" */
 
 if ($_smarty_tpl->smarty->ext->_validateCompiled->decodeProperties($_smarty_tpl, array (
   'has_nocache_code' => false,
   'version' => '3.1.29',
-  'unifunc' => 'content_5a0abe4f825d94_06214266',
+  'unifunc' => 'content_5a0c60b1085859_95973345',
   'file_dependency' => 
   array (
     'bd9c61a1d4849cadf787e11cc9e69938600945cb' => 
     array (
       0 => 'C:\\Users\\Utente\\Documents\\GitHub\\SPLOD\\oxwall\\ow_system_plugins\\base\\views\\components\\console_dropdown_list.html',
-      1 => 1510588878,
+      1 => 1470306056,
       2 => 'file',
     ),
   ),
@@ -19,7 +19,7 @@ if ($_smarty_tpl->smarty->ext->_validateCompiled->decodeProperties($_smarty_tpl,
   array (
   ),
 ),false)) {
-function content_5a0abe4f825d94_06214266 ($_smarty_tpl) {
+function content_5a0c60b1085859_95973345 ($_smarty_tpl) {
 ?>
 <a href="javascript://" class="ow_console_item_link"><?php echo $_smarty_tpl->tpl_vars['label']->value;?>
 </a>

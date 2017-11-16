@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<plugin>
+    <name>Plugin spLOD</name>
+    <key>splod</key>
+    <description>This plugin helps you to query and navigate LOD.</description>
+    <author>Martina Garofalo and Maria Angela Pellegrino</author>
+    <authorEmail></authorEmail>
+    <authorUrl></authorUrl>
+    <developerKey>d97f068d306cb40d2f883d888ce6b870</developerKey>
+    <build>2</build>
+    <copyright></copyright>
+    <license></license>
+    <licenseUrl></licenseUrl>
+</plugin>

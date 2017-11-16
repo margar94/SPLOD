@@ -1,11 +1,11 @@
 <?php
-/* Smarty version 3.1.29, created on 2017-11-14 01:58:39
+/* Smarty version 3.1.29, created on 2017-11-15 07:43:45
   from "C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\mailbox\views\components\console_list.html" */
 
 if ($_smarty_tpl->smarty->ext->_validateCompiled->decodeProperties($_smarty_tpl, array (
   'has_nocache_code' => false,
   'version' => '3.1.29',
-  'unifunc' => 'content_5a0abe4f858a16_90989819',
+  'unifunc' => 'content_5a0c60b10c4063_90191707',
   'file_dependency' => 
   array (
     '0c34d41c02a27d6acb686add3b22f783959cd6c5' => 
@@ -19,7 +19,7 @@ if ($_smarty_tpl->smarty->ext->_validateCompiled->decodeProperties($_smarty_tpl,
   array (
   ),
 ),false)) {
-function content_5a0abe4f858a16_90989819 ($_smarty_tpl) {
+function content_5a0c60b10c4063_90191707 ($_smarty_tpl) {
 if (!is_callable('smarty_function_text')) require_once 'C:\\Users\\Utente\\Documents\\GitHub\\SPLOD\\oxwall\\ow_smarty\\plugin\\function.text.php';
 ?>
 <div class="ow_console_list_wrapper OW_ConsoleListContainer">

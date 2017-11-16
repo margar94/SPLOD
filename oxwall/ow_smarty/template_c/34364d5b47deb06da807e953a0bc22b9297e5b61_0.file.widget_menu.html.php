@@ -1,17 +1,17 @@
 <?php
-/* Smarty version 3.1.29, created on 2017-11-14 01:58:49
+/* Smarty version 3.1.29, created on 2017-11-15 07:43:51
   from "C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\views\components\widget_menu.html" */
 
 if ($_smarty_tpl->smarty->ext->_validateCompiled->decodeProperties($_smarty_tpl, array (
   'has_nocache_code' => false,
   'version' => '3.1.29',
-  'unifunc' => 'content_5a0abe595d2648_22341149',
+  'unifunc' => 'content_5a0c60b72fbce0_41737488',
   'file_dependency' => 
   array (
     '34364d5b47deb06da807e953a0bc22b9297e5b61' => 
     array (
       0 => 'C:\\Users\\Utente\\Documents\\GitHub\\SPLOD\\oxwall\\ow_system_plugins\\base\\views\\components\\widget_menu.html',
-      1 => 1510588878,
+      1 => 1470306056,
       2 => 'file',
     ),
   ),
@@ -19,7 +19,7 @@ if ($_smarty_tpl->smarty->ext->_validateCompiled->decodeProperties($_smarty_tpl,
   array (
   ),
 ),false)) {
-function content_5a0abe595d2648_22341149 ($_smarty_tpl) {
+function content_5a0c60b72fbce0_41737488 ($_smarty_tpl) {
 ?>
 <div class="clearfix">
 	<div class="ow_box_menu">

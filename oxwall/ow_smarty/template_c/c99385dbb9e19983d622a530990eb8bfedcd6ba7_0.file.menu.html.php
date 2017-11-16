@@ -1,17 +1,17 @@
 <?php
-/* Smarty version 3.1.29, created on 2017-11-14 01:58:38
+/* Smarty version 3.1.29, created on 2017-11-15 07:43:51
   from "C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\views\components\menu.html" */
 
 if ($_smarty_tpl->smarty->ext->_validateCompiled->decodeProperties($_smarty_tpl, array (
   'has_nocache_code' => false,
   'version' => '3.1.29',
-  'unifunc' => 'content_5a0abe4ee38661_18035222',
+  'unifunc' => 'content_5a0c60b73ab989_90541043',
   'file_dependency' => 
   array (
     'c99385dbb9e19983d622a530990eb8bfedcd6ba7' => 
     array (
       0 => 'C:\\Users\\Utente\\Documents\\GitHub\\SPLOD\\oxwall\\ow_system_plugins\\base\\views\\components\\menu.html',
-      1 => 1510588878,
+      1 => 1470306056,
       2 => 'file',
     ),
   ),
@@ -19,7 +19,7 @@ if ($_smarty_tpl->smarty->ext->_validateCompiled->decodeProperties($_smarty_tpl,
   array (
   ),
 ),false)) {
-function content_5a0abe4ee38661_18035222 ($_smarty_tpl) {
+function content_5a0c60b73ab989_90541043 ($_smarty_tpl) {
 ?>
 <ul class="<?php echo $_smarty_tpl->tpl_vars['class']->value;?>
  clearfix">

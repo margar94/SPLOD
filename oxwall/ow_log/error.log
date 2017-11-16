@@ -1,0 +1,880 @@
+[Tue Nov 14 2:42:41 2017] [ow_core_log] [Warning] Message: class_parents(): Class SPLOD_CTRL_Contact does not exist and could not be loaded File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\classes\event_handler.php Line:437
+[Tue Nov 14 2:42:41 2017] [ow_core_log] [Warning] Message: in_array() expects parameter 2 to be array, boolean given File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\classes\event_handler.php Line:439
+[Tue Nov 14 2:43:04 2017] [ow_core_log] [Warning] Message: class_parents(): Class SPLOD_CTRL_Contact does not exist and could not be loaded File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\classes\event_handler.php Line:437
+[Tue Nov 14 2:43:04 2017] [ow_core_log] [Warning] Message: in_array() expects parameter 2 to be array, boolean given File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\classes\event_handler.php Line:439
+[Tue Nov 14 2:43:12 2017] [ow_core_log] [Warning] Message: class_parents(): Class SPLOD_CTRL_Contact does not exist and could not be loaded File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\classes\event_handler.php Line:437
+[Tue Nov 14 2:43:12 2017] [ow_core_log] [Warning] Message: in_array() expects parameter 2 to be array, boolean given File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\classes\event_handler.php Line:439
+[Tue Nov 14 2:44:35 2017] [ow_core_log] [Warning] Message: class_parents(): Class SPLOD_CTRL_Contact does not exist and could not be loaded File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\classes\event_handler.php Line:437
+[Tue Nov 14 2:44:35 2017] [ow_core_log] [Warning] Message: in_array() expects parameter 2 to be array, boolean given File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\classes\event_handler.php Line:439
+[Tue Nov 14 2:46:51 2017] [ow_core_log] [Warning] Message: class_parents(): Class SPLOD_CTRL_Contact does not exist and could not be loaded File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\classes\event_handler.php Line:437
+[Tue Nov 14 2:46:51 2017] [ow_core_log] [Warning] Message: in_array() expects parameter 2 to be array, boolean given File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\classes\event_handler.php Line:439
+[Tue Nov 14 2:46:53 2017] [ow_core_log] [Warning] Message: class_parents(): Class SPLOD_CTRL_Contact does not exist and could not be loaded File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\classes\event_handler.php Line:437
+[Tue Nov 14 2:46:53 2017] [ow_core_log] [Warning] Message: in_array() expects parameter 2 to be array, boolean given File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\classes\event_handler.php Line:439
+[Tue Nov 14 2:46:54 2017] [ow_core_log] [Warning] Message: class_parents(): Class SPLOD_CTRL_Contact does not exist and could not be loaded File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\classes\event_handler.php Line:437
+[Tue Nov 14 2:46:54 2017] [ow_core_log] [Warning] Message: in_array() expects parameter 2 to be array, boolean given File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\classes\event_handler.php Line:439
+[Tue Nov 14 2:57:22 2017] [ow_core_log] [Warning] Message: class_parents(): Class SPLOD_CTRL_Contact does not exist and could not be loaded File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\classes\event_handler.php Line:437
+[Tue Nov 14 2:57:22 2017] [ow_core_log] [Warning] Message: in_array() expects parameter 2 to be array, boolean given File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\classes\event_handler.php Line:439
+[Tue Nov 14 2:58:16 2017] [ow_core_log] [Warning] Message: class_parents(): Class SPLOD_CTRL_Contact does not exist and could not be loaded File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\classes\event_handler.php Line:437
+[Tue Nov 14 2:58:16 2017] [ow_core_log] [Warning] Message: in_array() expects parameter 2 to be array, boolean given File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\classes\event_handler.php Line:439
+[Tue Nov 14 2:59:24 2017] [ow_core_log] [Warning] Message: class_parents(): Class SPLOD_CTRL_Contact does not exist and could not be loaded File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\classes\event_handler.php Line:437
+[Tue Nov 14 2:59:24 2017] [ow_core_log] [Warning] Message: in_array() expects parameter 2 to be array, boolean given File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\classes\event_handler.php Line:439
+[Tue Nov 14 3:32:44 2017] [ow_core_log] [Exception] Message: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'splod.ow_splod_department' doesn't exist File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\database.php Line:723 Trace: [#0 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\database.php(723): PDOStatement->execute()
+#1 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\database.php(344): OW_Database->execute('SELECT * FROM o...', Array)
+#2 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\base_dao.php(126): OW_Database->queryForObjectList('SELECT * FROM o...', 'SPLOD_BOL_Depar...', Array, 0, Array)
+#3 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\splod\bol\service.php(105): OW_BaseDao->findAll()
+#4 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\splod\controllers\contact.php(48): SPLOD_BOL_Service->getDepartmentList()
+#5 [internal function]: SPLOD_CTRL_Contact->index(Array)
+#6 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\request_handler.php(250): ReflectionMethod->invokeArgs(Object(SPLOD_CTRL_Contact), Array)
+#7 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\request_handler.php(226): OW_RequestHandler->processControllerAction(Object(ReflectionMethod), Object(SPLOD_CTRL_Contact))
+#8 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\application.php(346): OW_RequestHandler->dispatch()
+#9 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\index.php(76): OW_Application->handleRequest()
+#10 {main}]
+[Tue Nov 14 5:31:06 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Tue Nov 14 5:31:20 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Tue Nov 14 5:35:32 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Tue Nov 14 5:35:42 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Tue Nov 14 5:53:54 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Tue Nov 14 5:54:07 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Tue Nov 14 5:55:50 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Tue Nov 14 5:56:43 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Tue Nov 14 5:56:46 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Tue Nov 14 5:59:31 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Tue Nov 14 6:01:26 2017] [ow_core_log] [Exception] Message: `index-BASE_CMP_UserListWidget` is already added to `left` section File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\bol\component_service.php Line:338 Trace: [#0 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\skeleton\controllers\widgets.php(63): BOL_ComponentService->addWidgetToPosition(Object(BOL_ComponentPlace), 'bottom', 0)
+#1 [internal function]: SKELETON_CTRL_Widgets->index(Array)
+#2 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\request_handler.php(250): ReflectionMethod->invokeArgs(Object(SKELETON_CTRL_Widgets), Array)
+#3 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\request_handler.php(226): OW_RequestHandler->processControllerAction(Object(ReflectionMethod), Object(SKELETON_CTRL_Widgets))
+#4 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\application.php(346): OW_RequestHandler->dispatch()
+#5 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\index.php(76): OW_Application->handleRequest()
+#6 {main}]
+[Tue Nov 14 6:02:58 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Tue Nov 14 6:03:33 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Tue Nov 14 6:12:11 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Tue Nov 14 6:44:21 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Tue Nov 14 7:01:26 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Tue Nov 14 7:09:41 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Tue Nov 14 7:10:40 2017] [ow_core_log] [Exception] Message: Duplicated prefix.. File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\bol\language_service.php Line:223 Trace: [#0 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\splod\init.php(2): BOL_LanguageService->addPrefix('splod', 'spLOD')
+#1 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\bol\plugin_service.php(684): include_once('C:\\Users\\Utente...')
+#2 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\plugin_manager.php(133): BOL_PluginService->includeScript('C:\\Users\\Utente...')
+#3 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\plugin_manager.php(104): OW_PluginManager->initPlugin(Object(OW_Plugin))
+#4 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\application.php(128): OW_PluginManager->initPlugins()
+#5 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\index.php(54): OW_Application->init()
+#6 {main}]
+[Tue Nov 14 7:10:46 2017] [ow_core_log] [Exception] Message: Duplicated prefix.. File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\bol\language_service.php Line:223 Trace: [#0 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\splod\init.php(2): BOL_LanguageService->addPrefix('splod', 'spLOD')
+#1 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\bol\plugin_service.php(684): include_once('C:\\Users\\Utente...')
+#2 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\plugin_manager.php(133): BOL_PluginService->includeScript('C:\\Users\\Utente...')
+#3 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\plugin_manager.php(104): OW_PluginManager->initPlugin(Object(OW_Plugin))
+#4 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\application.php(128): OW_PluginManager->initPlugins()
+#5 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\index.php(54): OW_Application->init()
+#6 {main}]
+[Tue Nov 14 7:11:39 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Tue Nov 14 7:11:40 2017] [ow_core_log] [Exception] Message: Duplicated prefix.. File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\bol\language_service.php Line:223 Trace: [#0 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\splod\init.php(2): BOL_LanguageService->addPrefix('splod2', 'spLOD')
+#1 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\bol\plugin_service.php(684): include_once('C:\\Users\\Utente...')
+#2 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\plugin_manager.php(133): BOL_PluginService->includeScript('C:\\Users\\Utente...')
+#3 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\plugin_manager.php(104): OW_PluginManager->initPlugin(Object(OW_Plugin))
+#4 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\application.php(128): OW_PluginManager->initPlugins()
+#5 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\index.php(54): OW_Application->init()
+#6 {main}]
+[Tue Nov 14 7:11:45 2017] [ow_core_log] [Exception] Message: Duplicated prefix.. File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\bol\language_service.php Line:223 Trace: [#0 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\splod\init.php(2): BOL_LanguageService->addPrefix('splod2', 'spLOD')
+#1 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\bol\plugin_service.php(684): include_once('C:\\Users\\Utente...')
+#2 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\plugin_manager.php(133): BOL_PluginService->includeScript('C:\\Users\\Utente...')
+#3 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\plugin_manager.php(104): OW_PluginManager->initPlugin(Object(OW_Plugin))
+#4 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\application.php(128): OW_PluginManager->initPlugins()
+#5 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\index.php(54): OW_Application->init()
+#6 {main}]
+[Tue Nov 14 7:11:47 2017] [ow_core_log] [Exception] Message: Duplicated prefix.. File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\bol\language_service.php Line:223 Trace: [#0 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\splod\init.php(2): BOL_LanguageService->addPrefix('splod2', 'spLOD')
+#1 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\bol\plugin_service.php(684): include_once('C:\\Users\\Utente...')
+#2 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\plugin_manager.php(133): BOL_PluginService->includeScript('C:\\Users\\Utente...')
+#3 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\plugin_manager.php(104): OW_PluginManager->initPlugin(Object(OW_Plugin))
+#4 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\application.php(128): OW_PluginManager->initPlugins()
+#5 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\index.php(54): OW_Application->init()
+#6 {main}]
+[Tue Nov 14 7:12:07 2017] [ow_core_log] [Exception] Message: Duplicated prefix.. File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\bol\language_service.php Line:223 Trace: [#0 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\splod\init.php(2): BOL_LanguageService->addPrefix('splod', 'spLOD')
+#1 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\bol\plugin_service.php(684): include_once('C:\\Users\\Utente...')
+#2 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\plugin_manager.php(133): BOL_PluginService->includeScript('C:\\Users\\Utente...')
+#3 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\plugin_manager.php(104): OW_PluginManager->initPlugin(Object(OW_Plugin))
+#4 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\application.php(128): OW_PluginManager->initPlugins()
+#5 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\index.php(54): OW_Application->init()
+#6 {main}]
+[Tue Nov 14 7:12:11 2017] [ow_core_log] [Exception] Message: Duplicated prefix.. File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\bol\language_service.php Line:223 Trace: [#0 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\splod\init.php(2): BOL_LanguageService->addPrefix('splod', 'spLOD')
+#1 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\bol\plugin_service.php(684): include_once('C:\\Users\\Utente...')
+#2 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\plugin_manager.php(133): BOL_PluginService->includeScript('C:\\Users\\Utente...')
+#3 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\plugin_manager.php(104): OW_PluginManager->initPlugin(Object(OW_Plugin))
+#4 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\application.php(128): OW_PluginManager->initPlugins()
+#5 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\index.php(54): OW_Application->init()
+#6 {main}]
+[Tue Nov 14 7:12:26 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Tue Nov 14 7:13:20 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Tue Nov 14 7:13:36 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Tue Nov 14 7:17:33 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Tue Nov 14 7:20:28 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Tue Nov 14 7:23:47 2017] [ow_core_log] [Warning] Message: simplexml_load_file(): file:/C:/Users/Utente/Documents/GitHub/SPLOD/oxwall/ow_plugins/example/plugin.xml:1: parser error : Document is empty File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\bol\plugin_service.php Line:246
+[Tue Nov 14 7:23:47 2017] [ow_core_log] [Warning] Message: simplexml_load_file():  File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\bol\plugin_service.php Line:246
+[Tue Nov 14 7:23:47 2017] [ow_core_log] [Warning] Message: simplexml_load_file(): ^ File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\bol\plugin_service.php Line:246
+[Tue Nov 14 7:23:47 2017] [ow_core_log] [Warning] Message: simplexml_load_file(): file:/C:/Users/Utente/Documents/GitHub/SPLOD/oxwall/ow_plugins/example/plugin.xml:1: parser error : Start tag expected, '&lt;' not found File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\bol\plugin_service.php Line:246
+[Tue Nov 14 7:23:47 2017] [ow_core_log] [Warning] Message: simplexml_load_file():  File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\bol\plugin_service.php Line:246
+[Tue Nov 14 7:23:47 2017] [ow_core_log] [Warning] Message: simplexml_load_file(): ^ File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\bol\plugin_service.php Line:246
+[Tue Nov 14 7:23:47 2017] [ow_core_log] [Warning] Message: simplexml_load_file(): file:/C:/Users/Utente/Documents/GitHub/SPLOD/oxwall/ow_plugins/example/plugin.xml:1: parser error : Document is empty File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\bol\plugin_service.php Line:246
+[Tue Nov 14 7:23:47 2017] [ow_core_log] [Warning] Message: simplexml_load_file():  File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\bol\plugin_service.php Line:246
+[Tue Nov 14 7:23:47 2017] [ow_core_log] [Warning] Message: simplexml_load_file(): ^ File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\bol\plugin_service.php Line:246
+[Tue Nov 14 7:23:47 2017] [ow_core_log] [Warning] Message: simplexml_load_file(): file:/C:/Users/Utente/Documents/GitHub/SPLOD/oxwall/ow_plugins/example/plugin.xml:1: parser error : Start tag expected, '&lt;' not found File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\bol\plugin_service.php Line:246
+[Tue Nov 14 7:23:47 2017] [ow_core_log] [Warning] Message: simplexml_load_file():  File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\bol\plugin_service.php Line:246
+[Tue Nov 14 7:23:47 2017] [ow_core_log] [Warning] Message: simplexml_load_file(): ^ File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\bol\plugin_service.php Line:246
+[Tue Nov 14 7:23:53 2017] [ow_core_log] [Warning] Message: simplexml_load_file(): file:/C:/Users/Utente/Documents/GitHub/SPLOD/oxwall/ow_plugins/example/plugin.xml:1: parser error : Document is empty File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\bol\plugin_service.php Line:246
+[Tue Nov 14 7:23:53 2017] [ow_core_log] [Warning] Message: simplexml_load_file():  File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\bol\plugin_service.php Line:246
+[Tue Nov 14 7:23:53 2017] [ow_core_log] [Warning] Message: simplexml_load_file(): ^ File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\bol\plugin_service.php Line:246
+[Tue Nov 14 7:23:53 2017] [ow_core_log] [Warning] Message: simplexml_load_file(): file:/C:/Users/Utente/Documents/GitHub/SPLOD/oxwall/ow_plugins/example/plugin.xml:1: parser error : Start tag expected, '&lt;' not found File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\bol\plugin_service.php Line:246
+[Tue Nov 14 7:23:53 2017] [ow_core_log] [Warning] Message: simplexml_load_file():  File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\bol\plugin_service.php Line:246
+[Tue Nov 14 7:23:53 2017] [ow_core_log] [Warning] Message: simplexml_load_file(): ^ File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\bol\plugin_service.php Line:246
+[Tue Nov 14 7:23:55 2017] [ow_core_log] [Warning] Message: simplexml_load_file(): file:/C:/Users/Utente/Documents/GitHub/SPLOD/oxwall/ow_plugins/example/plugin.xml:1: parser error : Document is empty File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\bol\plugin_service.php Line:246
+[Tue Nov 14 7:23:55 2017] [ow_core_log] [Warning] Message: simplexml_load_file():  File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\bol\plugin_service.php Line:246
+[Tue Nov 14 7:23:55 2017] [ow_core_log] [Warning] Message: simplexml_load_file(): ^ File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\bol\plugin_service.php Line:246
+[Tue Nov 14 7:23:55 2017] [ow_core_log] [Warning] Message: simplexml_load_file(): file:/C:/Users/Utente/Documents/GitHub/SPLOD/oxwall/ow_plugins/example/plugin.xml:1: parser error : Start tag expected, '&lt;' not found File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\bol\plugin_service.php Line:246
+[Tue Nov 14 7:23:55 2017] [ow_core_log] [Warning] Message: simplexml_load_file():  File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\bol\plugin_service.php Line:246
+[Tue Nov 14 7:23:55 2017] [ow_core_log] [Warning] Message: simplexml_load_file(): ^ File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\bol\plugin_service.php Line:246
+[Tue Nov 14 7:24:47 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Tue Nov 14 7:24:50 2017] [ow_core_log] [Warning] Message: simplexml_load_file(): file:/C:/Users/Utente/Documents/GitHub/SPLOD/oxwall/ow_plugins/example/plugin.xml:1: parser error : Document is empty File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\bol\plugin_service.php Line:246
+[Tue Nov 14 7:24:50 2017] [ow_core_log] [Warning] Message: simplexml_load_file():  File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\bol\plugin_service.php Line:246
+[Tue Nov 14 7:24:50 2017] [ow_core_log] [Warning] Message: simplexml_load_file(): ^ File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\bol\plugin_service.php Line:246
+[Tue Nov 14 7:24:50 2017] [ow_core_log] [Warning] Message: simplexml_load_file(): file:/C:/Users/Utente/Documents/GitHub/SPLOD/oxwall/ow_plugins/example/plugin.xml:1: parser error : Start tag expected, '&lt;' not found File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\bol\plugin_service.php Line:246
+[Tue Nov 14 7:24:50 2017] [ow_core_log] [Warning] Message: simplexml_load_file():  File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\bol\plugin_service.php Line:246
+[Tue Nov 14 7:24:50 2017] [ow_core_log] [Warning] Message: simplexml_load_file(): ^ File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\bol\plugin_service.php Line:246
+[Tue Nov 14 7:24:53 2017] [ow_core_log] [Warning] Message: simplexml_load_file(): file:/C:/Users/Utente/Documents/GitHub/SPLOD/oxwall/ow_plugins/example/plugin.xml:1: parser error : Document is empty File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\bol\plugin_service.php Line:246
+[Tue Nov 14 7:24:53 2017] [ow_core_log] [Warning] Message: simplexml_load_file():  File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\bol\plugin_service.php Line:246
+[Tue Nov 14 7:24:53 2017] [ow_core_log] [Warning] Message: simplexml_load_file(): ^ File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\bol\plugin_service.php Line:246
+[Tue Nov 14 7:24:53 2017] [ow_core_log] [Warning] Message: simplexml_load_file(): file:/C:/Users/Utente/Documents/GitHub/SPLOD/oxwall/ow_plugins/example/plugin.xml:1: parser error : Start tag expected, '&lt;' not found File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\bol\plugin_service.php Line:246
+[Tue Nov 14 7:24:53 2017] [ow_core_log] [Warning] Message: simplexml_load_file():  File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\bol\plugin_service.php Line:246
+[Tue Nov 14 7:24:53 2017] [ow_core_log] [Warning] Message: simplexml_load_file(): ^ File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\bol\plugin_service.php Line:246
+[Tue Nov 14 7:34:06 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Tue Nov 14 7:34:21 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Tue Nov 14 7:42:59 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Tue Nov 14 7:43:08 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Tue Nov 14 7:47:26 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Tue Nov 14 7:48:33 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Tue Nov 14 7:48:37 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Tue Nov 14 7:48:37 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Tue Nov 14 7:48:53 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:21:23 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:21:24 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 0:23:37 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:23:37 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 0:23:45 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:23:45 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 0:23:51 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:23:53 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:24:10 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:24:14 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:24:23 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:24:35 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:24:37 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:24:37 2017] [ow_core_log] [Exception] Message: SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'main_menu_item-example' for key 'key' File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\database.php Line:723 Trace: [#0 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\database.php(723): PDOStatement->execute()
+#1 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\database.php(476): OW_Database->execute('INSERT INTO `ow...', Array)
+#2 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\database.php(512): OW_Database->insert('INSERT INTO `ow...', Array)
+#3 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\base_dao.php(216): OW_Database->insertObject('ow_base_menu_it...', Object(BOL_MenuItem))
+#4 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\bol\navigation_service.php(106): OW_BaseDao->save(Object(BOL_MenuItem))
+#5 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\navigation.php(98): BOL_NavigationService->saveMenuItem(Object(BOL_MenuItem))
+#6 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\example\activate.php(3): OW_Navigation->addMenuItem('main', 'example-index', 'example', 'main_menu_item', 2)
+#7 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\bol\plugin_service.php(684): include_once('C:\\Users\\Utente...')
+#8 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\bol\plugin_service.php(556): BOL_PluginService->includeScript('C:\\Users\\Utente...')
+#9 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\admin\controllers\plugins.php(743): BOL_PluginService->activate('example')
+#10 [internal function]: ADMIN_CTRL_Plugins->uninstall(Array)
+#11 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\request_handler.php(250): ReflectionMethod->invokeArgs(Object(ADMIN_CTRL_Plugins), Array)
+#12 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\request_handler.php(226): OW_RequestHandler->processControllerAction(Object(ReflectionMethod), Object(ADMIN_CTRL_Plugins))
+#13 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\application.php(346): OW_RequestHandler->dispatch()
+#14 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\index.php(76): OW_Application->handleRequest()
+#15 {main}]
+[Wed Nov 15 0:24:40 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:24:43 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:24:56 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:24:59 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:25:01 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:25:05 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:25:06 2017] [ow_core_log] [Exception] Message: SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'main_menu_item-example' for key 'key' File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\database.php Line:723 Trace: [#0 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\database.php(723): PDOStatement->execute()
+#1 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\database.php(476): OW_Database->execute('INSERT INTO `ow...', Array)
+#2 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\database.php(512): OW_Database->insert('INSERT INTO `ow...', Array)
+#3 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\base_dao.php(216): OW_Database->insertObject('ow_base_menu_it...', Object(BOL_MenuItem))
+#4 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\bol\navigation_service.php(106): OW_BaseDao->save(Object(BOL_MenuItem))
+#5 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\navigation.php(98): BOL_NavigationService->saveMenuItem(Object(BOL_MenuItem))
+#6 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\example\activate.php(3): OW_Navigation->addMenuItem('main', 'example-index', 'example', 'main_menu_item', 2)
+#7 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\bol\plugin_service.php(684): include_once('C:\\Users\\Utente...')
+#8 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\bol\plugin_service.php(404): BOL_PluginService->includeScript('C:\\Users\\Utente...')
+#9 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\admin\controllers\plugins.php(686): BOL_PluginService->install('example')
+#10 [internal function]: ADMIN_CTRL_Plugins->install(Array)
+#11 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\request_handler.php(250): ReflectionMethod->invokeArgs(Object(ADMIN_CTRL_Plugins), Array)
+#12 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\request_handler.php(226): OW_RequestHandler->processControllerAction(Object(ReflectionMethod), Object(ADMIN_CTRL_Plugins))
+#13 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\application.php(346): OW_RequestHandler->dispatch()
+#14 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\index.php(76): OW_Application->handleRequest()
+#15 {main}]
+[Wed Nov 15 0:25:13 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:25:23 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:25:30 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:25:32 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:25:34 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:25:38 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:25:39 2017] [ow_core_log] [Exception] Message: SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'main_menu_item-example' for key 'key' File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\database.php Line:723 Trace: [#0 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\database.php(723): PDOStatement->execute()
+#1 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\database.php(476): OW_Database->execute('INSERT INTO `ow...', Array)
+#2 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\database.php(512): OW_Database->insert('INSERT INTO `ow...', Array)
+#3 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\base_dao.php(216): OW_Database->insertObject('ow_base_menu_it...', Object(BOL_MenuItem))
+#4 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\bol\navigation_service.php(106): OW_BaseDao->save(Object(BOL_MenuItem))
+#5 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\navigation.php(98): BOL_NavigationService->saveMenuItem(Object(BOL_MenuItem))
+#6 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\example\activate.php(3): OW_Navigation->addMenuItem('main', 'example-index', 'example', 'main_menu_item', 2)
+#7 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\bol\plugin_service.php(684): include_once('C:\\Users\\Utente...')
+#8 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\bol\plugin_service.php(404): BOL_PluginService->includeScript('C:\\Users\\Utente...')
+#9 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\admin\controllers\plugins.php(686): BOL_PluginService->install('example')
+#10 [internal function]: ADMIN_CTRL_Plugins->install(Array)
+#11 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\request_handler.php(250): ReflectionMethod->invokeArgs(Object(ADMIN_CTRL_Plugins), Array)
+#12 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\request_handler.php(226): OW_RequestHandler->processControllerAction(Object(ReflectionMethod), Object(ADMIN_CTRL_Plugins))
+#13 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\application.php(346): OW_RequestHandler->dispatch()
+#14 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\index.php(76): OW_Application->handleRequest()
+#15 {main}]
+[Wed Nov 15 0:25:42 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:25:45 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:25:47 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:25:47 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 0:26:17 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:26:20 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:26:24 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:26:26 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:26:28 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:26:32 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:26:33 2017] [ow_core_log] [Exception] Message: SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'main_menu_item-example' for key 'key' File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\database.php Line:723 Trace: [#0 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\database.php(723): PDOStatement->execute()
+#1 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\database.php(476): OW_Database->execute('INSERT INTO `ow...', Array)
+#2 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\database.php(512): OW_Database->insert('INSERT INTO `ow...', Array)
+#3 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\base_dao.php(216): OW_Database->insertObject('ow_base_menu_it...', Object(BOL_MenuItem))
+#4 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\bol\navigation_service.php(106): OW_BaseDao->save(Object(BOL_MenuItem))
+#5 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\navigation.php(98): BOL_NavigationService->saveMenuItem(Object(BOL_MenuItem))
+#6 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\example\activate.php(3): OW_Navigation->addMenuItem('main', 'example-index', 'example', 'main_menu_item', 2)
+#7 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\bol\plugin_service.php(684): include_once('C:\\Users\\Utente...')
+#8 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\bol\plugin_service.php(404): BOL_PluginService->includeScript('C:\\Users\\Utente...')
+#9 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\admin\controllers\plugins.php(686): BOL_PluginService->install('example')
+#10 [internal function]: ADMIN_CTRL_Plugins->install(Array)
+#11 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\request_handler.php(250): ReflectionMethod->invokeArgs(Object(ADMIN_CTRL_Plugins), Array)
+#12 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\request_handler.php(226): OW_RequestHandler->processControllerAction(Object(ReflectionMethod), Object(ADMIN_CTRL_Plugins))
+#13 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\application.php(346): OW_RequestHandler->dispatch()
+#14 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\index.php(76): OW_Application->handleRequest()
+#15 {main}]
+[Wed Nov 15 0:26:35 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:26:36 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:26:36 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 0:26:48 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:26:51 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:26:56 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:26:58 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:26:59 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:26:59 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 0:27:46 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:27:48 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:27:52 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:27:54 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:27:56 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:27:56 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 0:28:39 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:28:42 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:28:47 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:28:52 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:29:00 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:29:01 2017] [ow_core_log] [Exception] Message: SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'main_menu_item-example' for key 'key' File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\database.php Line:723 Trace: [#0 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\database.php(723): PDOStatement->execute()
+#1 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\database.php(476): OW_Database->execute('INSERT INTO `ow...', Array)
+#2 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\database.php(512): OW_Database->insert('INSERT INTO `ow...', Array)
+#3 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\base_dao.php(216): OW_Database->insertObject('ow_base_menu_it...', Object(BOL_MenuItem))
+#4 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\bol\navigation_service.php(106): OW_BaseDao->save(Object(BOL_MenuItem))
+#5 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\navigation.php(98): BOL_NavigationService->saveMenuItem(Object(BOL_MenuItem))
+#6 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\example\activate.php(3): OW_Navigation->addMenuItem('main', 'example-index', 'example', 'main_menu_item', 2)
+#7 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\bol\plugin_service.php(684): include_once('C:\\Users\\Utente...')
+#8 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\bol\plugin_service.php(404): BOL_PluginService->includeScript('C:\\Users\\Utente...')
+#9 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\admin\controllers\plugins.php(686): BOL_PluginService->install('example')
+#10 [internal function]: ADMIN_CTRL_Plugins->install(Array)
+#11 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\request_handler.php(250): ReflectionMethod->invokeArgs(Object(ADMIN_CTRL_Plugins), Array)
+#12 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\request_handler.php(226): OW_RequestHandler->processControllerAction(Object(ReflectionMethod), Object(ADMIN_CTRL_Plugins))
+#13 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\application.php(346): OW_RequestHandler->dispatch()
+#14 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\index.php(76): OW_Application->handleRequest()
+#15 {main}]
+[Wed Nov 15 0:29:29 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:29:29 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 0:29:46 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:29:49 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:32:06 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:32:06 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 0:33:14 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:33:14 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 0:33:26 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:33:26 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 0:33:31 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:33:34 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:33:40 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:33:42 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:33:47 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:33:47 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 0:33:53 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:33:53 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 0:34:06 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:34:11 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:34:14 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:34:17 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:34:18 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:34:18 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 0:37:59 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:37:59 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 0:38:04 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:38:08 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:38:13 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:38:19 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:38:20 2017] [ow_core_log] [Exception] Message: SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'main_menu_item-example' for key 'key' File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\database.php Line:723 Trace: [#0 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\database.php(723): PDOStatement->execute()
+#1 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\database.php(476): OW_Database->execute('INSERT INTO `ow...', Array)
+#2 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\database.php(512): OW_Database->insert('INSERT INTO `ow...', Array)
+#3 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\base_dao.php(216): OW_Database->insertObject('ow_base_menu_it...', Object(BOL_MenuItem))
+#4 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\bol\navigation_service.php(106): OW_BaseDao->save(Object(BOL_MenuItem))
+#5 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\navigation.php(98): BOL_NavigationService->saveMenuItem(Object(BOL_MenuItem))
+#6 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\example\activate.php(3): OW_Navigation->addMenuItem('main', 'example_index', 'example', 'main_menu_item', 2)
+#7 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\bol\plugin_service.php(684): include_once('C:\\Users\\Utente...')
+#8 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\bol\plugin_service.php(404): BOL_PluginService->includeScript('C:\\Users\\Utente...')
+#9 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\admin\controllers\plugins.php(686): BOL_PluginService->install('example')
+#10 [internal function]: ADMIN_CTRL_Plugins->install(Array)
+#11 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\request_handler.php(250): ReflectionMethod->invokeArgs(Object(ADMIN_CTRL_Plugins), Array)
+#12 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\request_handler.php(226): OW_RequestHandler->processControllerAction(Object(ReflectionMethod), Object(ADMIN_CTRL_Plugins))
+#13 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\application.php(346): OW_RequestHandler->dispatch()
+#14 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\index.php(76): OW_Application->handleRequest()
+#15 {main}]
+[Wed Nov 15 0:38:26 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:38:26 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 0:38:32 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:38:35 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:38:40 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:38:42 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:38:48 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:38:53 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:38:53 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 0:42:29 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:42:37 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:42:41 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:42:47 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:42:48 2017] [ow_core_log] [Exception] Message: SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'main_menu_item-example' for key 'key' File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\database.php Line:723 Trace: [#0 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\database.php(723): PDOStatement->execute()
+#1 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\database.php(476): OW_Database->execute('INSERT INTO `ow...', Array)
+#2 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\database.php(512): OW_Database->insert('INSERT INTO `ow...', Array)
+#3 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\base_dao.php(216): OW_Database->insertObject('ow_base_menu_it...', Object(BOL_MenuItem))
+#4 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\bol\navigation_service.php(106): OW_BaseDao->save(Object(BOL_MenuItem))
+#5 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\navigation.php(98): BOL_NavigationService->saveMenuItem(Object(BOL_MenuItem))
+#6 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\example\activate.php(3): OW_Navigation->addMenuItem('main', 'example_index', 'example', 'main_menu_item', 2)
+#7 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\bol\plugin_service.php(684): include_once('C:\\Users\\Utente...')
+#8 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\bol\plugin_service.php(404): BOL_PluginService->includeScript('C:\\Users\\Utente...')
+#9 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\admin\controllers\plugins.php(686): BOL_PluginService->install('example')
+#10 [internal function]: ADMIN_CTRL_Plugins->install(Array)
+#11 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\request_handler.php(250): ReflectionMethod->invokeArgs(Object(ADMIN_CTRL_Plugins), Array)
+#12 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\request_handler.php(226): OW_RequestHandler->processControllerAction(Object(ReflectionMethod), Object(ADMIN_CTRL_Plugins))
+#13 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\application.php(346): OW_RequestHandler->dispatch()
+#14 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\index.php(76): OW_Application->handleRequest()
+#15 {main}]
+[Wed Nov 15 0:43:03 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:43:03 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 0:43:52 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:43:52 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 0:44:04 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:44:04 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 0:44:09 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:44:14 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:44:17 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:44:20 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:44:29 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:44:29 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 0:44:42 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:45:04 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:45:11 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example_index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:45:17 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example_index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:45:17 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 0:52:29 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example_index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:52:29 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 0:52:35 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example_index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:52:38 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example_index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:52:41 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example_index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:52:49 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example_index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:52:52 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example_index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:52:52 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 0:52:56 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example_index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:52:58 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example_index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:53:07 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 0:53:24 2017] [ow_core_log] [Warning] Message: include(C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\example\controllers\action_controller.php): failed to open stream: No such file or directory File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\autoload.php Line:110
+[Wed Nov 15 0:53:24 2017] [ow_core_log] [Warning] Message: include(): Failed opening 'C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\example\controllers\action_controller.php' for inclusion (include_path='.;C:\xampp\php\PEAR') File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\autoload.php Line:110
+[Wed Nov 15 0:53:24 2017] [ow_core_log] [Warning] Message: class_parents(): Class EXAMPLE_CTRL_ActionController does not exist and could not be loaded File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\classes\event_handler.php Line:437
+[Wed Nov 15 0:53:24 2017] [ow_core_log] [Warning] Message: in_array() expects parameter 2 to be array, boolean given File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\classes\event_handler.php Line:439
+[Wed Nov 15 0:53:24 2017] [ow_core_log] [Warning] Message: include(C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\example\controllers\action_controller.php): failed to open stream: No such file or directory File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\autoload.php Line:110
+[Wed Nov 15 0:53:24 2017] [ow_core_log] [Warning] Message: include(): Failed opening 'C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\example\controllers\action_controller.php' for inclusion (include_path='.;C:\xampp\php\PEAR') File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\autoload.php Line:110
+[Wed Nov 15 0:53:24 2017] [ow_core_log] [Warning] Message: include(C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\example\controllers\action_controller.php): failed to open stream: No such file or directory File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\autoload.php Line:110
+[Wed Nov 15 0:53:24 2017] [ow_core_log] [Warning] Message: include(): Failed opening 'C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\example\controllers\action_controller.php' for inclusion (include_path='.;C:\xampp\php\PEAR') File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\autoload.php Line:110
+[Wed Nov 15 0:53:51 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:53:54 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:53:54 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 0:56:52 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:56:57 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:57:02 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:57:08 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:57:15 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 0:57:21 2017] [ow_core_log] [Warning] Message: include(C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\example\controllers\action_controller.php): failed to open stream: No such file or directory File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\autoload.php Line:110
+[Wed Nov 15 0:57:21 2017] [ow_core_log] [Warning] Message: include(): Failed opening 'C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\example\controllers\action_controller.php' for inclusion (include_path='.;C:\xampp\php\PEAR') File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\autoload.php Line:110
+[Wed Nov 15 0:57:21 2017] [ow_core_log] [Warning] Message: class_parents(): Class EXAMPLE_CTRL_ActionController does not exist and could not be loaded File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\classes\event_handler.php Line:437
+[Wed Nov 15 0:57:21 2017] [ow_core_log] [Warning] Message: in_array() expects parameter 2 to be array, boolean given File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\classes\event_handler.php Line:439
+[Wed Nov 15 0:57:21 2017] [ow_core_log] [Warning] Message: include(C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\example\controllers\action_controller.php): failed to open stream: No such file or directory File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\autoload.php Line:110
+[Wed Nov 15 0:57:21 2017] [ow_core_log] [Warning] Message: include(): Failed opening 'C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\example\controllers\action_controller.php' for inclusion (include_path='.;C:\xampp\php\PEAR') File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\autoload.php Line:110
+[Wed Nov 15 0:57:21 2017] [ow_core_log] [Warning] Message: include(C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\example\controllers\action_controller.php): failed to open stream: No such file or directory File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\autoload.php Line:110
+[Wed Nov 15 0:57:21 2017] [ow_core_log] [Warning] Message: include(): Failed opening 'C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\example\controllers\action_controller.php' for inclusion (include_path='.;C:\xampp\php\PEAR') File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\autoload.php Line:110
+[Wed Nov 15 0:57:29 2017] [ow_core_log] [Warning] Message: include(C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\example\controllers\action_controller.php): failed to open stream: No such file or directory File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\autoload.php Line:110
+[Wed Nov 15 0:57:29 2017] [ow_core_log] [Warning] Message: include(): Failed opening 'C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\example\controllers\action_controller.php' for inclusion (include_path='.;C:\xampp\php\PEAR') File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\autoload.php Line:110
+[Wed Nov 15 0:57:29 2017] [ow_core_log] [Warning] Message: class_parents(): Class EXAMPLE_CTRL_ActionController does not exist and could not be loaded File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\classes\event_handler.php Line:437
+[Wed Nov 15 0:57:29 2017] [ow_core_log] [Warning] Message: in_array() expects parameter 2 to be array, boolean given File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\classes\event_handler.php Line:439
+[Wed Nov 15 0:57:29 2017] [ow_core_log] [Warning] Message: include(C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\example\controllers\action_controller.php): failed to open stream: No such file or directory File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\autoload.php Line:110
+[Wed Nov 15 0:57:29 2017] [ow_core_log] [Warning] Message: include(): Failed opening 'C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\example\controllers\action_controller.php' for inclusion (include_path='.;C:\xampp\php\PEAR') File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\autoload.php Line:110
+[Wed Nov 15 0:57:29 2017] [ow_core_log] [Warning] Message: include(C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\example\controllers\action_controller.php): failed to open stream: No such file or directory File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\autoload.php Line:110
+[Wed Nov 15 0:57:29 2017] [ow_core_log] [Warning] Message: include(): Failed opening 'C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\example\controllers\action_controller.php' for inclusion (include_path='.;C:\xampp\php\PEAR') File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\autoload.php Line:110
+[Wed Nov 15 0:57:39 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 0:57:57 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:57:59 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:57:59 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 0:58:10 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:58:13 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 0:58:22 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 0:58:27 2017] [ow_core_log] [Warning] Message: include(C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\example\controllers\action_controller.php): failed to open stream: No such file or directory File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\autoload.php Line:110
+[Wed Nov 15 0:58:27 2017] [ow_core_log] [Warning] Message: include(): Failed opening 'C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\example\controllers\action_controller.php' for inclusion (include_path='.;C:\xampp\php\PEAR') File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\autoload.php Line:110
+[Wed Nov 15 0:58:27 2017] [ow_core_log] [Warning] Message: class_parents(): Class EXAMPLE_CTRL_ActionController does not exist and could not be loaded File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\classes\event_handler.php Line:437
+[Wed Nov 15 0:58:27 2017] [ow_core_log] [Warning] Message: in_array() expects parameter 2 to be array, boolean given File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\classes\event_handler.php Line:439
+[Wed Nov 15 0:58:27 2017] [ow_core_log] [Warning] Message: include(C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\example\controllers\action_controller.php): failed to open stream: No such file or directory File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\autoload.php Line:110
+[Wed Nov 15 0:58:27 2017] [ow_core_log] [Warning] Message: include(): Failed opening 'C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\example\controllers\action_controller.php' for inclusion (include_path='.;C:\xampp\php\PEAR') File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\autoload.php Line:110
+[Wed Nov 15 0:58:27 2017] [ow_core_log] [Warning] Message: include(C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\example\controllers\action_controller.php): failed to open stream: No such file or directory File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\autoload.php Line:110
+[Wed Nov 15 0:58:27 2017] [ow_core_log] [Warning] Message: include(): Failed opening 'C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\example\controllers\action_controller.php' for inclusion (include_path='.;C:\xampp\php\PEAR') File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\autoload.php Line:110
+[Wed Nov 15 1:07:39 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 1:07:49 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 1:07:51 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 1:08:00 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 1:08:02 2017] [ow_core_log] [Warning] Message: include(C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\example\controllers\action_controller.php): failed to open stream: No such file or directory File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\autoload.php Line:110
+[Wed Nov 15 1:08:02 2017] [ow_core_log] [Warning] Message: include(): Failed opening 'C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\example\controllers\action_controller.php' for inclusion (include_path='.;C:\xampp\php\PEAR') File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\autoload.php Line:110
+[Wed Nov 15 1:08:02 2017] [ow_core_log] [Warning] Message: class_parents(): Class EXAMPLE_CTRL_ActionController does not exist and could not be loaded File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\classes\event_handler.php Line:437
+[Wed Nov 15 1:08:02 2017] [ow_core_log] [Warning] Message: in_array() expects parameter 2 to be array, boolean given File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\classes\event_handler.php Line:439
+[Wed Nov 15 1:08:02 2017] [ow_core_log] [Warning] Message: include(C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\example\controllers\action_controller.php): failed to open stream: No such file or directory File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\autoload.php Line:110
+[Wed Nov 15 1:08:02 2017] [ow_core_log] [Warning] Message: include(): Failed opening 'C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\example\controllers\action_controller.php' for inclusion (include_path='.;C:\xampp\php\PEAR') File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\autoload.php Line:110
+[Wed Nov 15 1:08:02 2017] [ow_core_log] [Warning] Message: include(C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\example\controllers\action_controller.php): failed to open stream: No such file or directory File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\autoload.php Line:110
+[Wed Nov 15 1:08:02 2017] [ow_core_log] [Warning] Message: include(): Failed opening 'C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\example\controllers\action_controller.php' for inclusion (include_path='.;C:\xampp\php\PEAR') File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\autoload.php Line:110
+[Wed Nov 15 1:11:31 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 1:11:42 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 1:11:43 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 1:11:43 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 1:11:57 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 1:11:59 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 1:12:01 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 1:12:05 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 1:12:06 2017] [ow_core_log] [Exception] Message: SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'main_menu_item-example' for key 'key' File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\database.php Line:723 Trace: [#0 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\database.php(723): PDOStatement->execute()
+#1 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\database.php(476): OW_Database->execute('INSERT INTO `ow...', Array)
+#2 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\database.php(512): OW_Database->insert('INSERT INTO `ow...', Array)
+#3 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\base_dao.php(216): OW_Database->insertObject('ow_base_menu_it...', Object(BOL_MenuItem))
+#4 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\bol\navigation_service.php(106): OW_BaseDao->save(Object(BOL_MenuItem))
+#5 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\navigation.php(98): BOL_NavigationService->saveMenuItem(Object(BOL_MenuItem))
+#6 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\example\activate.php(3): OW_Navigation->addMenuItem('main', 'example-index', 'example', 'main_menu_item', 2)
+#7 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\bol\plugin_service.php(684): include_once('C:\\Users\\Utente...')
+#8 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\bol\plugin_service.php(404): BOL_PluginService->includeScript('C:\\Users\\Utente...')
+#9 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\admin\controllers\plugins.php(686): BOL_PluginService->install('example')
+#10 [internal function]: ADMIN_CTRL_Plugins->install(Array)
+#11 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\request_handler.php(250): ReflectionMethod->invokeArgs(Object(ADMIN_CTRL_Plugins), Array)
+#12 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\request_handler.php(226): OW_RequestHandler->processControllerAction(Object(ReflectionMethod), Object(ADMIN_CTRL_Plugins))
+#13 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\application.php(346): OW_RequestHandler->dispatch()
+#14 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\index.php(76): OW_Application->handleRequest()
+#15 {main}]
+[Wed Nov 15 1:12:45 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 1:15:18 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 1:15:40 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 1:15:51 2017] [ow_core_log] [Warning] Message: include(C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\example\controllers\action_controller.php): failed to open stream: No such file or directory File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\autoload.php Line:110
+[Wed Nov 15 1:15:51 2017] [ow_core_log] [Warning] Message: include(): Failed opening 'C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\example\controllers\action_controller.php' for inclusion (include_path='.;C:\xampp\php\PEAR') File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\autoload.php Line:110
+[Wed Nov 15 1:15:51 2017] [ow_core_log] [Warning] Message: class_parents(): Class EXAMPLE_CTRL_ActionController does not exist and could not be loaded File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\classes\event_handler.php Line:437
+[Wed Nov 15 1:15:51 2017] [ow_core_log] [Warning] Message: in_array() expects parameter 2 to be array, boolean given File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\classes\event_handler.php Line:439
+[Wed Nov 15 1:15:51 2017] [ow_core_log] [Warning] Message: include(C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\example\controllers\action_controller.php): failed to open stream: No such file or directory File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\autoload.php Line:110
+[Wed Nov 15 1:15:51 2017] [ow_core_log] [Warning] Message: include(): Failed opening 'C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\example\controllers\action_controller.php' for inclusion (include_path='.;C:\xampp\php\PEAR') File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\autoload.php Line:110
+[Wed Nov 15 1:15:51 2017] [ow_core_log] [Warning] Message: include(C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\example\controllers\action_controller.php): failed to open stream: No such file or directory File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\autoload.php Line:110
+[Wed Nov 15 1:15:51 2017] [ow_core_log] [Warning] Message: include(): Failed opening 'C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\example\controllers\action_controller.php' for inclusion (include_path='.;C:\xampp\php\PEAR') File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\autoload.php Line:110
+[Wed Nov 15 1:24:17 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 1:25:02 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 1:25:06 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 1:25:06 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 1:25:13 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 1:25:18 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 1:25:27 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 1:25:34 2017] [ow_core_log] [Warning] Message: include(C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\example\controllers\action_controller.php): failed to open stream: No such file or directory File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\autoload.php Line:110
+[Wed Nov 15 1:25:34 2017] [ow_core_log] [Warning] Message: include(): Failed opening 'C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\example\controllers\action_controller.php' for inclusion (include_path='.;C:\xampp\php\PEAR') File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\autoload.php Line:110
+[Wed Nov 15 1:25:34 2017] [ow_core_log] [Warning] Message: class_parents(): Class EXAMPLE_CTRL_ActionController does not exist and could not be loaded File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\classes\event_handler.php Line:437
+[Wed Nov 15 1:25:34 2017] [ow_core_log] [Warning] Message: in_array() expects parameter 2 to be array, boolean given File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\classes\event_handler.php Line:439
+[Wed Nov 15 1:25:34 2017] [ow_core_log] [Warning] Message: include(C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\example\controllers\action_controller.php): failed to open stream: No such file or directory File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\autoload.php Line:110
+[Wed Nov 15 1:25:34 2017] [ow_core_log] [Warning] Message: include(): Failed opening 'C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\example\controllers\action_controller.php' for inclusion (include_path='.;C:\xampp\php\PEAR') File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\autoload.php Line:110
+[Wed Nov 15 1:25:34 2017] [ow_core_log] [Warning] Message: include(C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\example\controllers\action_controller.php): failed to open stream: No such file or directory File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\autoload.php Line:110
+[Wed Nov 15 1:25:34 2017] [ow_core_log] [Warning] Message: include(): Failed opening 'C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\example\controllers\action_controller.php' for inclusion (include_path='.;C:\xampp\php\PEAR') File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\autoload.php Line:110
+[Wed Nov 15 1:26:37 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 1:26:49 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 1:26:51 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 1:26:51 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 1:27:24 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 1:38:22 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 1:38:22 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 1:38:25 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 1:38:32 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 1:38:36 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 1:38:37 2017] [ow_core_log] [Exception] Message: SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'main_menu_item-example' for key 'key' File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\database.php Line:723 Trace: [#0 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\database.php(723): PDOStatement->execute()
+#1 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\database.php(476): OW_Database->execute('INSERT INTO `ow...', Array)
+#2 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\database.php(512): OW_Database->insert('INSERT INTO `ow...', Array)
+#3 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\base_dao.php(216): OW_Database->insertObject('ow_base_menu_it...', Object(BOL_MenuItem))
+#4 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\bol\navigation_service.php(106): OW_BaseDao->save(Object(BOL_MenuItem))
+#5 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\navigation.php(98): BOL_NavigationService->saveMenuItem(Object(BOL_MenuItem))
+#6 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\example\activate.php(3): OW_Navigation->addMenuItem('main', 'example-index', 'example', 'main_menu_item', 2)
+#7 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\bol\plugin_service.php(684): include_once('C:\\Users\\Utente...')
+#8 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\bol\plugin_service.php(404): BOL_PluginService->includeScript('C:\\Users\\Utente...')
+#9 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\admin\controllers\plugins.php(686): BOL_PluginService->install('example')
+#10 [internal function]: ADMIN_CTRL_Plugins->install(Array)
+#11 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\request_handler.php(250): ReflectionMethod->invokeArgs(Object(ADMIN_CTRL_Plugins), Array)
+#12 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\request_handler.php(226): OW_RequestHandler->processControllerAction(Object(ReflectionMethod), Object(ADMIN_CTRL_Plugins))
+#13 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\application.php(346): OW_RequestHandler->dispatch()
+#14 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\index.php(76): OW_Application->handleRequest()
+#15 {main}]
+[Wed Nov 15 1:39:22 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 1:39:32 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 1:39:35 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 1:39:46 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 1:39:48 2017] [ow_core_log] [Warning] Message: include(C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\example\controllers\action_controller.php): failed to open stream: No such file or directory File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\autoload.php Line:110
+[Wed Nov 15 1:39:48 2017] [ow_core_log] [Warning] Message: include(): Failed opening 'C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\example\controllers\action_controller.php' for inclusion (include_path='.;C:\xampp\php\PEAR') File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\autoload.php Line:110
+[Wed Nov 15 1:39:48 2017] [ow_core_log] [Warning] Message: class_parents(): Class EXAMPLE_CTRL_ActionController does not exist and could not be loaded File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\classes\event_handler.php Line:437
+[Wed Nov 15 1:39:48 2017] [ow_core_log] [Warning] Message: in_array() expects parameter 2 to be array, boolean given File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\classes\event_handler.php Line:439
+[Wed Nov 15 1:39:48 2017] [ow_core_log] [Warning] Message: include(C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\example\controllers\action_controller.php): failed to open stream: No such file or directory File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\autoload.php Line:110
+[Wed Nov 15 1:39:48 2017] [ow_core_log] [Warning] Message: include(): Failed opening 'C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\example\controllers\action_controller.php' for inclusion (include_path='.;C:\xampp\php\PEAR') File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\autoload.php Line:110
+[Wed Nov 15 1:39:48 2017] [ow_core_log] [Warning] Message: include(C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\example\controllers\action_controller.php): failed to open stream: No such file or directory File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\autoload.php Line:110
+[Wed Nov 15 1:39:48 2017] [ow_core_log] [Warning] Message: include(): Failed opening 'C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\example\controllers\action_controller.php' for inclusion (include_path='.;C:\xampp\php\PEAR') File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\autoload.php Line:110
+[Wed Nov 15 1:49:55 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 1:50:14 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 2:39:09 2017] [ow_core_log] [Warning] Message: include(C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\skeleton\components\floatbox.php): failed to open stream: No such file or directory File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\autoload.php Line:110
+[Wed Nov 15 2:39:09 2017] [ow_core_log] [Warning] Message: include(): Failed opening 'C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\skeleton\components\floatbox.php' for inclusion (include_path='.;C:\xampp\php\PEAR') File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\autoload.php Line:110
+[Wed Nov 15 2:39:09 2017] [ow_core_log] [Exception] Message: Class SKELETON_CMP_Floatbox does not exist File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\ow.php Line:490 Trace: [#0 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\ow.php(490): ReflectionClass->__construct('SKELETON_CMP_Fl...')
+#1 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\controllers\ajax_loader.php(50): OW::getClassInstanceArray('SKELETON_CMP_Fl...', Array)
+#2 [internal function]: BASE_CTRL_AjaxLoader->component(Array)
+#3 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\request_handler.php(250): ReflectionMethod->invokeArgs(Object(BASE_CTRL_AjaxLoader), Array)
+#4 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\request_handler.php(226): OW_RequestHandler->processControllerAction(Object(ReflectionMethod), Object(BASE_CTRL_AjaxLoader))
+#5 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\application.php(346): OW_RequestHandler->dispatch()
+#6 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\index.php(76): OW_Application->handleRequest()
+#7 {main}]
+[Wed Nov 15 2:40:19 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 2:44:42 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 2:45:02 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 2:51:10 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 2:51:20 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 3:02:21 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 3:07:32 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 3:07:48 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 3:08:15 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 3:13:11 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 3:15:34 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 3:19:13 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 3:19:55 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 3:29:57 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 3:30:32 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 3:30:58 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 3:31:15 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 3:32:40 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 3:33:48 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 3:34:29 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 3:34:31 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 3:35:01 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 3:35:06 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 3:35:22 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 3:35:27 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 3:35:32 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 3:35:56 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 3:35:59 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 3:36:05 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 3:36:51 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 3:36:51 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 3:36:56 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 3:37:00 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 3:37:12 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 3:37:16 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 3:37:30 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 3:37:41 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 3:37:43 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 3:37:43 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 3:37:44 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 3:37:48 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 3:37:53 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 3:37:54 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 3:37:57 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 3:37:59 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 3:38:02 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 3:38:11 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 3:38:13 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 3:38:13 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 3:38:15 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 3:38:17 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 3:38:50 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 3:38:55 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 3:38:55 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 3:38:56 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 3:38:58 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 3:39:02 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 3:39:06 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 3:39:07 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 3:39:10 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 3:39:14 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 3:39:16 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 3:39:16 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 3:39:18 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 3:39:20 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 5:30:52 2017] [ow_core_log] [Exception] Message: SQLSTATE[HY000]: General error: 145 Table '.\splod\ow_base_site_statistic' is marked as crashed and should be repaired File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\database.php Line:723 Trace: [#0 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\database.php(723): PDOStatement->execute()
+#1 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\database.php(476): OW_Database->execute('INSERT DELAYED ...', Array)
+#2 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\database.php(512): OW_Database->insert('INSERT DELAYED ...', Array)
+#3 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\base_dao.php(237): OW_Database->insertObject('ow_base_site_st...', Object(BOL_SiteStatistic), true)
+#4 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\bol\site_statistic_service.php(111): OW_BaseDao->saveDelayed(Object(BOL_SiteStatistic))
+#5 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\classes\event_handler.php(350): BOL_SiteStatisticService->addEntity('user_login', 1)
+#6 [internal function]: BASE_CLASS_EventHandler->onUserLoginSaveStatistics(Object(OW_Event))
+#7 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\event_manager.php(228): call_user_func(Array, Object(OW_Event))
+#8 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\auth.php(123): OW_EventManager->trigger(Object(OW_Event))
+#9 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\auth.php(75): OW_Auth->login(1)
+#10 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\user.php(96): OW_Auth->authenticate(Object(BASE_CLASS_StandardAuth))
+#11 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\bol\user_service.php(1436): OW_User->authenticate(Object(BASE_CLASS_StandardAuth))
+#12 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\controllers\user.php(367): BOL_UserService->processSignIn('spLOD', 'spLODcreator', true)
+#13 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\controllers\user.php(230): BASE_CTRL_User->processSignIn()
+#14 [internal function]: BASE_CTRL_User->standardSignIn(Array)
+#15 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\request_handler.php(250): ReflectionMethod->invokeArgs(Object(BASE_CTRL_User), Array)
+#16 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\request_handler.php(226): OW_RequestHandler->processControllerAction(Object(ReflectionMethod), Object(BASE_CTRL_User))
+#17 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\application.php(346): OW_RequestHandler->dispatch()
+#18 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\index.php(76): OW_Application->handleRequest()
+#19 {main}]
+[Wed Nov 15 5:31:02 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 5:31:08 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 5:31:08 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 5:31:13 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 5:31:19 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 5:31:24 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 5:31:27 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 5:31:29 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 5:31:37 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 5:31:40 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 5:31:40 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 5:31:44 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 5:31:47 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 5:34:49 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 5:34:50 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 5:34:55 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 5:42:09 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 5:42:20 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 5:42:27 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 5:42:30 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 5:42:32 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 5:42:34 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 5:42:38 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 5:42:40 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 5:42:41 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 5:42:43 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 5:42:45 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 5:43:24 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 5:43:42 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 5:43:42 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 5:43:44 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 5:43:48 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 5:43:55 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 5:43:58 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 5:43:59 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 5:44:01 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 5:44:03 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 5:44:07 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 5:44:11 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 5:44:13 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 5:44:14 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 5:44:15 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 5:44:23 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 5:47:49 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 5:47:49 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 5:47:56 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 5:48:05 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 5:48:14 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 5:48:14 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 5:48:17 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 5:48:20 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 5:48:20 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 5:51:19 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 5:51:19 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 5:51:23 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 5:51:23 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 5:51:28 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 5:51:31 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 5:51:36 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 5:51:36 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 5:51:48 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 5:51:50 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 5:53:09 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 5:53:09 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 5:53:25 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 5:53:27 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 5:53:35 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 5:53:35 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 5:53:37 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 5:53:38 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 5:59:47 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 5:59:47 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 5:59:51 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 5:59:54 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 5:59:56 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 5:59:56 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 5:59:58 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 5:59:59 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 6:00:38 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 6:00:38 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 6:00:45 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 6:00:48 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 6:00:51 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 6:00:51 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 6:00:54 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 6:00:56 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 6:05:02 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 6:05:31 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 6:05:31 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 6:05:35 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 6:05:36 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 6:08:18 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 6:08:19 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 6:08:24 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 6:08:26 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 6:11:57 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 6:11:57 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 6:12:04 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 6:12:06 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 6:12:08 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 6:12:08 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 6:12:12 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 6:12:17 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 6:13:47 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 6:13:47 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 6:13:51 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 6:13:54 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 6:13:55 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 6:13:55 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 6:13:57 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 6:13:59 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 6:14:36 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 6:14:36 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 6:14:41 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 6:14:44 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 6:14:46 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 6:14:46 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 6:14:48 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 6:14:50 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 6:18:05 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 6:18:05 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 6:18:12 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 6:18:16 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 6:18:17 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 6:18:17 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 6:18:21 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 6:18:26 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 6:18:26 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 6:18:29 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 6:18:30 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 6:18:52 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 6:18:55 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 6:19:03 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 6:19:12 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 6:19:25 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 6:19:28 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 6:19:31 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 6:19:31 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 6:19:34 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 6:19:37 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 6:27:35 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 6:27:35 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 6:28:00 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 6:28:05 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 6:28:07 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 6:28:07 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 6:28:09 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 6:28:11 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 6:37:36 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 6:37:37 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 6:37:44 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 6:37:47 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 6:37:50 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 6:37:50 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 6:37:52 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 6:37:54 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 6:43:30 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 6:43:34 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 6:43:36 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 6:43:36 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 6:43:38 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 6:43:40 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 6:48:33 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 6:48:33 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 6:48:39 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 6:48:42 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 6:48:45 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 6:48:45 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 6:48:48 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 6:48:50 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 6:53:31 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 6:53:32 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 6:53:38 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 6:53:42 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 6:53:49 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 6:53:50 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 6:53:54 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 6:53:56 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 6:58:50 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 6:58:50 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 6:58:52 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 6:58:56 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 6:58:58 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 6:58:58 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 6:59:05 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 6:59:08 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 7:03:13 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 7:03:16 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 7:03:17 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 7:03:18 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 7:03:19 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 7:03:21 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 7:08:01 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 7:08:01 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 7:08:17 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 7:08:22 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 7:08:25 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 7:08:25 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 7:08:27 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 7:08:29 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 7:09:44 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 7:09:47 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 7:09:49 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 7:09:50 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 7:09:55 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 7:09:56 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 7:22:55 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 7:22:59 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 7:23:01 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 7:23:01 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 7:23:04 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 7:23:06 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 7:24:20 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 7:24:24 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 7:24:26 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 7:24:26 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 7:24:30 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 7:24:32 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 7:26:35 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 7:26:40 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 7:26:42 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 7:26:42 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 7:26:44 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 7:26:46 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 7:32:02 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 7:32:12 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 7:32:29 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 7:32:35 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 7:32:40 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 7:32:42 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 7:32:42 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 7:32:47 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 7:32:50 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 7:40:57 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 7:41:01 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 7:41:03 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 7:41:03 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 7:41:11 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 7:43:39 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 7:43:44 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 7:43:50 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Wed Nov 15 7:43:50 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Wed Nov 15 7:43:52 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236

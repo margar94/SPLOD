@@ -588,7 +588,7 @@ enLanguageManager.prototype.startsWithVerb = function(predicateLabel, direction)
 enLanguageManager.prototype.getPredicateVerbalization = function(predicateLabel, direction){
 	var label;
 
-	if(enLanguageManager.startsWithVerb(predicateLabel, direction))
+	if(enLanguageManager.prototype.startsWithVerb(predicateLabel, direction))
 		label = 'that '+ predicateLabel;
 	else if(direction == 'direct')
 		label =	'that has '+ enLanguageManager.prototype.getArticle(predicateLabel) + ' ' + predicateLabel; 
