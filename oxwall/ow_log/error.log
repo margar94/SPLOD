@@ -878,3 +878,9 @@
 [Wed Nov 15 7:43:50 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
 [Wed Nov 15 7:43:50 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
 [Wed Nov 15 7:43:52 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Thu Nov 16 3:31:10 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Thu Nov 16 3:31:14 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Thu Nov 16 3:31:16 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Thu Nov 16 3:31:19 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Thu Nov 16 3:31:19 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Thu Nov 16 3:31:21 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
