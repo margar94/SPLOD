@@ -38,6 +38,8 @@ function renderResultTable(select, labelSelect, results){
 	createFieldsSelectionList(labels);
 	createTable(select, labels, results);
 
+	createResultsJSON(select, labels, results);
+
 }
 
 function createTableLabel(select, labelSelect){
@@ -99,6 +101,7 @@ function manageFields(){
 }
 
 function createTable(select, labelSelect, results){
+	console.log(results);
 
 	var previewTable = $("#previewTableResult")
 	previewTable.empty();
@@ -203,4 +206,48 @@ function createTable(select, labelSelect, results){
 	//$('#previewTableResult').html(previewTable[0].outerHTML );
 	//$('#previewTableResult').attr('src', '#resultsTable');
 	//console.log($('#previewTableResult'));
+}
+
+function createResultsJSON(select, labels, results){
+	var resultsToConvert = {};
+
+	var recordsObj = [];
+	$.each(results, function(index){
+		var element = results[index];
+
+		var newElement = {};
+
+		for(var i=0; i<select.length; i++) {
+			var field = select[i].substring(1);
+			
+			if(field in element){
+
+				newElement[labels[i].label] = element[field].value;
+				if('url' in element[field]){
+					if(!isImage(element[field].url))
+						newElement[labels[i].label+' url'] = element[field].url;
+					else
+						newElement[labels[i].label] = element[field].url;
+				}
+				if('xml:lang' in element[field]){
+					newElement[labels[i].label+' lang'] = element[field]['xml:lang'];
+				}
+			}else{
+				newElement[labels[i].label] = null;
+			}
+		}
+
+		recordsObj.push(newElement);
+	});
+	resultsToConvert.records = recordsObj;
+
+	resultsToConvert.fields = [];
+	for(field in recordsObj[0]){
+		var tempField = {};
+		tempField.type = "text";
+		tempField.id = field;
+		resultsToConvert.fields.push(tempField);
+	}
+
+	console.log(resultsToConvert);
 }
