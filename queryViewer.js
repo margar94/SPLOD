@@ -665,7 +665,6 @@ function attachEvents(){
 			activeAjaxRequest = [];
 		}
 		//don"t kill user query
-
 		updateBoxes(queryLogicStructure[onFocus]);	
 	});
 

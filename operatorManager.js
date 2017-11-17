@@ -12,7 +12,7 @@ var mapCreator;
 var pendingQuery;
 
 var changedFocus;
-var onFocus;
+var onFocusOperator;
 
 //OperatorManager is a singleton
 var OperatorManager = function () {
@@ -23,7 +23,7 @@ var OperatorManager = function () {
 	mapCreator = new MapCreator();
 
 	changedFocus = false;
-	onFocus = null;
+	onFocusOperator = null;
 	inizializeMaps();
 
 	parameterNumberOperator = {
@@ -255,7 +255,7 @@ OperatorManager.prototype.selectedReusableResult = function(result, fromInput){
 	var type;
 	if(operator.value == 'limit'){
 		type = 'number';
-	}else if(onFocus in resultDatatype){
+	}else if(onFocusOperator in resultDatatype){
 		type = operator.datatype;
 	}else{
 		type = null;
@@ -330,7 +330,7 @@ OperatorManager.prototype.selectedOperator = function(operator, datatype){
 
 OperatorManager.prototype.getResultToCompleteOperator = function(){
 	var operator = pendingQuery[0];
-	var operatorField = onFocus;
+	var operatorField = onFocusOperator;
 	if(operator == 'limit'){
 		results = [];
 	}else if(operatorField in resultDatatype){ 
@@ -389,11 +389,11 @@ function getTypeByOperator(operatorField, operator, datatype){
 OperatorManager.prototype.getPendingQueryFields = function(){
 	var pendingQueryFields = [];
 
-	if(onFocus=='limit'){
+	if(onFocusOperator=='limit'){
 		pendingQueryFields.push('');
 	}else{
 		//concepts or predicates that fire operator's inserting
-		var nodeOnFocus = mapCreator.getNodeByKey(onFocus);
+		var nodeOnFocus = mapCreator.getNodeByKey(onFocusOperator);
 		pendingQueryFields.push(nodeOnFocus.label);
 	}
 
@@ -491,9 +491,9 @@ function valInArray(val, arr){
 
 OperatorManager.prototype.changedFocus = function(newOnFocus, userChangeFocus){
 	changedFocus = true;
-	onFocus = newOnFocus;
+	onFocusOperator = newOnFocus;
 
-	if(onFocus!=null){
+	if(onFocusOperator!=null){
 		if(userChangeFocus){
 			manageUpdateOperatorViewer();
 		}
@@ -508,17 +508,17 @@ function manageUpdateOperatorViewer(){
 	changedFocus = false;
 	var operatorList = [];
 
-	if(onFocus==null){
+	if(onFocusOperator==null){
 		renderOperatorList([{list : [], datatype:null}]);
 		return;
 	}
 
-	if(onFocus=='limit'){//focus on every or everything or number applied as resultLimit
-		renderOperatorList([{list : operatorMap[onFocus], datatype:'number'}]);
+	if(onFocusOperator=='limit'){//focus on every or everything or number applied as resultLimit
+		renderOperatorList([{list : operatorMap[onFocusOperator], datatype:'number'}]);
 		return;
 	}
 	
-	var node = mapCreator.getNodeByKey(onFocus);
+	var node = mapCreator.getNodeByKey(onFocusOperator);
 
 	if(node.type=='result'){
 		var operatorNode = mapCreator.getNodeByKey(node.parent);
@@ -535,7 +535,7 @@ function manageUpdateOperatorViewer(){
 		return;
 	}
 	
-	if(node.type == 'operator' && (node.label in operatorMap)){ //onFocus is an operator 
+	if(node.type == 'operator' && (node.label in operatorMap)){ //onFocusOperator is an operator 
 		renderOperatorList([{list : operatorMap[node.label], datatype:null}]);
 		return;
 	}
@@ -557,14 +557,14 @@ function manageUpdateOperatorViewer(){
 		}
 	}
 
-	if(mapCreator.isRefinement(onFocus)){
+	if(mapCreator.isRefinement(onFocusOperator)){
 		operatorList.push({list:['not', 'optional'], datatype:null});
-		onFocus = mapCreator.getTopElement(onFocus);
+		onFocusOperator = mapCreator.getTopElement(onFocusOperator);
 	}
-	//from here onFocus could be the concept or his ancestor
-	if(onFocus in resultDatatype){
-		for(var i=0; i<resultDatatype[onFocus].datatype.length; i++){
-			operatorList.push({list:operatorMap[resultDatatype[onFocus].datatype[i]], datatype:resultDatatype[onFocus].datatype[i]});
+	//from here onFocusOperator could be the concept or his ancestor
+	if(onFocusOperator in resultDatatype){
+		for(var i=0; i<resultDatatype[onFocusOperator].datatype.length; i++){
+			operatorList.push({list:operatorMap[resultDatatype[onFocusOperator].datatype[i]], datatype:resultDatatype[onFocusOperator].datatype[i]});
 		}
 	}	
 
@@ -575,7 +575,7 @@ function manageUpdateOperatorViewer(){
 
 OperatorManager.prototype.changedReusableResult = function(result, fromInput){
 
-	var onFocusNode = mapCreator.getNodeByKey(onFocus); 
+	var onFocusNode = mapCreator.getNodeByKey(onFocusOperator); 
 
 	var type = onFocusNode.datatype;
 
@@ -614,8 +614,8 @@ OperatorManager.prototype.changedReusableResult = function(result, fromInput){
 		}
 	}
 
-	var cachedResultList = cachedResult[onFocus];
-	delete cachedResult[onFocus];
+	var cachedResultList = cachedResult[onFocusOperator];
+	delete cachedResult[onFocusOperator];
 
 	var lang = null;
 	if(value in resultLiteralLang)
