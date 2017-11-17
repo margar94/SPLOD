@@ -1,0 +1,332 @@
+<link rel="import" href="../base-ajax-json-alasql-datalet/base-ajax-json-alasql-datalet.html">
+
+
+
+<dom-module name="leafletjs-datalet">
+    <template>
+        <link rel="stylesheet" href="leafletsjs/leaflet.css" />
+        <base-ajax-json-alasql-datalet id="baseAjaxJsonAlasqlDatalet" data-url="{{dataUrl}}" fields="{{fields}}" data="{{data}}" datalettitle="{{datalettitle}}" description="{{description}}" export_menu="{{export_menu}}" disable_my_space="{{disable_my_space}}"></base-ajax-json-alasql-datalet>
+
+    </template>
+
+    <script src="leafletsjs/leaflet.js"></script>
+
+    <link rel="stylesheet" href="leafletsjs/marker_cluster/dist/MarkerCluster.css" />
+    <link rel="stylesheet" href="leafletsjs/marker_cluster/dist/MarkerCluster.Default.css" />
+    <script src="leafletsjs/marker_cluster/dist/leaflet.markercluster.js"></script>
+
+    <script>
+        var leafletjsBehavior = {
+            /**
+             * Read markers coordinates from the data object and add the marker to the map.
+             * Call a method for the map redraw and set the viewport in order to fit all the markers in the viewport..
+             *
+             * @method transformData
+             */
+            presentData: function(){
+                var t = this;
+//                L.Icon.Default.imagePath = 'http://172.16.15.128/Datalet-Ecosystem-Provider/COMPONENTS/datalets/leafletjs-datalet/leafletsjs/images/';
+                L.Icon.Default.imagePath = 'http://deep.routetopa.eu/deep/COMPONENTS/datalets/leafletjs-datalet/leafletsjs/images/';
+                var blueIcon = new L.Icon({
+                    iconUrl: L.Icon.Default.imagePath + 'marker-icon-2x-blue.png',
+                    shadowUrl: L.Icon.Default.imagePath + 'marker-shadow.png',
+                    iconSize: [25, 41],
+                    iconAnchor: [12, 41],
+                    popupAnchor: [1, -34],
+                    shadowSize: [41, 41]
+                });
+                var redIcon = new L.Icon({
+                    iconUrl: L.Icon.Default.imagePath + 'marker-icon-2x-red.png',
+                    shadowUrl: L.Icon.Default.imagePath + 'marker-shadow.png',
+                    iconSize: [25, 41],
+                    iconAnchor: [12, 41],
+                    popupAnchor: [1, -34],
+                    shadowSize: [41, 41]
+                });
+                var greenIcon = new L.Icon({
+                    iconUrl: L.Icon.Default.imagePath + 'marker-icon-2x-green.png',
+                    shadowUrl: L.Icon.Default.imagePath + 'marker-shadow.png',
+                    iconSize: [25, 41],
+                    iconAnchor: [12, 41],
+                    popupAnchor: [1, -34],
+                    shadowSize: [41, 41]
+                });
+                var orangeIcon = new L.Icon({
+                    iconUrl: L.Icon.Default.imagePath + 'marker-icon-2x-orange.png',
+                    shadowUrl: L.Icon.Default.imagePath + 'marker-shadow.png',
+                    iconSize: [25, 41],
+                    iconAnchor: [12, 41],
+                    popupAnchor: [1, -34],
+                    shadowSize: [41, 41]
+                });
+                var yellowIcon = new L.Icon({
+                    iconUrl: L.Icon.Default.imagePath + 'marker-icon-2x-yellow.png',
+                    shadowUrl: L.Icon.Default.imagePath + 'marker-shadow.png',
+                    iconSize: [25, 41],
+                    iconAnchor: [12, 41],
+                    popupAnchor: [1, -34],
+                    shadowSize: [41, 41]
+                });
+                var violetIcon = new L.Icon({
+                    iconUrl: L.Icon.Default.imagePath + 'marker-icon-2x-violet.png',
+                    shadowUrl: L.Icon.Default.imagePath + 'marker-shadow.png',
+                    iconSize: [25, 41],
+                    iconAnchor: [12, 41],
+                    popupAnchor: [1, -34],
+                    shadowSize: [41, 41]
+                });
+                var greyIcon = new L.Icon({
+                    iconUrl: L.Icon.Default.imagePath + 'marker-icon-2x-grey.png',
+                    shadowUrl: L.Icon.Default.imagePath + 'marker-shadow.png',
+                    iconSize: [25, 41],
+                    iconAnchor: [12, 41],
+                    popupAnchor: [1, -34],
+                    shadowSize: [41, 41]
+                });
+                var blackIcon = new L.Icon({
+                    iconUrl: L.Icon.Default.imagePath + 'marker-icon-2x-black.png',
+                    shadowUrl: L.Icon.Default.imagePath + 'marker-shadow.png',
+                    iconSize: [25, 41],
+                    iconAnchor: [12, 41],
+                    popupAnchor: [1, -34],
+                    shadowSize: [41, 41]
+                });
+                var icons = [blueIcon, redIcon, greenIcon, orangeIcon, yellowIcon, violetIcon, greyIcon, blackIcon];
+                var selectedFields = JSON.parse(this._component.getAttribute("selectedfields"));
+                var cat_index = 0;
+                for (var i=0; i < selectedFields.length; i++)
+                {
+                    if (selectedFields[i]) {
+                        if(selectedFields[i].field == "Categories")
+                            break;
+                        cat_index++;
+                    }
+                }
+                if(cat_index > -1) {
+                    var categories   = [];
+                    var cat, catIndex;
+                    for(var i=0; i<t.data[cat_index].data.length; i++)
+                    {
+                        cat = t.data[cat_index].data[i];
+                        catIndex = -1;
+                        for(var j=0; j<categories.length; j++)
+                        {
+                            if(categories[j].name == cat)
+                            {
+                                catIndex = j;
+                                break;
+                            }
+                        }
+                        if (catIndex == -1)
+                        {
+                            categories.push({name: cat, frequency: 1});
+                        }
+                        else
+                        {
+                            categories[catIndex].frequency++;
+                        }
+                    }
+                    categories.sort(function(a,b) {return (a.frequency < b.frequency) ? 1 : ((b.frequency < a.frequency) ? -1 : 0);} );
+                    for(var i=0; i<t.data[cat_index].data.length; i++)
+                    {
+                        cat = t.data[cat_index].data[i];
+                        catIndex = -1;
+                        for(var j=0; j<categories.length; j++)
+                        {
+                            if(categories[j].name == cat)
+                            {
+                                catIndex = j;
+                                break;
+                            }
+                        }
+                        if (catIndex >= 8) {
+                            t.data[cat_index].data[i] = 7;
+                        }
+                        else {
+                            t.data[cat_index].data[i] = catIndex;
+                        }
+                    }
+                    if(categories.length > 8)
+                        categories[7].name = '...';
+                }
+                try{
+                    this._component.map = L.map(this._component.$.baseAjaxJsonAlasqlDatalet.$.baseDatalet.$.datalet_container).setView([0, 0], 13, {reset:true});
+                }catch(e){}
+                L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    maxZoom: 18,
+                    attribution: 'Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
+                }).addTo(this._component.map);
+                t._component.coordinates = [];
+                var coordinates_index  = 0;
+                var isArray = t.data[0].data[0].constructor === Array;
+                var geo;
+                var markers_cluster = L.markerClusterGroup({ disableClusteringAtZoom: 17 });
+                for(var i=0; i<t.data[0].data.length; i++)
+                {
+                    if(isArray)
+                    {
+                        if(!isNaN(t.data[0].data[i][0]) && !isNaN(t.data[0].data[i][1])) {
+                            t._component.coordinates.push([parseFloat(t.data[0].data[i][0]), parseFloat(t.data[0].data[i][1])]);
+                            geo = L.marker([t._component.coordinates[coordinates_index][0], t._component.coordinates[coordinates_index][1]], {icon: categories ? icons[t.data[cat_index].data[i]] : icons[0]});//.addTo(t._component.map);
+                            markers_cluster.addLayer(geo);
+                            coordinates_index++;
+                        }
+                        else
+                             continue;
+                    }
+                    else if(typeof t.data[0].data[i] == 'string' && t.data[0].data[i].indexOf('{"type":"') === 0)
+                    {
+                        try
+                        {
+                            t.data[0].data[i] = JSON.parse(t.data[0].data[i]);
+                            geo = L.geoJson(t.data[0].data[i]).addTo(t._component.map);
+                        }catch(e) {continue;}
+                    }
+                    else if(typeof t.data[0].data[i] == 'string' && t.data[0].data[i].indexOf(","))
+                    {
+                        var coords = t.data[0].data[i].split(",");
+                        if(!isNaN(coords[0]) && !isNaN(coords[1])) {
+                            t._component.coordinates.push([parseFloat(coords[0]), parseFloat(coords[1])]);
+                            geo = L.marker([t._component.coordinates[coordinates_index][0], t._component.coordinates[coordinates_index][1]], {icon: categories ? icons[t.data[cat_index].data[i]] : icons[0]});//.addTo(t._component.map);
+                            markers_cluster.addLayer(geo);
+                            coordinates_index++;
+                        }else
+                            continue;
+                    }
+                    else
+                    {
+                        if( (!isNaN(t.data[0].data[i]) && !isNaN(t.data[1].data[i])) && (t.data[0].data[i] && t.data[1].data[i]) ) {
+                            t._component.coordinates.push([parseFloat(t.data[0].data[i]), parseFloat(t.data[1].data[i])]);
+                            geo = L.marker([t._component.coordinates[coordinates_index][0], t._component.coordinates[coordinates_index][1]], {icon: categories ? icons[t.data[cat_index].data[i]] : icons[0]});//.addTo(t._component.map);
+                            markers_cluster.addLayer(geo);
+                            coordinates_index++;
+                        }else
+                            continue;
+                    }
+                    var l = t.data.length;
+                    if(cat_index >-1) l--;
+                    if(l > 2)
+                    {
+                        var popupText = "";
+                        for(var j=2; j<l; j++) /* -1 IF CAT INDEX*/
+                        {
+                            if(typeof t.data[j] != 'undefined' && typeof t.data[j].data[i] != 'undefined')
+                            {
+                                if (t.data[j].data[i].toString().match(new RegExp("(https?:\/\/.*\.(?:png|jpg|jpeg|gif))")))
+                                    popupText += '<image height="100" width="100" src="' + t.data[j].data[i] + '" /><br/>';
+                                else if (t.data[j].data[i].toString().match(new RegExp("^(http[s]?:\\/\\/(www\\.)?|ftp:\\/\\/(www\\.)?|www\\.){1}([0-9A-Za-z-\\.@:%_\+~#=]+)+((\\.[0-9a-zA-Z]{1,3})+)(/(.)*)?(\\?(.)*)?")))
+                                    popupText += 'link : <a href="' + t.data[j].data[i] + '">' + t.data[j].name + '</a><br/>'
+                                else
+                                    popupText += '<span>' + t.data[j].name + ' : ' + t.data[j].data[i] + '</span><br/>'
+                            }
+                        }
+                        var popup = L.popup().setContent(popupText);
+                        geo.bindPopup(popup);
+                    }
+                }
+                if(cat_index > -1) {
+                    var legend = L.control({position: 'bottomright'});
+                    legend.onAdd = function (map) {
+                        var div = L.DomUtil.create('div', 'info legend');
+                        for (var i = 0; i < Math.min(categories.length, 8); i++) {
+                            div.innerHTML += '<div> <img src=' + icons[i].options.iconUrl + '> ' + categories[i].name + '</div>';
+                        }
+                        return div;
+                    };
+                    legend.addTo(t._component.map);
+                }
+                try
+                {
+                    t._component.map._onResize();
+                    t._component.map.invalidateSize(false);
+                    t._component.map.fitBounds(t._component.coordinates);
+                    t._component.map.addLayer(markers_cluster);
+                }catch (e){}
+            },
+            redraw: function () {
+                var t = this;
+                t._component.map._onResize();
+                t._component.map.invalidateSize(false);
+                t._component.map.fitBounds(t._component.coordinates);
+            }
+        };
+        Polymer({
+            is : 'leafletjs-datalet',
+            properties : {
+                data: {
+                    type: Array,
+                    value: undefined
+                },
+                /**
+                 * Store a reference to the leafletjs map object created in 'ready' callback
+                 * @attribute map
+                 * @type Object
+                 */
+                map :
+                {
+                    type: Object,
+                    value:null
+                },
+                /**
+                 * An Array with all the markers extracted from the dataset
+                 * @attribute markers
+                 * @type Array
+                 */
+                markers :
+                {
+                    type : Array,
+                    value : []
+                },
+                /**
+                 * It's the component behavior
+                 *
+                 * @attribute behavior
+                 * @type Object
+                 * @default {}
+                 */
+                behavior : {
+                    type : Object,
+                    value : {}
+                },
+                /**
+                 * It's the component coordinates
+                 *
+                 * @attribute coordinates
+                 * @type Object
+                 * @default {}
+                 */
+                coordinates : {
+                    type : Array,
+                    value : []
+                },
+                /**
+                 * Control the export menu
+                 * xxxx BITMASK. FROM RIGHT : HTML, PNG, RTF, MY SPACE (eg. 1111 show all, 0000 hide all)
+                 *
+                 * @attribute export_menu
+                 * @type Number
+                 * @default 15
+                 */
+                export_menu : {
+                    type  : Number,
+                    value : 9 // xxxx BITMASK. FROM RIGHT : HTML, PNG, RTF, MY SPACE (eg. 1111 show all, 0000 hide all)
+                },
+                disable_my_space : {
+                    type  : Boolean,
+                    value : false // BITMASK -8
+                }
+            },
+            /**
+             * 'ready' callback create the map object, set the tileLayer to openstreetmap and the default icon image path.
+             * Moreover extend the leafletjsComponentBehavior with BaseDataletBehavior, WorkcycleBehavior and leafletjsBehavior
+             * and run the Datalet workcycle.
+             *
+             * @method ready
+             */
+            ready: function(){
+                this.behavior =  $.extend(true, {}, BaseDataletBehavior, WorkcycleBehavior, AjaxJsonAlasqlBehavior, leafletjsBehavior);
+                this.async(function(){this.behavior.init(this)},500);
+            }
+        });
+    </script>
+</dom-module>
