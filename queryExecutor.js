@@ -159,12 +159,10 @@ QueryExecutor.prototype.getEntitySubclasses = function(url, limit, callback) {
 		submap = buildSubmapHierarchy(url, limit);
 
 		var childrenTemp = language_classHierarchyMap[labelLang][url].children;
-		for(var i=0; i<childrenTemp; i++){
+		for(var i=0; i<childrenTemp.length; i++){
 			submap[childrenTemp[i]].parent = [];
-			console.log(submap[childrenTemp[i]].parent);
 		}
 		delete submap[url];
-		console.log(submap);
 	}
 	callback(getMapRoots(submap), submap);
 }

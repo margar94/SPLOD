@@ -884,3 +884,28 @@
 [Thu Nov 16 3:31:19 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
 [Thu Nov 16 3:31:19 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
 [Thu Nov 16 3:31:21 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Fri Nov 17 1:23:03 2017] [ow_core_log] [Exception] Message: SQLSTATE[HY000]: General error: 145 Table '.\splod\ow_base_site_statistic' is marked as crashed and should be repaired File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\database.php Line:723 Trace: [#0 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\database.php(723): PDOStatement->execute()
+#1 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\database.php(476): OW_Database->execute('INSERT DELAYED ...', Array)
+#2 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\database.php(512): OW_Database->insert('INSERT DELAYED ...', Array)
+#3 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\base_dao.php(237): OW_Database->insertObject('ow_base_site_st...', Object(BOL_SiteStatistic), true)
+#4 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\bol\site_statistic_service.php(111): OW_BaseDao->saveDelayed(Object(BOL_SiteStatistic))
+#5 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\classes\event_handler.php(350): BOL_SiteStatisticService->addEntity('user_login', 1)
+#6 [internal function]: BASE_CLASS_EventHandler->onUserLoginSaveStatistics(Object(OW_Event))
+#7 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\event_manager.php(228): call_user_func(Array, Object(OW_Event))
+#8 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\auth.php(123): OW_EventManager->trigger(Object(OW_Event))
+#9 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\auth.php(75): OW_Auth->login(1)
+#10 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\user.php(96): OW_Auth->authenticate(Object(BASE_CLASS_StandardAuth))
+#11 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\bol\user_service.php(1436): OW_User->authenticate(Object(BASE_CLASS_StandardAuth))
+#12 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\controllers\user.php(367): BOL_UserService->processSignIn('spLOD', 'spLODcreator', true)
+#13 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_system_plugins\base\controllers\user.php(230): BASE_CTRL_User->processSignIn()
+#14 [internal function]: BASE_CTRL_User->standardSignIn(Array)
+#15 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\request_handler.php(250): ReflectionMethod->invokeArgs(Object(BASE_CTRL_User), Array)
+#16 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\request_handler.php(226): OW_RequestHandler->processControllerAction(Object(ReflectionMethod), Object(BASE_CTRL_User))
+#17 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\application.php(346): OW_RequestHandler->dispatch()
+#18 C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\index.php(76): OW_Application->handleRequest()
+#19 {main}]
+[Fri Nov 17 1:23:09 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Fri Nov 17 1:23:14 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Fri Nov 17 1:23:14 2017] [ow_core_log] [Notice] Message: Trying to get property of non-object File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_plugins\ode\classes\tools.php Line:19
+[Fri Nov 17 1:24:15 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
+[Fri Nov 17 2:47:33 2017] [ow_core_log] [Warning] Message: Can't generate URI! Route `example-index` not found! File: C:\Users\Utente\Documents\GitHub\SPLOD\oxwall\ow_core\router.php Line:236
