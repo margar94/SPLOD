@@ -157,10 +157,16 @@ QueryExecutor.prototype.getEntitySubclasses = function(url, limit, callback) {
 	var submap={};
 	if(url in language_classHierarchyMap[labelLang]){
 		submap = buildSubmapHierarchy(url, limit);
-	}else{
-		submap[url] = {url:url, label: createLabel(url), children : [], parent:[], numberOfInstances:0};
+
+		var childrenTemp = language_classHierarchyMap[labelLang][url].children;
+		for(var i=0; i<childrenTemp; i++){
+			submap[childrenTemp[i]].parent = [];
+			console.log(submap[childrenTemp[i]].parent);
+		}
+		delete submap[url];
+		console.log(submap);
 	}
-	callback([url], submap);
+	callback(getMapRoots(submap), submap);
 }
 
 /*
