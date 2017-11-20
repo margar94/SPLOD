@@ -35,7 +35,7 @@
 		<!--<div class="container">-->
 		<div class="row flex" id="firstrow">
 			<!--end query natural language box--> 
-		    <div id="queryBox" class="col s11 flex"> 
+		    <div id="queryBox" class="col s12 flex"> 
 		     <div class="card">
 		      <div id="queryNaturalLanguage" class="card-content">
 		      </div>
@@ -57,19 +57,16 @@
 		      </div>
 		     </div>
 		    </div>
+		    <a class="btn-floating waves-effect waves-light blue" id="openSparqlQuery"><i class="material-icons"  onclick="showUserQueryBox();">compare</i></a>
 		    <!--end query natural language box--> 
 
 		    <!--start query sparql box--> 
-		    <div id="querySparqlBox" class="col s1 flex"> 
-		     	<div class="card">
-			      	<div id="querySparql" class="card-content">
-			       		<div id="querySparqlText"></div>
-			      	</div>
-			      	<div class="card-action blue white-text firstrowAction">
-			      		<i class="small material-icons white-text" id="openSparqlQuery" onclick="showUserQueryBox();">arrow_back</i>
-			      	</div>
-		     	</div>
-		    </div>
+		    <div id="sparqlVsNl" class="modal s12">
+			    <div class="modal-content">
+			      <div id="modalNaturalLanguage" class="col s5"></div>
+			      <div id="modalSparql" class="col s7"></div>
+			    </div>
+			  </div>
 		     <!--end query sparql box--> 
 
 	    </div>
@@ -436,6 +433,11 @@
 		    	if(tab[0].id == "predicatesBox"){
 		    		$('ul#predicatesTab').tabs();
 		    	}}
+		    });
+
+		    $('.modal').modal({
+		    	startingTop: '5%',
+		    	endingTop: '5%'
 		    });
 			
 			initBoxViewer();

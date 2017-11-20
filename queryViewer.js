@@ -730,20 +730,18 @@ function removeFocusable(){
 }
 
 function showUserQueryBox(){
-	if($("#openSparqlQuery").text() == "arrow_back"){
+	$('#sparqlVsNl #modalNaturalLanguage').html($('#queryNaturalLanguage').html());
+	$('#sparqlVsNl #limit').html(resultLimit+" ");
+	$("#sparqlVsNl .focusable:not(#limit)").click(function(e){
+		e.stopPropagation();
+		$("#sparqlVsNl .highlighted").removeClass("highlighted");
+		$(this).addClass("highlighted");
 
-		$("#openSparqlQuery").text("arrow_forward");
-		$("#querySparqlText").show();
-		document.getElementById("querySparqlBox").className = document.getElementById("querySparqlBox").className.replace(/s1/, "s6");
-		document.getElementById("queryBox").className = document.getElementById("queryBox").className.replace(/s11/, "s6");
-		
-	}else{
-
-		$("#openSparqlQuery").text("arrow_back");
-		$("#querySparqlText").hide();
-		document.getElementById("querySparqlBox").className = document.getElementById("querySparqlBox").className.replace(/s6/, "s1");
-		document.getElementById("queryBox").className = document.getElementById("queryBox").className.replace(/s6/, "s11");
-	}
+		//highlight sparql query
+		$("#modalSparql .SPARQLhighlighted").removeClass("SPARQLhighlighted");
+		$("#modalSparql span[meta-relatedto~='"+$(this).attr("meta-focusReference")+"']").addClass("SPARQLhighlighted");
+	});
+	$('#sparqlVsNl').modal('open');
 }
 
 QueryViewer.prototype.renderUserQuery = function(sparqlQueryArray){
@@ -769,9 +767,9 @@ QueryViewer.prototype.renderUserQuery = function(sparqlQueryArray){
 	sparqlQuery += "<span>"+sparqlQueryArray[sparqlQueryArray.length-2]+"</span>";
 	sparqlQuery += "<span meta-relatedTo='limit'>"+sparqlQueryArray[sparqlQueryArray.length-1]+"</span>";
 
-	$("#querySparqlText").html(sparqlQuery);
+	$("#modalSparql").html(sparqlQuery);
 	
-	$('#querySparqlText span[meta-relatedto~="'+encodeURIComponent(onFocus)+'"]').addClass("SPARQLhighlighted");
+	$('#modalSparql span[meta-relatedto~="'+encodeURIComponent(onFocus)+'"]').addClass("SPARQLhighlighted");
 }
 
 QueryViewer.prototype.getCachedQuery = function(){

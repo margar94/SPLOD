@@ -90,7 +90,7 @@ span.mySearch {
 /*Natural language query*/
 
 div#queryBox{
-	margin-top: 30px;
+	margin-top: 1em;
 }
 
 span.highlighted {
@@ -156,9 +156,13 @@ span.optionalBlock{
 	font-size:14px;
 }
 
-#queryNaturalLanguage ul{
+#queryNaturalLanguage ul, #sparqlVsNl ul{
 	padding-left: 0.8em;
 	margin: 0;
+}
+
+#modalSparql{
+	border-left-style: groove;
 }
 
 #removeButton {
@@ -175,6 +179,12 @@ span.optionalBlock{
 
 /*SPARQL query*/
 
+#openSparqlQuery{
+    position: fixed;
+    top: 0.5em;
+    right: 2em;
+}
+
 div#querySparqlBox{
  	margin-top: 30px;
 }
@@ -185,9 +195,25 @@ div#querySparqlText{
 	 overflow: auto;
 }
 
-div#querySparqlBox .SPARQLhighlighted{
+div#modalSparql .SPARQLhighlighted{
 	background-color: #e6e6e6;
 	border-radius: 4px;
+}
+
+div#modalSparql, div#modalNaturalLanguage{
+	height: -webkit-fill-available;
+	overflow-y: auto; 
+}
+
+.modal{
+	width: 90% !important;
+	height: 90% !important;
+}
+
+#sparqlVsNl .modal-content{
+	overflow:hidden;
+	padding-right: 0px;
+    padding-bottom: 14px;
 }
 
 /*Left bar*/
