@@ -413,7 +413,10 @@ function updateBoxesFromSomething(predicateUrl){
 function updateBoxesFromOperator(){
 	$("#conceptsList").empty();
 	$("#directPredicatesList").empty();	
-	$("#reversePredicatesList").empty();	
+	$("#reversePredicatesList").empty();
+
+	$('ul#myTabs').tabs('select_tab', 'operatorsBox');
+	
 }
 
 //manage update boxes when focus is on an result

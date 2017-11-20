@@ -565,7 +565,7 @@ function removeOperator(node){
 			
 			break;
 
-		case 'and': //focus su or
+		/*case 'and': //focus su or
 		case 'or': //focus su and
 			operator = (operator == 'and' ? 'or' : 'and');
 			var conjunctionVerbalization = languageManager.verbalizeOperator(operator);
@@ -625,7 +625,11 @@ function removeOperator(node){
 
 			updateAndNotifyFocus(conjunctionKey);
 
-			break;
+			break;*/
+			case 'or':
+			case 'xor':
+			case 'and':
+				break;
 
 	}
 	//console.log(queryLogicMap);

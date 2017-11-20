@@ -330,6 +330,7 @@ function renderPendingQuery(){
 			operatorManager.discardOperator();
 			$('#pendingQuerySpan').empty();
 			$('#operatorList').show();
+			$('#operatorsBox .card-title').text(languageManager.getBoxTitle('operator'));
 			$('#reusableResultList').hide();
 		});
 
