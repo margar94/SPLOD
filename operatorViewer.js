@@ -153,8 +153,8 @@ function renderReusableResultList(reusableResults, onClickButtonFunction, onClic
 
 	if(type != null){
 
-		var userInput = $("<li/>")
-			.attr('class', 'collection-item');
+		/*var userInput = $("<li/>")
+			.attr('class', 'collection-item');*/
 
 		var userInputDiv = $("<div/>")
 			.attr('class', 'row')
@@ -229,8 +229,9 @@ function renderReusableResultList(reusableResults, onClickButtonFunction, onClic
 			.on('click', onClickButtonFunction);
 
 		button.appendTo(userInputDiv);
-		userInputDiv.appendTo(userInput);
-		userInput.appendTo(reusableResultList);
+		userInputDiv.insertBefore($('#contentOperatorBox'));
+		//userInputDiv.appendTo(userInput);
+		//userInput.appendTo(reusableResultList);
 
 		$('input.number').on('keypress', function(evt){
 			var charCode = (evt.which) ? evt.which : event.keyCode;
