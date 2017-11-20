@@ -562,6 +562,9 @@ enLanguageManager.prototype.getButtonLabel = function(button){
 		case 'remove':
 			label = 'Remove';
 			break;
+		case 'close':
+			label = 'Close';
+			break;
 		case 'removeFocus': //remove higlighted part of query
 			label = 'Remove all the highlighted';
 			break;
