@@ -508,7 +508,7 @@ enLanguageManager.prototype.getBoxTitle = function(boxType){
 		case 'operator' : title = 'Operators'; break;
 		case 'table result' : title = 'Table result'; break;
 		case 'settings' : title = 'Settings'; break;
-		case 'result' : title = 'Reusable result'; break;
+		case 'result' : title = 'Substitute result on focus'; break;
 		case 'help' : title = 'Help'; break;
 	}
 	return title;
@@ -653,6 +653,6 @@ enLanguageManager.prototype.getHelpGuide = function(){
 
 }
 
-enLanguageManager.prototype.getOperatorFieldVerbalization(cardinalNumber){
-	return getOrdinalNumber(cardinalNumber) + ' field';
+enLanguageManager.prototype.getOperatorFieldVerbalization = function(cardinalNumber){
+	return enLanguageManager.prototype.getOrdinalNumber(cardinalNumber) + ' field';
 }

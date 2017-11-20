@@ -409,11 +409,11 @@ OperatorManager.prototype.getPendingQueryFields = function(){
 		pendingQueryFields.push(' ');	
 	}
 
-	if(numParameterOperator>1){
+	/*if(numParameterOperator>1){
 		for(var i=3; i<pendingQueryFields.length; i=i+2){
 			pendingQueryFields.splice(i, 0, 'and');
 		}
-	}
+	}*/
 	
 	return pendingQueryFields;
 }

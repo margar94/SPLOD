@@ -7,6 +7,10 @@ body {
     
 }
 
+.card-action {
+    padding: 5px 10px !important;
+}
+
 .new, .badge{
 	background-color: #2196f3 !important;
 }

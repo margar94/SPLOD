@@ -14,6 +14,7 @@ function renderResult(select, labelSelect, results){
 function renderOperatorList(operators){
 
 	$('#operatorsBox .card-title').text(languageManager.getBoxTitle('operator'));
+	$('#operatorsBox .card-title').show();
 	$('#searchReusableResultCard').hide();
 
 	$('#pendingQuerySpan').empty();
@@ -98,6 +99,8 @@ function renderReusableResultListFromOperator(reusableResults){
 					if(operatorManager.selectedReusableResult([$(this).attr('meta-value')], false)){
 						$('#reusableResultList').hide();
 						$('#operatorList').show();
+						$('#operatorsBox .card-title').text(languageManager.getBoxTitle('operator'));
+						$('#operatorsBox .card-title').show();
 						$('#pendingQuerySpan').empty();
 						$('#tableResultSpinner').show();
 					}else{
@@ -105,6 +108,7 @@ function renderReusableResultListFromOperator(reusableResults){
 					}
 				}
 
+	$('#operatorsBox .card-title').hide();
 	renderPendingQuery();
 	renderReusableResultList(reusableResults, onClickButtonFunction, onClickLiFunction);
 }
@@ -126,6 +130,8 @@ function renderReusableResultListFromResult(reusableResults){
 					operatorManager.changedReusableResult([$(this).attr('meta-value')], false);
 				}
 
+	$('#operatorsBox .card-title').show();
+	$('#operatorsBox .card-title').text(languageManager.getBoxTitle('result'));
 	showHint(languageManager.getHintOperatorManager('reusableResult')+"<br>"+reusableResults.cachedQuery);
 	renderReusableResultList(reusableResults, onClickButtonFunction, onClickLiFunction);
 }
@@ -135,10 +141,6 @@ function renderReusableResultList(reusableResults, onClickButtonFunction, onClic
 	var operatorList = $('#operatorList').hide();
 	$("#searchReusableResultBox").val('');
 	$('#searchReusableResultCard').show();
-
-	//change box title
-	$('#operatorsBox .card-title')
-		.text(languageManager.getBoxTitle('result'));
 
 	var reusableResultList = $('#reusableResultList');
 	reusableResultList.empty();
@@ -295,7 +297,7 @@ function renderReusableResultList(reusableResults, onClickButtonFunction, onClic
 }
 
 
-function renderPendingQuery(){
+function oldrenderPendingQuery(){
 	$('#pendingQuerySpan').empty();
 
 	var pendingQueryFields = operatorManager.getPendingQueryFields();
@@ -335,4 +337,55 @@ function renderPendingQuery(){
 		});
 
 	discardButton.appendTo($('#pendingQuerySpan'));
+}
+
+function renderPendingQuery(){
+
+
+	$('#pendingQuerySpan').empty();
+
+	var pendingQueryFields = operatorManager.getPendingQueryFields();
+
+	var pendingQuery = $("<div/>");
+
+	//on focus elem
+	var chip = $("<div/>")
+		.attr('class', 'chip')
+		.text(pendingQueryFields[0])
+		.appendTo(pendingQuery);
+
+	//operator elem
+	chip = $("<div/>")
+		.attr('class', 'chip')
+		.text(pendingQueryFields[1]);
+
+	var discardButton = $('<i/>')
+		.attr('class', 'material-icons close')
+		.attr('id', 'discardButton')
+		.attr('title', languageManager.getButtonLabel('discardButton'))
+		.text('close')
+		.on('click', function(){
+			operatorManager.discardOperator();
+			$('#pendingQuerySpan').empty();
+			$('#operatorList').show();
+			$('#operatorsBox .card-title').text(languageManager.getBoxTitle('operator'));
+			$('#operatorsBox .card-title').show();
+			$('#reusableResultList').hide();
+		});
+	discardButton.appendTo(chip);
+
+	chip.appendTo(pendingQuery);
+
+	for(var i = 2; i<pendingQueryFields.length; i++){
+		var toComplete = $("<div/>")
+			.text(languageManager.getOperatorFieldVerbalization(i-1))
+			.attr('class', 'fieldToComplete chip');
+		toComplete.appendTo(pendingQuery);
+	}
+
+	pendingQuery.appendTo($('#pendingQuerySpan'));
+
+	var toHightlight = $('#pendingQuerySpan .fieldToComplete:first');
+	toHightlight.attr('class', toHightlight.attr('class') + ' active');
+	
 }
