@@ -76,7 +76,7 @@
 	    <!--end first row-->
 
 	    <div class="row">
-	    	<div id="hintBox" class="col s12"> 
+	    	<div id="hintBox" class="col s12 m12 l12"> 
 		     <div class="card">
 		      <div id="hintBoxContent" class="card-content">
 		      </div>
@@ -88,10 +88,10 @@
 		<div class="row">
 
 			<!--start navBar-->
-			<div class="col s2" id="navBar">
+			<div class="col s2 m2 l2 no-padding-right" id="navBar">
 		      <ul id="myTabs" class="tabs black-text">
 		   		<!--start concepts-->
-		        <li class="tab col s12" id="conceptsTab" 
+		        <li class="tab col s12 m12 l12" id="conceptsTab" 
 		        onclick="$('#myTabs').css('border-right-color', '#1de9ae')">	
 		        	<a href="#conceptsBox">
 		        		<span id="conceptsTabTitle"></span> 
@@ -110,7 +110,7 @@
 		        </li>
 		        <!--end concepts-->
 		        <!--start predicates-->
-		        <li class="tab col s12" id="predicatesTab" onclick="$('#myTabs').css('border-right-color', '#e91e63 ')">
+		        <li class="tab col s12 m12 l12" id="predicatesTab" onclick="$('#myTabs').css('border-right-color', '#e91e63 ')">
 		        	<a href="#predicatesBox">
 		        		<span id="predicatesTabTitle"></span>
 		        		<div id="predicatesSpinner" class="preloader-wrapper mySpinner active">
@@ -128,7 +128,7 @@
 		        </li>
 		        <!--end predicates-->
 		        <!--start operators-->
-		        <li class="tab col s12" id="operatorsTab" onclick="$('#myTabs').css('border-right-color', '#bdbdbd')">
+		        <li class="tab col s12 m12 l12" id="operatorsTab" onclick="$('#myTabs').css('border-right-color', '#bdbdbd')">
 		        	<a href="#operatorsBox">
 		        		<span id="operatorsTabTitle"></span>
 		        		<div id="operatorsSpinner" class="preloader-wrapper mySpinner active">
@@ -146,7 +146,7 @@
 		        </li>
 		        <!--end operators-->
 		        <!--start result table-->
-		        <li class="tab col s12" id="tableResultTab" 
+		        <li class="tab col s12 m12 l12" id="tableResultTab" 
 		        	onclick="$('#myTabs').css('border-right-color', '#2196f3')" style="height: 250px;">
 	           		<a href="#tableResultBox" style="padding: 0;">
 	           			<span id="tableResultTabTitle"></span>
@@ -163,7 +163,7 @@
 			            		</div>
 			          		</div>
 		      			</div>
-	      				<div class="col s12">
+	      				<div class="col s12 m12 l12">
 	       					<!--<div style="margin:2px">-->
 	     					<table id="previewTableResult" style="height:100px;">
 	      					</table>
@@ -192,7 +192,7 @@
 
 
 		        <!--start settings-->
-		        <li class="tab col s12" id="settingsTab" onclick="$('#myTabs').css('border-right-color', '#2196f3')">
+		        <li class="tab col s12 m12 l12" id="settingsTab" onclick="$('#myTabs').css('border-right-color', '#2196f3')">
 		        	<a href="#settingsBox">
 		        		<i class="tiny material-icons" id="settings">settings</i> 
 		        		<span id="settingsTabTitle"></span>
@@ -201,7 +201,7 @@
 		        <!--end settings-->
 		        
 		        <!--start help-->
-		        <li class="tab col s12" id="helpTab" onclick="$('#myTabs').css('border-right-color', '#2196f3')">
+		        <li class="tab col s12 m12 l12" id="helpTab" onclick="$('#myTabs').css('border-right-color', '#2196f3')">
 		        	<a href="#helpBox">
 		        		<i class="tiny material-icons" id="help_outline">help_outline</i> 
 		        		<span id="helpTabTitle"></span>
@@ -213,8 +213,8 @@
 			<!--end navBar-->
 		   
 		   <!--start right content-->
-		    <div class="col s10">
-		        <div class="col s12">
+		    <div class="col s10 m10 l10 no-padding-left no-padding-right ">
+		        <div class="col s12 m12 l12 no-padding-left">
 
 		        	<!--start concepts content-->
 		        	<div id="conceptsBox" class="card">
@@ -241,7 +241,7 @@
 							<!--end concepts list-->
 			            </div>
 			            <div class="card-action valign-wrapper">
-			              	<span class="col s1" id="hierarchySpan"></span>
+			              	<span class="col s1 m1 l1" id="hierarchySpan"></span>
 			            </div>
 			        </div>
 			        <!--end concepts content-->
@@ -334,13 +334,13 @@
 			            		<ul id="fieldsCollection" class="collection dropdown-content"></ul>
 			            	</span>
 			              	<div class="row col s12">
-								<div id="resultsTableBox" class=" col s12 scrollableTableContent">
+								<div id="resultsTableBox" class=" col s12 m12 l12 scrollableTableContent">
 									<table id="resultsTable" class="striped centered"></table>
 								</div>
 							</div>
 						</div>
 						<div class="card-action valign-wrapper">
-			              	<span class="col s1">
+			              	<span class="col s1 m1 l1">
 			              		<i class="small material-icons white-text right" style="margin:0" onClick="createJson();">save</i>
 			              	</span>
 			            </div>
@@ -353,20 +353,20 @@
 			              <span class="card-title"><span id="settingsBoxTitle" ></span></span>
 			              <div class="row">
 
-			              	<div class="input-field col s12">
+			              	<div class="input-field col s3 m3 l3">
 							    <select id="labelLangSelect" onChange="changeLabelLanguage()">
 							    </select>
 							    <label id="labelLangSelectLabel"></label>
 							</div>
 
-							<div class="input-field col s12">
+							<div class="input-field col s3 m3 l3">
 							    <select id="systemLangSelect" onChange="changeSystemLanguage()">
 							    </select>
 							    <label id="systemLangSelectLabel"></label>
 							</div>
 			          	   
 
-					        <div class="input-field col s6">
+					        <div class="input-field col s6 m3 l3">
 					          <input id="numConcepts" type="number" min="1" onChange="setLimit('concept')">
 					          <label for="numConcepts" id ="numConceptsLabel"></label>
 					        </div>
@@ -374,7 +374,7 @@
 					          <i class="small material-icons blue-text" onClick="setLimit('concept')">check_circle</i>
 					        </div>-->
 
-					        <div class="input-field col s6">
+					        <div class="input-field col s6 m3 l3">
 					          <input id="numPredicates" type="number" min="1" onChange="setLimit('predicate')">
 					          <label for="numPredicates" id="numPredicatesLabel"></label>
 					         </div>
