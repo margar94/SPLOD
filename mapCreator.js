@@ -816,7 +816,7 @@ MapCreator.prototype.selectedOperator = function(pendingQuery){
 
 			break;
 
-		case 'limit':
+		/*case 'limit':
 			resultLimit = pendingQuery[1].value;
 
 			if(operatorManager == null)
@@ -832,7 +832,7 @@ MapCreator.prototype.selectedOperator = function(pendingQuery){
 			queryBuilder.updateQuery(rootQueryLogicMap, queryLogicMap);
 
 			break;
-
+	*/
 	}
 
 	//console.log(queryLogicMap);
@@ -846,6 +846,22 @@ MapCreator.prototype.selectedOperator = function(pendingQuery){
 	queryBuilder.updateQuery(rootQueryLogicMap, queryLogicMap);
 
 	return resultsKey;
+}
+
+MapCreator.prototype.changeResultLimit = function(resultLimitValue){
+	resultLimit = resultLimitValue;
+
+	if(operatorManager == null)
+		operatorManager = new OperatorManager;
+	operatorManager.changedFocus(elementOnFocus, false);
+
+	if(queryVerbalizator == null)
+		queryVerbalizator = new QueryVerbalizator;
+	queryVerbalizator.updateQuery(rootQueryLogicMap, queryLogicMap, elementOnFocus);
+	
+	if(queryBuilder == null)
+		queryBuilder = new QueryBuilder;
+	queryBuilder.updateQuery(rootQueryLogicMap, queryLogicMap);
 }
 
 MapCreator.prototype.selectedResult = function(result){
