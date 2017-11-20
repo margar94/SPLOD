@@ -898,7 +898,7 @@ function buildSubmapHierarchy(selectedClass, limit){
 	map[selectedClass].children = [];
 	map[selectedClass].parent = [];
 
-	var counter=1;
+	var counter=0;
 		
 	var stack = $.extend(true, [], language_classHierarchyMap[labelLang][selectedClass].children);
 	
