@@ -93,6 +93,16 @@ span.highlightRemove {
 	border-radius: 4px;
 }
 
+#limitInput{
+	width: 50px;
+	margin-bottom: 0;
+    border-bottom: none;
+}
+
+#limitInput:not(.browser-default):focus:not([readonly]){
+	box-shadow: none;
+}
+
 span.concept {
 	color: #1de9ae;
 	font-weight: bold;

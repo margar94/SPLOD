@@ -55,13 +55,14 @@ function renderQuery(){
 		queryString = languageManager.getQueryStartVerbalization();
 		resultQuery = languageManager.getQueryStartVerbalization();
 		queryString += '<span meta-focusReference="limit" meta-removeReference="limit" class="focusable">';
-		queryString += '<span id="limit" meta-focusReference="limit" meta-removeReference="limit" class="focusable operator">';
+		queryString += '<span id="limit" min="0" meta-focusReference="limit" meta-removeReference="limit" class="focusable operator">';
+
 		if(!resultLimit){
 			 queryString += 'every ';
 			 resultQuery += '<span>every </span>';
 		}
 		else{ 
-			queryString += resultLimit+' ';
+			queryString += '<input id="limitInput" type="number" value="'+resultLimit+'"/>';
 			resultQuery += '<span>'+resultLimit+' </span>';
 		}
 		queryString += '</span>';
@@ -686,6 +687,32 @@ function attachEvents(){
 		mapCreator.changeFocus(onFocus);
 
 		updateBoxesFromOperator();
+	});
+
+	$("#limitInput").keydown(function(e){
+		e.stopPropagation();
+		if(!((e.keyCode > 95 && e.keyCode < 106)
+	      || (e.keyCode > 47 && e.keyCode < 58) 
+	      || e.keyCode == 8)) {
+	        return false;
+	    }else if(!((e.which > 95 && e.which < 106)
+	      || (e.which > 47 && e.which < 58) 
+	      || e.which == 8)) {
+	    	return false;
+	    }
+	});
+
+	$("#limitInput").focusout(function(e){
+		e.stopPropagation();
+		mapCreator.changeResultLimit(e.target.value);
+	});
+
+	$("#limitInput").keydown(function(e){
+		e.stopPropagation();
+		if(e.which == 13 || e.keyCode == 13) {
+	        mapCreator.changeResultLimit(e.target.value);
+	    }
+		
 	});
 
 	$(".barred").click(function(e){
