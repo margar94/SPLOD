@@ -97,6 +97,7 @@ span.highlightRemove {
 	width: 50px;
 	margin-bottom: 0;
     border-bottom: none;
+    height: auto;
 }
 
 #limitInput:not(.browser-default):focus:not([readonly]){
@@ -136,6 +137,13 @@ span.optionalBlock{
 
 #queryNaturalLanguage, #queryNaturalLanguageFocus{
 	overflow-x: auto;
+}
+
+#queryNaturalLanguage{
+	padding-bottom:8px;
+	padding-top:8px;
+	height: 100px;
+	font-size:14px;
 }
 
 #queryNaturalLanguage ul{
