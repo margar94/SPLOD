@@ -653,4 +653,6 @@ enLanguageManager.prototype.getHelpGuide = function(){
 
 }
 
-
+enLanguageManager.prototype.getOperatorFieldVerbalization(cardinalNumber){
+	return getOrdinalNumber(cardinalNumber) + ' field';
+}

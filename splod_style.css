@@ -24,7 +24,9 @@ div .card-action i{
 	cursor:pointer;
 }
 
-
+span.focusable{
+	cursor:pointer;
+}
 
 /*Search bar*/
 
@@ -99,6 +101,7 @@ span.predicate {
 
 span.operator {
 	border-bottom: 3px dashed #bdbdbd;
+	font-weight: bold;
 	/*text-decoration-line: underline;
     text-decoration-color: #bdbdbd;
     text-decoration-style: dashed;*/
