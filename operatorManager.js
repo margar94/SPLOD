@@ -302,7 +302,7 @@ OperatorManager.prototype.selectedReusableResult = function(result, fromInput){
 		lang = resultLiteralLang[value];
 	pendingQuery.push({value: value, datatype:type, lang:lang});
 
-	var isComplete = parameterNumberOperator[operator.value]==pendingQuery.length;
+	var isComplete = (parameterNumberOperator[operator.value]==pendingQuery.length);
 
 	if(isComplete){
 		var resultsKey = mapCreator.selectedOperator(pendingQuery);
