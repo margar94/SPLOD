@@ -13,8 +13,7 @@ function renderResult(select, labelSelect, results){
 
 function renderOperatorList(operators){
 
-	$('#operatorsBox .card-title').text(languageManager.getBoxTitle('operator'));
-	$('#operatorsBox .card-title').show();
+	$('#operatorsBox .card-title').hide();
 	$('#searchReusableResultCard').hide();
 
 	$('#pendingQuerySpan').empty();
@@ -89,6 +88,7 @@ function renderReusableResultListFromOperator(reusableResults){
 						$('#pendingQuerySpan').empty();
 						$('#tableResultSpinner').show();
 					}else{
+						$('#rowUserValue input').val('');
 						renderPendingQuery();
 					}
 
@@ -99,11 +99,11 @@ function renderReusableResultListFromOperator(reusableResults){
 					if(operatorManager.selectedReusableResult([$(this).attr('meta-value')], false)){
 						$('#reusableResultList').hide();
 						$('#operatorList').show();
-						$('#operatorsBox .card-title').text(languageManager.getBoxTitle('operator'));
-						$('#operatorsBox .card-title').show();
+						$('#operatorsBox .card-title').hide();
 						$('#pendingQuerySpan').empty();
 						$('#tableResultSpinner').show();
 					}else{
+						$('#rowUserValue input').val('');
 						renderPendingQuery();
 					}
 				}
@@ -146,6 +146,8 @@ function renderReusableResultList(reusableResults, onClickButtonFunction, onClic
 	reusableResultList.empty();
 	reusableResultList.show();
 
+	$('#rowUserValue').remove();
+
 	//renderPendingQuery();
 
 	//user value
@@ -181,7 +183,7 @@ function renderReusableResultList(reusableResults, onClickButtonFunction, onClic
 
 		if(type=='number'){
 			var div = $('<div/>')
-				.attr('class', 'input-field userValueDiv col s10 m10 l10');
+				.attr('class', 'input-field userValueDiv col s5 m5 l5');
 
 			var input = $("<input/>")
 				.attr('type', 'number')
@@ -202,7 +204,7 @@ function renderReusableResultList(reusableResults, onClickButtonFunction, onClic
 			for(var i = 0; i<inputClass.length; i++){
 
 				var div = $('<div/>')
-					.attr('class', 'input-field userValueDiv col s10 m10 l10');
+					.attr('class', 'input-field userValueDiv col s5 m5 l5');
 
 				var input = $("<input/>")
 					.attr('type', 'text')
@@ -222,7 +224,7 @@ function renderReusableResultList(reusableResults, onClickButtonFunction, onClic
 		}
 
 		var button = $('<i/>')
-			.attr('class', 'small material-icons blue-text')
+			.attr('class', 'small material-icons blue-text col s1 m1 l1')
 			.attr('id', 'userValueButton')
 			.attr('title', languageManager.getButtonLabel('confirmUserInput'))
 			.text('check_circle')
@@ -333,7 +335,7 @@ function oldrenderPendingQuery(){
 			operatorManager.discardOperator();
 			$('#pendingQuerySpan').empty();
 			$('#operatorList').show();
-			$('#operatorsBox .card-title').text(languageManager.getBoxTitle('operator'));
+			$('#operatorsBox .card-title').hide();
 			$('#reusableResultList').hide();
 		});
 
@@ -369,8 +371,7 @@ function renderPendingQuery(){
 			operatorManager.discardOperator();
 			$('#pendingQuerySpan').empty();
 			$('#operatorList').show();
-			$('#operatorsBox .card-title').text(languageManager.getBoxTitle('operator'));
-			$('#operatorsBox .card-title').show();
+			$('#operatorsBox .card-title').hide();
 			$('#reusableResultList').hide();
 		});
 	discardButton.appendTo(chip);
@@ -378,9 +379,15 @@ function renderPendingQuery(){
 	chip.appendTo(pendingQuery);
 
 	for(var i = 2; i<pendingQueryFields.length; i++){
-		var toComplete = $("<div/>")
+		if(pendingQueryFields[i] != ' '){
+			var toComplete = $("<div/>")
+				.attr('class', 'chip')
+				.text(pendingQueryFields[i]);
+		}else{
+			var toComplete = $("<div/>")
 			.text(languageManager.getOperatorFieldVerbalization(i-1))
 			.attr('class', 'fieldToComplete chip');
+		}
 		toComplete.appendTo(pendingQuery);
 	}
 

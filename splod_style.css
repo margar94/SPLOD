@@ -432,11 +432,6 @@ div#conceptsBox .card-action{
 	margin-bottom: 1px;
 }
 
-.collection-item{
-	margin:2px;
-}
-
-
 i.conceptInfo{
 	color: #1de9ae;
 	cursor: pointer;
@@ -524,7 +519,6 @@ input.userValue{
 }
 
 i#userValueButton{
-	float: right;
 	margin-top: 2rem;
 	cursor: pointer;
 }
@@ -586,6 +580,10 @@ img.imgResult {
 }
 .scrollableTableContent td{
 	flex:1;
+}
+
+#fieldsCollection{
+	margin:2px;
 }
 
 /*Settings Box*/

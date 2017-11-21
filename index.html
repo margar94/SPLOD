@@ -301,21 +301,23 @@
 					<!--start operators content-->
 					<div id="operatorsBox" class="card">
 			            <div class="card-content">
-			              <span id="pendingQuerySpan"></span>
+			              <span class="card-title col s6 m6 l6"></span>
+			              <span class="col s6 m6 l6" id="pendingQuerySpan"></span>
+			              <!--search-->
+		              	  	<div class="card col s6 m6 l6" id="searchReusableResultCard">
+	            				<div class=" valign-wrapper ">
+	            					<span class="input-field col s11 m11 l11 mySearch">
+					              		<input type="search" id="searchReusableResultBox" 
+											onkeyup="filter('searchReusableResultBox', 'reusableResultList')">
+									</span>
+									<span class="col s2 m2 l2 right">
+										<i class="material-icons"> search</i>
+									</span>
+								</div>
+						  	</div>
+						  	<!--end search-->
 			              <div id="contentOperatorBox">
-			              	  	<!--search-->
-			              	  	<div class="card" id="searchReusableResultCard">
-		            				<div class=" valign-wrapper ">
-		            					<span class="input-field col s11 m11 l11 mySearch">
-						              		<input type="search" id="searchReusableResultBox" 
-												onkeyup="filter('searchReusableResultBox', 'reusableResultList')">
-										</span>
-										<span class="col s2 m2 l2 right">
-											<i class="material-icons"> search</i>
-										</span>
-									</div>
-							  	</div>
-							  	<!--end search-->
+			              	  	
 				              <ul id="operatorList" class="collection"></ul>
 				              <ul id="reusableResultList" class="collection"></ul>
 				          </div>
