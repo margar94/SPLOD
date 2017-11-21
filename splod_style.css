@@ -27,6 +27,16 @@ body {
 	padding-right:0 !important;
 }
 
+.searchBarPositioning{
+	display:inline-block;
+	float: right !important;
+	margin:0;
+}
+
+#conceptsListBox, #predicatesTabBox{
+	margin-top:15px;
+}
+
 /*Cursor*/
 
 div .card-action i{

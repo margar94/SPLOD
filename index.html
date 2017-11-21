@@ -216,20 +216,22 @@
 		        	<!--start concepts content-->
 		        	<div id="conceptsBox" class="card">
 			            <div class="card-content ">
-			              	<span class="card-title"><span id="conceptsBoxTitle"></span></span>
-		              		<!--search-->
-		              	  	<div class="card">
-	            				<div class=" valign-wrapper ">
-				            		<span class="input-field col s11 m11 l11 mySearch">
-						              	<input type="search" id="searchConceptsBox" 
-											onkeyup="filter('searchConceptsBox', 'conceptsList')" >
-									</span>
-									<span class="col s2 m2 l2 right">
-										<i class="material-icons"> search</i>
-									</span>
-								</div>
-						  	</div>
-						  	<!--end search-->
+			              	<span class="card-title">
+			              		<span id="conceptsBoxTitle"></span>
+			              		<!--search-->
+			              	  	<div class="card searchBarPositioning col s6 m6 l6">
+		            				<div class=" valign-wrapper ">
+					            		<span class="input-field col s10 m10 l10 mySearch">
+							              	<input type="search" id="searchConceptsBox" 
+												onkeyup="filter('searchConceptsBox', 'conceptsList')" >
+										</span>
+										<span class="col s2 m2 l2 right">
+											<i class="material-icons"> search</i>
+										</span>
+									</div>
+							  	</div>
+							  	<!--end search-->
+						  	</span>
 						 
 						 	<!--Concepts list-->
 							<div id="conceptsListBox">
@@ -246,22 +248,22 @@
 			        <!--start predicates content-->
 			        <div id="predicatesBox" class="card">
 			            <div class="card-content ">
-			              	<span class="card-title"><span id="predicatesBoxTitle"></span></span>
-			              	<!--search-->
-		              	  	<div class="card">
-	            				<div class=" valign-wrapper ">
-	            					<span class="input-field col s11 m11 l11 mySearch">
-						              	<input type="search" id="searchPredicatesBox" 
-											onkeyup="filter('searchPredicatesBox', 'directPredicatesList');filter('searchPredicatesBox', 'reversePredicatesList');" >
-									</span>
-									<span class="col s2 m2 l2 right">
-										<i class="material-icons"> search</i>
-									</span>
-								</div>
-						  	</div>
-			              	<!--end search-->
-
-						  	<ul class="tabs tabs-fixed-width" id="predicatesTab">
+			              	<span class="card-title"><span id="predicatesBoxTitle"></span>
+				              	<!--search-->
+			              	  	<div class="card searchBarPositioning col s6 m6 l6">
+		            				<div class=" valign-wrapper ">
+		            					<span class="input-field col s11 m11 l11 mySearch">
+							              	<input type="search" id="searchPredicatesBox" 
+												onkeyup="filter('searchPredicatesBox', 'directPredicatesList');filter('searchPredicatesBox', 'reversePredicatesList');" >
+										</span>
+										<span class="col s2 m2 l2 right">
+											<i class="material-icons"> search</i>
+										</span>
+									</div>
+							  	</div>
+				              	<!--end search-->
+			              	</span>
+						  	<ul class="tabs tabs-fixed-width" id="predicatesTabBox">
 						  		<li class="tab">
 						  			<a class="active" href="#direct">
 						  				<span id="directPredicateTabTitle"></span>
@@ -431,7 +433,7 @@
 
 		    $('ul.tabs').tabs({onShow: function(tab) {
 		    	if(tab[0].id == "predicatesBox"){
-		    		$('ul#predicatesTab').tabs();
+		    		$('ul#predicatesTabBox').tabs();
 		    	}}
 		    });
 
