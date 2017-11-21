@@ -122,9 +122,7 @@ function updateBoxesFromConcept(conceptUrl){
 function renderConcept(rootMap, map){
 	lastRootMap = rootMap;
 	lastMap = map;
-	/*console.log(hierarchyOnFlag);
-	console.log(rootMap);
-	console.log(map);*/
+
 	if(hierarchyOnFlag)
 		renderConceptsHierarchy(rootMap, map);
 	else
@@ -141,7 +139,6 @@ function renderConceptsList(roots, concepts){
 	    var y = concepts[b].label.toLowerCase();
 	    return x < y ? -1 : (x > y ? 1 : 0);
 	});
-console.log(orderedKeys);
 
 	for(var i=0; i<orderedKeys.length; i++){
 		var concept = concepts[orderedKeys[i]];
@@ -336,7 +333,7 @@ function renderDirectPredicates(directMap){
 		element = directMap[key];
 		
 		var li = $("<li/>")
-			.attr('class', 'collection-item withMargin')
+			.attr('class', 'collection-item withMargin addToQuery')
 			.attr('id', element.url + "item")
 			.appendTo(directPredicatesList)
 			.on('click', function(){
@@ -383,7 +380,7 @@ function renderReversePredicates(reverseArray){
 		element = reverseArray[index];
 
 		var li = $("<li/>")
-			.attr('class', 'collection-item withMargin')
+			.attr('class', 'collection-item withMargin addToQuery')
 			.attr('id', element.url + "item")
 			.appendTo(reversePredicatesList)
 			.on('click', function(){
