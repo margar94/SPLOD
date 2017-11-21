@@ -9,6 +9,8 @@ function initTableResultViewer(){
 	cachedFieldsToHide = [];
 	languageManager = new LanguageManager();
 
+	resultsToConvert = {records:[], querySPARQL:""};
+
 	$('#tableResultSpinner').hide();
 
 	$('#visibleFieldsButton').text(languageManager.getButtonLabel('visibleFields'));
@@ -309,8 +311,10 @@ function createJson(){
 	});
 	resultsToConvert.querySPARQL = query;
 
-	/*
-	var jsonObj = 'data='+JSON.stringify(resultsToConvert);  
+	
+	var jsonObj = JSON.stringify(resultsToConvert);
+	console.log(jsonObj); 
+	/* 
 	$.ajax({
 	   type: "POST",
 	   url: "buildJson.php", 

@@ -19,13 +19,10 @@ body {
 	margin-bottom:0 !important;
 }
 
-.no-padding-left{
-	padding-left:0 !important;
+.no-padding{
+	padding:0 !important;
 }
 
-.no-padding-right{
-	padding-right:0 !important;
-}
 
 .searchBarPositioning{
 	display:inline-block;
@@ -35,6 +32,24 @@ body {
 
 #conceptsListBox, #predicatesTabBox{
 	margin-top:15px;
+}
+
+#openSparqlQuery{
+    position: fixed;
+    top: 2em;
+    right: 2em;
+}
+
+#saveTable{
+    position: fixed;
+    top: 5em;
+    right: 2em;
+}
+
+#removeButtonA{
+	position: fixed;
+    top: 8em;
+    right: 2em;
 }
 
 /*Cursor*/
@@ -109,8 +124,8 @@ span.highlighted {
 }
 
 span.highlightRemove {
-	background-color: #fff59d   ;
-	border-radius: 4px;
+ 	text-decoration: line-through;
+    text-decoration-color: #d32f2f;
 }
 
 #limitInput{
@@ -189,12 +204,6 @@ span.optionalBlock{
 
 /*SPARQL query*/
 
-#openSparqlQuery{
-    position: fixed;
-    top: 0.5em;
-    right: 2em;
-}
-
 div#querySparqlBox{
  	margin-top: 30px;
 }
@@ -228,17 +237,20 @@ div#modalSparql, div#modalNaturalLanguage{
 
 /*Left bar*/
 
-#myTabs {
+/*#myTabs {
 	display: table-cell;
 	border-right: 4px solid #1de9ae;
 }
 
-#myTabs>li.indicator{
-	display:none;
-}
+
 #myTabs li{
 	border-bottom: 1px solid #ddd;
 	padding: 0;
+}
+*/
+
+#myTabs>li.indicator{
+	display:none;
 }
 
 #myTabs li .mySpinner{
@@ -377,11 +389,11 @@ ul#fieldsCollection {
 /*Concepts box*/
 div#conceptsBox{
 	margin:0;
+    overflow: auto;
+    height: calc(100vh - 16em);
 }
 
 div#conceptsListBox {
-	height: 300px;
-    overflow: auto;
     border-radius:2px;
     /*background-color:#f5f5f5; */
 }
@@ -421,10 +433,11 @@ i.conceptInfo{
 /*Predicates box*/
 div#predicatesBox{
 	margin:0;
+	overflow: auto;
+    height: calc(100vh - 16em);
 }
 
 div#predicatesListBox {
-    height: 280px;
     overflow: auto;
 }
 
@@ -454,11 +467,12 @@ i.predicateInfo{
 /*Operators box*/
 div#operatorsBox{
 	margin:0;
+	overflow: auto;
+    height: calc(100vh - 16em);
 }
 
 div#contentOperatorBox{
-	overflow: auto;
-    height: 300px;
+	
  }
 
 #operatorsBox .card-title{
@@ -506,8 +520,10 @@ li.operatorListSeparator{
 /*Table results*/
 
 #tableResultBox{
-	overflow:auto;
-	margin:0;
+	overflow: auto;
+	margin-top: 0;
+	margin-bottom:0;
+    height: calc(100vh - 16em);
 }
 
 #tableResultBox .card-action{
@@ -550,6 +566,8 @@ img.imgResult {
 /*Settings Box*/
 div#settingsBox{
 	margin:0;
+	overflow: auto;
+    height: calc(100vh - 16em);
 }
 
 #settingsBox .card-action{
@@ -559,6 +577,8 @@ div#settingsBox{
 /*Help Box*/
 div#helpBox{
 	margin:0;
+	overflow: auto;
+    height: calc(100vh - 16em);
 }
 
 #helpBox .card-action{
