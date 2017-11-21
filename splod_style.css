@@ -435,6 +435,7 @@ div#conceptsBox .card-action{
 i.conceptInfo{
 	color: #1de9ae;
 	cursor: pointer;
+	z-index:1;
 }
 
 #hierarchySpan{
@@ -442,6 +443,10 @@ i.conceptInfo{
 	position:absolute;
 	left: 0.5em;
     top: 1em;
+}
+
+.expandIcon{
+	z-index: 1;
 }
 
 
@@ -476,6 +481,7 @@ div#predicatesBox .card-action{
 i.predicateInfo{
 	color: #e91e63;
 	cursor: pointer;
+	z-index:1;
 }
 
 

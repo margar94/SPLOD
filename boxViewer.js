@@ -192,11 +192,18 @@ function iterativePreorderVisit(concept, concepts, toAppend, level){
 	var li = $("<li/>")
 		.attr('class', 'collection-item addToQuery withMargin')
 		.css('margin-left', level*2+0.1+'em')
-		.appendTo(toAppend);
+		.appendTo(toAppend)
+		.on('click', function(e){
+			e.stopPropagation();
+			$('#operatorsSpinner').show();
+			$('#tableResultSpinner').show();
+			mapCreator.selectedConcept($(this).find('.liContent').attr('meta-url'), $(this).find('.liContent').attr('meta-label'));
+		});
 
+	var expandableIcon;
 	if(children.length>0){
-		var expandableIcon = $("<i/>")
-			.attr('class', 'tiny material-icons grey-text')
+		expandableIcon = $("<i/>")
+			.attr('class', 'tiny material-icons grey-text expandIcon')
 			.html('expand_less')
 			.appendTo(li);
 	}
@@ -208,12 +215,7 @@ function iterativePreorderVisit(concept, concepts, toAppend, level){
 			.attr('meta-label', concepts[concept].label)
 			.text(concepts[concept].label)
 			.css('margin-left', '0.5em')
-			.appendTo(li)
-			.on('click', function(){
-				$('#operatorsSpinner').show();
-				$('#tableResultSpinner').show();
-				mapCreator.selectedConcept($(this).attr('meta-url'), $(this).attr('meta-label'));
-			});
+			.appendTo(li);
 		
 	var badge;
 	if(concepts[concept].numberOfInstances == 0){
@@ -224,6 +226,7 @@ function iterativePreorderVisit(concept, concepts, toAppend, level){
 			.attr('meta-url', concepts[concept].url)
 			.appendTo(li)
 			.on('click', function(evt){
+				evt.stopPropagation();
 				boxFiller.getConceptStats($(this).attr('meta-url'), function(numberOfInstances){
 					var badge = $("<span/>")
 						.attr('class', 'new badge')
@@ -246,13 +249,14 @@ function iterativePreorderVisit(concept, concepts, toAppend, level){
 			.attr('class', 'myCollapsibleBody')
 			.appendTo(toAppend);
 
-		li.on('click', function(){
-			if($(this).next().is(':visible')){
-				$(this).next().hide();
+		expandableIcon.on('click', function(e){
+			e.stopPropagation();
+			if($(this).parent().next().is(':visible')){
+				$(this).parent().next().hide();
 				expandableIcon.html('expand_more');
 			}
 			else{
-				$(this).next().show();
+				$(this).parent().next().show();
 				expandableIcon.html('expand_less');
 			}
 		});
@@ -315,7 +319,12 @@ function renderDirectPredicates(directMap){
 		var li = $("<li/>")
 			.attr('class', 'collection-item withMargin')
 			.attr('id', element.url + "item")
-			.appendTo(directPredicatesList);
+			.appendTo(directPredicatesList)
+			.on('click', function(){
+				$('#operatorsSpinner').show();
+				$('#tableResultSpinner').show();
+				mapCreator.selectedPredicate($(this).find('.liContent').attr('meta-url'), $(this).find('.liContent').attr('meta-label'), $(this).find('.liContent').attr('meta-predicateDirection'));
+			});
 
 		var span = $("<span/>")
 			.attr('title', element.url)
@@ -325,12 +334,7 @@ function renderDirectPredicates(directMap){
 			.attr('meta-predicateDirection', 'direct') 
 			.text(languageManager.getPredicateVerbalization(element.label, 'direct'))
 			.css('margin-left', '0.5em')
-			.appendTo(li)
-			.on('click', function(){
-				$('#operatorsSpinner').show();
-				$('#tableResultSpinner').show();
-				mapCreator.selectedPredicate($(this).attr('meta-url'), $(this).attr('meta-label'), $(this).attr('meta-predicateDirection'));
-			});
+			.appendTo(li);
 
 		var info = $("<i/>")
 			.attr('class', 'tiny material-icons right predicateInfo')
@@ -338,6 +342,7 @@ function renderDirectPredicates(directMap){
 			.attr('meta-url', element.url)
 			.appendTo(li)
 			.on('click', function(evt){
+				evt.stopPropagation();
 				boxFiller.getPredicateStats($(this).attr('meta-url'), function(numberOfInstances){
 					var badge = $("<span/>")
 						.attr('class', 'new badge')
@@ -361,7 +366,12 @@ function renderReversePredicates(reverseArray){
 		var li = $("<li/>")
 			.attr('class', 'collection-item withMargin')
 			.attr('id', element.url + "item")
-			.appendTo(reversePredicatesList);
+			.appendTo(reversePredicatesList)
+			.on('click', function(){
+				$('#operatorsSpinner').show();
+				$('#tableResultSpinner').show();
+				mapCreator.selectedPredicate($(this).find('.liContent').attr('meta-url'), $(this).find('.liContent').attr('meta-label'), $(this).find('.liContent').attr('meta-predicateDirection'));
+			});
 
 		var span = $("<span/>")
 			.attr('title', element.url)
@@ -371,12 +381,7 @@ function renderReversePredicates(reverseArray){
 			.attr('meta-predicateDirection', 'reverse') 
 			.text(languageManager.getPredicateVerbalization(element.label, 'reverse'))
 			.css('margin-left', '0.5em')
-			.appendTo(li)
-			.on('click', function(){
-				$('#operatorsSpinner').show();
-				$('#tableResultSpinner').show();
-				mapCreator.selectedPredicate($(this).attr('meta-url'), $(this).attr('meta-label'), $(this).attr('meta-predicateDirection'));
-			});
+			.appendTo(li);
 
 		var info = $("<i/>")
 			.attr('class', 'tiny material-icons right predicateInfo')
@@ -384,6 +389,7 @@ function renderReversePredicates(reverseArray){
 			.attr('meta-url', element.url)
 			.appendTo(li)
 			.on('click', function(evt){
+				evt.stopPropagation();
 				boxFiller.getPredicateStats($(this).attr('meta-url'), function(numberOfInstances){
 					var badge = $("<span/>")
 						.attr('class', 'new badge')
