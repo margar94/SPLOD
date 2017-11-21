@@ -41,20 +41,20 @@ body {
 
 #openSparqlQuery{
     position: fixed;
-    top: 2em;
+    top: 7em;
     right: 2em;
 }
 
 #saveTable{
     position: fixed;
-    top: 5em;
-    right: 2em;
+    top: 7em;
+    right: 5em;
 }
 
 #removeButtonA{
 	position: fixed;
-    top: 8em;
-    right: 2em;
+    top: 7em;
+    right: 9em;
 }
 
 .card-title{
@@ -137,6 +137,11 @@ span.highlightRemove {
     text-decoration-color: #d32f2f;
 }
 
+#limit input[type=number]::-webkit-inner-spin-button, 
+#limit input[type=number]::-webkit-outer-spin-button {  
+   opacity: 1;
+}
+
 #limitInput{
 	width: 50px;
 	margin-bottom: 0;
@@ -166,7 +171,7 @@ span.operator {
     text-decoration-style: dashed;*/
 }
 
-span.reusableResult {
+span.result {
 	color: grey;
 	font-weight: bold;
 }
@@ -258,6 +263,10 @@ div#modalSparql, div#modalNaturalLanguage{
 }
 */
 
+#myTabs .myTabTitle{
+	float:left;
+}
+
 #myTabs>li.indicator{
 	display:none;
 }
@@ -265,6 +274,12 @@ div#modalSparql, div#modalNaturalLanguage{
 #myTabs li .mySpinner{
 	height: 1em;
 	width: 1em;
+	top:1em;
+}
+
+#myTabs .myTabIcon{
+	top: 1.2em;
+	position: relative;
 }
 
 #myTabs li #conceptsSpinner .spinner-layer{
@@ -282,6 +297,43 @@ div#modalSparql, div#modalNaturalLanguage{
 #myTabs li #tableResultSpinner .spinner-layer{
 	border-color: #01579b;
 } 
+
+#conceptsProgress {
+	background-color: #9ff1d9;
+    top: 3em;
+}
+
+#conceptsProgress .indeterminate{
+	background-color: #1de9ae;
+}
+
+#directPredicatesProgress, #reversePredicatesProgress{
+	background-color: #f5a0bd;
+    top: 3em;
+}
+
+#directPredicatesProgress .indeterminate, #reversePredicatesProgress .indeterminate{
+	background-color: #e91e63;
+}
+
+#operatorProgress {
+	background-color: #e4e4e4;
+    top: 3em;
+}
+
+#operatorProgress .indeterminate{
+	background-color: #bdbdbd;
+}
+
+#tableResultsProgress {
+	background-color: #aecee6;
+    top: 3em;
+}
+
+#tableResultsProgress .indeterminate{
+	background-color: #2196f3;
+}
+   
 
 .tabs #conceptsTab a:hover,
 .tabs #conceptsTab a.active{
@@ -393,6 +445,12 @@ ul#fieldsCollection {
 	font-size: 4px;
   	text-align: -webkit-center;
   	color:grey;
+}
+
+#resultsPreviewBadge{
+	float: left;
+    position: relative;
+    top: 1em;
 }
 
 /*Concepts box*/

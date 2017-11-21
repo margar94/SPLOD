@@ -12,6 +12,10 @@ function initTableResultViewer(){
 	resultsToConvert = {records:[], querySPARQL:""};
 
 	$('#tableResultSpinner').hide();
+	$('#resultsPreviewBadge').text('0');
+	$('#resultsPreviewBadge').show();
+	$('#tableResultsProgress').hide();
+	$('#resultsTable').show();
 
 	//$('#visibleFieldsButton').text(languageManager.getButtonLabel('visibleFields'));
 
@@ -32,6 +36,10 @@ function resetResultTable(){
 	$('#resultsTable').empty();
 	$('#previewTableResult').empty();
 	$('#tableResultSpinner').hide();
+	$('#resultsTable').show();
+	$('#tableResultsProgress').hide();
+	$('#resultsPreviewBadge').text('0');
+	$('#resultsPreviewBadge').show();
 }
 
 function resetFieldsList(){
@@ -228,6 +236,15 @@ function createTable(select, labelSelect, results){
 	});
 
 	$('#tableResultSpinner').hide();
+	$('#tableResultsProgress').hide();
+	$('#resultsTable').show();
+	
+	var resultPreviewNumber = results.length;
+	if(resultPreviewNumber>=1000)
+		resultPreviewNumber = '999+';
+
+	$('#resultsPreviewBadge').text(resultPreviewNumber);
+	$('#resultsPreviewBadge').show();
 
 	//<link href='Materialize/css/materialize.min.css' rel='stylesheet'><link href='splod_style.css' rel='stylesheet'> table, tr,th {border: 1px black solid;}
 	

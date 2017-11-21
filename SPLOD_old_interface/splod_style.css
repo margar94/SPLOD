@@ -15,8 +15,6 @@ body {
 	background-color: #2196f3 !important;
 }
 
-
-
 /*Cursor*/
 
 div .card-action i{
@@ -177,11 +175,13 @@ div#querySparqlBox .SPARQLhighlighted{
 #myTabs {
 	display: table-cell;
 	border-right: 4px solid #1de9ae;
+	float:left;
 }
 
 #myTabs>li.indicator{
 	display:none;
 }
+
 #myTabs li{
 	border-bottom: 1px solid #ddd;
 	padding: 0;
@@ -190,6 +190,7 @@ div#querySparqlBox .SPARQLhighlighted{
 #myTabs li .mySpinner{
 	height: 1em;
 	width: 1em;
+	top: 1em;
 }
 
 #myTabs li #conceptsSpinner .spinner-layer{

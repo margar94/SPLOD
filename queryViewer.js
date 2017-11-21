@@ -16,8 +16,7 @@ function initQueryViewer(){
 	$("#queryNaturalLanguage")[0].innerHTML = languageManager.getQueryInitialVerbalization();
 	$("#focusLabel")[0].innerHTML = languageManager.getFocusLabel();
 	$("#focus")[0].innerHTML = languageManager.getFocusInitialVerbalization();
-	$("#querySparqlText").text('');
-	$("#querySparqlText").hide();
+	$("#modalSparql").html('SELECT...');
 }
 
 var QueryViewer= function () {
@@ -181,9 +180,9 @@ function visitRenderer(key){
 			nodeResultQuery += '<span>';
 
 			//content
-			nodeQueryString += '<span id="'+encodeURIComponent(node.key)+'" class="focusable reusableResult" meta-removeReference="'+encodeURIComponent(node.parent)+'" meta-focusReference="'+encodeURIComponent(node.key)+'">';
+			nodeQueryString += '<span id="'+encodeURIComponent(node.key)+'" class="focusable result" meta-removeReference="'+encodeURIComponent(node.parent)+'" meta-focusReference="'+encodeURIComponent(node.key)+'">';
 			nodeQueryString += node.verbalization.current[verbalizationIndex];
-			nodeResultQuery += '<span class="reusableResult">'+node.verbalization.current[verbalizationIndex++]+'</span>';
+			nodeResultQuery += '<span class="result">'+node.verbalization.current[verbalizationIndex++]+'</span>';
 			nodeQueryString += '</span>';
 
 			if(addBarred){
@@ -585,7 +584,7 @@ function renderFocus(){
 		fillPredicates();
 
 		$("#focus").text(languageManager.getFocusInitialVerbalization());
-		$("#querySparqlText").text('');
+		$("#modalSparql").html('SELECT...');
 
 		return;
 	}
@@ -600,7 +599,7 @@ function renderFocus(){
 		//focus text
 		var number = queryLogicStructure[onFocus].index; 
 		var focusLabel = languageManager.getOrdinalNumber(number) + ' ' + queryLogicStructure[onFocus].label;
-		$("#focus").text(" " + focusLabel);
+		$("#focus").html(" <span class='" + mapCreator.getNodeByKey(onFocus).type+"'>" + focusLabel + "</span>");
 
 		updateBoxes(queryLogicStructure[onFocus]);	
 	}
@@ -647,13 +646,9 @@ function attachEvents(){
 		//changeFocus notification
 		onFocus = decodeURIComponent($(this).attr("meta-focusReference"));
 
-		//highlight sparql query
-		$("#querySparqlText .SPARQLhighlighted").removeClass("SPARQLhighlighted");
-		$("#querySparqlText span[meta-relatedto~='"+$(this).attr("meta-focusReference")+"']").addClass("SPARQLhighlighted");
-
 		var number = queryLogicStructure[onFocus].index; 
 		var focusLabel = languageManager.getOrdinalNumber(number) + ' ' + queryLogicStructure[onFocus].label;
-		$("#focus").text(" " + focusLabel);
+		$("#focus").html(" <span class='" + mapCreator.getNodeByKey(onFocus).type+"'>" + focusLabel + "</span>");
 		$("#operatorsSpinner").show();
 
 		mapCreator.changeFocus(onFocus);
@@ -665,7 +660,7 @@ function attachEvents(){
 			}
 			activeAjaxRequest = [];
 		}
-		//don"t kill user query
+		//don't kill user query
 		updateBoxes(queryLogicStructure[onFocus]);	
 	});
 
@@ -712,7 +707,8 @@ function removeFocusable(){
 function showUserQueryBox(){
 	$('#sparqlVsNl #modalNaturalLanguage').html($('#queryNaturalLanguage').html());
 	$('#sparqlVsNl #limit').html(resultLimit+" ");
-	$("#sparqlVsNl .focusable:not(#limit)").click(function(e){
+	$("#sparqlVsNl #limit").addClass("focusable");
+	$("#sparqlVsNl .focusable").click(function(e){
 		e.stopPropagation();
 		$("#sparqlVsNl .highlighted").removeClass("highlighted");
 		$(this).addClass("highlighted");
@@ -721,6 +717,7 @@ function showUserQueryBox(){
 		$("#modalSparql .SPARQLhighlighted").removeClass("SPARQLhighlighted");
 		$("#modalSparql span[meta-relatedto~='"+$(this).attr("meta-focusReference")+"']").addClass("SPARQLhighlighted");
 	});
+
 	$('#sparqlVsNl').modal('open');
 }
 

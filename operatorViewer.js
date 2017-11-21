@@ -38,11 +38,16 @@ function renderOperatorList(operators){
 				.on('click', function(){
 					if(!operatorManager.selectedOperator($(this).attr('meta-value'), $(this).attr('meta-datatype'))){
 						$('#operatorsSpinner').show();
+						$("#operatorList").hide();
+						$('#operatorsProgress').show();
+
 						var reusableResults = operatorManager.getResultToCompleteOperator();
 						renderReusableResultListFromOperator(reusableResults);
 					}
 					else{
 						$('#tableResultSpinner').show();
+						$("#resultsTable").hide();
+						$('#tableResultsProgress').show();
 					}
 				});
 				if(j == datatypeOperatorList.length-1)
@@ -72,6 +77,8 @@ function renderOperatorList(operators){
 	});*/
 
 	$('#operatorsSpinner').hide();
+	$('#operatorsProgress').hide();
+	$("#operatorList").show();
 
 }
 
@@ -86,7 +93,11 @@ function renderReusableResultListFromOperator(reusableResults){
 						$('#reusableResultList').hide();
 						$('#operatorList').show();
 						$('#pendingQuerySpan').empty();
+
 						$('#tableResultSpinner').show();
+						$('#resultsTable').hide();
+						$('#tableResultsProgress').show();
+
 					}else{
 						$('#rowUserValue input').val('');
 						renderPendingQuery();
@@ -102,6 +113,8 @@ function renderReusableResultListFromOperator(reusableResults){
 						$('#operatorsBox .card-title').hide();
 						$('#pendingQuerySpan').empty();
 						$('#tableResultSpinner').show();
+						$('#resultsTable').hide();
+						$('#tableResultsProgress').show();
 					}else{
 						$('#rowUserValue input').val('');
 						renderPendingQuery();
@@ -121,12 +134,16 @@ function renderReusableResultListFromResult(reusableResults){
 						values.push($('#userValue_1')[0].value);
 
 					$('#tableResultSpinner').show();
+					$('#resultsTable').hide();
+					$('#tableResultsProgress').show();
 					operatorManager.changedReusableResult(values, true);
 				}
 
 
 	var onClickLiFunction = function(){
 					$('#tableResultSpinner').show();
+					$('#resultsTable').hide();
+					$('#tableResultsProgress').show();
 					operatorManager.changedReusableResult([$(this).attr('meta-value')], false);
 				}
 
@@ -296,6 +313,7 @@ function renderReusableResultList(reusableResults, onClickButtonFunction, onClic
 	});
 
 	$('#operatorsSpinner').hide();
+	$('#operatorsProgress').hide();
 
 }
 

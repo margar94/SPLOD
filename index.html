@@ -102,7 +102,7 @@
 		        <li class="tab" id="conceptsTab" 
 		        onclick="$('#myTabs').css('border-right-color', '#1de9ae')">	
 		        	<a href="#conceptsBox">
-		        		<span id="conceptsTabTitle"></span> 
+		        		<span id="conceptsTabTitle" class="myTabTitle"></span> 
 			        	<div id="conceptsSpinner" class="preloader-wrapper mySpinner active">
 						    <div class="spinner-layer spinner-blue-only">
 						      <div class="circle-clipper left">
@@ -120,7 +120,7 @@
 		        <!--start predicates-->
 		        <li class="tab" id="predicatesTab" onclick="$('#myTabs').css('border-right-color', '#e91e63 ')">
 		        	<a href="#predicatesBox">
-		        		<span id="predicatesTabTitle"></span>
+		        		<span id="predicatesTabTitle" class="myTabTitle"></span>
 		        		<div id="predicatesSpinner" class="preloader-wrapper mySpinner active">
 						    <div class="spinner-layer spinner-blue-only">
 						      <div class="circle-clipper left">
@@ -138,7 +138,7 @@
 		        <!--start operators-->
 		        <li class="tab" id="operatorsTab" onclick="$('#myTabs').css('border-right-color', '#bdbdbd')">
 		        	<a href="#operatorsBox">
-		        		<span id="operatorsTabTitle"></span>
+		        		<span id="operatorsTabTitle" class="myTabTitle"></span>
 		        		<div id="operatorsSpinner" class="preloader-wrapper mySpinner active">
 						    <div class="spinner-layer spinner-blue-only">
 						      <div class="circle-clipper left">
@@ -157,7 +157,8 @@
 		        <li class="tab" id="tableResultTab" 
 		        	onclick="$('#myTabs').css('border-right-color', '#2196f3')">
 	           		<a href="#tableResultBox">
-	           			<span id="tableResultTabTitle"></span>
+	           			<span id="tableResultTabTitle" class="myTabTitle"></span>
+	           			<span id="resultsPreviewBadge" class="new badge" data-badge-caption ></span>
 	           			<div id="tableResultSpinner" class="preloader-wrapper mySpinner active">
 		          			<div class="spinner-layer spinner-blue-only">
 		            			<div class="circle-clipper left">
@@ -202,8 +203,7 @@
 		        <!--start settings-->
 		        <li class="tab" id="settingsTab" onclick="$('#myTabs').css('border-right-color', '#2196f3')">
 		        	<a href="#settingsBox">
-		        		<i class="tiny material-icons" id="settings">settings</i> 
-		        		<span id="settingsTabTitle"></span>
+		        		<span id="settingsTabTitle" class="myTabTitle"></span>
 		     		</a>
 		        </li>
 		        <!--end settings-->
@@ -211,8 +211,7 @@
 		        <!--start help-->
 		        <li class="tab" id="helpTab" onclick="$('#myTabs').css('border-right-color', '#2196f3')">
 		        	<a href="#helpBox">
-		        		<i class="tiny material-icons" id="help_outline">help_outline</i> 
-		        		<span id="helpTabTitle"></span>
+		        		<span id="helpTabTitle" class="myTabTitle"></span>
 		     		</a>
 		        </li>
 		        <!--end help-->
@@ -228,21 +227,24 @@
 		        	<div id="conceptsBox" class="card">
 			            <div class="card-content ">
 			              	
-			              		<a href="#" id="hierarchySpan" class='dropdown-button btn-floating waves-effect waves-light right'><i class="material-icons"">list</i></a>
-			              		<!--search-->
-			              	  	<div class="card searchBarPositioning col s6 m6 l6">
-		            				<div class=" valign-wrapper ">
-					            		<span class="input-field col s10 m10 l10 mySearch">
-							              	<input type="search" id="searchConceptsBox" 
-												onkeyup="filter('searchConceptsBox', 'conceptsList')" >
-										</span>
-										<span class="col s2 m2 l2 right">
-											<i class="material-icons"> search</i>
-										</span>
-									</div>
-							  	</div>
-							  	<!--end search-->
-						  	
+		              		<a href="#" id="hierarchySpan" class='dropdown-button btn-floating waves-effect waves-light right'><i class="material-icons"">list</i></a>
+		              		<!--search-->
+		              	  	<div class="card searchBarPositioning col s6 m6 l6">
+	            				<div class=" valign-wrapper ">
+				            		<span class="input-field col s10 m10 l10 mySearch">
+						              	<input type="search" id="searchConceptsBox" 
+											onkeyup="filter('searchConceptsBox', 'conceptsList')" >
+									</span>
+									<span class="col s2 m2 l2 right">
+										<i class="material-icons"> search</i>
+									</span>
+								</div>
+						  	</div>
+						  	<!--end search-->
+
+						  	<div class="progress" id="conceptsProgress">
+							    <div class="indeterminate"></div>
+							</div>
 						 
 						 	<!--Concepts list-->
 							<div id="conceptsListBox">
@@ -283,14 +285,22 @@
 				        		</li>
 						  	</ul>
 						</div>
-						<!--direct predocate-->
+						<!--direct predicate-->
 			            <div id="direct">
+			            	<div class="progress" id="directPredicatesProgress">
+							    <div class="indeterminate"></div>
+							</div>
+
 					      	<div id="predicatesListBox">
 					      		<ul id="directPredicatesList" class="collection"></ul>
 					      	</div> 
 					    </div>
-					    <!--reverse predocate-->
+					    <!--reverse predicate-->
 					    <div id="reverse">
+					    	<div class="progress" id="reversePredicatesProgress">
+							    <div class="indeterminate"></div>
+							</div>
+
 					      	<div id="predicatesListBox">
 					      		<ul id="reversePredicatesList" class="collection"></ul>
 					      	</div>
@@ -317,7 +327,10 @@
 						  	</div>
 						  	<!--end search-->
 			              <div id="contentOperatorBox">
-			              	  	
+							  <div class="progress" id="operatorsProgress">
+								  <div class="indeterminate"></div>
+							  </div>
+
 				              <ul id="operatorList" class="collection"></ul>
 				              <ul id="reusableResultList" class="collection"></ul>
 				          </div>
@@ -331,6 +344,10 @@
 			            		<a id="visibleFieldsButton" href="#" class='dropdown-button btn-floating waves-effect waves-light blue right' data-activates='fieldsCollection'><i class="material-icons"">remove_red_eye</i></a>
 			            		<ul id="fieldsCollection" class="collection dropdown-content"></ul>
 			              	<div class="row col s12 no-padding">
+			              		<div class="progress" id="tableResultsProgress">
+								    <div class="indeterminate"></div>
+								</div>
+
 								<div id="resultsTableBox" class=" col s12 m12 l12 scrollableTableContent no-padding">
 									<table id="resultsTable" class="striped centered"></table>
 								</div>
