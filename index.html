@@ -227,8 +227,8 @@
 		        	<!--start concepts content-->
 		        	<div id="conceptsBox" class="card">
 			            <div class="card-content ">
-			              	<span class="card-title">
-			              		<span id="conceptsBoxTitle"></span>
+			              	
+			              		<a href="#" id="hierarchySpan" class='dropdown-button btn-floating waves-effect waves-light right'><i class="material-icons"">list</i></a>
 			              		<!--search-->
 			              	  	<div class="card searchBarPositioning col s6 m6 l6">
 		            				<div class=" valign-wrapper ">
@@ -242,7 +242,7 @@
 									</div>
 							  	</div>
 							  	<!--end search-->
-						  	</span>
+						  	
 						 
 						 	<!--Concepts list-->
 							<div id="conceptsListBox">
@@ -250,30 +250,25 @@
 							</div>
 							<!--end concepts list-->
 			            </div>
-			            <div class="card-action valign-wrapper">
-			              	<span class="col s1 m1 l1" id="hierarchySpan"></span>
-			            </div>
 			        </div>
 			        <!--end concepts content-->
 
 			        <!--start predicates content-->
 			        <div id="predicatesBox" class="card">
 			            <div class="card-content ">
-			              	<span class="card-title"><span id="predicatesBoxTitle"></span>
-				              	<!--search-->
-			              	  	<div class="card searchBarPositioning col s6 m6 l6">
-		            				<div class=" valign-wrapper ">
-		            					<span class="input-field col s11 m11 l11 mySearch">
-							              	<input type="search" id="searchPredicatesBox" 
-												onkeyup="filter('searchPredicatesBox', 'directPredicatesList');filter('searchPredicatesBox', 'reversePredicatesList');" >
-										</span>
-										<span class="col s2 m2 l2 right">
-											<i class="material-icons"> search</i>
-										</span>
-									</div>
-							  	</div>
-				              	<!--end search-->
-			              	</span>
+			              	<!--search-->
+		              	  	<div class="card searchBarPositioning col s6 m6 l6">
+	            				<div class=" valign-wrapper ">
+	            					<span class="input-field col s11 m11 l11 mySearch">
+						              	<input type="search" id="searchPredicatesBox" 
+											onkeyup="filter('searchPredicatesBox', 'directPredicatesList');filter('searchPredicatesBox', 'reversePredicatesList');" >
+									</span>
+									<span class="col s2 m2 l2 right">
+										<i class="material-icons"> search</i>
+									</span>
+								</div>
+						  	</div>
+			              	<!--end search-->
 						  	<ul class="tabs tabs-fixed-width" id="predicatesTabBox">
 						  		<li class="tab">
 						  			<a class="active" href="#direct">
@@ -306,7 +301,6 @@
 					<!--start operators content-->
 					<div id="operatorsBox" class="card">
 			            <div class="card-content">
-			              <span class="card-title"><span id="operatorsBoxTitle"></span></span>
 			              <span id="pendingQuerySpan"></span>
 			              <div id="contentOperatorBox">
 			              	  	<!--search-->
@@ -332,11 +326,8 @@
 			        <!--start table result content-->
 			        <div id="tableResultBox" class="card no-padding">
 			            <div class="card-content no-padding">
-			            	<!--<span class="card-title">
-			            		<span id="tableResultBoxTitle"></span>-->
 			            		<a id="visibleFieldsButton" href="#" class='dropdown-button btn-floating waves-effect waves-light blue right' data-activates='fieldsCollection'><i class="material-icons"">remove_red_eye</i></a>
 			            		<ul id="fieldsCollection" class="collection dropdown-content"></ul>
-			            	<!--</span>-->
 			              	<div class="row col s12 no-padding">
 								<div id="resultsTableBox" class=" col s12 m12 l12 scrollableTableContent no-padding">
 									<table id="resultsTable" class="striped centered"></table>
@@ -349,7 +340,6 @@
 			        <!--start settings content-->
 			        <div id="settingsBox" class="card">
 			            <div class="card-content ">
-			              <span class="card-title"><span id="settingsBoxTitle" ></span></span>
 			              <div class="row">
 
 			              	<div class="input-field col s3 m3 l3">
@@ -389,7 +379,6 @@
 			         <!--start help content-->
 			        <div id="helpBox" class="card">
 			            <div class="card-content ">
-			              <span class="card-title"><span id="helpBoxTitle" ></span></span>
 			              <div class="row">
 
 			              	<ul id="helpUl" class="collapsible" data-collapsible="accordion">

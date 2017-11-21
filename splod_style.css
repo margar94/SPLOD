@@ -30,8 +30,13 @@ body {
 	margin:0;
 }
 
-#conceptsListBox, #predicatesTabBox{
-	margin-top:15px;
+#conceptsListBox{
+	margin-top:3.5em;
+}
+
+#predicatesTabBox{
+	width: 50%;
+    margin: 0;
 }
 
 #openSparqlQuery{
@@ -50,6 +55,10 @@ body {
 	position: fixed;
     top: 8em;
     right: 2em;
+}
+
+.card-title{
+	margin:0;
 }
 
 /*Cursor*/
@@ -428,6 +437,13 @@ i.conceptInfo{
 	cursor: pointer;
 }
 
+#hierarchySpan{
+	background-color: #1de9ae;
+	position:absolute;
+	left: 0.5em;
+    top: 1em;
+}
+
 
 
 /*Predicates box*/
@@ -477,11 +493,6 @@ div#contentOperatorBox{
 
 #operatorsBox .card-title{
 	color: #bdbdbd;
-}
-
-#operatorsBox .card-title i{
-	margin-left: 5px;
-    vertical-align: bottom;
 }
 
 div#operatorsBox .card-action{
@@ -534,7 +545,7 @@ li.operatorListSeparator{
 	background-color: #2196f3;
 	position:absolute;
 	left: 0.5em;
-    top: 2em;
+    top: 1em;
 }
 
 img.imgResult {
@@ -554,7 +565,7 @@ img.imgResult {
 }
 .scrollableTableContent tbody{
 	display : block;
-	height: calc(100vh - 20em);
+	height: calc(100vh - 18.5em);
 	overflow-y: auto;
 	width:100%;
 }
