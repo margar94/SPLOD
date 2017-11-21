@@ -13,7 +13,7 @@ function initTableResultViewer(){
 
 	$('#tableResultSpinner').hide();
 
-	$('#visibleFieldsButton').text(languageManager.getButtonLabel('visibleFields'));
+	//$('#visibleFieldsButton').text(languageManager.getButtonLabel('visibleFields'));
 
 	$('.dropdown-button').dropdown({
 	      inDuration: 300,

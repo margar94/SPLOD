@@ -532,6 +532,9 @@ li.operatorListSeparator{
 
 #visibleFieldsButton{
 	background-color: #2196f3;
+	position:absolute;
+	left: 0.5em;
+    top: 2em;
 }
 
 img.imgResult {
@@ -551,7 +554,7 @@ img.imgResult {
 }
 .scrollableTableContent tbody{
 	display : block;
-	height: 400px;
+	height: calc(100vh - 20em);
 	overflow-y: auto;
 	width:100%;
 }
