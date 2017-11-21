@@ -432,6 +432,11 @@ div#conceptsBox .card-action{
 	margin-bottom: 1px;
 }
 
+.collection-item{
+	margin:2px;
+}
+
+
 i.conceptInfo{
 	color: #1de9ae;
 	cursor: pointer;

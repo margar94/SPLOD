@@ -75,15 +75,9 @@ function initBoxViewer(){
 	$("#directPredicateTabTitle").html(languageManager.getTabTitle('direct predicate'));
 	$("#reversePredicateTabTitle").html(languageManager.getTabTitle('reverse predicate'));
 
-	$("#conceptsBoxTitle").html(languageManager.getBoxTitle('concept'));
-	$("#predicatesBoxTitle").html(languageManager.getBoxTitle('predicate'));
-	$("#operatorsBoxTitle").html(languageManager.getBoxTitle('operator'));
-	$("#tableResultBoxTitle").html(languageManager.getBoxTitle('table result'));
-	$("#settingsBoxTitle").html(languageManager.getBoxTitle('settings'));
-	$("#helpBoxTitle").html(languageManager.getTabTitle('help'));
-
 	$("#hintBox").hide();
 
+	//settings
 	$("#labelLangSelectLabel").html(languageManager.getSelectTitle('label lang'));
 	$("#systemLangSelectLabel").html(languageManager.getSelectTitle('system lang'));
 	$("#numConceptsLabel").html(languageManager.getSelectTitle('num concepts'));
@@ -128,6 +122,9 @@ function updateBoxesFromConcept(conceptUrl){
 function renderConcept(rootMap, map){
 	lastRootMap = rootMap;
 	lastMap = map;
+	/*console.log(hierarchyOnFlag);
+	console.log(rootMap);
+	console.log(map);*/
 	if(hierarchyOnFlag)
 		renderConceptsHierarchy(rootMap, map);
 	else
@@ -139,41 +136,63 @@ function renderConcept(rootMap, map){
 function renderConceptsList(roots, concepts){
 	var conceptsList = $("#conceptsList");
 	conceptsList.empty();
-
 	var orderedKeys = Object.keys(concepts).sort(function(a,b){
 		var x = concepts[a].label.toLowerCase();
 	    var y = concepts[b].label.toLowerCase();
-	    return x < y ? -1 : x > y ? 1 : 0;
+	    return x < y ? -1 : (x > y ? 1 : 0);
 	});
+console.log(orderedKeys);
 
 	for(var i=0; i<orderedKeys.length; i++){
 		var concept = concepts[orderedKeys[i]];
 
-		if(concept.numberOfInstances != 0){
-			var li = $("<li/>")
-				.attr('class', 'collection-item addToQuery withMargin')
-				.attr('title', concept.url)
-				.attr('meta-url', concept.url)
-				.attr('meta-label', concept.label)
-				.appendTo(conceptsList)		
-				.on('click', function(){
-					$('#operatorsSpinner').show();
-					$('#tableResultSpinner').show();
-					mapCreator.selectedConcept($(this).attr('meta-url'), $(this).attr('meta-label'));
+		var li = $("<li/>")
+			.attr('class', 'collection-item addToQuery withMargin')
+			.appendTo(conceptsList)		
+			.on('click', function(){
+				e.stopPropagation();
+				$('#operatorsSpinner').show();
+				$('#tableResultSpinner').show();
+				mapCreator.selectedConcept($(this).find('.liContent').attr('meta-url'), $(this).find('.liContent').attr('meta-label'));
+			});
+
+		var span = $('<span/>')
+			.attr('class', 'liContent')
+			.attr('title', concept.url)
+			.attr('meta-url', concept.url)
+			.attr('meta-label', concept.label)
+			.text(concept.label)
+			.css('margin-left', '0.5em')
+			.appendTo(li);
+
+		var badge;
+		if(concept.numberOfInstances == 0){
+			badge = $("<i/>")
+			.attr('class', 'tiny material-icons right conceptInfo')
+			.html('info')
+			.attr('meta-url', concept.url)
+			.appendTo(li)
+			.on('click', function(evt){
+				evt.stopPropagation();
+				boxFiller.getConceptStats($(this).attr('meta-url'), function(numberOfInstances){
+					var badge = $("<span/>")
+						.attr('class', 'new badge')
+						.attr('data-badge-caption', '')
+						.text(numberOfInstances);
+
+					$(evt.target).replaceWith(badge);
 				});
-
-			var span = $('<span/>')
-				.attr('class', 'liContent')
-				.text(concept.label)
-				.appendTo(li);
-
-			var badge = $("<span/>")
-				.attr('class', 'new badge')
-				.attr('data-badge-caption', '')
-				.text(concept.numberOfInstances)
-				.appendTo(li);
+			});
+		}else{
+			badge = $("<span/>")
+			.attr('class', 'new badge')
+			.attr('data-badge-caption', '')
+			.text(concept.numberOfInstances)
+			.appendTo(li);
 		}
+	
 	}
+
 }
 
 function renderConceptsHierarchy(roots, concepts){

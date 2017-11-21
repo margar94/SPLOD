@@ -503,13 +503,7 @@ enLanguageManager.prototype.getTabTitle = function(tabType){
 enLanguageManager.prototype.getBoxTitle = function(boxType){
 	var title = '';
 	switch(boxType){
-		case 'concept' : title = 'Concepts'; break;
-		case 'predicate' : title = 'Predicates'; break;
-		case 'operator' : title = 'Operators'; break;
-		case 'table result' : title = 'Table result'; break;
-		case 'settings' : title = 'Settings'; break;
 		case 'result' : title = 'Substitute result on focus'; break;
-		case 'help' : title = 'Help'; break;
 	}
 	return title;
 }
