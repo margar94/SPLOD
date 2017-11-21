@@ -54,15 +54,15 @@ function renderQuery(){
 
 		queryString = languageManager.getQueryStartVerbalization();
 		resultQuery = languageManager.getQueryStartVerbalization();
-		queryString += '<span meta-focusReference="limit" meta-removeReference="limit" class="focusable">';
-		queryString += '<span id="limit" min="0" meta-focusReference="limit" meta-removeReference="limit" class="focusable operator">';
+		queryString += '<span>';
+		queryString += '<span id="limit" meta-focusReference="limit">';
 
 		if(!resultLimit){
 			 queryString += 'every ';
 			 resultQuery += '<span>every </span>';
 		}
 		else{ 
-			queryString += '<input id="limitInput" type="number" value="'+resultLimit+'"/>';
+			queryString += '<input id="limitInput" type="number" min="0" value="'+resultLimit+'"/>';
 			resultQuery += '<span>'+resultLimit+' </span>';
 		}
 		queryString += '</span>';
@@ -94,7 +94,7 @@ function visitRenderer(key){
 			var verbalizationIndex = 0;
 
 			//pre label
-			nodeQueryString += '<span class="focusable" meta-focusReference="'+encodeURIComponent(node.key)+'" meta-removeReference="'+encodeURIComponent(node.key)+'">';
+			nodeQueryString += '<span>';
 			nodeQueryString += node.verbalization.current[verbalizationIndex];
 			nodeResultQuery += '<span>'+node.verbalization.current[verbalizationIndex++];
 
@@ -177,7 +177,7 @@ function visitRenderer(key){
 			var verbalizationIndex = 0;
 
 			//pre label
-			nodeQueryString += '<span class="focusable" meta-focusReference="'+encodeURIComponent(node.key)+'" meta-removeReference="'+encodeURIComponent(node.parent)+'">';
+			nodeQueryString += '<span>';
 			nodeResultQuery += '<span>';
 
 			//content
@@ -245,7 +245,7 @@ function visitRenderer(key){
 				metaRemoveReference = encodeURIComponent(node.parent);
 			
 
-			nodeQueryString += '<span class="focusable" meta-focusReference="'+encodeURIComponent(node.key)+'" meta-removeReference="'+metaRemoveReference+'">';
+			nodeQueryString += '<span>';
 			nodeResultQuery += '<span>';
 
 			//content
@@ -309,7 +309,7 @@ function visitRenderer(key){
 				var verbalizationIndex = 0;
 
 				//pre label
-				nodeQueryString += '<span class="focusable" meta-focusReference="'+encodeURIComponent(node.key)+'" meta-removeReference="'+encodeURIComponent(node.key)+'">';
+				nodeQueryString += '<span>';
 				nodeQueryString += node.verbalization.current[verbalizationIndex];
 				nodeResultQuery += '<span>'+node.verbalization.current[verbalizationIndex++];
 
@@ -391,7 +391,7 @@ function visitRenderer(key){
 				var verbalizationIndex = 0;
 
 				//pre label
-				nodeQueryString += '<span class="focusable" meta-focusReference="'+encodeURIComponent(node.key)+'" meta-removeReference="'+encodeURIComponent(node.key)+'">';
+				nodeQueryString += '<span>';
 				nodeQueryString += node.verbalization.current[verbalizationIndex];
 				nodeResultQuery += '<span>'+node.verbalization.current[verbalizationIndex++];
 
@@ -471,7 +471,7 @@ function visitRenderer(key){
 				case "after" : 
 					var verbalizationIndex = 0;
 					//pre label
-					nodeQueryString += '<span class="focusable" meta-focusReference="'+encodeURIComponent(node.key)+'" meta-removeReference="'+encodeURIComponent(node.key)+'">';
+					nodeQueryString += '<span>';
 					nodeQueryString += node.verbalization.current[verbalizationIndex];
 					nodeResultQuery += '<span>'+node.verbalization.current[verbalizationIndex++];
 
@@ -514,7 +514,7 @@ function visitRenderer(key){
 					var verbalizationIndex = 0;
 					//due figli senza ul e con and in mezzo
 					//pre label
-					nodeQueryString += '<span class="focusable" meta-focusReference="'+encodeURIComponent(node.key)+'" meta-removeReference="'+encodeURIComponent(node.key)+'">';
+					nodeQueryString += '<span>';
 					nodeQueryString += node.verbalization.current[verbalizationIndex];
 					nodeResultQuery += '<span>'+node.verbalization.current[verbalizationIndex++];
 
@@ -667,26 +667,6 @@ function attachEvents(){
 		}
 		//don"t kill user query
 		updateBoxes(queryLogicStructure[onFocus]);	
-	});
-
-	$("#limit").click(function(e){
-		e.stopPropagation();
-
-		$(".highlighted").removeClass("highlighted");
-		$(this).addClass("highlighted");
-
-		//changeFocus notification
-		onFocus = $(this).attr("meta-focusReference");
-
-		//highlight sparql query
-		$("#querySparqlText .SPARQLhighlighted").removeClass("SPARQLhighlighted");
-		$("#querySparqlText span[meta-relatedto='"+onFocus+"']").addClass("SPARQLhighlighted");
-
-		$("#focus").text($(this).text());
-
-		mapCreator.changeFocus(onFocus);
-
-		updateBoxesFromOperator();
 	});
 
 	$("#limitInput").keydown(function(e){
