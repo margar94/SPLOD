@@ -512,11 +512,6 @@ function manageUpdateOperatorViewer(){
 		renderOperatorList([{list : [], datatype:null}]);
 		return;
 	}
-
-	if(onFocusOperator=='limit'){//focus on every or everything or number applied as resultLimit
-		renderOperatorList([{list : operatorMap[onFocusOperator], datatype:'number'}]);
-		return;
-	}
 	
 	var node = mapCreator.getNodeByKey(onFocusOperator);
 
@@ -543,17 +538,22 @@ function manageUpdateOperatorViewer(){
 	//concept or predicate that fired operator
 	if(node.type == 'predicate'){
 		var parentNode = mapCreator.getNodeByKey(node.parent);
-		operatorList.push({list:['optional'], datatype:null});
-		if(parentNode.type!='everything'){
-			operatorList.push({list:['not'], datatype:null});
-		}else{
+		
+		if(parentNode.type=='operator' && parentNode.label=='not'){
+			renderOperatorList([{list : [], datatype:null}]);
+			return;
+		}else if(parentNode.type=='everything'){
 			for(var i=0; i<parentNode.children.length; i=i+2){
+				operatorList.push({list:['optional'], datatype:null});
 				var childNode = mapCreator.getNodeByKey(parentNode.children[i]);
 				if(childNode.key!=node.key && !(childNode.type=='operator' && childNode.label =='not')){
 					operatorList.push({list:['not'], datatype:null});
 					break;
 				}
 			}
+		}else if(!(parentNode.type=='operator' && parentNode.label=='optional')){
+			operatorList.push({list:['optional'], datatype:null});
+			operatorList.push({list:['not'], datatype:null});
 		}
 	}
 
