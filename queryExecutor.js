@@ -566,10 +566,10 @@ QueryExecutor.prototype.getDirectPredicatesFromResult = function(url, datatype, 
 			result = url;
 			break;
 		case 'string':
-			result = '"' + url + '"';
+			result = '"' + url.replace(/\"/g, '\\\"') + '"';
 			break;
 		case 'literal':
-			result = '"' + url + '"@'+lang;
+			result = '"' + url.replace(/\"/g, '\\\"') + '"@'+lang;
 			break;
 		case 'gYear':
 		case 'gMonth':
@@ -629,10 +629,10 @@ QueryExecutor.prototype.getReversePredicatesFromResult = function(url, datatype,
 			result = url;
 			break;
 		case 'string':
-			result = '"' + url + '"';
+			result = '"' + url.replace(/\"/g, '\\\"') + '"';
 			break;
 		case 'literal':
-			result = '"' + url + '"@'+lang;
+			result = '"' + url.replace(/\"/g, '\\\"') + '"@'+lang;
 			break;
 		case 'gYear':
 		case 'gMonth':
