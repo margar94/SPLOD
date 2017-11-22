@@ -153,6 +153,10 @@ span.highlightRemove {
 	box-shadow: none;
 }
 
+span.everything {
+	font-weight: bold;
+}
+
 span.concept {
 	color: #1de9ae;
 	font-weight: bold;
@@ -160,6 +164,10 @@ span.concept {
 
 span.predicate {
 	color: #e91e63;
+	font-weight: bold;
+}
+
+span.something {
 	font-weight: bold;
 }
 

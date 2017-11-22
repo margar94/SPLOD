@@ -229,7 +229,7 @@ MapCreator.prototype.selectedPredicate = function(selectedUrl, selectedLabel, pr
 
 		var somethingLogic = {key: somethingKey, index: somethingIndex,
 							  //url: somethingKey, label:'thing', 
-							  url: 'something', label:'thing', 
+							  url: 'something', label:'something', 
 							  type:'something', direction:false,
 							  verbalization:verbalization,
 							  parent:null, children:[]};
@@ -311,109 +311,92 @@ function updateAndNotifyFocus(key){
 
 // remove element in map
 MapCreator.prototype.removeElement = function(key){
-
-	if(key=='limit'){
-		resultLimit = defaultResultLimit;
-
-		if(operatorManager == null)
-			operatorManager = new OperatorManager;
-		operatorManager.changedFocus(elementOnFocus, false);
-
-		if(queryVerbalizator == null)
-			queryVerbalizator = new QueryVerbalizator;
-		queryVerbalizator.updateQuery(rootQueryLogicMap, queryLogicMap, elementOnFocus);
-		
-		if(queryBuilder == null)
-			queryBuilder = new QueryBuilder;
-		queryBuilder.updateQuery(rootQueryLogicMap, queryLogicMap);
-
-	}else{
 	
-		var node = queryLogicMap[key];
+	var node = queryLogicMap[key];
 
-		if(node.type=='operator')
-			removeOperator(node);
-		else if(iReplaceASomethingNode(key)){// check if concept replaced something
-			var somethingKey = substituteMeWithSomethingNode(key);
-			elementOnFocus = somethingKey;
-		}
-		else{
+	if(node.type=='operator')
+		removeOperator(node);
+	else if(iReplaceASomethingNode(key)){// check if concept replaced something
+		var somethingKey = substituteMeWithSomethingNode(key);
+		elementOnFocus = somethingKey;
+	}
+	else{
 
-			elementOnFocus = node.parent;
-			removeMeAndMyDescendents(node);
+		elementOnFocus = node.parent;
+		removeMeAndMyDescendents(node);
 
-			// update parent's children list
-			if(node.parent!=null){
+		// update parent's children list
+		if(node.parent!=null){
 
-				cleanMyParentList(node);
-				
-				//removed node is query's subject
-				if(queryLogicMap[node.parent].type == 'everything'){
+			cleanMyParentList(node);
+			
+			//removed node is query's subject
+			if(queryLogicMap[node.parent].type == 'everything'){
 
-					var everythingNode = queryLogicMap[node.parent];
+				var everythingNode = queryLogicMap[node.parent];
 
-					//update counter direct predicates
-					if(node.type == 'predicate' && node.direction == 'direct')
-						everythingNode.counterDirectPredicatesChildren--;
+				//update counter direct predicates
+				if(node.type == 'predicate' && node.direction == 'direct')
+					everythingNode.counterDirectPredicatesChildren--;
 
-					//if I have to remove everything node...
-					if(everythingNode.children.length==0){
-						decreaseIndexIfIAmLast(everythingNode);
-						delete queryLogicMap[everythingNode.key];
+				//if I have to remove everything node...
+				if(everythingNode.children.length==0){
+					decreaseIndexIfIAmLast(everythingNode);
+					delete queryLogicMap[everythingNode.key];
 
-						rootQueryLogicMap = null;
-						elementOnFocus = null;
+					rootQueryLogicMap = null;
+					elementOnFocus = null;
 
-					}else if(everythingNode.children.length==1 && everythingNode.counterDirectPredicatesChildren==0){
-						decreaseIndexIfIAmLast(everythingNode);
-						delete queryLogicMap[everythingNode.key];
+				}else if(everythingNode.children.length==1 && everythingNode.counterDirectPredicatesChildren==0){
+					decreaseIndexIfIAmLast(everythingNode);
+					delete queryLogicMap[everythingNode.key];
 
-						queryLogicMap[everythingNode.children[0]].parent = null;
-						rootQueryLogicMap = everythingNode.children[0];
-						elementOnFocus = everythingNode.children[0];
-					}else{
-						elementOnFocus = everythingNode.key;
-					}
-				}else if(queryLogicMap[node.parent].type == 'operator'){//should be 'not' or 'optional' 
-					var operatorNode = queryLogicMap[node.parent];
-					removeMeAndMyDescendents(operatorNode);
-					cleanMyParentList(operatorNode);
-					elementOnFocus = operatorNode.parent;
+					queryLogicMap[everythingNode.children[0]].parent = null;
+					rootQueryLogicMap = everythingNode.children[0];
+					elementOnFocus = everythingNode.children[0];
+				}else{
+					elementOnFocus = everythingNode.key;
 				}
-				else{
-					elementOnFocus = node.parent;
-				}
+			}else if(queryLogicMap[node.parent].type == 'operator'){//should be 'not' or 'optional' 
+				var operatorNode = queryLogicMap[node.parent];
+				removeMeAndMyDescendents(operatorNode);
+				cleanMyParentList(operatorNode);
+				elementOnFocus = operatorNode.parent;
 			}
-
-			if(node.type == 'something'){
-				node = queryLogicMap[node.parent];
-				cleanMyParentList(node);
-
-				decreaseIndexIfIAmLast(node);
-				delete queryLogicMap[node.key];
-
+			else{
 				elementOnFocus = node.parent;
 			}
-
 		}
 
-		if(rootQueryLogicMap == key){
-			rootQueryLogicMap = null;
+		if(node.type == 'something'){
+			node = queryLogicMap[node.parent];
+			cleanMyParentList(node);
+
+			decreaseIndexIfIAmLast(node);
+			delete queryLogicMap[node.key];
+
+			elementOnFocus = node.parent;
 		}
 
-		updateAndNotifyFocus(elementOnFocus);
-
-		if(elementOnFocus == null)
-			indexMap = {};
-
-		if(queryVerbalizator == null)
-			queryVerbalizator = new QueryVerbalizator;
-		queryVerbalizator.updateQuery(rootQueryLogicMap, queryLogicMap, elementOnFocus);
-		
-		if(queryBuilder == null)
-			queryBuilder = new QueryBuilder;
-		queryBuilder.updateQuery(rootQueryLogicMap, queryLogicMap);
 	}
+
+	if(rootQueryLogicMap == key){
+		rootQueryLogicMap = null;
+	}
+
+	updateAndNotifyFocus(elementOnFocus);
+
+	if(elementOnFocus == null)
+		indexMap = {};
+
+	if(queryVerbalizator == null)
+		queryVerbalizator = new QueryVerbalizator;
+	queryVerbalizator.updateQuery(rootQueryLogicMap, queryLogicMap, elementOnFocus);
+	
+	if(queryBuilder == null)
+		queryBuilder = new QueryBuilder;
+	queryBuilder.updateQuery(rootQueryLogicMap, queryLogicMap);
+	
 }
 
 function iReplaceASomethingNode(key){
@@ -815,24 +798,6 @@ MapCreator.prototype.selectedOperator = function(pendingQuery){
 			updateAndNotifyFocus(conjunctionKey);
 
 			break;
-
-		/*case 'limit':
-			resultLimit = pendingQuery[1].value;
-
-			if(operatorManager == null)
-				operatorManager = new OperatorManager;
-			operatorManager.changedFocus(elementOnFocus, false);
-
-			if(queryVerbalizator == null)
-				queryVerbalizator = new QueryVerbalizator;
-			queryVerbalizator.updateQuery(rootQueryLogicMap, queryLogicMap, elementOnFocus);
-			
-			if(queryBuilder == null)
-				queryBuilder = new QueryBuilder;
-			queryBuilder.updateQuery(rootQueryLogicMap, queryLogicMap);
-
-			break;
-	*/
 	}
 
 	//console.log(queryLogicMap);

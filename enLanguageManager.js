@@ -61,7 +61,7 @@ enLanguageManager.prototype.verbalizeConcept = function(conceptLabel){
 	verbalization.truncated.push(conceptLabel + ' ');
 	verbalization.truncated.push('');
 
-	verbalization.first.push('');
+	verbalization.first.push(' ');
 	verbalization.first.push(conceptLabel + ' ');
 	verbalization.first.push('');
 
@@ -110,7 +110,7 @@ enLanguageManager.prototype.verbalizePredicate = function(predicateLabel, predic
 			verbalization.truncated.push('');
 
 			//direct predicate should not be the first node
-			verbalization.first.push('that ');
+			verbalization.first.push(' that ');
 			verbalization.first.push(predicateLabel + ' ');
 			verbalization.first.push('');
 		}else{
@@ -139,7 +139,7 @@ enLanguageManager.prototype.verbalizePredicate = function(predicateLabel, predic
 			verbalization.truncated.push('');
 
 			//direct predicate should not be the first node
-			verbalization.first.push('that has ');
+			verbalization.first.push(' that has ');
 			verbalization.first.push(predicateLabel + ' ');
 			verbalization.first.push('');
 		}
@@ -175,7 +175,7 @@ enLanguageManager.prototype.verbalizePredicate = function(predicateLabel, predic
 			verbalization.truncated.push(predicateLabel + ' ');
 			verbalization.truncated.push(postLabel);
 
-			verbalization.first.push('that ');
+			verbalization.first.push(' that ');
 			verbalization.first.push(predicateLabel + ' ');
 			verbalization.first.push(postLabel);
 
@@ -204,7 +204,7 @@ enLanguageManager.prototype.verbalizePredicate = function(predicateLabel, predic
 			verbalization.truncated.push(predicateLabel + ' ');
 			verbalization.truncated.push(postLabel);
 
-			verbalization.first.push('that is the ');
+			verbalization.first.push(' that is the ');
 			verbalization.first.push(predicateLabel + ' ');
 			verbalization.first.push(postLabel);
 		}
@@ -230,7 +230,7 @@ enLanguageManager.prototype.verbalizeEverything = function(){
 
 	verbalization = {
 		standard: ['thing '],
-		first: ['thing '],
+		first: [' thing '],
 		current: ['thing ']};
 
 	return verbalization;

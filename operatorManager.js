@@ -33,7 +33,6 @@ var OperatorManager = function () {
 		'not' : 1,
 		'optional' : 1,
 		
-		'limit' :2,
 		'<' : 2,
 		'<=' : 2,
 		'>' : 2,
@@ -96,8 +95,6 @@ var OperatorManager = function () {
 		'before': ['not', 'optional'],
 		'after': ['not', 'optional'],
 		'range date': ['not', 'optional'],
-
-		'limit': ['limit'],
 
 		'not' :[],
 		'optional':[]
@@ -253,9 +250,7 @@ OperatorManager.prototype.selectedReusableResult = function(result, fromInput){
 	var operator = pendingQuery[0];
 
 	var type;
-	if(operator.value == 'limit'){
-		type = 'number';
-	}else if(onFocusOperator in resultDatatype){
+	if(onFocusOperator in resultDatatype){
 		type = operator.datatype;
 	}else{
 		type = null;
@@ -331,9 +326,7 @@ OperatorManager.prototype.selectedOperator = function(operator, datatype){
 OperatorManager.prototype.getResultToCompleteOperator = function(){
 	var operator = pendingQuery[0];
 	var operatorField = onFocusOperator;
-	if(operator == 'limit'){
-		results = [];
-	}else if(operatorField in resultDatatype){ 
+	if(operatorField in resultDatatype){ 
 		if(operator.datatype=='literal' && operator.value == 'lang')
 			results = literalLang[operatorField];
 		else 
@@ -350,10 +343,6 @@ function getTypeByOperator(operatorField, operator, datatype){
 	var results;
 	var type = '';
 
-	if(operator == 'limit'){
-		type = 'number';
-	}
-	
 	switch(datatype){
 		case 'img':
 		case 'uri':
@@ -388,14 +377,11 @@ function getTypeByOperator(operatorField, operator, datatype){
 
 OperatorManager.prototype.getPendingQueryFields = function(){
 	var pendingQueryFields = [];
-
-	if(onFocusOperator=='limit'){
-		pendingQueryFields.push('');
-	}else{
-		//concepts or predicates that fire operator's inserting
-		var nodeOnFocus = mapCreator.getNodeByKey(onFocusOperator);
-		pendingQueryFields.push(nodeOnFocus.label);
-	}
+	
+	//concepts or predicates that fire operator's inserting
+	var nodeOnFocus = mapCreator.getNodeByKey(onFocusOperator);
+	pendingQueryFields.push(nodeOnFocus.label);
+	
 
 	//selected operator and, eventually, selected parameters
 	for(var i=0; i<pendingQuery.length; i++){

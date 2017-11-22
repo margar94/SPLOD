@@ -248,9 +248,9 @@ function visitRenderer(key){
 			nodeResultQuery += '<span>';
 
 			//content
-			nodeQueryString += '<span id="'+encodeURIComponent(node.key)+'" class="focusable specialNode" meta-removeReference="'+metaRemoveReference+'" meta-focusReference="'+encodeURIComponent(node.key)+'">';
+			nodeQueryString += '<span id="'+encodeURIComponent(node.key)+'" class="focusable '+ node.type + '" meta-removeReference="'+metaRemoveReference+'" meta-focusReference="'+encodeURIComponent(node.key)+'">';
 			nodeQueryString += node.verbalization.current[verbalizationIndex];
-			nodeResultQuery += '<span class="specialNode">'+node.verbalization.current[verbalizationIndex++]+'</span>';
+			nodeResultQuery += '<span class="'+ node.type + '">'+node.verbalization.current[verbalizationIndex++]+'</span>';
 			nodeQueryString += '</span>';
 
 			if(addBarred){
