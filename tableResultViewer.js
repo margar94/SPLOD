@@ -16,6 +16,7 @@ function initTableResultViewer(){
 	$('#resultsPreviewBadge').show();
 	$('#tableResultsProgress').hide();
 	$('#resultsTable').show();
+	$("#saveTable").addClass('disabled');
 
 	//$('#visibleFieldsButton').text(languageManager.getButtonLabel('visibleFields'));
 
@@ -40,6 +41,7 @@ function resetResultTable(){
 	$('#tableResultsProgress').hide();
 	$('#resultsPreviewBadge').text('0');
 	$('#resultsPreviewBadge').show();
+	$("#saveTable").addClass('disabled');
 }
 
 function resetFieldsList(){
@@ -240,8 +242,13 @@ function createTable(select, labelSelect, results){
 	$('#resultsTable').show();
 	
 	var resultPreviewNumber = results.length;
-	if(resultPreviewNumber>=1000)
+	/*if(resultPreviewNumber>=1000)
 		resultPreviewNumber = '999+';
+	*/
+	if(resultPreviewNumber == 0)
+		$("#saveTable").addClass('disabled');
+	else $("#saveTable").removeClass('disabled');
+
 
 	$('#resultsPreviewBadge').text(resultPreviewNumber);
 	$('#resultsPreviewBadge').show();

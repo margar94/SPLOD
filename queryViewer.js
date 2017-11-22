@@ -17,6 +17,8 @@ function initQueryViewer(){
 	$("#focusLabel")[0].innerHTML = languageManager.getFocusLabel();
 	$("#focus")[0].innerHTML = languageManager.getFocusInitialVerbalization();
 	$("#modalSparql").html('SELECT...');
+	$("#removeButtonA").addClass('disabled');
+	
 }
 
 var QueryViewer= function () {
@@ -585,6 +587,7 @@ function renderFocus(){
 
 		$("#focus").text(languageManager.getFocusInitialVerbalization());
 		$("#modalSparql").html('SELECT...');
+		$("#removeButtonA").addClass('disabled');
 
 		return;
 	}
