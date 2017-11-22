@@ -560,7 +560,7 @@ enLanguageManager.prototype.getButtonLabel = function(button){
 			label = 'Close';
 			break;
 		case 'removeFocus': //remove higlighted part of query
-			label = 'Remove all the highlighted';
+			label = 'Remove all the strikethrough words';
 			break;
 		case 'confirmUserInput': //confirm user value to complete operator
 			label = 'Add your value';
@@ -570,6 +570,12 @@ enLanguageManager.prototype.getButtonLabel = function(button){
 			break;
 		case 'visibleFields':
 			label = 'Visible fields';
+			break;
+		case 'sparqlQuery':
+			label = 'Compare query in natural language with SPARQL query';
+			break;
+		case 'saveTable':
+			label = 'Save result table';
 			break;
 	}
 
