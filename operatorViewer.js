@@ -160,7 +160,7 @@ function renderReusableResultListFromResult(reusableResults){
 
 	$('#operatorsBox .card-title').show();
 	$('#operatorsBox .card-title').text(languageManager.getBoxTitle('result'));
-	showHint(languageManager.getHintOperatorManager('reusableResult')+"<br>"+reusableResults.cachedQuery);
+	//showHint(languageManager.getHintOperatorManager('reusableResult')+"<br>"+reusableResults.cachedQuery);
 	renderReusableResultList(reusableResults, onClickButtonFunction, onClickLiFunction);
 }
 

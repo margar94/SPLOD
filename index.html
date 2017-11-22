@@ -82,6 +82,7 @@
 	    </div>
 	    <!--end first row-->
 
+	    <!-- RISULTATI RIUTILIZZABILI
 	    <div class="row">
 	    	<div id="hintBox" class="col s12 m12 l12"> 
 		     <div class="card">
@@ -89,7 +90,7 @@
 		      </div>
 		     </div>
 		    </div>
-	    </div>
+	    </div>-->
 
 	    <!--start third row-->
 		<div class="row">
@@ -155,7 +156,9 @@
 		        <li class="tab" id="tableResultTab">
 	           		<a href="#tableResultBox">
 	           			<span id="tableResultTabTitle" class="myTabTitle"></span>
-	           			<span id="resultsPreviewBadge" class="new badge" data-badge-caption ></span>
+	           			<span id="resultsPreviewBadge" class="new badge" data-badge-caption 
+	           				onmouseenter="if(this.innerHTML != '0')$('#tableToast').show();" 
+	           				onmouseleave="$('#tableToast').hide()"></span>
 	           			<div id="tableResultSpinner" class="preloader-wrapper mySpinner active">
 		          			<div class="spinner-layer spinner-blue-only">
 		            			<div class="circle-clipper left">
@@ -169,12 +172,6 @@
 			            		</div>
 			          		</div>
 		      			</div>
-	      				<!--<div class="col s12 m12 l12">
-	       				
-	     					<table id="previewTableResult" style="height:100px;">
-	      					</table>
-	    					
-	      				</div>-->
 	           		</a>
 		    	</li>
 		        <!--end result table-->
@@ -196,6 +193,13 @@
 		        <!--end help-->
 		      </ul>
 		    </div>
+
+		    <div id="tableToast" class="col s12 m12 l12" style="display:none">
+			
+				<table id="previewTableResult">
+				</table>
+			
+			</div>
 			<!--end navBar-->
 		   
 		   <!--start right content-->
@@ -430,7 +434,7 @@
 		    	startingTop: '5%',
 		    	endingTop: '5%'
 		    });
-			
+
 			initBoxViewer();
 			initQueryViewer();
 			initOperatorViewer();

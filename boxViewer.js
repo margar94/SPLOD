@@ -77,7 +77,7 @@ function initBoxViewer(){
 	$("#directPredicateTabTitle").html(languageManager.getTabTitle('direct predicate'));
 	$("#reversePredicateTabTitle").html(languageManager.getTabTitle('reverse predicate'));
 
-	$("#hintBox").hide();
+	//$("#hintBox").hide();
 
 	//settings
 	$("#labelLangSelectLabel").html(languageManager.getSelectTitle('label lang'));

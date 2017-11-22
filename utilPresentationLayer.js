@@ -44,10 +44,10 @@ function isImage(url){
 }
 
 
-function showHint(hint){
+/*function showHint(hint){
     $('#hintBoxContent').html(hint);
 
     $('#hintBox').show();
         
     setTimeout(function(){ $('#hintBox').hide() }, 10000);
-}
+}*/

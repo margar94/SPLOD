@@ -72,7 +72,7 @@ var OperatorManager = function () {
 
 		'boolean' : ['is string'],
 
-		//'img' : [],
+		'img' : [],
 
 		'and' : ['or', 'xor'],
 		'or' : ['and', 'xor'],
