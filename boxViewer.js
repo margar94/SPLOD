@@ -92,6 +92,11 @@ function initBoxViewer(){
 	$("#searchReusableResultsBox").attr("placeholder", languageManager.getInputPlaceholder('result'));
 	$("#searchReusableResultCard").hide();
 
+	//buttontitle
+	$("#removeButtonA").attr('title', languageManager.getButtonLabel('removeFocus'));
+	$("#saveTable").attr('title', languageManager.getButtonLabel('saveTable'));
+	$("#openSparqlQuery").attr('title', languageManager.getButtonLabel('sparqlQuery'));
+
 	conceptsLimit = 500;
 	predicatesLimit = 100;
 
@@ -140,6 +145,14 @@ function renderConcept(rootMap, map){
 		renderConceptsHierarchy(rootMap, map);
 	else
 		renderConceptsList(rootMap, map);
+
+	if(rootMap.length == 0){
+		$("#conceptsTab").addClass('disabled');
+		if($("#conceptsTab a").attr('class') != undefined && $("#conceptsTab a").attr('class').includes("active"))
+			$('ul#myTabs').tabs('select_tab', ($("#myTabs li:not(.disabled) a")[0].getAttribute('href')).substr(1));
+	}
+	else
+		$("#conceptsTab").removeClass('disabled');		
 
 	$('#conceptsSpinner').hide();
 	$('#conceptsProgress').hide();
@@ -359,6 +372,14 @@ function renderPredicates(predicates){
 	var directArray = predicates.directArray;
 	var reverseArray = predicates.reverseArray;
 	
+	if(directArray.length == 0 && reverseArray.length){
+		$("#predicatesTab").addClass('disabled');
+		if($("#predicatesTab a").attr('class') != undefined && $("#predicatesTab a").attr('class').includes("active"))
+			$('ul#myTabs').tabs('select_tab', ($("#myTabs li:not(.disabled) a")[0].getAttribute('href')).substr(1));
+	}
+	else
+		$("#predicatesTab").removeClass('disabled');	
+
 	renderDirectPredicates(directArray);
 	renderReversePredicates(reverseArray);
 
@@ -503,7 +524,14 @@ function updateBoxesFromOperator(){
 	$("#directPredicatesList").empty();	
 	$("#reversePredicatesList").empty();
 
-	$('ul#myTabs').tabs('select_tab', 'operatorsBox');
+	$("#conceptsTab").addClass('disabled');
+	$("#predicatesTab").addClass('disabled');
+
+	if(($("#conceptsTab a").attr('class') != undefined && $("#conceptsTab a").attr('class').includes("active") )||($("#predicatesTab a").attr('class') != undefined && $("#predicatesTab a").attr('class').includes("active")) )
+		$('ul#myTabs').tabs('select_tab', ($("#myTabs li:not(.disabled) a")[0].getAttribute('href')).substr(1));
+
+
+	//$('ul#myTabs').tabs('select_tab', 'operatorsBox');
 	
 }
 
@@ -513,6 +541,10 @@ function updateBoxesFromResult(resultUrl, resultDatatype, resultLang){
 	$("#searchPredicatesBox").val('');
 
 	$("#conceptsList").empty();
+	$("#conceptsTab").addClass('disabled');
+	if($("#conceptsTab a").attr('class') != undefined && $("#conceptsTab a").attr('class').includes("active"))
+		$('ul#myTabs').tabs('select_tab', ($("#myTabs li:not(.disabled) a")[0].getAttribute('href')).substr(1));
+
 	
 	$('#predicatesSpinner').show();	
 	$('#directPredicatesProgress').show();

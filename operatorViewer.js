@@ -5,6 +5,9 @@ var languageManager;
 function initOperatorViewer(){
 	operatorManager = new OperatorManager;
 	languageManager = new LanguageManager;
+
+	$("#operatorsTab").addClass('disabled');
+
 }
 
 function renderResult(select, labelSelect, results){
@@ -21,6 +24,14 @@ function renderOperatorList(operators){
 	operatorList.empty();
 	$('#operatorList').show();
 	$('#reusableResultList').hide();
+
+	if(operators.length == 0){
+		$("#operatorsTab").addClass('disabled');
+		if($("#operatorsTab a").attr('class') != undefined && $("#operatorsTab a").attr('class').includes("active"))
+			$('ul#myTabs').tabs('select_tab', ($("#myTabs li:not(.disabled) a")[0].getAttribute('href')).substr(1));
+	}
+	else
+		$("#operatorsTab").removeClass('disabled');
 
 	for(var i = 0; i<operators.length; i++){
 		var datatypeOperators = operators[i];
@@ -164,6 +175,8 @@ function renderReusableResultList(reusableResults, onClickButtonFunction, onClic
 	reusableResultList.show();
 
 	$('#rowUserValue').remove();
+
+	$("#operatorsTab").removeClass('disabled');
 
 	//renderPendingQuery();
 

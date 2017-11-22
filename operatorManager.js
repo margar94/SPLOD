@@ -72,7 +72,7 @@ var OperatorManager = function () {
 
 		'boolean' : ['is string'],
 
-		'img' : [],
+		//'img' : [],
 
 		'and' : ['or', 'xor'],
 		'or' : ['and', 'xor'],
@@ -96,8 +96,8 @@ var OperatorManager = function () {
 		'after': ['not', 'optional'],
 		'range date': ['not', 'optional'],
 
-		'not' :[],
-		'optional':[]
+		//'not' :[],
+		//'optional':[]
 
 	};
 
@@ -495,7 +495,7 @@ function manageUpdateOperatorViewer(){
 	var operatorList = [];
 
 	if(onFocusOperator==null){
-		renderOperatorList([{list : [], datatype:null}]);
+		renderOperatorList([]);
 		return;
 	}
 	
@@ -516,9 +516,14 @@ function manageUpdateOperatorViewer(){
 		return;
 	}
 	
-	if(node.type == 'operator' && (node.label in operatorMap)){ //onFocusOperator is an operator 
-		renderOperatorList([{list : operatorMap[node.label], datatype:null}]);
-		return;
+	if(node.type == 'operator'){
+		if(node.label in operatorMap){ //onFocusOperator is an operator 
+			renderOperatorList([{list : operatorMap[node.label], datatype:null}]);
+			return;
+		}else{
+			renderOperatorList([]);
+			return;
+		}
 	}
 				
 	//concept or predicate that fired operator
@@ -526,7 +531,7 @@ function manageUpdateOperatorViewer(){
 		var parentNode = mapCreator.getNodeByKey(node.parent);
 		
 		if(parentNode.type=='operator' && parentNode.label=='not'){
-			renderOperatorList([{list : [], datatype:null}]);
+			renderOperatorList([]);
 			return;
 		}else if(parentNode.type=='everything'){
 			for(var i=0; i<parentNode.children.length; i=i+2){

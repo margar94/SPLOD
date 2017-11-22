@@ -264,12 +264,11 @@ div#modalSparql, div#modalNaturalLanguage{
 	border-right: 4px solid #1de9ae;
 }
 
-
-#myTabs li{
-	border-bottom: 1px solid #ddd;
-	padding: 0;
-}
 */
+#myTabs li.disabled{
+	opacity: 0.3;
+}
+
 
 #myTabs .myTabTitle{
 	float:left;
@@ -324,12 +323,12 @@ div#modalSparql, div#modalNaturalLanguage{
 	background-color: #e91e63;
 }
 
-#operatorProgress {
+#operatorsProgress {
 	background-color: #e4e4e4;
     top: 3em;
 }
 
-#operatorProgress .indeterminate{
+#operatorsProgress .indeterminate{
 	background-color: #bdbdbd;
 }
 

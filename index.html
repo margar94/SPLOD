@@ -63,7 +63,6 @@
 		    <a class="btn-floating waves-effect waves-light blue" id="saveTable"><i class="material-icons" onclick="createJson();">save</i></a>
 
 		    <a class="btn-floating waves-effect waves-light red darken-1" id="removeButtonA"><i class="small material-icons right" id="removeButton" 
-	                   title="Remove all the highlighted"
 	                   onmouseover="highlightElementsToRemove();" 
 	                   onmouseleave="removeHighlightElementsToRemove();" 
 	                   onclick="removeHighlightElements(decodeURIComponent($('.highlighted').attr('meta-removereference')))">clear</i></a>
@@ -99,8 +98,7 @@
 			<div class="col s12 m12 l12" id="navBar">
 		      <ul id="myTabs" class="tabs tabs-fixed-width black-text">
 		   		<!--start concepts-->
-		        <li class="tab" id="conceptsTab" 
-		        onclick="$('#myTabs').css('border-right-color', '#1de9ae')">	
+		        <li class="tab" id="conceptsTab">	
 		        	<a href="#conceptsBox">
 		        		<span id="conceptsTabTitle" class="myTabTitle"></span> 
 			        	<div id="conceptsSpinner" class="preloader-wrapper mySpinner active">
@@ -118,7 +116,7 @@
 		        </li>
 		        <!--end concepts-->
 		        <!--start predicates-->
-		        <li class="tab" id="predicatesTab" onclick="$('#myTabs').css('border-right-color', '#e91e63 ')">
+		        <li class="tab" id="predicatesTab">
 		        	<a href="#predicatesBox">
 		        		<span id="predicatesTabTitle" class="myTabTitle"></span>
 		        		<div id="predicatesSpinner" class="preloader-wrapper mySpinner active">
@@ -136,7 +134,7 @@
 		        </li>
 		        <!--end predicates-->
 		        <!--start operators-->
-		        <li class="tab" id="operatorsTab" onclick="$('#myTabs').css('border-right-color', '#bdbdbd')">
+		        <li class="tab" id="operatorsTab">
 		        	<a href="#operatorsBox">
 		        		<span id="operatorsTabTitle" class="myTabTitle"></span>
 		        		<div id="operatorsSpinner" class="preloader-wrapper mySpinner active">
@@ -154,8 +152,7 @@
 		        </li>
 		        <!--end operators-->
 		        <!--start result table-->
-		        <li class="tab" id="tableResultTab" 
-		        	onclick="$('#myTabs').css('border-right-color', '#2196f3')">
+		        <li class="tab" id="tableResultTab">
 	           		<a href="#tableResultBox">
 	           			<span id="tableResultTabTitle" class="myTabTitle"></span>
 	           			<span id="resultsPreviewBadge" class="new badge" data-badge-caption ></span>
@@ -182,26 +179,8 @@
 		    	</li>
 		        <!--end result table-->
 
-
-
-
-
-		        <!--<li class="tab col s12"  onclick="$('#myTabs').css('border-right-color', '#f44336')" style="height: 200px;">
-		        	<a href="#previewTableResultBox">
-						<div class="col s12">
-							<iframe id="previewTableResult" style="height:100px;">
-								
-							</iframe>
-						</div>
-		        	</a>
-		        </li>-->
-
-
-
-
-
 		        <!--start settings-->
-		        <li class="tab" id="settingsTab" onclick="$('#myTabs').css('border-right-color', '#2196f3')">
+		        <li class="tab" id="settingsTab">
 		        	<a href="#settingsBox">
 		        		<span id="settingsTabTitle" class="myTabTitle"></span>
 		     		</a>
@@ -209,7 +188,7 @@
 		        <!--end settings-->
 		        
 		        <!--start help-->
-		        <li class="tab" id="helpTab" onclick="$('#myTabs').css('border-right-color', '#2196f3')">
+		        <li class="tab" id="helpTab">
 		        	<a href="#helpBox">
 		        		<span id="helpTabTitle" class="myTabTitle"></span>
 		     		</a>

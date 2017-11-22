@@ -675,6 +675,7 @@ function attachEvents(){
 		}
 		//don't kill user query
 		updateBoxes(queryLogicStructure[onFocus]);	
+
 	});
 
 	$("#limitInput").keydown(function(e){
