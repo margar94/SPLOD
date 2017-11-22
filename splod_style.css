@@ -281,6 +281,11 @@ div#modalSparql, div#modalNaturalLanguage{
 }
 
 */
+
+#myTabs {
+	overflow:hidden;
+}
+
 #myTabs li.disabled{
 	opacity: 0.3;
 }
@@ -457,6 +462,7 @@ div#modalSparql, div#modalNaturalLanguage{
 
 ul#fieldsCollection {
 	margin-top:0;
+	overflow:hidden;
 }
 
 #previewTableResult td, #previewTableResult th{
