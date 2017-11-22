@@ -95,7 +95,7 @@ function visitVerbalizator(node){
 				node.verbalization.current = node.verbalization.truncated;
 				
 				if(parentNode.predicatesCounter != 0){//potentially i can change it
-					if(parentNode.predicatesCounter%2 == 0){//i have to change it
+					if(node.predicatesCounter%2 == 0){//i have to change it
 						queryLogicStructure[node.parent].verbalization.current = parentNode.verbalization.modified;
 					}
 				}
