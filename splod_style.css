@@ -70,7 +70,7 @@ body {
     opacity: 0.9;
     z-index: 2;
     width: 8em;
-    height: 14em;
+    height: fit-content;
     top: 13em;
     left: calc((100vw/6)*4 + 2em);
 }
