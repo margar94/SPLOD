@@ -161,6 +161,7 @@ function renderConcept(rootMap, map){
 
 function renderConceptsList(roots, concepts){
 	var conceptsList = $("#conceptsList");
+	conceptsList.removeClass("conceptsListBoxHierarchy");
 	conceptsList.empty();
 	var orderedKeys = Object.keys(concepts).sort(function(a,b){
 		var x = concepts[a].label.toLowerCase();
@@ -172,7 +173,7 @@ function renderConceptsList(roots, concepts){
 		var concept = concepts[orderedKeys[i]];
 
 		var li = $("<li/>")
-			.attr('class', 'collection-item addToQuery withMargin')
+			.attr('class', 'collection-item addToQuery')
 			.appendTo(conceptsList)		
 			.on('click', function(){
 				e.stopPropagation();
@@ -194,7 +195,6 @@ function renderConceptsList(roots, concepts){
 			.attr('meta-url', concept.url)
 			.attr('meta-label', concept.label)
 			.text(concept.label)
-			.css('margin-left', '0.5em')
 			.appendTo(li);
 
 		var badge;
@@ -229,6 +229,7 @@ function renderConceptsList(roots, concepts){
 
 function renderConceptsHierarchy(roots, concepts){
 	var conceptsList = $("#conceptsList");
+	conceptsList.addClass("conceptsListBoxHierarchy");
 	conceptsList.empty();
 
 	for(var i=0; i<roots.length; i++)
@@ -371,14 +372,22 @@ function renderPredicates(predicates){
 
 	var directArray = predicates.directArray;
 	var reverseArray = predicates.reverseArray;
-	
-	if(directArray.length == 0 && reverseArray.length){
+
+	if(Object.keys(directArray).length == 0 && Object.keys(reverseArray).length == 0){
 		$("#predicatesTab").addClass('disabled');
 		if($("#predicatesTab a").attr('class') != undefined && $("#predicatesTab a").attr('class').includes("active"))
 			$('ul#myTabs').tabs('select_tab', ($("#myTabs li:not(.disabled) a")[0].getAttribute('href')).substr(1));
 	}
-	else
-		$("#predicatesTab").removeClass('disabled');	
+	else{
+		$("#predicatesTab").removeClass('disabled');
+		if($("#predicatesTab a").attr('class') != undefined && $("#predicatesTab a").attr('class').includes("active")){
+			if(Object.keys(directArray).length == 0){
+				$('ul#predicatesTabBox').tabs('select_tab', 'reverse');
+			}else{
+				$('ul#predicatesTabBox').tabs('select_tab', 'direct');
+			}
+		}
+	}
 
 	renderDirectPredicates(directArray);
 	renderReversePredicates(reverseArray);

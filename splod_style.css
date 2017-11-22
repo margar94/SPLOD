@@ -37,6 +37,7 @@ body {
 #predicatesTabBox{
 	width: 50%;
     margin: 0;
+    overflow: hidden;
 }
 
 #openSparqlQuery{
@@ -308,6 +309,8 @@ div#modalSparql, div#modalNaturalLanguage{
 #conceptsProgress {
 	background-color: #9ff1d9;
     top: 3em;
+    width:60%;
+    margin:auto;
 }
 
 #conceptsProgress .indeterminate{
@@ -317,6 +320,8 @@ div#modalSparql, div#modalNaturalLanguage{
 #directPredicatesProgress, #reversePredicatesProgress{
 	background-color: #f5a0bd;
     top: 3em;
+    width:60%;
+    margin:auto;
 }
 
 #directPredicatesProgress .indeterminate, #reversePredicatesProgress .indeterminate{
@@ -326,6 +331,8 @@ div#modalSparql, div#modalNaturalLanguage{
 #operatorsProgress {
 	background-color: #e4e4e4;
     top: 3em;
+    width:60%;
+    margin:auto;
 }
 
 #operatorsProgress .indeterminate{
@@ -335,6 +342,8 @@ div#modalSparql, div#modalNaturalLanguage{
 #tableResultsProgress {
 	background-color: #aecee6;
     top: 3em;
+    width:60%;
+    margin:auto;
 }
 
 #tableResultsProgress .indeterminate{
@@ -481,8 +490,15 @@ div#conceptsBox .card-action{
 }
 
 #conceptsListBox ul{
-	border : none;
 	margin:auto;
+}
+
+.conceptsListBoxHierarchy{
+	border : none;
+}
+
+.conceptsListBoxHierarchy .withMargin{
+	margin-right : 0.1em;
 }
 
 #conceptsBox li.withMargin {
@@ -525,6 +541,7 @@ div#predicatesBox{
 
 div#predicatesListBox {
     overflow: auto;
+    padding: 1em;
 }
 
 #predicatesBox .tabs .tab a, #predicatesBox .tabs .tab a:hover, #predicatesBox .tabs .tab a.active{

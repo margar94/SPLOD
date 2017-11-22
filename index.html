@@ -417,6 +417,12 @@
 		    $('ul.tabs').tabs({onShow: function(tab) {
 		    	if(tab[0].id == "predicatesBox"){
 		    		$('ul#predicatesTabBox').tabs();
+
+		    		if($('#direct ul li').length == 0){
+						$('ul#predicatesTabBox').tabs('select_tab', 'reverse');
+					}else{
+						$('ul#predicatesTabBox').tabs('select_tab', 'direct');
+					}
 		    	}}
 		    });
 
