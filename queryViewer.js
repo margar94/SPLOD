@@ -248,9 +248,9 @@ function visitRenderer(key){
 			nodeResultQuery += '<span>';
 
 			//content
-			nodeQueryString += '<span id="'+encodeURIComponent(node.key)+'" class="focusable '+ node.type + '" meta-removeReference="'+metaRemoveReference+'" meta-focusReference="'+encodeURIComponent(node.key)+'">';
+			nodeQueryString += '<span id="'+encodeURIComponent(node.key)+'" class="focusable '+ node.type +'" meta-removeReference="'+metaRemoveReference+'" meta-focusReference="'+encodeURIComponent(node.key)+'">';
 			nodeQueryString += node.verbalization.current[verbalizationIndex];
-			nodeResultQuery += '<span class="'+ node.type + '">'+node.verbalization.current[verbalizationIndex++]+'</span>';
+			nodeResultQuery += '<span class="specialNode">'+node.verbalization.current[verbalizationIndex++]+'</span>';
 			nodeQueryString += '</span>';
 
 			if(addBarred){
@@ -436,7 +436,7 @@ function visitRenderer(key){
 				case "or" : 
 				case "xor" : 
 					var verbalizationIndex = 0;
-					nodeQueryString += '<span class="focusable" meta-focusReference="'+encodeURIComponent(node.key)+'" meta-removeReference="'+encodeURIComponent(node.key)+'"><span id="'+encodeURIComponent(node.key)+'" meta-focusReference="'+encodeURIComponent(node.key)+'" meta-removeReference="'+encodeURIComponent(node.key)+'" class="focusable operator">' + node.verbalization.current[verbalizationIndex] + '</span></span>';
+					nodeQueryString += '<span><span id="'+encodeURIComponent(node.key)+'" meta-focusReference="'+encodeURIComponent(node.key)+'" class="focusable operator">' + node.verbalization.current[verbalizationIndex] + '</span></span>';
 					nodeResultQuery += '<span><span class="operator">'+node.verbalization.current[verbalizationIndex++]+'</span></span>';
 					break;
 
@@ -592,17 +592,20 @@ function renderFocus(){
 	//onfocus != null
 	document.getElementById(encodeURIComponent(onFocus)).className +=" highlighted";
 
-	if(onFocus == "limit"){
-		$("#focus").text(" " + $("#limit").text());
-		updateBoxesFromOperator();
-	}else{//it"s a node of the map
-		//focus text
-		var number = queryLogicStructure[onFocus].index; 
-		var focusLabel = languageManager.getOrdinalNumber(number) + ' ' + queryLogicStructure[onFocus].label;
-		$("#focus").html(" <span class='" + mapCreator.getNodeByKey(onFocus).type+"'>" + focusLabel + "</span>");
+	//it"s a node of the map
+	//focus text
+	var number = queryLogicStructure[onFocus].index; 
+	var focusLabel = languageManager.getOrdinalNumber(number) + ' ' + queryLogicStructure[onFocus].label;
+	$("#focus").html(" <span class='" + mapCreator.getNodeByKey(onFocus).type+"'>" + focusLabel + "</span>");
 
-		updateBoxes(queryLogicStructure[onFocus]);	
+	if(document.getElementById(encodeURIComponent(onFocus)).getAttribute('meta-removeReference') == undefined){
+		$('#removeButtonA').addClass('disabled');
+	}else{
+		$('#removeButtonA').removeClass('disabled');
 	}
+
+	updateBoxes(queryLogicStructure[onFocus]);	
+
 		
 }
 
@@ -645,11 +648,18 @@ function attachEvents(){
 
 		//changeFocus notification
 		onFocus = decodeURIComponent($(this).attr("meta-focusReference"));
+		if($(this).attr('meta-removeReference') == undefined){
+			$('#removeButtonA').addClass('disabled');
+		}else{
+			$('#removeButtonA').removeClass('disabled');
+		}
 
 		var number = queryLogicStructure[onFocus].index; 
 		var focusLabel = languageManager.getOrdinalNumber(number) + ' ' + queryLogicStructure[onFocus].label;
 		$("#focus").html(" <span class='" + mapCreator.getNodeByKey(onFocus).type+"'>" + focusLabel + "</span>");
 		$("#operatorsSpinner").show();
+
+
 
 		mapCreator.changeFocus(onFocus);
 
