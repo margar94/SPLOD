@@ -19,6 +19,8 @@ function renderOperatorList(operators){
 	$('#operatorsBox .card-title').hide();
 	$('#searchReusableResultCard').hide();
 
+	$('#rowUserValue').remove();
+
 	$('#pendingQuerySpan').empty();
 	var operatorList = $('#operatorList');
 	operatorList.empty();
@@ -147,6 +149,7 @@ function renderReusableResultListFromResult(reusableResults){
 					$('#tableResultSpinner').show();
 					$('#resultsTable').hide();
 					$('#tableResultsProgress').show();
+
 					operatorManager.changedReusableResult(values, true);
 				}
 
