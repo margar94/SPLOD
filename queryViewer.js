@@ -680,7 +680,9 @@ function attachEvents(){
 
 	$("#limitInput").keydown(function(e){
 		e.stopPropagation();
-		if(!((e.keyCode > 95 && e.keyCode < 106)
+		if(e.which == 13 || e.keyCode == 13) {
+	        mapCreator.changeResultLimit(e.target.value);
+	    }else if(!((e.keyCode > 95 && e.keyCode < 106)
 	      || (e.keyCode > 47 && e.keyCode < 58) 
 	      || e.keyCode == 8)) {
 	        return false;
@@ -696,13 +698,13 @@ function attachEvents(){
 		mapCreator.changeResultLimit(e.target.value);
 	});
 
-	$("#limitInput").keydown(function(e){
+	/*$("#limitInput").keydown(function(e){
 		e.stopPropagation();
 		if(e.which == 13 || e.keyCode == 13) {
 	        mapCreator.changeResultLimit(e.target.value);
 	    }
 		
-	});
+	});*/
 
 	$(".barred").click(function(e){
 		e.stopPropagation();

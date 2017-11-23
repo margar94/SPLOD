@@ -816,13 +816,13 @@ MapCreator.prototype.selectedOperator = function(pendingQuery){
 MapCreator.prototype.changeResultLimit = function(resultLimitValue){
 	resultLimit = resultLimitValue;
 
-	if(operatorManager == null)
+	/*if(operatorManager == null)
 		operatorManager = new OperatorManager;
 	operatorManager.changedFocus(elementOnFocus, false);
 
 	if(queryVerbalizator == null)
 		queryVerbalizator = new QueryVerbalizator;
-	queryVerbalizator.updateQuery(rootQueryLogicMap, queryLogicMap, elementOnFocus);
+	queryVerbalizator.updateQuery(rootQueryLogicMap, queryLogicMap, elementOnFocus);*/
 	
 	if(queryBuilder == null)
 		queryBuilder = new QueryBuilder;
