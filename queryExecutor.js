@@ -763,7 +763,6 @@ QueryExecutor.prototype.executeUserQuery = function(querySPARQL){
 		cachedUserQuery.push("} ");
 		cachedUserQuery.push("LIMIT " + resultLimit);
 		queryViewer.renderUserQuery(cachedUserQuery);
-		console.log(query);
 		
 	   	queryUrl = endpoint+"?query="+ encodeURIComponent(query) +"&format=json";
 	    var xhr = $.ajax({
@@ -938,7 +937,6 @@ function getResultMap(arrayData){
 		element = arrayData[index];
 
 		label = element.label;
-		console.log(label);
 		if(label == undefined)
 			label = createLabel(element.url.value);
 		else 
@@ -1032,7 +1030,7 @@ function cleanMap(map){
 					map[parents[i]].children.splice(index, 1);
 					map[parents[i]].children = map[parents[i]].children.concat(children);
 				}else{
-					console.log(element);
+					//console.log(element);
 				}
 			}
 			for(var i=0; i<children.length; i++){
@@ -1041,7 +1039,7 @@ function cleanMap(map){
 					map[children[i]].parent.splice(index, 1);
 					map[children[i]].parent = map[children[i]].parent.concat(parents);
 				}else{
-					console.log(element);
+					//console.log(element);
 				}
 			}
 			delete map[key];

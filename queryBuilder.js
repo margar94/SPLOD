@@ -31,7 +31,7 @@ function buildQuery(){
 	if(queryLogicStructureRoot != null){
 		createAllVariable();
 		querySPARQL = visitSPARQL(queryLogicStructureRoot);
-		console.log(querySPARQL);
+		//console.log(querySPARQL);
 	}
 	executor.executeUserQuery(querySPARQL);
 }
@@ -56,7 +56,7 @@ function visitSPARQL(key){
 	var nodeQuery = {};
 	var childQuery = {};
 
-	console.log(node);
+	//console.log(node);
 
 	switch(node.type){
 		case 'everything' : 

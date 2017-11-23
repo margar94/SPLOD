@@ -86,7 +86,6 @@ BoxFiller.prototype.updatePredicatesFromDirectPredicate = function(predUrl, limi
 
 	var d1 = $.Deferred(executor.getDirectPredicatesFromPredicate(predUrl, limit, function(data){
 		directData = data;
-		//console.log(data);
 		d1.resolve();
 	}));
 	var d2 = $.Deferred(executor.getReversePredicatesFromPredicate(predUrl, limit, function(data){

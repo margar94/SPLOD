@@ -320,7 +320,7 @@ function addFieldsToJSON(){
 		resultsToConvert.fields.push(tempField);
 	}
 
-	console.log(resultsToConvert);
+	//console.log(resultsToConvert);
 }
 
 
@@ -337,7 +337,10 @@ function createJson(){
 
 	
 	var jsonObj = JSON.stringify(resultsToConvert);
-	console.log(jsonObj); 
+
+	document.dispatchEvent(new CustomEvent("event_name", {"detail": jsonObj}));
+
+	
 	/* 
 	$.ajax({
 	   type: "POST",

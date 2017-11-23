@@ -35,7 +35,7 @@ var MapCreator = function () {
 */
 MapCreator.prototype.selectedConcept = function(selectedUrl, selectedLabel) {
 
-	console.log(selectedUrl + " - CONCEPT selected");
+	//console.log(selectedUrl + " - CONCEPT selected");
 
 	var verbalization = languageManager.verbalizeConcept(selectedLabel);
 
@@ -130,7 +130,7 @@ MapCreator.prototype.selectedConcept = function(selectedUrl, selectedLabel) {
 						 'reverse' if the selected predicate is a reverse relation.
 */
 MapCreator.prototype.selectedPredicate = function(selectedUrl, selectedLabel, predicateDirection) {
-	console.log(selectedUrl + " - PREDICATE selected - " + predicateDirection);
+	//console.log(selectedUrl + " - PREDICATE selected - " + predicateDirection);
 
 	// new element in logic map
 	var verbalization = languageManager.verbalizePredicate(selectedLabel, predicateDirection);
