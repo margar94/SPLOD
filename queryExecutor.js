@@ -198,7 +198,7 @@ QueryExecutor.prototype.getConceptsFromDirectPredicate = function(predicate, lim
 		        },
 				error: function(jqXHR, textStatus, errorThrown){
 					console.log(textStatus);
-					callback([], {});
+					//callback([], {});
 				},
 				complete: function(jqXHR){
 					var index = $.inArray(jqXHR, activeAjaxRequest);
@@ -241,7 +241,7 @@ QueryExecutor.prototype.getConceptsFromSomething = function(predicate, limit, ca
         },
 		error: function(jqXHR, textStatus, errorThrown){
 			console.log(textStatus);
-			callback([], {});
+			//callback([], {});
 		},
 		complete: function(jqXHR){
 			var index = $.inArray(jqXHR, activeAjaxRequest);
@@ -397,7 +397,7 @@ QueryExecutor.prototype.getDirectPredicatesFromConcept = function(entity, limit,
 		        },
 				error: function(jqXHR, textStatus, errorThrown){
 					console.log(textStatus);
-					callback([]);
+					//callback([]);
 				},
 				complete: function(jqXHR){
 					var index = $.inArray(jqXHR, activeAjaxRequest);
@@ -439,7 +439,7 @@ QueryExecutor.prototype.getReversePredicatesFromConcept = function(entity, limit
 		        },
 				error: function(jqXHR, textStatus, errorThrown){
 					console.log(textStatus);
-					callback([]);
+					//callback([]);
 				},
 				complete: function(jqXHR){
 					var index = $.inArray(jqXHR, activeAjaxRequest);
@@ -499,7 +499,7 @@ QueryExecutor.prototype.getDirectPredicatesFromPredicate = function(predicate, l
         },
 		error: function(jqXHR, textStatus, errorThrown){
 			console.log(textStatus);
-			callback([]);
+			//callback([]);
 		},
 		complete: function(jqXHR){
 			var index = $.inArray(jqXHR, activeAjaxRequest);
@@ -543,7 +543,7 @@ QueryExecutor.prototype.getReversePredicatesFromPredicate = function(predicate, 
         },
 		error: function(jqXHR, textStatus, errorThrown){
 			console.log(textStatus);
-			callback([]);
+			//callback([]);
 		},
 		complete: function(jqXHR){
 			var index = $.inArray(jqXHR, activeAjaxRequest);
@@ -606,7 +606,7 @@ QueryExecutor.prototype.getDirectPredicatesFromResult = function(url, datatype, 
 		        },
 				error: function(jqXHR, textStatus, errorThrown){
 					console.log(textStatus);
-					callback([]);
+					//callback([]);
 				},
 				complete: function(jqXHR){
 					var index = $.inArray(jqXHR, activeAjaxRequest);
@@ -669,7 +669,7 @@ QueryExecutor.prototype.getReversePredicatesFromResult = function(url, datatype,
 		        },
 				error: function(jqXHR, textStatus, errorThrown){
 					console.log(textStatus);
-					callback([]);
+					//callback([]);
 				},
 				complete: function(jqXHR){
 					var index = $.inArray(jqXHR, activeAjaxRequest);
