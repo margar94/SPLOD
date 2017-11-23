@@ -28,7 +28,11 @@
 		<link href="Materialize/css/materialize.min.css" rel="stylesheet">
 		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 		<link href="splod_style.css" rel="stylesheet">
-
+<style>
+	body{
+		margin-top: 0 !important;
+	}
+</style>
 	</head>
 	<body>
 	 <div id="controlet">	
@@ -416,6 +420,10 @@
 
 	<script>
 		
+		$("#av_toolbar_regdiv").remove();
+		$("#av_toolbar_iframe").remove();
+
+
 		$(document).ready(function(){
 
 		    $('ul.tabs').tabs({onShow: function(tab) {

@@ -42,19 +42,19 @@ body {
 
 #openSparqlQuery{
     position: fixed;
-    top: 7em;
+    top: 6.5em;
     right: 2em;
 }
 
 #saveTable{
     position: fixed;
-    top: 7em;
+    top: 6.5em;
     right: 5em;
 }
 
 #removeButtonA{
 	position: fixed;
-    top: 7em;
+    top: 6.5em;
     right: 9em;
 }
 
@@ -71,7 +71,7 @@ body {
     z-index: 2;
     width: 8em;
     height: fit-content;
-    top: 13em;
+    top: 12.5em;
     left: calc((100vw/6)*4 + 2em);
 }
 
@@ -140,7 +140,7 @@ span.mySearch {
 /*Natural language query*/
 
 div#queryBox{
-	margin-top: 1em;
+	margin-top: 0.5em;
 }
 
 span.highlighted {
@@ -212,6 +212,11 @@ span.optionalBlock{
 	overflow-x: auto;
 }
 
+#queryNaturalLanguageFocus span{
+	width: calc(100vw - 13em);
+    margin-left: 0;
+}
+
 #queryNaturalLanguage{
 	padding-bottom:8px;
 	padding-top:8px;
@@ -281,7 +286,6 @@ div#modalSparql, div#modalNaturalLanguage{
 }
 
 */
-
 #myTabs {
 	overflow:hidden;
 }
@@ -494,7 +498,7 @@ ul#fieldsCollection {
 div#conceptsBox{
 	margin:0;
     overflow: auto;
-    height: calc(100vh - 16em);
+    height: calc(100vh - 15.5em);
 }
 
 div#conceptsListBox {
@@ -557,7 +561,7 @@ i.conceptInfo{
 div#predicatesBox{
 	margin:0;
 	overflow: auto;
-    height: calc(100vh - 16em);
+    height: calc(100vh - 15.5em);
 }
 
 div#predicatesListBox {
@@ -593,7 +597,7 @@ i.predicateInfo{
 div#operatorsBox{
 	margin:0;
 	overflow: auto;
-    height: calc(100vh - 16em);
+    height: calc(100vh - 15.5em);
 }
 
 div#contentOperatorBox{
@@ -642,7 +646,7 @@ li.operatorListSeparator{
 	overflow: auto;
 	margin-top: 0;
 	margin-bottom:0;
-    height: calc(100vh - 16em);
+    height: calc(100vh - 15.5em);
 }
 
 #tableResultBox .card-action{
@@ -673,7 +677,7 @@ img.imgResult {
 }
 .scrollableTableContent tbody{
 	display : block;
-	height: calc(100vh - 18.5em);
+	height: calc(100vh - 18em);
 	overflow-y: auto;
 	width:100%;
 }
@@ -693,7 +697,7 @@ img.imgResult {
 div#settingsBox{
 	margin:0;
 	overflow: auto;
-    height: calc(100vh - 16em);
+    height: calc(100vh - 15.5em);
 }
 
 #settingsBox .card-action{
@@ -704,7 +708,7 @@ div#settingsBox{
 div#helpBox{
 	margin:0;
 	overflow: auto;
-    height: calc(100vh - 16em);
+    height: calc(100vh - 15.5em);
 }
 
 #helpBox .card-action{
