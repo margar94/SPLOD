@@ -135,6 +135,7 @@ function renderReusableResultListFromOperator(reusableResults){
 				}
 
 	$('#operatorsBox .card-title').hide();
+	$('#searchReusableResultCard').show();
 	renderPendingQuery();
 	renderReusableResultList(reusableResults, onClickButtonFunction, onClickLiFunction);
 }
@@ -163,6 +164,7 @@ function renderReusableResultListFromResult(reusableResults){
 
 	$('#operatorsBox .card-title').show();
 	$('#operatorsBox .card-title').text(languageManager.getBoxTitle('result'));
+	$('#searchReusableResultCard').show();
 	//showHint(languageManager.getHintOperatorManager('reusableResult')+"<br>"+reusableResults.cachedQuery);
 	renderReusableResultList(reusableResults, onClickButtonFunction, onClickLiFunction);
 }
@@ -367,7 +369,11 @@ function oldrenderPendingQuery(){
 		.text('highlight_off')
 		.on('click', function(){
 			operatorManager.discardOperator();
+			console.log('tolgoo');
 			$('#pendingQuerySpan').empty();
+			$('#rowUserValue').remove();
+			$('#searchReusableResultCard').hide();
+
 			$('#operatorList').show();
 			$('#operatorsBox .card-title').hide();
 			$('#reusableResultList').hide();
@@ -404,6 +410,8 @@ function renderPendingQuery(){
 		.on('click', function(){
 			operatorManager.discardOperator();
 			$('#pendingQuerySpan').empty();
+			$('#rowUserValue').remove();
+			$('#searchReusableResultCard').hide();
 			$('#operatorList').show();
 			$('#operatorsBox .card-title').hide();
 			$('#reusableResultList').hide();
