@@ -58,8 +58,8 @@ var conceptsLimit;
 var predicatesLimit;
 
 function initBoxViewer(){
-	boxFiller = new BoxFiller();
 	languageManager = new LanguageManager();
+	boxFiller = new BoxFiller();
 	mapCreator = new MapCreator();
 
 	$('#operatorsSpinner').hide();
@@ -68,7 +68,7 @@ function initBoxViewer(){
 
 	hierarchyOnFlag = true;
 	$("#hierarchySpan").html('<i class="small material-icons white-text right" style="margin:0" onClick="hierarchyOff();">format_list_bulleted</i>');
-
+console.log(languageManager);
 	$("#conceptsTabTitle").html(languageManager.getTabTitle('concept'));
 	$("#predicatesTabTitle").html(languageManager.getTabTitle('predicate'));
 	$("#operatorsTabTitle").html(languageManager.getTabTitle('operator'));
@@ -618,6 +618,8 @@ function changeLabelLanguage(){
 	initQueryViewer();
 	initOperatorViewer();
 	initTableResultViewer();
+
+	mapCreator.langChanged();
 }
 
 function setLimit(type){
@@ -628,8 +630,8 @@ function setLimit(type){
 }
 
 function changeSystemLanguage(){
-	systemLang = $('#systemLangSelect').find(":selected").val();
-
+	languageManager = new LanguageManager($('#systemLangSelect').find(":selected").val());
+//salvare mappa e farne un clean delle verbalizzazioni per non perdere lo stato attuale
 	initBoxViewer();
 	initQueryViewer();
 	initOperatorViewer();

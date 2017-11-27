@@ -35,6 +35,7 @@ enLanguageManager.prototype.verbalizeConcept = function(conceptLabel){
 		optional: [],
 		truncated: [],
 		first: [],
+		focus: [conceptLabel],
 		current: []};
 
 	verbalization.standard.push(enLanguageManager.prototype.getArticle(conceptLabel) + ' ');
@@ -79,6 +80,7 @@ enLanguageManager.prototype.verbalizePredicate = function(predicateLabel, predic
 		negated: [],
 		optional: [],
 		first: [],
+		focus: [predicateLabel],
 		current: []};
 
 
@@ -220,6 +222,7 @@ enLanguageManager.prototype.verbalizeSomething = function(){
 
 	verbalization = {
 		standard: ['something '],
+		focus: ['something'],
 		current: ['something ']};
 
 	return verbalization;
@@ -231,6 +234,7 @@ enLanguageManager.prototype.verbalizeEverything = function(){
 	verbalization = {
 		standard: ['thing '],
 		first: [' thing '],
+		focus: ['thing'],
 		current: ['thing ']};
 
 	return verbalization;
@@ -266,7 +270,8 @@ enLanguageManager.prototype.verbalizeOperator = function(operator){
 		standard: ['that ', operator+' ', ''],
 		truncated: ['', operator+' ', ''],
 		negated: ['that is ', 'not ', '', operator+' ', ''],
-		optional : ['that is ', 'optionally ','', operator+' ', '']};
+		optional : ['that is ', 'optionally ','', operator+' ', ''],
+		focus: [operator]};
 
 	verbalization.current = verbalization.standard;
 
@@ -276,6 +281,7 @@ enLanguageManager.prototype.verbalizeOperator = function(operator){
 			verbalization.truncated = ['','less ','than '];
 			verbalization.negated = ['that is ', 'not ', '', 'less ','than '];
 			verbalization.optional = ['that is ', 'optionally ', '', 'less ','than '];
+			verbalization.focus = ['less'];
 			verbalization.current = verbalization.standard;
 			break;
 		case '<=':
@@ -283,6 +289,7 @@ enLanguageManager.prototype.verbalizeOperator = function(operator){
 			verbalization.truncated = ['','less or equals ','than '];
 			verbalization.negated = ['that is ', 'not ', '','less or equals ','than '];
 			verbalization.optional = ['that is ', 'optionally ', '','less or equals ','than '];
+			verbalization.focus = ['less or equals'];
 			verbalization.current = verbalization.standard;
 			break;
 		case '>':
@@ -290,6 +297,7 @@ enLanguageManager.prototype.verbalizeOperator = function(operator){
 			verbalization.truncated = ['','more ','than '];
 			verbalization.negated = ['that is ', 'not ', '','more ','than '];
 			verbalization.optional = ['that is ', 'optionally ', '', 'more ','than '];
+			verbalization.focus = ['more'];
 			verbalization.current = verbalization.standard;
 			break;
 		case '>=':
@@ -297,6 +305,7 @@ enLanguageManager.prototype.verbalizeOperator = function(operator){
 			verbalization.truncated = ['','more or equals ','than '];
 			verbalization.negated = ['that is ', 'not ', '', 'more or equals ','than '];
 			verbalization.optional = ['that is ', 'optionally ', '', 'more or equals ','than '];
+			verbalization.focus = ['more or equals'];
 			verbalization.current = verbalization.standard;
 			break;
 		case '=':
@@ -304,6 +313,7 @@ enLanguageManager.prototype.verbalizeOperator = function(operator){
 			verbalization.truncated = ['','equals ','to '];
 			verbalization.negated = ['that is ', 'not ', '', 'equals ','to '];
 			verbalization.optional = ['that is ', 'optionally ', '', 'equals ','to '];
+			verbalization.focus = ['equals'];
 			verbalization.current = verbalization.standard;
 			break;
 		case 'is string':
@@ -311,6 +321,7 @@ enLanguageManager.prototype.verbalizeOperator = function(operator){
 			verbalization.truncated = ['','',''];
 			verbalization.negated = ['that is ', 'not ', '', 'equals ', 'to '];
 			verbalization.optional = ['that is ', 'optionally ', '', 'equals ', 'to '];
+			verbalization.focus = ['equals'];
 			verbalization.current = verbalization.standard;
 			break;
 		case 'is url':
@@ -318,6 +329,7 @@ enLanguageManager.prototype.verbalizeOperator = function(operator){
 			verbalization.truncated = ['','',''];
 			verbalization.negated = ['that is ', 'not ', '', 'equals ', 'to '];
 			verbalization.optional = ['that is ', 'optionally ', '', 'equals ', 'to '];
+			verbalization.focus = ['equals'];
 			verbalization.current = verbalization.standard;
 			break;
 		case 'is date':
@@ -325,6 +337,7 @@ enLanguageManager.prototype.verbalizeOperator = function(operator){
 			verbalization.truncated = ['','',''];
 			verbalization.negated = ['that is ', 'not ', '', 'equals ', 'to '];
 			verbalization.optional = ['that is ', 'optionally ', '', 'equals ', 'to '];
+			verbalization.focus = ['equals'];
 			verbalization.current = verbalization.standard;
 			break;
 		case 'range':
@@ -332,6 +345,7 @@ enLanguageManager.prototype.verbalizeOperator = function(operator){
 			verbalization.truncated = ['','between ',''];
 			verbalization.negated = ['that is ', 'not ', '', 'between ',''];
 			verbalization.optional = ['that is ', 'optionally ', '', 'between ',''];
+			verbalization.focus = ['between'];
 			verbalization.current = verbalization.standard;
 			break;
 		case 'range date':
@@ -339,32 +353,39 @@ enLanguageManager.prototype.verbalizeOperator = function(operator){
 			verbalization.truncated = ['','between ',''];
 			verbalization.negated = ['that is ', 'not ', '', 'between ',''];
 			verbalization.optional = ['that is ', 'optionally ', '', 'between ',''];
+			verbalization.focus = ['between'];
 			verbalization.current = verbalization.standard;
 			break;
 		case 'and':	
 			verbalization.standard = ['and '];
+			verbalization.focus = ['and'];
 			verbalization.current = verbalization.standard;
 			break;
 		case 'or':	
 			verbalization.standard = ['or '];
+			verbalization.focus = ['or'];
 			verbalization.current = verbalization.standard;
 			break;
 		case 'xor':	
 			verbalization.standard = ['xor '];
+			verbalization.focus = ['xor'];
 			verbalization.current = verbalization.standard;
 			break;
 		case 'not':
 			verbalization.standard = ['not '];
+			verbalization.focus = ['not'];
 			verbalization.current = verbalization.standard;
 			break;
 		case 'optional':
 			verbalization.standard = ['optionally '];
+			verbalization.focus = ['optionally'];
 			verbalization.current = verbalization.standard;
 			break;
 		case 'lang':
 			verbalization.standard = ['that has ','lang ',''];
 			verbalization.negated = ['that has ', 'not ', '', 'lang ',''];
 			verbalization.optional = ['that has ','optionally ', '', 'lang ',''];
+			verbalization.focus = ['lang'];
 			verbalization.current = verbalization.standard;
 			break;
 		case 'before':
@@ -372,6 +393,7 @@ enLanguageManager.prototype.verbalizeOperator = function(operator){
 			verbalization.truncated = ['','before ',''];
 			verbalization.negated = ['that is ', 'not ', '', 'before ',''];
 			verbalization.optional = ['that is ', 'optionally ', '', 'before ',''];
+			verbalization.focus = ['before'];
 			verbalization.current = verbalization.standard;
 			break;
 		case 'after':
@@ -379,6 +401,7 @@ enLanguageManager.prototype.verbalizeOperator = function(operator){
 			verbalization.truncated = ['','after ',''];
 			verbalization.negated = ['that is ', 'not ', '', 'after ',''];
 			verbalization.optional = ['that is ', 'optionally ', '', 'before ',''];
+			verbalization.focus = ['after'];
 			verbalization.current = verbalization.standard;
 			break;
 	}
@@ -387,7 +410,7 @@ enLanguageManager.prototype.verbalizeOperator = function(operator){
 
 }
 
-enLanguageManager.prototype.getFocusDefaultConjunction = function(){
+enLanguageManager.prototype.getDefaultConjunction = function(){
 	return 'and ';
 }
 
@@ -395,77 +418,8 @@ enLanguageManager.prototype.verbalizeResult = function(result){
 
 	var verbalization = {
 		standard: [result+' '],
+		focus: [result],
 		current: [result+' ']};
-
-	return verbalization;
-
-}
-
-enLanguageManager.prototype.getOperatorStandardVerbalization = function(operator){	
-	var verbalization;	
-
-	switch(operator){
-		case 'before':
-			verbalization = ['that is before '];
-			break;
-		case 'after':
-			verbalization = ['that is after '];
-			break;
-		case '<':
-			verbalization = ['that is less than '];
-			break;
-		case '<=':
-			verbalization = ['that is less or equals than '];
-			break;
-		case '>':
-			verbalization = ['that is more than '];
-			break;
-		case '>=':
-			verbalization = ['that is more or equals than '];
-			break;
-		case 'is string':
-			verbalization = ['that is '];
-			break;
-		case 'is url':
-			verbalization = ['that is '];
-			break;
-		case 'is date':
-			verbalization = ['that is '];
-			break;
-		case '=':
-			verbalization = ['that is equals to '];
-			break;
-		case 'range':
-			verbalization = ['that is between '];
-			break;
-		case 'and':	
-			verbalization = ['and '];
-			break;
-		case 'or':	
-			verbalization = ['or '];
-			break;
-		case 'xor':	
-			verbalization = ['xor '];
-			break;
-		case 'not':
-			verbalization = ['that is not '];
-			break;
-		case 'optional':
-			verbalization = ['that is optionally '];
-			break;
-		case 'lang':
-			verbalization = ['whose lang is '];
-			break;
-		case 'range date':
-			verbalization = ['that is between '];
-			break;
-		case 'limit':
-			verbalization = ['Number of results: '];
-			break;
-		default:
-			verbalization = ['that '+operator+' '];
-			break;
-	}
 
 	return verbalization;
 

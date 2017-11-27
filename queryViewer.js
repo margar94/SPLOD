@@ -1,4 +1,3 @@
-var languageManager;
 var queryLogicStructure;
 var queryLogicStructureRoot;
 var visitStack;
@@ -12,13 +11,17 @@ var onFocus;
 
 var addBarred;
 
+
+var languageManager;
 function initQueryViewer(){
+
+	languageManager = new LanguageManager();
 	$("#queryNaturalLanguage")[0].innerHTML = languageManager.getQueryInitialVerbalization();
 	$("#focusLabel")[0].innerHTML = languageManager.getFocusLabel();
 	$("#focus")[0].innerHTML = languageManager.getFocusInitialVerbalization();
 	$("#modalSparql").html('SELECT...');
 	$("#removeButtonA").addClass('disabled');
-	
+
 }
 
 var QueryViewer= function () {
@@ -27,7 +30,6 @@ var QueryViewer= function () {
 	}
 
 	mapCreator = new MapCreator();
-	languageManager = new LanguageManager();
 	queryLogicStructure = {}; 
 	visitStack = [];
 
@@ -545,8 +547,8 @@ function visitRenderer(key){
 					nodeQueryString += temp.queryString;
 					nodeResultQuery += temp.resultQuery;
 
-					nodeQueryString += languageManager.getFocusDefaultConjunction();
-					nodeResultQuery += languageManager.getFocusDefaultConjunction();
+					nodeQueryString += languageManager.getDefaultConjunction();
+					nodeResultQuery += languageManager.getDefaultConjunction();
 
 					var temp = visitRenderer(node.children[1]);
 					nodeQueryString += temp.queryString;
@@ -598,7 +600,7 @@ function renderFocus(){
 	//it"s a node of the map
 	//focus text
 	var number = queryLogicStructure[onFocus].index; 
-	var focusLabel = languageManager.getOrdinalNumber(number) + ' ' + queryLogicStructure[onFocus].label;
+	var focusLabel = languageManager.getOrdinalNumber(number) + ' ' + queryLogicStructure[onFocus].verbalization.focus.join(' ');
 	$("#focus").html(" <span class='" + mapCreator.getNodeByKey(onFocus).type+"'>" + focusLabel + "</span>");
 
 	if(document.getElementById(encodeURIComponent(onFocus)).getAttribute('meta-removeReference') == undefined){
@@ -658,7 +660,8 @@ function attachEvents(){
 		}
 
 		var number = queryLogicStructure[onFocus].index; 
-		var focusLabel = languageManager.getOrdinalNumber(number) + ' ' + queryLogicStructure[onFocus].label;
+		//console.log(queryLogicStructure[onFocus]);
+		var focusLabel = languageManager.getOrdinalNumber(number) + ' ' + queryLogicStructure[onFocus].verbalization.focus.join(' ');
 		$("#focus").html(" <span class='" + mapCreator.getNodeByKey(onFocus).type+"'>" + focusLabel + "</span>");
 		$("#operatorsSpinner").show();
 
