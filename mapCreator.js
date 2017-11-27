@@ -890,3 +890,34 @@ function decreaseIndexIfIAmLast(node){
 		indexMap[node.url] = indexMap[node.url]-1;
 }
 
+MapCreator.prototype.langChanged = function(){
+	for(key in queryLogicMap){
+		var element = queryLogicMap[key];
+		switch(element.type){
+			case 'predicate':
+				element.verbalization = languageManager.verbalizePredicate(element.label, element.direction);
+				break;
+			case 'concept':
+			case 'operator':
+			case 'result':
+			case 'everything':
+			case 'something':
+				var tempType = element.type.charAt(0).toUpperCase() + element.type.slice(1);
+				element.verbalization = eval('languageManager.verbalize'+tempType)(element.label);
+				break;
+		}
+		
+		
+	}
+
+	updateAndNotifyFocus(elementOnFocus);
+
+	if(queryVerbalizator == null)
+		queryVerbalizator = new QueryVerbalizator;
+	queryVerbalizator.updateQuery(rootQueryLogicMap, queryLogicMap, elementOnFocus);
+	
+	if(queryBuilder == null)
+		queryBuilder = new QueryBuilder;
+	queryBuilder.updateQuery(rootQueryLogicMap, queryLogicMap);
+
+}

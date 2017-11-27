@@ -1,4 +1,3 @@
-var languageManager;
 var cachedFieldsToHide;
 
 var resultsToConvert;
@@ -7,7 +6,6 @@ var datatypeInfo;
 
 function initTableResultViewer(){
 	cachedFieldsToHide = [];
-	languageManager = new LanguageManager();
 
 	resultsToConvert = {records:[], querySPARQL:""};
 

@@ -574,6 +574,7 @@ function fillSettings(){
 
 function fillLabelLang(){
 	var labelLangSelect = $('#labelLangSelect');
+	labelLangSelect.empty();
 
 	$.each(labelLangList, function(langKey){
 		var lang = labelLangList[langKey];
@@ -590,6 +591,7 @@ function fillLabelLang(){
 
 function fillSystemLang(){
 	var systemLangSelect = $('#systemLangSelect');
+	systemLangSelect.empty();
 
 	$.each(systemLangList, function(langKey){
 		var lang = systemLangList[langKey];
@@ -618,8 +620,6 @@ function changeLabelLanguage(){
 	initQueryViewer();
 	initOperatorViewer();
 	initTableResultViewer();
-
-	mapCreator.langChanged();
 }
 
 function setLimit(type){
@@ -636,6 +636,8 @@ function changeSystemLanguage(){
 	initQueryViewer();
 	initOperatorViewer();
 	initTableResultViewer();
+
+	mapCreator.langChanged();
 }
 
 function hierarchyOff(){
@@ -662,6 +664,7 @@ function hierarchyOn(){
 
 function fillHelp(){
 	var helpUl = $('#helpUl');
+	helpUl.empty();
 	var helpContent = languageManager.getHelpGuide();
 
 	for(var i = 0; i<helpContent.length; i++){
