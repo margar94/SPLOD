@@ -45,7 +45,7 @@ function renderOperatorList(operators){
 			.attr('class', 'collection-item addToQuery')
 			.attr('meta-value', datatypeOperatorList[j])
 			.attr('meta-datatype', datatype)
-			.text(languageManager.getOperatorLabelVerbalization(datatypeOperatorList[j]));
+			.html(languageManager.getOperatorLabelVerbalization(datatypeOperatorList[j]));
 
 			li.appendTo(operatorList)
 				.on('click', function(){
@@ -400,7 +400,7 @@ function renderPendingQuery(){
 	//operator elem
 	chip = $("<div/>")
 		.attr('class', 'chip')
-		.text(languageManager.getOperatorLabelVerbalization(pendingQueryFields[1]));
+		.html(languageManager.getOperatorLabelVerbalization(pendingQueryFields[1]));
 
 	var discardButton = $('<i/>')
 		.attr('class', 'material-icons close')
@@ -427,7 +427,7 @@ function renderPendingQuery(){
 				.text(pendingQueryFields[i]);
 		}else{
 			var toComplete = $("<div/>")
-			.text(languageManager.getOperatorFieldVerbalization(i-1))
+			.html(languageManager.getOperatorFieldVerbalization(i-1))
 			.attr('class', 'fieldToComplete chip');
 		}
 		toComplete.appendTo(pendingQuery);

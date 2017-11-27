@@ -195,7 +195,7 @@ function renderConceptsList(roots, concepts){
 			.attr('title', concept.url)
 			.attr('meta-url', concept.url)
 			.attr('meta-label', concept.label)
-			.text(concept.label)
+			.html(concept.label)
 			.appendTo(li);
 
 		var badge;
@@ -273,7 +273,7 @@ function iterativePreorderVisit(concept, concepts, toAppend, level){
 			.attr('title', concepts[concept].url)
 			.attr('meta-url', concepts[concept].url)
 			.attr('meta-label', concepts[concept].label)
-			.text(concepts[concept].label)
+			.html(concepts[concept].label)
 			.css('margin-left', '0.5em')
 			.appendTo(li);
 		
@@ -426,7 +426,7 @@ function renderDirectPredicates(directMap){
 			.attr('meta-url', element.url)
 			.attr('meta-label', element.label)
 			.attr('meta-predicateDirection', 'direct') 
-			.text(languageManager.getPredicateVerbalization(element.label, 'direct'))
+			.html(languageManager.getPredicateVerbalization(element.label, 'direct'))
 			.css('margin-left', '0.5em')
 			.appendTo(li);
 
@@ -482,7 +482,7 @@ function renderReversePredicates(reverseArray){
 			.attr('meta-url', element.url)
 			.attr('meta-label', element.label)
 			.attr('meta-predicateDirection', 'reverse') 
-			.text(languageManager.getPredicateVerbalization(element.label, 'reverse'))
+			.html(languageManager.getPredicateVerbalization(element.label, 'reverse'))
 			.css('margin-left', '0.5em')
 			.appendTo(li);
 
@@ -668,7 +668,7 @@ function fillHelp(){
 
 		var titleDiv = $('<div/>')
 			.attr('class', 'collapsible-header')
-			.text(helpContent[i].title)
+			.html(helpContent[i].title)
 			.appendTo(li);
 
 		var contentDiv = $('<div/>')

@@ -91,7 +91,7 @@ function createFieldsSelectionList(labelSelect){
 
 		var label = $("<label/>")
 			.attr('for', labelSelect[field].className)
-			.text(labelSelect[field].label)
+			.html(labelSelect[field].label)
 			.appendTo(li);
 
 	}
@@ -129,7 +129,7 @@ function createTable(select, labelSelect, results){
 	for(field in labelSelect){
 		var th = $("<th/>")
 			.attr('class', labelSelect[field].className)
-			.text(labelSelect[field].label)
+			.html(labelSelect[field].label)
 			.appendTo(tr);
 
 		var previewTh = $("<th/>")

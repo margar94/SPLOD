@@ -230,9 +230,9 @@ itLanguageManager.prototype.verbalizeSomething = function(){
 itLanguageManager.prototype.verbalizeEverything = function(){
 
 	verbalization = {
-		standard: ['cose '],
-		first: [' cose '],
-		current: ['cose ']};
+		standard: [' tutto ci&ograve; '],
+		first: [' tutto ci&ograve; '],
+		current: [' tutto ci&ograve; ']};
 
 	return verbalization;
 
@@ -266,7 +266,7 @@ itLanguageManager.prototype.verbalizeOperator = function(operator){
 	var verbalization = {
 		standard: ['che ', operator+' ', ''],
 		truncated: ['', operator+' ', ''],
-		negated: ['che ', 'non ', 'è ', operator+' ', ''],
+		negated: ['che ', 'non ', '&egrave; ', operator+' ', ''],
 		optional : ['che &egrave; ', 'opzionalmente ','', operator+' ', '']};
 
 	verbalization.current = verbalization.standard;
@@ -586,7 +586,7 @@ itLanguageManager.prototype.getOperatorLabelVerbalization = function(operator){
 		case 'is string':
 		case 'is url':
 		case 'is date':
-			label = 'è';
+			label = '&egrave;';
 			break;
 		case 'range':
 		case 'range date':
@@ -655,7 +655,7 @@ itLanguageManager.prototype.getPredicateVerbalization = function(predicateLabel,
 	else if(direction == 'direct')
 		label =	'che ha '+ itLanguageManager.prototype.getArticle(predicateLabel) + ' ' + predicateLabel; 
 	else
-		label =	'che è ' + predicateLabel; 
+		label =	'che &egrave; ' + predicateLabel; 
 	
 	return label; 
 }
