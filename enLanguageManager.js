@@ -387,6 +387,10 @@ enLanguageManager.prototype.verbalizeOperator = function(operator){
 
 }
 
+enLanguageManager.prototype.getFocusDefaultConjunction = function(){
+	return 'and ';
+}
+
 enLanguageManager.prototype.verbalizeResult = function(result){
 
 	var verbalization = {
@@ -524,6 +528,22 @@ enLanguageManager.prototype.getOperatorLabelVerbalization = function(operator){
 	var label;	
 
 	switch(operator){
+		
+		case '<': 
+			label = 'less than ';
+			break;
+		case '<=': 
+			label = 'less or equals than ';
+			break;
+		case '>': 
+			label = 'more than ';
+			break;
+		case '>=': 
+			label = 'more or equals than ';
+			break;
+		case '=': 
+			label = 'equals ';
+			break;
 		case 'is string':
 		case 'is url':
 		case 'is date':
@@ -537,6 +557,7 @@ enLanguageManager.prototype.getOperatorLabelVerbalization = function(operator){
 			label = operator;
 			break;
 	}
+
 
 	return label;
 

@@ -400,7 +400,7 @@ function renderPendingQuery(){
 	//operator elem
 	chip = $("<div/>")
 		.attr('class', 'chip')
-		.text(pendingQueryFields[1]);
+		.text(languageManager.getOperatorLabelVerbalization(pendingQueryFields[1]));
 
 	var discardButton = $('<i/>')
 		.attr('class', 'material-icons close')

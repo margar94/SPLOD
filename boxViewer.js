@@ -51,7 +51,8 @@ var labelLangList = [{langCode : 'ar'},
 					 {langCode : 'tr'},
 					 {langCode : 'zh'}];
 
-var systemLangList = [{langCode : 'en'}];
+var systemLangList = [{langCode : 'en'},
+					  {langCode : 'it'}];
 
 var conceptsLimit;
 var predicatesLimit;

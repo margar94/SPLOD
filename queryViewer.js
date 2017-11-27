@@ -545,8 +545,8 @@ function visitRenderer(key){
 					nodeQueryString += temp.queryString;
 					nodeResultQuery += temp.resultQuery;
 
-					nodeQueryString += 'and ';
-					nodeResultQuery += 'and ';
+					nodeQueryString += languageManager.getFocusDefaultConjunction();
+					nodeResultQuery += languageManager.getFocusDefaultConjunction();
 
 					var temp = visitRenderer(node.children[1]);
 					nodeQueryString += temp.queryString;
