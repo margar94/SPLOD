@@ -527,7 +527,7 @@ function visitSPARQL(key){
 					else{
 						operatorLabel = '=';
 					}
-					nodeWhere.push({relatedTo:tempRelatedTo, content:['FILTER(' + parentVariable + operatorLabel + '<'+queryLogicStructure[node.children[0]].label+'>' + ')']});
+					nodeWhere.push({relatedTo:tempRelatedTo, content:['FILTER(', parentVariable + operatorLabel + '<'+queryLogicStructure[node.children[0]].label+'>' , ')']});
 					
 					queryLogicStructure[node.children[0]].variable = '<'+queryLogicStructure[node.children[0]].label+'>';
 
@@ -555,11 +555,11 @@ function visitSPARQL(key){
 					var tempLabel = queryLogicStructure[node.children[0]].label.replace(/\"/g, '\\\"');
 
 					if(queryLogicStructure[node.children[0]].lang != null){
-						nodeWhere.push({relatedTo:tempRelatedTo, content:['FILTER(' + parentVariable + operatorLabel + '"'+tempLabel +'"@' + queryLogicStructure[node.children[0]].lang + ')']});
+						nodeWhere.push({relatedTo:tempRelatedTo, content:['FILTER(', parentVariable + operatorLabel + '"'+tempLabel +'"@' + queryLogicStructure[node.children[0]].lang, ')']});
 						queryLogicStructure[node.children[0]].variable = '"'+tempLabel+'"@'+ queryLogicStructure[node.children[0]].lang;
 					}
 					else{
-						nodeWhere.push({relatedTo:tempRelatedTo, content:['FILTER(str(' + parentVariable +')'+ operatorLabel + '"'+tempLabel + '")']});
+						nodeWhere.push({relatedTo:tempRelatedTo, content:['FILTER(', 'str(' + parentVariable +')'+ operatorLabel + '"'+tempLabel, '")']});
 						queryLogicStructure[node.children[0]].variable = '"'+tempLabel+'"';
 					}
 
@@ -583,7 +583,7 @@ function visitSPARQL(key){
 				
 					var tempLabel = queryLogicStructure[node.children[0]].label.replace(/\"/g, '\\\"');
 
-					nodeWhere.push({relatedTo:tempRelatedTo, content:['FILTER(' + operatorLabel + '(xsd:string('+parentVariable+'),"'+tempLabel+'")' + ')']});
+					nodeWhere.push({relatedTo:tempRelatedTo, content:['FILTER(', operatorLabel + '(xsd:string('+parentVariable+'),"'+tempLabel+'")', ')']});
 					queryLogicStructure[node.children[0]].variable = '"'+tempLabel+'"';
 
 					childQuery = visitSPARQL(node.children[0]); 
@@ -609,7 +609,7 @@ function visitSPARQL(key){
 
 					var tempLabel = queryLogicStructure[node.children[0]].label.replace(/\"/g, '\\\"');
 
-					nodeWhere.push({relatedTo:tempRelatedTo, content:['FILTER(' + operatorLabel + '(xsd:string('+parentVariable+'),"'+tempLabel+'")' + ')']});
+					nodeWhere.push({relatedTo:tempRelatedTo, content:['FILTER(', operatorLabel + '(xsd:string('+parentVariable+'),"'+tempLabel+'")', ')']});
 					queryLogicStructure[node.children[0]].variable = '"'+tempLabel+'"';
 
 					childQuery = visitSPARQL(node.children[0]); 
@@ -635,7 +635,7 @@ function visitSPARQL(key){
 
 					var tempLabel = queryLogicStructure[node.children[0]].label.replace(/\"/g, '\\\"');
 
-					nodeWhere.push({relatedTo:tempRelatedTo, content:['FILTER(' + operatorLabel + '(xsd:string('+parentVariable+'),"'+tempLabel+'")' + ')']});
+					nodeWhere.push({relatedTo:tempRelatedTo, content:['FILTER(', operatorLabel + '(xsd:string('+parentVariable+'),"'+tempLabel+'")', ')']});
 					queryLogicStructure[node.children[0]].variable = '"'+tempLabel+'"';
 
 					childQuery = visitSPARQL(node.children[0]); 
@@ -656,7 +656,7 @@ function visitSPARQL(key){
 						addNot=false;
 					}
 					
-					nodeWhere.push({relatedTo:tempRelatedTo, content:['FILTER(' + operatorLabel + '('+parentVariable+')="'+queryLogicStructure[node.children[0]].label+'"' + ')']});
+					nodeWhere.push({relatedTo:tempRelatedTo, content:['FILTER(', operatorLabel + '('+parentVariable+')="'+queryLogicStructure[node.children[0]].label+'"', ')']});
 					queryLogicStructure[node.children[0]].variable = '"'+queryLogicStructure[node.children[0]].label+'"';
 
 					childQuery = visitSPARQL(node.children[0]); 
@@ -676,7 +676,7 @@ function visitSPARQL(key){
 						tempRelatedTo.push(node.parent);
 						addNot=false;
 					}
-					nodeWhere.push({relatedTo:tempRelatedTo, content:['FILTER(' + parentVariable+' '+operatorLabel+' '+queryLogicStructure[node.children[0]].label + ')']});
+					nodeWhere.push({relatedTo:tempRelatedTo, content:['FILTER(', parentVariable+' '+operatorLabel+' '+queryLogicStructure[node.children[0]].label, ')']});
 					queryLogicStructure[node.children[0]].variable = queryLogicStructure[node.children[0]].label;
 
 					childQuery = visitSPARQL(node.children[0]); 
@@ -696,7 +696,7 @@ function visitSPARQL(key){
 						tempRelatedTo.push(node.parent);
 						addNot=false;
 					}
-					nodeWhere.push({relatedTo:tempRelatedTo, content:['FILTER(' + parentVariable+' '+operatorLabel+' '+queryLogicStructure[node.children[0]].label + ')']});
+					nodeWhere.push({relatedTo:tempRelatedTo, content:['FILTER(', parentVariable+' '+operatorLabel+' '+queryLogicStructure[node.children[0]].label, ')']});
 					queryLogicStructure[node.children[0]].variable = queryLogicStructure[node.children[0]].label;
 
 					childQuery = visitSPARQL(node.children[0]); 
@@ -716,7 +716,7 @@ function visitSPARQL(key){
 						tempRelatedTo.push(node.parent);
 						addNot=false;
 					}
-					nodeWhere.push({relatedTo:tempRelatedTo, content:['FILTER(' + parentVariable+' '+operatorLabel+' '+queryLogicStructure[node.children[0]].label + ')']});
+					nodeWhere.push({relatedTo:tempRelatedTo, content:['FILTER(', parentVariable+' '+operatorLabel+' '+queryLogicStructure[node.children[0]].label, ')']});
 					queryLogicStructure[node.children[0]].variable = queryLogicStructure[node.children[0]].label;
 
 					childQuery = visitSPARQL(node.children[0]); 
@@ -736,7 +736,7 @@ function visitSPARQL(key){
 						tempRelatedTo.push(node.parent);
 						addNot=false;
 					}
-					nodeWhere.push({relatedTo:tempRelatedTo, content:['FILTER(' + parentVariable+' '+operatorLabel+' '+queryLogicStructure[node.children[0]].label + ')']});
+					nodeWhere.push({relatedTo:tempRelatedTo, content:['FILTER(', parentVariable+' '+operatorLabel+' '+queryLogicStructure[node.children[0]].label, ')']});
 					queryLogicStructure[node.children[0]].variable = queryLogicStructure[node.children[0]].label;
 
 					childQuery = visitSPARQL(node.children[0]); 
@@ -756,7 +756,7 @@ function visitSPARQL(key){
 						tempRelatedTo.push(node.parent);
 						addNot=false;
 					}
-					nodeWhere.push({relatedTo:tempRelatedTo, content:['FILTER(' + parentVariable+' '+operatorLabel+' '+queryLogicStructure[node.children[0]].label + ')']});
+					nodeWhere.push({relatedTo:tempRelatedTo, content:['FILTER(', parentVariable+' '+operatorLabel+' '+queryLogicStructure[node.children[0]].label, ')']});
 					queryLogicStructure[node.children[0]].variable = queryLogicStructure[node.children[0]].label;
 
 					childQuery = visitSPARQL(node.children[0]); 
@@ -779,7 +779,7 @@ function visitSPARQL(key){
 						operatorLabel = '=';
 					}
 					var conversionFunction = 'xsd:'+queryLogicStructure[node.children[0]].datatype;
-					nodeWhere.push({relatedTo:tempRelatedTo, content:['FILTER('+conversionFunction+'(' + parentVariable+ ') '+operatorLabel +' '+conversionFunction+'("'+queryLogicStructure[node.children[0]].label+'")' + ')']});
+					nodeWhere.push({relatedTo:tempRelatedTo, content:['FILTER(',conversionFunction+'(' + parentVariable+ ') '+operatorLabel +' '+conversionFunction+'("'+queryLogicStructure[node.children[0]].label+'")', ')']});
 					queryLogicStructure[node.children[0]].variable = conversionFunction+'("'+queryLogicStructure[node.children[0]].label+'")';
 
 					childQuery = visitSPARQL(node.children[0]); 
@@ -794,10 +794,10 @@ function visitSPARQL(key){
 				case 'range':
 					//se padre not riscriviamo query else
 					if(addNot){
-						nodeWhere.push({relatedTo:[node.children[0],node.children[1], node.key, node.parent], content:['FILTER('+ parentVariable+' < '+queryLogicStructure[node.children[0]].label+' || '+parentVariable+' > '+queryLogicStructure[node.children[1]].label +')']});
+						nodeWhere.push({relatedTo:[node.children[0],node.children[1], node.key, node.parent], content:['FILTER(', '('+parentVariable+' < '+queryLogicStructure[node.children[0]].label+' || '+parentVariable+' > '+queryLogicStructure[node.children[1]].label+')',')']});
 						addNot = false;
 					}else{
-						nodeWhere.push({relatedTo:[node.children[0],node.children[1], node.key], content:['FILTER(' + parentVariable+' >= '+queryLogicStructure[node.children[0]].label+' && '+parentVariable+' <= '+queryLogicStructure[node.children[1]].label + ')']});
+						nodeWhere.push({relatedTo:[node.children[0],node.children[1], node.key], content:['FILTER(','(' + parentVariable+' >= '+queryLogicStructure[node.children[0]].label+' && '+parentVariable+' <= '+queryLogicStructure[node.children[1]].label+')' , ')']});
 					}	
 					
 					for(var i=0; i<node.children.length; i++){
@@ -822,7 +822,7 @@ function visitSPARQL(key){
 						operatorLabel = '<';
 					}
 					var conversionFunction = 'xsd:'+queryLogicStructure[node.children[0]].datatype;
-					nodeWhere.push({relatedTo:tempRelatedTo, content:['FILTER('+conversionFunction+'(' + parentVariable+ ') '+operatorLabel +' '+conversionFunction+'("'+queryLogicStructure[node.children[0]].label+'")' + ')']});
+					nodeWhere.push({relatedTo:tempRelatedTo, content:['FILTER(',conversionFunction+'(' + parentVariable+ ') '+operatorLabel +' '+conversionFunction+'("'+queryLogicStructure[node.children[0]].label+'")', ')']});
 					queryLogicStructure[node.children[0]].variable = conversionFunction+'("'+queryLogicStructure[node.children[0]].label+'")';
 
 					childQuery = visitSPARQL(node.children[0]); 
@@ -845,7 +845,7 @@ function visitSPARQL(key){
 						operatorLabel = '>';
 					}
 					var conversionFunction = 'xsd:'+queryLogicStructure[node.children[0]].datatype;
-					nodeWhere.push({relatedTo:tempRelatedTo, content:['FILTER('+conversionFunction+'(' + parentVariable+ ') '+operatorLabel +' '+conversionFunction+'("'+queryLogicStructure[node.children[0]].label+'")' + ')']});
+					nodeWhere.push({relatedTo:tempRelatedTo, content:['FILTER(',conversionFunction+'(' + parentVariable+ ') '+operatorLabel +' '+conversionFunction+'("'+queryLogicStructure[node.children[0]].label+'")', ')']});
 					queryLogicStructure[node.children[0]].variable = conversionFunction+'("'+queryLogicStructure[node.children[0]].label+'")';
 
 					childQuery = visitSPARQL(node.children[0]); 
@@ -859,10 +859,10 @@ function visitSPARQL(key){
 				case 'range date':
 					var conversionFunction = 'xsd:'+queryLogicStructure[node.children[0]].datatype;
 					if(addNot){
-						nodeWhere.push({relatedTo:[node.children[0], node.children[1], node.key, node.parent], content:['FILTER('+conversionFunction+'(' + parentVariable+') < '+conversionFunction+'("'+queryLogicStructure[node.children[0]].label+'") || '+conversionFunction+'('+parentVariable+') > '+conversionFunction+'("'+queryLogicStructure[node.children[1]].label+'")' + ')']});
+						nodeWhere.push({relatedTo:[node.children[0], node.children[1], node.key, node.parent], content:['FILTER(', '('+conversionFunction+'(' + parentVariable+') < '+conversionFunction+'("'+queryLogicStructure[node.children[0]].label+'") || '+conversionFunction+'('+parentVariable+') > '+conversionFunction+'("'+queryLogicStructure[node.children[1]].label+'")' + ')', ')']});
 						addNot = false;
 					}else{
-						nodeWhere.push({relatedTo:[node.children[0], node.children[1], node.key], content:['FILTER('+conversionFunction+'(' + parentVariable+') >= '+conversionFunction+'("'+queryLogicStructure[node.children[0]].label+'") && '+conversionFunction+'('+parentVariable+') <= '+conversionFunction+'("'+queryLogicStructure[node.children[1]].label+'")' + ')']});
+						nodeWhere.push({relatedTo:[node.children[0], node.children[1], node.key], content:['FILTER(', '('+conversionFunction+'(' + parentVariable+') >= '+conversionFunction+'("'+queryLogicStructure[node.children[0]].label+'") && '+conversionFunction+'('+parentVariable+') <= '+conversionFunction+'("'+queryLogicStructure[node.children[1]].label+'")' + ')', ')']});
 					}	
 
 					for(var i=0; i<node.children.length; i++){
