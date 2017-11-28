@@ -105,7 +105,6 @@ var OperatorManager = function () {
 };
 
 OperatorManager.prototype.queryResult = function(select, labelSelect, keySelect, results){
-
 	var result = results[0];
 
 	for(var i=0; i<keySelect.length; i++){
@@ -180,6 +179,7 @@ OperatorManager.prototype.queryResult = function(select, labelSelect, keySelect,
 						case 'boolean':
 							currentResultDatatype = datatype;
 							break;
+						case 'squareMetre':
 						case 'langString':
 							currentResultDatatype = 'string';
 							break;
@@ -503,7 +503,7 @@ function manageUpdateOperatorViewer(){
 
 	if(node.type=='result'){
 		var operatorNode = mapCreator.getNodeByKey(node.parent);
-		var operator = operatorNode.label;
+		var operator = operatorNode.subtype;
 		var operatorField = node.relatedTo;
 		
 		if(operatorField in resultDatatype){ 
@@ -517,8 +517,8 @@ function manageUpdateOperatorViewer(){
 	}
 	
 	if(node.type == 'operator'){
-		if(node.label in operatorMap){ //onFocusOperator is an operator 
-			renderOperatorList([{list : operatorMap[node.label], datatype:null}]);
+		if(node.subtype in operatorMap){ //onFocusOperator is an operator 
+			renderOperatorList([{list : operatorMap[node.subtype], datatype:null}]);
 			return;
 		}else{
 			renderOperatorList([]);
@@ -530,26 +530,27 @@ function manageUpdateOperatorViewer(){
 	if(node.type == 'predicate'){
 		var parentNode = mapCreator.getNodeByKey(node.parent);
 		
-		if(parentNode.type=='operator' && parentNode.label=='not'){
+		if(parentNode.type=='operator' && parentNode.subtype=='not'){
 			renderOperatorList([]);
 			return;
 		}else if(parentNode.type=='everything'){
 			for(var i=0; i<parentNode.children.length; i=i+2){
 				operatorList.push({list:['optional'], datatype:null});
 				var childNode = mapCreator.getNodeByKey(parentNode.children[i]);
-				if(childNode.key!=node.key && !(childNode.type=='operator' && childNode.label =='not')){
+				if(childNode.key!=node.key && !(childNode.type=='operator' && childNode.subtype =='not')){
 					operatorList.push({list:['not'], datatype:null});
 					break;
 				}
 			}
-		}else if(!(parentNode.type=='operator' && parentNode.label=='optional')){
+		}else if(!(parentNode.type=='operator' && parentNode.subtype=='optional')){
 			operatorList.push({list:['optional'], datatype:null});
 			operatorList.push({list:['not'], datatype:null});
 		}
 	}
 
 	if(mapCreator.isRefinement(onFocusOperator)){
-		operatorList.push({list:['not', 'optional'], datatype:null});
+		operatorList.push({list:['optional'], datatype:null});
+		operatorList.push({list:['not'], datatype:null});
 		onFocusOperator = mapCreator.getTopElement(onFocusOperator);
 	}
 	//from here onFocusOperator could be the concept or his ancestor
@@ -625,7 +626,7 @@ function cacheResultToChange(resultsKey){
 		var resultNode = mapCreator.getNodeByKey(resultsKey[i]);
 		var operatorNode = mapCreator.getNodeByKey(resultNode.parent);
 
-		if(resultNode.datatype=='literal' && operatorNode.label == 'lang')
+		if(resultNode.datatype=='literal' && operatorNode.subtype == 'lang')
 			cachedResult[resultNode.key] = literalLang[resultNode.relatedTo];
 		else
 			cachedResult[resultNode.key] = savedResult[resultNode.relatedTo][resultNode.datatype];

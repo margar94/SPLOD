@@ -103,7 +103,7 @@ function visitRenderer(key){
 
 			//eventually not or optional
 			var parentNode = queryLogicStructure[node.parent];
-			if(parentNode != undefined && parentNode.type == "operator" && (parentNode.label == "not" || parentNode.label == "optional")){
+			if(parentNode != undefined && parentNode.type == "operator" && (parentNode.subtype == "not" || parentNode.subtype == "optional")){
 				nodeQueryString += '<span class="focusable" meta-removeReference="'+encodeURIComponent(parentNode.key)+'" meta-focusReference="'+encodeURIComponent(parentNode.key)+'">';
 				nodeQueryString += '<span id="'+encodeURIComponent(parentNode.key)+'" class="focusable operator" meta-removeReference="'+encodeURIComponent(parentNode.key)+'" meta-focusReference="'+encodeURIComponent(parentNode.key)+'">';
 				nodeQueryString += node.verbalization.current[verbalizationIndex];
@@ -318,7 +318,7 @@ function visitRenderer(key){
 
 				//eventually not or optional
 				var parentNode = queryLogicStructure[node.parent];
-				if(parentNode != undefined && parentNode.type == "operator" && (parentNode.label == "not" || parentNode.label == "optional")){
+				if(parentNode != undefined && parentNode.type == "operator" && (parentNode.subtype == "not" || parentNode.subtype == "optional")){
 					nodeQueryString += '<span class="focusable" meta-removeReference="'+encodeURIComponent(parentNode.key)+'" meta-focusReference="'+encodeURIComponent(parentNode.key)+'">';
 					nodeQueryString += '<span id="'+encodeURIComponent(parentNode.key)+'" class="focusable operator" meta-removeReference="'+encodeURIComponent(parentNode.key)+'" meta-focusReference="'+encodeURIComponent(parentNode.key)+'">';
 					nodeQueryString += node.verbalization.current[verbalizationIndex];
@@ -401,7 +401,7 @@ function visitRenderer(key){
 
 				//eventually not or optional
 				var parentNode = queryLogicStructure[node.parent];
-				if(parentNode != undefined && parentNode.type == "operator" && (parentNode.label == "not" || parentNode.label == "optional")){
+				if(parentNode != undefined && parentNode.type == "operator" && (parentNode.subtype == "not" || parentNode.subtype == "optional")){
 					nodeQueryString += '<span class="focusable" meta-removeReference="'+encodeURIComponent(parentNode.key)+'" meta-focusReference="'+encodeURIComponent(parentNode.key)+'">';
 					nodeQueryString += '<span id="'+encodeURIComponent(parentNode.key)+'" class="focusable operator" meta-removeReference="'+encodeURIComponent(parentNode.key)+'" meta-focusReference="'+encodeURIComponent(parentNode.key)+'">';
 					nodeQueryString += node.verbalization.current[verbalizationIndex];
@@ -435,7 +435,7 @@ function visitRenderer(key){
 			break;
 		
 		case "operator":
-			switch(node.label){
+			switch(node.subtype){
 				case "and" :
 				case "or" : 
 				case "xor" : 
@@ -480,7 +480,7 @@ function visitRenderer(key){
 
 					//eventually not or optional
 					var parentNode = queryLogicStructure[node.parent];
-					if(parentNode != undefined && parentNode.type == "operator" && (parentNode.label == "not" || parentNode.label == "optional")){
+					if(parentNode != undefined && parentNode.type == "operator" && (parentNode.subtype == "not" || parentNode.subtype == "optional")){
 						nodeQueryString += '<span class="focusable" meta-removeReference="'+encodeURIComponent(parentNode.key)+'" meta-focusReference="'+encodeURIComponent(parentNode.key)+'">';
 						nodeQueryString += '<span id="'+encodeURIComponent(parentNode.key)+'" class="focusable operator" meta-removeReference="'+encodeURIComponent(parentNode.key)+'" meta-focusReference="'+encodeURIComponent(parentNode.key)+'">';
 						nodeQueryString += node.verbalization.current[verbalizationIndex];
@@ -523,7 +523,7 @@ function visitRenderer(key){
 
 					//eventually not or optional
 					var parentNode = queryLogicStructure[node.parent];
-					if(parentNode != undefined && parentNode.type == "operator" && (parentNode.label == "not" || parentNode.label == "optional")){
+					if(parentNode != undefined && parentNode.type == "operator" && (parentNode.subtype == "not" || parentNode.subtype == "optional")){
 						nodeQueryString += '<span class="focusable" meta-removeReference="'+encodeURIComponent(parentNode.key)+'" meta-focusReference="'+encodeURIComponent(parentNode.key)+'">';					
 						nodeQueryString += '<span id="'+encodeURIComponent(parentNode.key)+'" class="focusable operator" meta-removeReference="'+encodeURIComponent(parentNode.key)+'" meta-focusReference="'+encodeURIComponent(parentNode.key)+'">';
 						nodeQueryString += node.verbalization.current[verbalizationIndex];
@@ -597,7 +597,7 @@ function renderFocus(){
 	//onfocus != null
 	var onFocusNode = mapCreator.getNodeByKey(onFocus);
 
-	if(onFocusNode.type == 'operator' && (onFocusNode.label == 'and' || onFocusNode.label == 'or' ||onFocusNode.label == 'xor' )){
+	if(onFocusNode.type == 'operator' && (onFocusNode.subtype == 'and' || onFocusNode.subtype == 'or' ||onFocusNode.subtype == 'xor' )){
 		var siblings = mapCreator.getNodeByKey(onFocusNode.parent).children;
 
 		for(var i = 1; i < siblings.length; i = i+2){
@@ -672,7 +672,7 @@ function attachEvents(){
 
 		var onFocusNode = mapCreator.getNodeByKey(onFocus);
 
-		if(onFocusNode.type == 'operator' && (onFocusNode.label == 'and' || onFocusNode.label == 'or' ||onFocusNode.label == 'xor' )){
+		if(onFocusNode.type == 'operator' && (onFocusNode.subtype == 'and' || onFocusNode.subtype == 'or' ||onFocusNode.subtype == 'xor' )){
 			var siblings = mapCreator.getNodeByKey(onFocusNode.parent).children;
 
 			for(var i = 1; i < siblings.length; i = i+2){
@@ -758,7 +758,7 @@ function showUserQueryBox(){
 
 		var onFocusNode = mapCreator.getNodeByKey(decodeURIComponent($(this).attr("id")));
 
-		if(onFocusNode.type == 'operator' && (onFocusNode.label == 'and' || onFocusNode.label == 'or' ||onFocusNode.label == 'xor' )){
+		if(onFocusNode.type == 'operator' && (onFocusNode.subtype == 'and' || onFocusNode.subtype == 'or' ||onFocusNode.subtype == 'xor' )){
 			var siblings = mapCreator.getNodeByKey(onFocusNode.parent).children;
 
 			for(var i = 1; i < siblings.length; i = i+2){

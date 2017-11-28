@@ -100,7 +100,7 @@ function visitSPARQL(key){
 						content: childWhere[0][j].content}]);
 
 			}else if(node.children.length>1){
-				sameLevelOperator = queryLogicStructure[node.children[1]].label;
+				sameLevelOperator = queryLogicStructure[node.children[1]].subtype;
 			}
 
 			var child = [node.key];
@@ -213,7 +213,7 @@ function visitSPARQL(key){
 			if(node.children.length==1){
 				nodeWhere = nodeWhere.concat(childWhere[0]);
 			}else if(node.children.length > 1){
-				sameLevelOperator = queryLogicStructure[node.children[1]].label;
+				sameLevelOperator = queryLogicStructure[node.children[1]].subtype;
 			}
 
 			var child = [];
@@ -314,7 +314,7 @@ function visitSPARQL(key){
 					if(node.children.length==1){
 						nodeWhere = nodeWhere.concat(childWhere[0]);
 					}else if(node.children.length > 1){
-						sameLevelOperator = queryLogicStructure[node.children[1]].label;
+						sameLevelOperator = queryLogicStructure[node.children[1]].subtype;
 					}
 
 					var child = [];
@@ -437,7 +437,7 @@ function visitSPARQL(key){
 						nodeWhere = nodeWhere.concat([{relatedTo: childWhere[0][j].relatedTo.concat(node.key), 
 							content: childWhere[0][j].content}]);				
 				}else if(node.children.length > 1){
-					sameLevelOperator = queryLogicStructure[node.children[1]].label;
+					sameLevelOperator = queryLogicStructure[node.children[1]].subtype;
 				}
 
 				var child = [node.key];
@@ -520,7 +520,7 @@ function visitSPARQL(key){
 
 			var claus = [];
 			var operatorLabel = node.label;
-			var switchOperatorLabel = node.label;
+			var switchOperatorLabel = node.subtype;
 
 			switch(switchOperatorLabel){
 				case 'is url': 
@@ -560,13 +560,12 @@ function visitSPARQL(key){
 					}
 
 					var tempLabel = queryLogicStructure[node.children[0]].label.replace(/\"/g, '\\\"');
-
 					if(queryLogicStructure[node.children[0]].lang != null){
 						nodeWhere.push({relatedTo:tempRelatedTo, content:['FILTER(', parentVariable + operatorLabel + '"'+tempLabel +'"@' + queryLogicStructure[node.children[0]].lang, ')']});
 						queryLogicStructure[node.children[0]].variable = '"'+tempLabel+'"@'+ queryLogicStructure[node.children[0]].lang;
 					}
 					else{
-						nodeWhere.push({relatedTo:tempRelatedTo, content:['FILTER(', 'str(' + parentVariable +')'+ operatorLabel + '"'+tempLabel, '")']});
+						nodeWhere.push({relatedTo:tempRelatedTo, content:['FILTER(', 'str(' + parentVariable +')'+ operatorLabel + '"'+tempLabel+ '"', ')']});
 						queryLogicStructure[node.children[0]].variable = '"'+tempLabel+'"';
 					}
 
@@ -586,6 +585,8 @@ function visitSPARQL(key){
 						operatorLabel = '!contains';
 						tempRelatedTo.push(node.parent);
 						addNot=false;
+					}else{
+						operatorLabel = 'contains';
 					}
 				
 					var tempLabel = queryLogicStructure[node.children[0]].label.replace(/\"/g, '\\\"');
@@ -662,6 +663,9 @@ function visitSPARQL(key){
 						tempRelatedTo.push(node.parent);
 						addNot=false;
 					}
+					else{
+						operatorLabel = 'lang';
+					}
 					
 					nodeWhere.push({relatedTo:tempRelatedTo, content:['FILTER(', operatorLabel + '('+parentVariable+')="'+queryLogicStructure[node.children[0]].label+'"', ')']});
 					queryLogicStructure[node.children[0]].variable = '"'+queryLogicStructure[node.children[0]].label+'"';
@@ -683,6 +687,9 @@ function visitSPARQL(key){
 						tempRelatedTo.push(node.parent);
 						addNot=false;
 					}
+					else{
+						operatorLabel = '<';
+					}
 					nodeWhere.push({relatedTo:tempRelatedTo, content:['FILTER(', parentVariable+' '+operatorLabel+' '+queryLogicStructure[node.children[0]].label, ')']});
 					queryLogicStructure[node.children[0]].variable = queryLogicStructure[node.children[0]].label;
 
@@ -702,6 +709,9 @@ function visitSPARQL(key){
 						operatorLabel = '>';
 						tempRelatedTo.push(node.parent);
 						addNot=false;
+					}
+					else{
+						operatorLabel = '<=';
 					}
 					nodeWhere.push({relatedTo:tempRelatedTo, content:['FILTER(', parentVariable+' '+operatorLabel+' '+queryLogicStructure[node.children[0]].label, ')']});
 					queryLogicStructure[node.children[0]].variable = queryLogicStructure[node.children[0]].label;
@@ -723,6 +733,9 @@ function visitSPARQL(key){
 						tempRelatedTo.push(node.parent);
 						addNot=false;
 					}
+					else{
+						operatorLabel = '>';
+					}
 					nodeWhere.push({relatedTo:tempRelatedTo, content:['FILTER(', parentVariable+' '+operatorLabel+' '+queryLogicStructure[node.children[0]].label, ')']});
 					queryLogicStructure[node.children[0]].variable = queryLogicStructure[node.children[0]].label;
 
@@ -743,6 +756,9 @@ function visitSPARQL(key){
 						tempRelatedTo.push(node.parent);
 						addNot=false;
 					}
+					else{
+						operatorLabel = '>=';
+					}
 					nodeWhere.push({relatedTo:tempRelatedTo, content:['FILTER(', parentVariable+' '+operatorLabel+' '+queryLogicStructure[node.children[0]].label, ')']});
 					queryLogicStructure[node.children[0]].variable = queryLogicStructure[node.children[0]].label;
 
@@ -762,6 +778,9 @@ function visitSPARQL(key){
 						operatorLabel = '!=';
 						tempRelatedTo.push(node.parent);
 						addNot=false;
+					}
+					else{
+						operatorLabel = '=';
 					}
 					nodeWhere.push({relatedTo:tempRelatedTo, content:['FILTER(', parentVariable+' '+operatorLabel+' '+queryLogicStructure[node.children[0]].label, ')']});
 					queryLogicStructure[node.children[0]].variable = queryLogicStructure[node.children[0]].label;
@@ -954,7 +973,7 @@ function visitSPARQL(key){
 			if(node.children.length==1){
 				nodeWhere = nodeWhere.concat(childWhere[0]);
 			}else if(node.children.length > 1){
-				sameLevelOperator = queryLogicStructure[node.children[1]].label;
+				sameLevelOperator = queryLogicStructure[node.children[1]].subtype;
 			}
 
 			var child = [];

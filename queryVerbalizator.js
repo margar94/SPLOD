@@ -63,7 +63,7 @@ function verbalizeQuery(){
 				}
 
 				if(currentNode.type == 'operator' 
-					&& (queryLogicStructure[node.parent].label == 'not' || queryLogicStructure[node.parent].label == 'optional'))
+					&& (queryLogicStructure[node.parent].subtype == 'not' || queryLogicStructure[node.parent].subtype == 'optional'))
 					queryLogicStructure[currentNode.children[i]].predicatesCounter = 0;
 
 				visitStack.push(queryLogicStructure[currentNode.children[i]]);
@@ -123,9 +123,9 @@ function visitVerbalizator(node){
 
 	//stronger rule
 	if(queryLogicStructure[node.parent].type == 'operator'){
-		if(queryLogicStructure[node.parent].label == 'not'){
+		if(queryLogicStructure[node.parent].subtype == 'not'){
 			node.verbalization.current = node.verbalization.negated;
-		}else if(queryLogicStructure[node.parent].label == 'optional'){
+		}else if(queryLogicStructure[node.parent].subtype == 'optional'){
 			node.verbalization.current = node.verbalization.optional;
 		}
 	}
