@@ -296,32 +296,32 @@ MapCreator.prototype.selectedOperator = function(pendingQuery){
 				parentNode = queryLogicMap[parentNode.parent];
 
 			if(parentNode.children.length>0){
-				var operator;
-				if(precLogicElement.children.length>1)//new operator has to be the same type of operator
-					operator = queryLogicMap[precLogicElement.children[1]].subtype;
+				var tempOperator;
+				if(parentNode.children.length>1)//new operator has to be the same type of operator
+					tempOperator = queryLogicMap[parentNode.children[1]].subtype;
 				else//default conjunction
-					operator = 'and';
+					tempOperator = 'and';
 				 
-				var newOperatorVerbalization = languageManager.verbalizeOperator(operator);
+				var newOperatorVerbalization = languageManager.verbalizeOperator(tempOperator);
 
-				if(!(operator in indexMap)){
-					indexMap[operator] = 1;
+				if(!(tempOperator in indexMap)){
+					indexMap[tempOperator] = 1;
 				}
 				else{
-					indexMap[operator] += 1;
+					indexMap[tempOperator] += 1;
 				}
 
-				var newOperatorIndex = indexMap[operator];
-				var newOperatorKey = operator + "_" + newOperatorIndex;
+				var newOperatorIndex = indexMap[tempOperator];
+				var newOperatorKey = tempOperator + "_" + newOperatorIndex;
 
 				var newOperatorLogicElement = {key: newOperatorKey, index: newOperatorIndex,
-									   url: operator, label: languageManager.getOperatorLabelVerbalization(operator), 
-									   type:'operator', subtype: operator, direction: false, 
+									   url: tempOperator, label: languageManager.getOperatorLabelVerbalization(tempOperator), 
+									   type:'operator', subtype: tempOperator, direction: false, 
 									   verbalization: newOperatorVerbalization, 
-									   parent:precLogicElement.key, children: []};
+									   parent:parentNode.key, children: []};
 				queryLogicMap[newOperatorKey] = newOperatorLogicElement;
 
-				precLogicElement.children.push(newOperatorKey);			
+				parentNode.children.push(newOperatorKey);			
 			}
 
 			var verbalization = languageManager.verbalizeOperator(operator);
@@ -386,6 +386,12 @@ MapCreator.prototype.selectedOperator = function(pendingQuery){
 
 		case 'not':
 		case 'optional':
+
+			var precElem = queryLogicMap[elementOnFocus];
+			if(precElem.type == 'operator' && (precElem.subtype == 'not' || precElem.subtype == 'optional')){
+				//updateAndNotifyFocus(precElem);
+				break;
+			}
 
 			var verbalization = languageManager.verbalizeOperator(operator);
 
