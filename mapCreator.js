@@ -64,43 +64,42 @@ MapCreator.prototype.selectedConcept = function(selectedUrl, selectedLabel) {
 
 		var precLogicElement = queryLogicMap[elementOnFocus];
 
-		if(precLogicElement.children.length>0){
-			var andOperator = 'and';
-			var andVerbalization = languageManager.verbalizeOperator(andOperator);
-
-			if(!(andOperator in indexMap)){
-				indexMap[andOperator] = 1;
-			}
-			else{
-				indexMap[andOperator] += 1;
-			}
-
-			var andIndex = indexMap[andOperator];
-			var andKey = andOperator + "_" + andIndex;
-
-			var andLogicElement = {key: andKey, index: andIndex,
-								   url: andOperator, label: andOperator, 
-								   type:'operator', direction: false, 
-								   verbalization: andVerbalization, 
-								   parent:precLogicElement.key, children: []};
-			queryLogicMap[andKey] = andLogicElement;
-
-			precLogicElement.children.push(andKey);
-		}
-
 		if(precLogicElement.type=='something'){ // replace something
 			
 			//update newLogicElement
-			newLogicElement.children = precLogicElement.children;
+			//newLogicElement.children = precLogicElement.children;
 			newLogicElement.parent = precLogicElement.parent;
 
 			//update map
 			var indexSomething = $.inArray(precLogicElement.key, queryLogicMap[precLogicElement.parent].children);
 			queryLogicMap[precLogicElement.parent].children[indexSomething] = newLogicElement.key;
-			decreaseIndexIfIAmLast(precLogicElement);
-			delete queryLogicMap[precLogicElement.key];		
+			removeMeAndMyDescendents(queryLogicMap[precLogicElement.key])	
 
 		}else{ // concept refining parent node
+
+			if(precLogicElement.children.length>0){
+				var andOperator = 'and';
+				var andVerbalization = languageManager.verbalizeOperator(andOperator);
+
+				if(!(andOperator in indexMap)){
+					indexMap[andOperator] = 1;
+				}
+				else{
+					indexMap[andOperator] += 1;
+				}
+
+				var andIndex = indexMap[andOperator];
+				var andKey = andOperator + "_" + andIndex;
+
+				var andLogicElement = {key: andKey, index: andIndex,
+									   url: andOperator, label: andOperator, 
+									   type:'operator', direction: false, 
+									   verbalization: andVerbalization, 
+									   parent:precLogicElement.key, children: []};
+				queryLogicMap[andKey] = andLogicElement;
+
+				precLogicElement.children.push(andKey);
+			}
 
 			newLogicElement.parent = precLogicElement.key;
 			precLogicElement.children.push(newLogicElement.key);
@@ -108,7 +107,8 @@ MapCreator.prototype.selectedConcept = function(selectedUrl, selectedLabel) {
 		}
 
 	} 
-	
+		//console.log(queryLogicMap);
+
 	updateAndNotifyFocus(key);	
 
 	if(queryVerbalizator == null)
@@ -119,7 +119,6 @@ MapCreator.prototype.selectedConcept = function(selectedUrl, selectedLabel) {
 		queryBuilder = new QueryBuilder;
 	queryBuilder.updateQuery(rootQueryLogicMap, queryLogicMap);
 
-	//console.log(queryLogicMap);
 }
 
 /*
@@ -805,7 +804,6 @@ MapCreator.prototype.selectedOperator = function(pendingQuery){
 			}
 
 			updateAndNotifyFocus(conjunctionKey);
-console.log(queryLogicMap);
 			break;
 	}
 

@@ -755,12 +755,30 @@ function showUserQueryBox(){
 	$("#sparqlVsNl .focusable").click(function(e){
 		e.stopPropagation();
 		$("#sparqlVsNl .highlighted").removeClass("highlighted");
-		$(this).addClass("highlighted");
 
-		//highlight sparql query
-		$("#modalSparql .SPARQLhighlighted").removeClass("SPARQLhighlighted");
-		$("#modalSparql span[meta-relatedto~='"+$(this).attr("meta-focusReference")+"']").addClass("SPARQLhighlighted");
-	});
+		var onFocusNode = mapCreator.getNodeByKey(decodeURIComponent($(this).attr("id")));
+
+		if(onFocusNode.type == 'operator' && (onFocusNode.label == 'and' || onFocusNode.label == 'or' ||onFocusNode.label == 'xor' )){
+			var siblings = mapCreator.getNodeByKey(onFocusNode.parent).children;
+
+			for(var i = 1; i < siblings.length; i = i+2){
+				document.querySelector('#sparqlVsNl #'+encodeURIComponent(siblings[i])).className +=" highlighted";
+			}
+			//highlight sparql query
+			$("#modalSparql .SPARQLhighlighted").removeClass("SPARQLhighlighted");
+			
+			for(var i = 1; i < siblings.length; i = i+2){
+				$("#modalSparql span[meta-relatedto~='"+document.querySelector('#sparqlVsNl #'+encodeURIComponent(siblings[i])).getAttribute("meta-focusReference")+"']").addClass("SPARQLhighlighted");
+			}
+		}else{
+			$(this).addClass("highlighted");
+			//highlight sparql query
+			$("#modalSparql .SPARQLhighlighted").removeClass("SPARQLhighlighted");
+			$("#modalSparql span[meta-relatedto~='"+$(this).attr("meta-focusReference")+"']").addClass("SPARQLhighlighted");
+		}
+
+
+		});
 
 	$('#sparqlVsNl').modal('open');
 }
