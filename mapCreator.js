@@ -92,8 +92,8 @@ MapCreator.prototype.selectedConcept = function(selectedUrl, selectedLabel) {
 				var andKey = andOperator + "_" + andIndex;
 
 				var andLogicElement = {key: andKey, index: andIndex,
-									   url: andOperator, label: andOperator, 
-									   type:'operator', direction: false, 
+									   url: andOperator, label: languageManager.getOperatorLabelVerbalization(andOperator), 
+									   type:'operator', subtype: andOperator, direction: false, 
 									   verbalization: andVerbalization, 
 									   parent:precLogicElement.key, children: []};
 				queryLogicMap[andKey] = andLogicElement;
@@ -195,8 +195,8 @@ MapCreator.prototype.selectedPredicate = function(selectedUrl, selectedLabel, pr
 			var andKey = andOperator + "_" + andIndex;
 
 			var andLogicElement = {key: andKey, index: andIndex,
-								   url: andOperator, label: andOperator, 
-								   type:'operator', direction: false, 
+								   url: andOperator, label: languageManager.getOperatorLabelVerbalization(andOperator), 
+								   type:'operator', subtype: andOperator, direction: false, 
 								   verbalization: andVerbalization, 
 								   parent:precLogicElement.key, children: []};
 			queryLogicMap[andKey] = andLogicElement;
@@ -498,7 +498,7 @@ function cleanMyParentList(node){
 }
 
 function removeOperator(node){
-	var operator = node.label;
+	var operator = node.subtype;
 
 	switch(operator){
 		case 'is string':
@@ -521,7 +521,7 @@ function removeOperator(node){
 
 			var nodeToRemove = node;
 			var parentNode = queryLogicMap[node.parent];
-			if(parentNode.type == 'operator' && parentNode.label == 'not')
+			if(parentNode.type == 'operator' && parentNode.subtype == 'not')
 				nodeToRemove = parentNode;
 
 			removeMeAndMyDescendents(nodeToRemove);
@@ -662,8 +662,8 @@ MapCreator.prototype.selectedOperator = function(pendingQuery){
 				var andKey = andOperator + "_" + andIndex;
 
 				var andLogicElement = {key: andKey, index: andIndex,
-									   url: andOperator, label: andOperator, 
-									   type:'operator', direction: false, 
+									   url: andOperator, label: languageManager.getOperatorLabelVerbalization(andOperator), 
+									   type:'operator', subtype: andOperator, direction: false, 
 									   verbalization: andVerbalization, 
 									   parent:parentNode.key, children: []};
 				queryLogicMap[andKey] = andLogicElement;
@@ -683,8 +683,8 @@ MapCreator.prototype.selectedOperator = function(pendingQuery){
 			var key = operator + "_" + index;
 
 			var newLogicElement = {key: key, index: index,
-						   url: operator, label: operator, 
-						   type:'operator', direction: false,
+						   url: operator, label: languageManager.getOperatorLabelVerbalization(operator), 
+						   type:'operator', subtype: operator,  direction: false,
 						   verbalization: verbalization, 
 						   parent:parentNode.key, children: []};
 			queryLogicMap[key] = newLogicElement;	
@@ -749,8 +749,8 @@ MapCreator.prototype.selectedOperator = function(pendingQuery){
 			var parent = queryLogicMap[elementOnFocus].parent;
 
 			var newLogicElement = {key: key, index: index,
-						   url: operator, label: operator, 
-						   type:'operator', direction: false,
+						   url: operator, label: languageManager.getOperatorLabelVerbalization(operator), 
+						   type:'operator', subtype: operator,  direction: false,
 						   verbalization: verbalization, 
 						   parent:parent, children: [elementOnFocus]};
 			queryLogicMap[key] = newLogicElement;
@@ -790,8 +790,8 @@ MapCreator.prototype.selectedOperator = function(pendingQuery){
 				var conjunctionKey = operator + "_" + conjunctionIndex;
 
 				var conjunctionLogicElement = {key: conjunctionKey, index: conjunctionIndex,
-									   url: operator, label: operator, 
-									   type:'operator', direction: false, 
+									   url: operator, label: languageManager.getOperatorLabelVerbalization(operator), 
+									   type:'operator', subtype: operator, direction: false, 
 									   verbalization: conjunctionVerbalization, 
 									   parent:elementOnFocusNode.parent, children: []};
 				queryLogicMap[conjunctionKey] = conjunctionLogicElement;
