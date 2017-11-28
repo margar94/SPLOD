@@ -78,27 +78,32 @@ MapCreator.prototype.selectedConcept = function(selectedUrl, selectedLabel) {
 		}else{ // concept refining parent node
 
 			if(precLogicElement.children.length>0){
-				var andOperator = 'and';
-				var andVerbalization = languageManager.verbalizeOperator(andOperator);
+				var operator;
+				if(precLogicElement.children.length>1)//new operator has to be the same type of operator
+					operator = queryLogicMap[precLogicElement.children[1]].subtype;
+				else//default conjunction
+					operator = 'and';
+				 
+				var newOperatorVerbalization = languageManager.verbalizeOperator(operator);
 
-				if(!(andOperator in indexMap)){
-					indexMap[andOperator] = 1;
+				if(!(operator in indexMap)){
+					indexMap[operator] = 1;
 				}
 				else{
-					indexMap[andOperator] += 1;
+					indexMap[operator] += 1;
 				}
 
-				var andIndex = indexMap[andOperator];
-				var andKey = andOperator + "_" + andIndex;
+				var newOperatorIndex = indexMap[operator];
+				var newOperatorKey = operator + "_" + newOperatorIndex;
 
-				var andLogicElement = {key: andKey, index: andIndex,
-									   url: andOperator, label: languageManager.getOperatorLabelVerbalization(andOperator), 
-									   type:'operator', subtype: andOperator, direction: false, 
-									   verbalization: andVerbalization, 
+				var newOperatorLogicElement = {key: newOperatorKey, index: newOperatorIndex,
+									   url: operator, label: languageManager.getOperatorLabelVerbalization(operator), 
+									   type:'operator', subtype: operator, direction: false, 
+									   verbalization: newOperatorVerbalization, 
 									   parent:precLogicElement.key, children: []};
-				queryLogicMap[andKey] = andLogicElement;
+				queryLogicMap[newOperatorKey] = newOperatorLogicElement;
 
-				precLogicElement.children.push(andKey);
+				precLogicElement.children.push(newOperatorKey);
 			}
 
 			newLogicElement.parent = precLogicElement.key;
@@ -118,7 +123,6 @@ MapCreator.prototype.selectedConcept = function(selectedUrl, selectedLabel) {
 	if(queryBuilder == null)
 		queryBuilder = new QueryBuilder;
 	queryBuilder.updateQuery(rootQueryLogicMap, queryLogicMap);
-
 }
 
 /*
@@ -181,27 +185,32 @@ MapCreator.prototype.selectedPredicate = function(selectedUrl, selectedLabel, pr
 
 		//if i have sibling i put and before me
 		if(precLogicElement.children.length>0){
-			var andOperator = 'and';
-			var andVerbalization = languageManager.verbalizeOperator(andOperator);
+			var operator;
+			if(precLogicElement.children.length>1)//new operator has to be the same type of operator
+				operator = queryLogicMap[precLogicElement.children[1]].subtype;
+			else//default conjunction
+				operator = 'and';
+			 
+			var newOperatorVerbalization = languageManager.verbalizeOperator(operator);
 
-			if(!(andOperator in indexMap)){
-				indexMap[andOperator] = 1;
+			if(!(operator in indexMap)){
+				indexMap[operator] = 1;
 			}
 			else{
-				indexMap[andOperator] += 1;
+				indexMap[operator] += 1;
 			}
 
-			var andIndex = indexMap[andOperator];
-			var andKey = andOperator + "_" + andIndex;
+			var newOperatorIndex = indexMap[operator];
+			var newOperatorKey = operator + "_" + newOperatorIndex;
 
-			var andLogicElement = {key: andKey, index: andIndex,
-								   url: andOperator, label: languageManager.getOperatorLabelVerbalization(andOperator), 
-								   type:'operator', subtype: andOperator, direction: false, 
-								   verbalization: andVerbalization, 
+			var newOperatorLogicElement = {key: newOperatorKey, index: newOperatorIndex,
+								   url: operator, label: languageManager.getOperatorLabelVerbalization(operator), 
+								   type:'operator', subtype: operator, direction: false, 
+								   verbalization: newOperatorVerbalization, 
 								   parent:precLogicElement.key, children: []};
-			queryLogicMap[andKey] = andLogicElement;
+			queryLogicMap[newOperatorKey] = newOperatorLogicElement;
 
-			precLogicElement.children.push(andKey);
+			precLogicElement.children.push(newOperatorKey);
 		}
 
 		// add me to parent's children list
@@ -258,54 +267,256 @@ MapCreator.prototype.selectedPredicate = function(selectedUrl, selectedLabel, pr
 	//console.log(queryLogicMap);
 }
 
-//update focus and notify operatorManager when USER change focus
-MapCreator.prototype.changeFocus = function(newElementOnFocus){
-	elementOnFocus = newElementOnFocus;
+//pendingQuery : array of elements to add to map
+MapCreator.prototype.selectedOperator = function(pendingQuery){
+	var resultsKey = [];
+	var operator = pendingQuery[0].value;
 
-	if(operatorManager == null)
-		operatorManager = new OperatorManager;
-	operatorManager.changedFocus(elementOnFocus, true);
-}
+	switch(operator){
+		case 'is string':
+		case 'is url':
+		case 'is date':
+		case 'starts with':
+		case 'ends with':
+		case 'contains':
+		case 'lang':
+		case '<':
+		case '<=':
+		case '>':
+		case '>=':
+		case '=':
+		case 'before':
+		case 'after':
 
-MapCreator.prototype.getNodeByKey = function(key){
-	return queryLogicMap[key];
-}
+		case 'range date':
+		case 'range':
 
-MapCreator.prototype.isRefinement = function(key){
-	var node = queryLogicMap[key];
-	if(node.parent == null)
-		return false;
+			var parentNode = queryLogicMap[elementOnFocus];
+			if(parentNode.type == 'predicate' && parentNode.direction == 'reverse' && queryLogicMap[parentNode.parent].type == 'everything')
+				parentNode = queryLogicMap[parentNode.parent];
 
-	var parent = queryLogicMap[node.parent];
+			if(parentNode.children.length>0){
+				var operator;
+				if(precLogicElement.children.length>1)//new operator has to be the same type of operator
+					operator = queryLogicMap[precLogicElement.children[1]].subtype;
+				else//default conjunction
+					operator = 'and';
+				 
+				var newOperatorVerbalization = languageManager.verbalizeOperator(operator);
 
-	if(node.type == 'concept' && (parent.type == 'concept' || parent.type == 'everything' || (parent.type == 'predicate' && parent.direction == 'direct'))){
-		return true;
+				if(!(operator in indexMap)){
+					indexMap[operator] = 1;
+				}
+				else{
+					indexMap[operator] += 1;
+				}
+
+				var newOperatorIndex = indexMap[operator];
+				var newOperatorKey = operator + "_" + newOperatorIndex;
+
+				var newOperatorLogicElement = {key: newOperatorKey, index: newOperatorIndex,
+									   url: operator, label: languageManager.getOperatorLabelVerbalization(operator), 
+									   type:'operator', subtype: operator, direction: false, 
+									   verbalization: newOperatorVerbalization, 
+									   parent:precLogicElement.key, children: []};
+				queryLogicMap[newOperatorKey] = newOperatorLogicElement;
+
+				precLogicElement.children.push(newOperatorKey);			
+			}
+
+			var verbalization = languageManager.verbalizeOperator(operator);
+
+			if(!(operator in indexMap)){
+				indexMap[operator] = 1;
+			}
+			else{
+				indexMap[operator] += 1;
+			}
+			var index = indexMap[operator];
+			var key = operator + "_" + index;
+
+			var newLogicElement = {key: key, index: index,
+						   url: operator, label: languageManager.getOperatorLabelVerbalization(operator), 
+						   type:'operator', subtype: operator,  direction: false,
+						   verbalization: verbalization, 
+						   parent:parentNode.key, children: []};
+			queryLogicMap[key] = newLogicElement;	
+
+			parentNode.children.push(key);				
+
+			var resultOnFocus;
+			for(var i=1; i<pendingQuery.length; i++){
+				var resultValue = pendingQuery[i].value;
+				var resultDatatype = pendingQuery[i].datatype;
+				var resultLang = pendingQuery[i].lang;
+				var verbalizationChildren = languageManager.verbalizeResult(resultValue);
+
+				if(!(resultValue in indexMap)){
+					indexMap[resultValue] = 1;
+				}
+				else{
+					indexMap[resultValue] += 1;
+				}
+
+				var indexChildren = indexMap[resultValue];
+				var keyChildren = resultValue + "_" + indexChildren;
+
+				var newLogicChildren = {key: keyChildren, index: indexChildren,
+							   url: resultValue, label: resultValue, 
+							   type:'result', direction: false,
+							   verbalization: verbalizationChildren, 
+							   parent:key, children: [], datatype: resultDatatype,
+							   lang: resultLang,
+							   relatedTo: elementOnFocus};
+
+				if(queryViewer == null)
+					queryViewer = new QueryViewer();
+				newLogicChildren.cachedQuery = queryViewer.getCachedQuery();
+				queryLogicMap[keyChildren] = newLogicChildren;
+
+				newLogicElement.children.push(keyChildren);
+
+				resultOnFocus = keyChildren;
+
+				//keys to return 
+				resultsKey.push(keyChildren);
+			}	
+			updateAndNotifyFocus(resultOnFocus);
+			break;
+
+		case 'not':
+		case 'optional':
+
+			var verbalization = languageManager.verbalizeOperator(operator);
+
+			if(!(operator in indexMap)){
+				indexMap[operator] = 1;
+			}
+			else{
+				indexMap[operator] += 1;
+			}
+
+			var index = indexMap[operator];
+			var key = operator + "_" + index;
+
+			var parent = queryLogicMap[elementOnFocus].parent;
+
+			var newLogicElement = {key: key, index: index,
+						   url: operator, label: languageManager.getOperatorLabelVerbalization(operator), 
+						   type:'operator', subtype: operator,  direction: false,
+						   verbalization: verbalization, 
+						   parent:parent, children: [elementOnFocus]};
+			queryLogicMap[key] = newLogicElement;
+
+			var index = $.inArray(elementOnFocus, queryLogicMap[parent].children);
+			queryLogicMap[parent].children[index] = key;
+
+			queryLogicMap[elementOnFocus].parent = key;
+
+			updateAndNotifyFocus(key);
+
+			break;
+
+		case 'and': 
+		case 'or': 
+		case 'xor':
+
+			var elementOnFocusNode = queryLogicMap[elementOnFocus];
+			var elementOnFocusOperatorSiblings = [];
+			var elementOnFocusAllSiblings = queryLogicMap[elementOnFocusNode.parent].children;
+			for(var i = 1; i < elementOnFocusAllSiblings.length; i = i+2){
+				elementOnFocusOperatorSiblings.push(elementOnFocusAllSiblings[i]);
+			}
+			
+			var conjunctionVerbalization = languageManager.verbalizeOperator(operator);
+
+			for(var i = 0; i<elementOnFocusOperatorSiblings.length; i++){
+
+				if(!(operator in indexMap)){
+					indexMap[operator] = 1;
+				}
+				else{
+					indexMap[operator] += 1;
+				}
+
+				var conjunctionIndex = indexMap[operator];
+				var conjunctionKey = operator + "_" + conjunctionIndex;
+
+				var conjunctionLogicElement = {key: conjunctionKey, index: conjunctionIndex,
+									   url: operator, label: languageManager.getOperatorLabelVerbalization(operator), 
+									   type:'operator', subtype: operator, direction: false, 
+									   verbalization: conjunctionVerbalization, 
+									   parent:elementOnFocusNode.parent, children: []};
+				queryLogicMap[conjunctionKey] = conjunctionLogicElement;
+
+				var index = $.inArray(elementOnFocusOperatorSiblings[i], queryLogicMap[elementOnFocusNode.parent].children);
+				queryLogicMap[elementOnFocusNode.parent].children[index] = conjunctionKey;
+			
+				decreaseIndexIfIAmLast(queryLogicMap[elementOnFocusOperatorSiblings[i]]);
+				delete queryLogicMap[elementOnFocusOperatorSiblings[i]];
+			}
+
+			updateAndNotifyFocus(conjunctionKey);
+			break;
 	}
 
-	return false;
+	//console.log(queryLogicMap);
+
+	if(queryVerbalizator == null)
+		queryVerbalizator = new QueryVerbalizator;
+	queryVerbalizator.updateQuery(rootQueryLogicMap, queryLogicMap, elementOnFocus);
+	
+	if(queryBuilder == null)
+		queryBuilder = new QueryBuilder;
+	queryBuilder.updateQuery(rootQueryLogicMap, queryLogicMap);
+
+	return resultsKey;
 }
 
-MapCreator.prototype.getTopElement = function(key){
-	var node = queryLogicMap[key];
-	var parent = queryLogicMap[node.parent];
+MapCreator.prototype.selectedResult = function(result){
+	var elementOnFocusNode = queryLogicMap[elementOnFocus];
 
-	while(node.type == 'concept' && (parent != undefined && (parent.type == 'concept' || (parent.type == 'predicate' && parent.direction == 'direct')))){
-		node = parent;
-		parent = queryLogicMap[node.parent];
+	var verbalization = languageManager.verbalizeResult(result.value);
+
+	if(!(result.value in indexMap)){
+		indexMap[result.value] = 1;
+	}
+	else{
+		indexMap[result.value] += 1;
 	}
 
-	return node.key;
-}
+	var index = indexMap[result.value];
+	var key = result.value + "_" + index;
 
-function updateAndNotifyFocus(key){
-	elementOnFocus = key;
+	var newLogicElement = {key: key, index: index,
+				   url: result.value, label: result.value, 
+				   type:'result', direction: false,
+				   verbalization: verbalization, 
+				   parent:elementOnFocusNode.parent, children: [], 
+				   datatype: result.datatype, lang: result.lang,
+				   relatedTo: elementOnFocusNode.relatedTo,
+				   cachedQuery: elementOnFocusNode.cachedQuery};
 
-	if(elementOnFocus==null) 
-		initializeMap();
+	queryLogicMap[key] = newLogicElement;
 
-	if(operatorManager == null)
-		operatorManager = new OperatorManager;
-	operatorManager.changedFocus(elementOnFocus, false);
+	var indexInParent = $.inArray(elementOnFocus, queryLogicMap[elementOnFocusNode.parent].children);
+	queryLogicMap[elementOnFocusNode.parent].children[indexInParent] = key;
+		
+	removeMeAndMyDescendents(elementOnFocusNode);
+
+	updateAndNotifyFocus(key);
+
+	//console.log(queryLogicMap);
+
+	if(queryVerbalizator == null)
+		queryVerbalizator = new QueryVerbalizator;
+	queryVerbalizator.updateQuery(rootQueryLogicMap, queryLogicMap, elementOnFocus);
+
+	if(queryBuilder == null)
+		queryBuilder = new QueryBuilder;
+	queryBuilder.updateQuery(rootQueryLogicMap, queryLogicMap);
+
+	return key;
 }
 
 // remove element in map
@@ -394,8 +605,112 @@ MapCreator.prototype.removeElement = function(key){
 	
 	if(queryBuilder == null)
 		queryBuilder = new QueryBuilder;
-	queryBuilder.updateQuery(rootQueryLogicMap, queryLogicMap);
+	queryBuilder.updateQuery(rootQueryLogicMap, queryLogicMap);	
+}
+
+//update focus and notify operatorManager when USER change focus
+MapCreator.prototype.changeFocus = function(newElementOnFocus){
+	elementOnFocus = newElementOnFocus;
+
+	if(operatorManager == null)
+		operatorManager = new OperatorManager;
+	operatorManager.changedFocus(elementOnFocus, true);
+}
+
+MapCreator.prototype.changeResultLimit = function(resultLimitValue){
+	resultLimit = resultLimitValue;
+
+	/*if(operatorManager == null)
+		operatorManager = new OperatorManager;
+	operatorManager.changedFocus(elementOnFocus, false);
+
+	if(queryVerbalizator == null)
+		queryVerbalizator = new QueryVerbalizator;
+	queryVerbalizator.updateQuery(rootQueryLogicMap, queryLogicMap, elementOnFocus);*/
 	
+	if(queryBuilder == null)
+		queryBuilder = new QueryBuilder;
+	queryBuilder.updateQuery(rootQueryLogicMap, queryLogicMap);
+}
+
+MapCreator.prototype.langChanged = function(){
+	for(key in queryLogicMap){
+		var element = queryLogicMap[key];
+		switch(element.type){
+			case 'predicate':
+				element.verbalization = languageManager.verbalizePredicate(element.label, element.direction);
+				break;
+			case 'concept':
+			case 'operator':
+			case 'result':
+			case 'everything':
+			case 'something':
+				var tempType = element.type.charAt(0).toUpperCase() + element.type.slice(1);
+				element.verbalization = eval('languageManager.verbalize'+tempType)(element.label);
+				break;
+		}		
+	}
+
+	updateAndNotifyFocus(elementOnFocus);
+
+	if(queryVerbalizator == null)
+		queryVerbalizator = new QueryVerbalizator;
+	queryVerbalizator.updateQuery(rootQueryLogicMap, queryLogicMap, elementOnFocus);
+	
+	if(queryBuilder == null)
+		queryBuilder = new QueryBuilder;
+	queryBuilder.updateQuery(rootQueryLogicMap, queryLogicMap);
+}
+
+MapCreator.prototype.getNodeByKey = function(key){
+	return queryLogicMap[key];
+}
+
+MapCreator.prototype.isRefinement = function(key){
+	var node = queryLogicMap[key];
+	if(node.parent == null)
+		return false;
+
+	var parent = queryLogicMap[node.parent];
+
+	if(node.type == 'concept' && (parent.type == 'concept' || parent.type == 'everything' || (parent.type == 'predicate' && parent.direction == 'direct'))){
+		return true;
+	}
+
+	return false;
+}
+
+MapCreator.prototype.getTopElement = function(key){
+	var node = queryLogicMap[key];
+	var parent = queryLogicMap[node.parent];
+
+	while(node.type == 'concept' && (parent != undefined && (parent.type == 'concept' || (parent.type == 'predicate' && parent.direction == 'direct')))){
+		node = parent;
+		parent = queryLogicMap[node.parent];
+	}
+
+	return node.key;
+}
+
+function initializeMap(){
+	queryLogicMap = {};
+ 	rootQueryLogicMap = null;
+	indexMap = {};
+
+	if(tableResultManager == null)
+		tableResultManager = new TableResultManager;
+	tableResultManager.resetTable();
+}
+//update focus and notify operatorManager when focus changes because of map updates
+function updateAndNotifyFocus(key){
+	elementOnFocus = key;
+
+	if(elementOnFocus==null) 
+		initializeMap();
+
+	if(operatorManager == null)
+		operatorManager = new OperatorManager;
+	operatorManager.changedFocus(elementOnFocus, false);
 }
 
 function iReplaceASomethingNode(key){
@@ -617,314 +932,7 @@ function removeOperator(node){
 	//console.log(queryLogicMap);
 }
 
-//pendingQuery : array of elements to add to map
-MapCreator.prototype.selectedOperator = function(pendingQuery){
-
-	//console.log(pendingQuery);
-	var resultsKey = [];
-	var operator = pendingQuery[0].value;
-
-	switch(operator){
-		case 'is string':
-		case 'is url':
-		case 'is date':
-		case 'starts with':
-		case 'ends with':
-		case 'contains':
-		case 'lang':
-		case '<':
-		case '<=':
-		case '>':
-		case '>=':
-		case '=':
-		case 'before':
-		case 'after':
-
-		case 'range date':
-		case 'range':
-
-			var parentNode = queryLogicMap[elementOnFocus];
-			if(parentNode.type == 'predicate' && parentNode.direction == 'reverse' && queryLogicMap[parentNode.parent].type == 'everything')
-				parentNode = queryLogicMap[parentNode.parent];
-
-			if(parentNode.children.length>0){
-				var andOperator = 'and';
-				var andVerbalization = languageManager.verbalizeOperator(andOperator);
-
-				if(!(andOperator in indexMap)){
-					indexMap[andOperator] = 1;
-				}
-				else{
-					indexMap[andOperator] += 1;
-				}
-
-				var andIndex = indexMap[andOperator];
-				var andKey = andOperator + "_" + andIndex;
-
-				var andLogicElement = {key: andKey, index: andIndex,
-									   url: andOperator, label: languageManager.getOperatorLabelVerbalization(andOperator), 
-									   type:'operator', subtype: andOperator, direction: false, 
-									   verbalization: andVerbalization, 
-									   parent:parentNode.key, children: []};
-				queryLogicMap[andKey] = andLogicElement;
-
-				parentNode.children.push(andKey);
-			}
-
-			var verbalization = languageManager.verbalizeOperator(operator);
-
-			if(!(operator in indexMap)){
-				indexMap[operator] = 1;
-			}
-			else{
-				indexMap[operator] += 1;
-			}
-			var index = indexMap[operator];
-			var key = operator + "_" + index;
-
-			var newLogicElement = {key: key, index: index,
-						   url: operator, label: languageManager.getOperatorLabelVerbalization(operator), 
-						   type:'operator', subtype: operator,  direction: false,
-						   verbalization: verbalization, 
-						   parent:parentNode.key, children: []};
-			queryLogicMap[key] = newLogicElement;	
-
-			parentNode.children.push(key);				
-
-			var resultOnFocus;
-			for(var i=1; i<pendingQuery.length; i++){
-				var resultValue = pendingQuery[i].value;
-				var resultDatatype = pendingQuery[i].datatype;
-				var resultLang = pendingQuery[i].lang;
-				var verbalizationChildren = languageManager.verbalizeResult(resultValue);
-
-				if(!(resultValue in indexMap)){
-					indexMap[resultValue] = 1;
-				}
-				else{
-					indexMap[resultValue] += 1;
-				}
-
-				var indexChildren = indexMap[resultValue];
-				var keyChildren = resultValue + "_" + indexChildren;
-
-				var newLogicChildren = {key: keyChildren, index: indexChildren,
-							   url: resultValue, label: resultValue, 
-							   type:'result', direction: false,
-							   verbalization: verbalizationChildren, 
-							   parent:key, children: [], datatype: resultDatatype,
-							   lang: resultLang,
-							   relatedTo: elementOnFocus};
-
-				if(queryViewer == null)
-					queryViewer = new QueryViewer();
-				newLogicChildren.cachedQuery = queryViewer.getCachedQuery();
-				queryLogicMap[keyChildren] = newLogicChildren;
-
-				newLogicElement.children.push(keyChildren);
-
-				resultOnFocus = keyChildren;
-
-				//keys to return 
-				resultsKey.push(keyChildren);
-			}	
-			updateAndNotifyFocus(resultOnFocus);
-			break;
-
-		case 'not':
-		case 'optional':
-
-			var verbalization = languageManager.verbalizeOperator(operator);
-
-			if(!(operator in indexMap)){
-				indexMap[operator] = 1;
-			}
-			else{
-				indexMap[operator] += 1;
-			}
-
-			var index = indexMap[operator];
-			var key = operator + "_" + index;
-
-			var parent = queryLogicMap[elementOnFocus].parent;
-
-			var newLogicElement = {key: key, index: index,
-						   url: operator, label: languageManager.getOperatorLabelVerbalization(operator), 
-						   type:'operator', subtype: operator,  direction: false,
-						   verbalization: verbalization, 
-						   parent:parent, children: [elementOnFocus]};
-			queryLogicMap[key] = newLogicElement;
-
-			var index = $.inArray(elementOnFocus, queryLogicMap[parent].children);
-			queryLogicMap[parent].children[index] = key;
-
-			queryLogicMap[elementOnFocus].parent = key;
-
-			updateAndNotifyFocus(key);
-
-			break;
-
-		case 'and': //focus su or
-		case 'or': //focus su and
-		case 'xor':
-
-			var elementOnFocusNode = queryLogicMap[elementOnFocus];
-			var elementOnFocusOperatorSiblings = [];
-			var elementOnFocusAllSiblings = queryLogicMap[elementOnFocusNode.parent].children;
-			for(var i = 1; i < elementOnFocusAllSiblings.length; i = i+2){
-				elementOnFocusOperatorSiblings.push(elementOnFocusAllSiblings[i]);
-			}
-			
-			var conjunctionVerbalization = languageManager.verbalizeOperator(operator);
-
-			for(var i = 0; i<elementOnFocusOperatorSiblings.length; i++){
-
-				if(!(operator in indexMap)){
-					indexMap[operator] = 1;
-				}
-				else{
-					indexMap[operator] += 1;
-				}
-
-				var conjunctionIndex = indexMap[operator];
-				var conjunctionKey = operator + "_" + conjunctionIndex;
-
-				var conjunctionLogicElement = {key: conjunctionKey, index: conjunctionIndex,
-									   url: operator, label: languageManager.getOperatorLabelVerbalization(operator), 
-									   type:'operator', subtype: operator, direction: false, 
-									   verbalization: conjunctionVerbalization, 
-									   parent:elementOnFocusNode.parent, children: []};
-				queryLogicMap[conjunctionKey] = conjunctionLogicElement;
-
-				var index = $.inArray(elementOnFocusOperatorSiblings[i], queryLogicMap[elementOnFocusNode.parent].children);
-				queryLogicMap[elementOnFocusNode.parent].children[index] = conjunctionKey;
-			
-				decreaseIndexIfIAmLast(queryLogicMap[elementOnFocusOperatorSiblings[i]]);
-				delete queryLogicMap[elementOnFocusOperatorSiblings[i]];
-			}
-
-			updateAndNotifyFocus(conjunctionKey);
-			break;
-	}
-
-	//console.log(queryLogicMap);
-
-	if(queryVerbalizator == null)
-		queryVerbalizator = new QueryVerbalizator;
-	queryVerbalizator.updateQuery(rootQueryLogicMap, queryLogicMap, elementOnFocus);
-	
-	if(queryBuilder == null)
-		queryBuilder = new QueryBuilder;
-	queryBuilder.updateQuery(rootQueryLogicMap, queryLogicMap);
-
-	return resultsKey;
-}
-
-MapCreator.prototype.changeResultLimit = function(resultLimitValue){
-	resultLimit = resultLimitValue;
-
-	/*if(operatorManager == null)
-		operatorManager = new OperatorManager;
-	operatorManager.changedFocus(elementOnFocus, false);
-
-	if(queryVerbalizator == null)
-		queryVerbalizator = new QueryVerbalizator;
-	queryVerbalizator.updateQuery(rootQueryLogicMap, queryLogicMap, elementOnFocus);*/
-	
-	if(queryBuilder == null)
-		queryBuilder = new QueryBuilder;
-	queryBuilder.updateQuery(rootQueryLogicMap, queryLogicMap);
-}
-
-MapCreator.prototype.selectedResult = function(result){
-	var elementOnFocusNode = queryLogicMap[elementOnFocus];
-
-	var verbalization = languageManager.verbalizeResult(result.value);
-
-	if(!(result.value in indexMap)){
-		indexMap[result.value] = 1;
-	}
-	else{
-		indexMap[result.value] += 1;
-	}
-
-	var index = indexMap[result.value];
-	var key = result.value + "_" + index;
-
-	var newLogicElement = {key: key, index: index,
-				   url: result.value, label: result.value, 
-				   type:'result', direction: false,
-				   verbalization: verbalization, 
-				   parent:elementOnFocusNode.parent, children: [], 
-				   datatype: result.datatype, lang: result.lang,
-				   relatedTo: elementOnFocusNode.relatedTo,
-				   cachedQuery: elementOnFocusNode.cachedQuery};
-
-	queryLogicMap[key] = newLogicElement;
-
-	var indexInParent = $.inArray(elementOnFocus, queryLogicMap[elementOnFocusNode.parent].children);
-	queryLogicMap[elementOnFocusNode.parent].children[indexInParent] = key;
-		
-	removeMeAndMyDescendents(elementOnFocusNode);
-
-	updateAndNotifyFocus(key);
-
-	//console.log(queryLogicMap);
-
-	if(queryVerbalizator == null)
-		queryVerbalizator = new QueryVerbalizator;
-	queryVerbalizator.updateQuery(rootQueryLogicMap, queryLogicMap, elementOnFocus);
-
-	if(queryBuilder == null)
-		queryBuilder = new QueryBuilder;
-	queryBuilder.updateQuery(rootQueryLogicMap, queryLogicMap);
-
-	return key;
-}
-
-function initializeMap(){
-	queryLogicMap = {};
- 	rootQueryLogicMap = null;
-	indexMap = {};
-
-	if(tableResultManager == null)
-		tableResultManager = new TableResultManager;
-	tableResultManager.resetTable();
-}
-
 function decreaseIndexIfIAmLast(node){
 	if(node.index == indexMap[node.url])
 		indexMap[node.url] = indexMap[node.url]-1;
-}
-
-MapCreator.prototype.langChanged = function(){
-	for(key in queryLogicMap){
-		var element = queryLogicMap[key];
-		switch(element.type){
-			case 'predicate':
-				element.verbalization = languageManager.verbalizePredicate(element.label, element.direction);
-				break;
-			case 'concept':
-			case 'operator':
-			case 'result':
-			case 'everything':
-			case 'something':
-				var tempType = element.type.charAt(0).toUpperCase() + element.type.slice(1);
-				element.verbalization = eval('languageManager.verbalize'+tempType)(element.label);
-				break;
-		}
-		
-		
-	}
-
-	updateAndNotifyFocus(elementOnFocus);
-
-	if(queryVerbalizator == null)
-		queryVerbalizator = new QueryVerbalizator;
-	queryVerbalizator.updateQuery(rootQueryLogicMap, queryLogicMap, elementOnFocus);
-	
-	if(queryBuilder == null)
-		queryBuilder = new QueryBuilder;
-	queryBuilder.updateQuery(rootQueryLogicMap, queryLogicMap);
-
 }
