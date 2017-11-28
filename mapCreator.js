@@ -770,33 +770,42 @@ MapCreator.prototype.selectedOperator = function(pendingQuery){
 		case 'xor':
 
 			var elementOnFocusNode = queryLogicMap[elementOnFocus];
+			var elementOnFocusOperatorSiblings = [];
+			var elementOnFocusAllSiblings = queryLogicMap[elementOnFocusNode.parent].children;
+			for(var i = 1; i < elementOnFocusAllSiblings.length; i = i+2){
+				elementOnFocusOperatorSiblings.push(elementOnFocusAllSiblings[i]);
+			}
+			
 			var conjunctionVerbalization = languageManager.verbalizeOperator(operator);
 
-			if(!(operator in indexMap)){
-				indexMap[operator] = 1;
-			}
-			else{
-				indexMap[operator] += 1;
-			}
+			for(var i = 0; i<elementOnFocusOperatorSiblings.length; i++){
 
-			var conjunctionIndex = indexMap[operator];
-			var conjunctionKey = operator + "_" + conjunctionIndex;
+				if(!(operator in indexMap)){
+					indexMap[operator] = 1;
+				}
+				else{
+					indexMap[operator] += 1;
+				}
 
-			var conjunctionLogicElement = {key: conjunctionKey, index: conjunctionIndex,
-								   url: operator, label: operator, 
-								   type:'operator', direction: false, 
-								   verbalization: conjunctionVerbalization, 
-								   parent:elementOnFocusNode.parent, children: []};
-			queryLogicMap[conjunctionKey] = conjunctionLogicElement;
+				var conjunctionIndex = indexMap[operator];
+				var conjunctionKey = operator + "_" + conjunctionIndex;
 
-			var index = $.inArray(elementOnFocus, queryLogicMap[elementOnFocusNode.parent].children);
-			queryLogicMap[elementOnFocusNode.parent].children[index] = conjunctionKey;
+				var conjunctionLogicElement = {key: conjunctionKey, index: conjunctionIndex,
+									   url: operator, label: operator, 
+									   type:'operator', direction: false, 
+									   verbalization: conjunctionVerbalization, 
+									   parent:elementOnFocusNode.parent, children: []};
+				queryLogicMap[conjunctionKey] = conjunctionLogicElement;
+
+				var index = $.inArray(elementOnFocusOperatorSiblings[i], queryLogicMap[elementOnFocusNode.parent].children);
+				queryLogicMap[elementOnFocusNode.parent].children[index] = conjunctionKey;
 			
-			decreaseIndexIfIAmLast(queryLogicMap[elementOnFocus]);
-			delete queryLogicMap[elementOnFocus];
+				decreaseIndexIfIAmLast(queryLogicMap[elementOnFocusOperatorSiblings[i]]);
+				delete queryLogicMap[elementOnFocusOperatorSiblings[i]];
+			}
 
 			updateAndNotifyFocus(conjunctionKey);
-
+console.log(queryLogicMap);
 			break;
 	}
 

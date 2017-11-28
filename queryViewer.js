@@ -595,13 +595,25 @@ function renderFocus(){
 	}
 
 	//onfocus != null
-	document.getElementById(encodeURIComponent(onFocus)).className +=" highlighted";
+	var onFocusNode = mapCreator.getNodeByKey(onFocus);
 
-	//it"s a node of the map
-	//focus text
-	var number = queryLogicStructure[onFocus].index; 
-	var focusLabel = languageManager.getOrdinalNumber(number) + ' ' + queryLogicStructure[onFocus].verbalization.focus.join(' ');
-	$("#focus").html(" <span class='" + mapCreator.getNodeByKey(onFocus).type+"'>" + focusLabel + "</span>");
+	if(onFocusNode.type == 'operator' && (onFocusNode.label == 'and' || onFocusNode.label == 'or' ||onFocusNode.label == 'xor' )){
+		var siblings = mapCreator.getNodeByKey(onFocusNode.parent).children;
+
+		for(var i = 1; i < siblings.length; i = i+2){
+			document.getElementById(encodeURIComponent(siblings[i])).className +=" highlighted";
+		}
+		
+		var focusLabel = queryLogicStructure[onFocus].verbalization.focus.join(' ');
+		$("#focus").html(" <span class='" + mapCreator.getNodeByKey(onFocus).type+"'>" + focusLabel + "</span>");
+	}else{
+		document.getElementById(encodeURIComponent(onFocus)).className +=" highlighted";
+		//it"s a node of the map
+		//focus text
+		var number = queryLogicStructure[onFocus].index; 
+		var focusLabel = languageManager.getOrdinalNumber(number) + ' ' + queryLogicStructure[onFocus].verbalization.focus.join(' ');
+		$("#focus").html(" <span class='" + mapCreator.getNodeByKey(onFocus).type+"'>" + focusLabel + "</span>");
+	}
 
 	if(document.getElementById(encodeURIComponent(onFocus)).getAttribute('meta-removeReference') == undefined){
 		$('#removeButtonA').addClass('disabled');
@@ -649,7 +661,6 @@ function attachEvents(){
 	$(".focusable:not(#limit)").click(function(e){
 		e.stopPropagation();
 		$(".highlighted").removeClass("highlighted");
-		$(this).addClass("highlighted");
 
 		//changeFocus notification
 		onFocus = decodeURIComponent($(this).attr("meta-focusReference"));
@@ -659,13 +670,27 @@ function attachEvents(){
 			$('#removeButtonA').removeClass('disabled');
 		}
 
-		var number = queryLogicStructure[onFocus].index; 
-		//console.log(queryLogicStructure[onFocus]);
-		var focusLabel = languageManager.getOrdinalNumber(number) + ' ' + queryLogicStructure[onFocus].verbalization.focus.join(' ');
-		$("#focus").html(" <span class='" + mapCreator.getNodeByKey(onFocus).type+"'>" + focusLabel + "</span>");
+		var onFocusNode = mapCreator.getNodeByKey(onFocus);
+
+		if(onFocusNode.type == 'operator' && (onFocusNode.label == 'and' || onFocusNode.label == 'or' ||onFocusNode.label == 'xor' )){
+			var siblings = mapCreator.getNodeByKey(onFocusNode.parent).children;
+
+			for(var i = 1; i < siblings.length; i = i+2){
+				document.getElementById(encodeURIComponent(siblings[i])).className +=" highlighted";
+			}
+			
+			var focusLabel = queryLogicStructure[onFocus].verbalization.focus.join(' ');
+			$("#focus").html(" <span class='" + mapCreator.getNodeByKey(onFocus).type+"'>" + focusLabel + "</span>");
+		}else{
+			document.getElementById(encodeURIComponent(onFocus)).className +=" highlighted";
+			//it"s a node of the map
+			//focus text
+			var number = queryLogicStructure[onFocus].index; 
+			var focusLabel = languageManager.getOrdinalNumber(number) + ' ' + queryLogicStructure[onFocus].verbalization.focus.join(' ');
+			$("#focus").html(" <span class='" + mapCreator.getNodeByKey(onFocus).type+"'>" + focusLabel + "</span>");
+		}
+
 		$("#operatorsSpinner").show();
-
-
 
 		mapCreator.changeFocus(onFocus);
 
