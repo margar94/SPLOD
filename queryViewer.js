@@ -707,11 +707,18 @@ function attachEvents(){
 	$("#limitInput").keydown(function(e){
 		e.stopPropagation();
 		if(e.which == 13 || e.keyCode == 13) {
+			var value = e.target.value;
+			if(value>10000){
+				value = 10000;
+				$('#limitInput').val(value);
+			}
+			
 			$('#resultsTable').hide();
 			$('#resultsPreviewBadge').hide();
 			$('#resultsSpinner').show();
 			$('#resultsProgress').show();
-	        mapCreator.changeResultLimit(e.target.value);
+
+	        mapCreator.changeResultLimit(value);
 	    }else if(!((e.keyCode > 95 && e.keyCode < 106)
 	      || (e.keyCode > 47 && e.keyCode < 58) 
 	      || e.keyCode == 8)) {
@@ -725,11 +732,18 @@ function attachEvents(){
 
 	$("#limitInput").focusout(function(e){
 		e.stopPropagation();
+
+		var value = e.target.value;
+		if(value>10000){
+			value = 10000;
+			$('#limitInput').val(value);
+		}
+
 		$('#resultsTable').hide();
 		$('#resultsPreviewBadge').hide();
 		$('#resultsSpinner').show();
 		$('#resultsProgress').show();
-		mapCreator.changeResultLimit(e.target.value);
+		mapCreator.changeResultLimit(value);
 	});
 
 	$(".barred").click(function(e){
