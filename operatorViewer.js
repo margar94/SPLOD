@@ -6,6 +6,10 @@ function initOperatorViewer(){
 	operatorManager = new OperatorManager;
 	languageManager = new LanguageManager;
 
+	$('#operatorsSpinner').hide();
+	$('#operatorsProgress').hide();
+	$('#operatorList').show();
+
 	$("#operatorsTab").addClass('disabled');
 
 }
@@ -50,17 +54,22 @@ function renderOperatorList(operators){
 			li.appendTo(operatorList)
 				.on('click', function(){
 					if(!operatorManager.selectedOperator($(this).attr('meta-value'), $(this).attr('meta-datatype'))){
-						$('#operatorsSpinner').show();
 						$("#operatorList").hide();
+						$('#operatorsSpinner').show();
 						$('#operatorsProgress').show();
 
 						var reusableResults = operatorManager.getResultToCompleteOperator();
 						renderReusableResultListFromOperator(reusableResults);
 					}
 					else{
-						$('#tableResultSpinner').show();
+						$("#operatorList").hide();
+						$('#operatorsSpinner').show();
+						$('#operatorsProgress').show();
+
 						$("#resultsTable").hide();
-						$('#tableResultsProgress').show();
+						$("#resultsPreviewBadge").hide();
+						$('#resultsSpinner').show();
+						$('#resultsProgress').show();
 					}
 				});
 				if(j == datatypeOperatorList.length-1)
@@ -103,13 +112,15 @@ function renderReusableResultListFromOperator(reusableResults){
 						values.push($('#userValue_1')[0].value);
 
 					if(operatorManager.selectedReusableResult(values, true)){
-						$('#reusableResultList').hide();
-						$('#operatorList').show();
+						//$('#reusableResultList').hide();
+						//$('#operatorList').show();
 						$('#pendingQuerySpan').empty();
 
-						$('#tableResultSpinner').show();
+						//$('#operatorsBox .card-title').hide();
 						$('#resultsTable').hide();
-						$('#tableResultsProgress').show();
+						$('#resultsPreviewBadge').hide();
+						$('#resultsSpinner').show();
+						$('#resultsProgress').show();
 
 					}else{
 						$('#rowUserValue input').val('');
@@ -121,13 +132,15 @@ function renderReusableResultListFromOperator(reusableResults){
 
 	var onClickLiFunction = function(){
 					if(operatorManager.selectedReusableResult([$(this).attr('meta-value')], false)){
-						$('#reusableResultList').hide();
-						$('#operatorList').show();
-						$('#operatorsBox .card-title').hide();
+						//$('#reusableResultList').hide();
+						//$('#operatorList').show();
 						$('#pendingQuerySpan').empty();
-						$('#tableResultSpinner').show();
+
+						//$('#operatorsBox .card-title').hide();
+						$('#resultsPreviewBadge').hide();
 						$('#resultsTable').hide();
-						$('#tableResultsProgress').show();
+						$('#resultSpinner').show();
+						$('#resultsProgress').show();
 					}else{
 						$('#rowUserValue input').val('');
 						renderPendingQuery();
@@ -147,23 +160,26 @@ function renderReusableResultListFromResult(reusableResults){
 					if($('#userValue_1')[0] != undefined)
 						values.push($('#userValue_1')[0].value);
 
-					$('#tableResultSpinner').show();
+
 					$('#resultsTable').hide();
-					$('#tableResultsProgress').show();
+					$('#resultsPreviewBadge').hide();
+					$('#resultsSpinner').show();
+					$('#resultsProgress').show();
 
 					operatorManager.changedReusableResult(values, true);
 				}
 
 
 	var onClickLiFunction = function(){
-					$('#tableResultSpinner').show();
 					$('#resultsTable').hide();
-					$('#tableResultsProgress').show();
+					$('#resultsPreviewBadge').hide();
+					$('#resultsSpinner').show();
+					$('#resultsProgress').show();
 					operatorManager.changedReusableResult([$(this).attr('meta-value')], false);
 				}
 
-	$('#operatorsBox .card-title').show();
 	$('#operatorsBox .card-title').text(languageManager.getBoxTitle('result'));
+	$('#operatorsBox .card-title').show();
 	$('#searchReusableResultCard').show();
 	//showHint(languageManager.getHintOperatorManager('reusableResult')+"<br>"+reusableResults.cachedQuery);
 	renderReusableResultList(reusableResults, onClickButtonFunction, onClickLiFunction);
@@ -335,55 +351,7 @@ function renderReusableResultList(reusableResults, onClickButtonFunction, onClic
 
 }
 
-
-function oldrenderPendingQuery(){
-	$('#pendingQuerySpan').empty();
-
-	var pendingQueryFields = operatorManager.getPendingQueryFields();
-
-	var pendingQuery = $("<span/>");
-
-	pendingQueryFields[1] = languageManager.getOperatorStandardVerbalization(pendingQueryFields[1])[0];
-
-	for(var i = 0; i<pendingQueryFields.length; i++){
-		if(pendingQueryFields[i] != ' ')
-			pendingQuery.html(pendingQuery.html()+pendingQueryFields[i]+' ');
-		else{
-			var toComplete = $("<span/>")
-				.text('_____________')
-				.attr('class', 'fieldToComplete');
-			toComplete.appendTo(pendingQuery);
-		}
-	}
-
-	pendingQuery.appendTo($('#pendingQuerySpan'));
-
-	var toHightlight = $('#pendingQuerySpan .fieldToComplete:first');
-	toHightlight.attr('class', toHightlight.attr('class') + ' active');
-
-
-	var discardButton = $('<i/>')
-		.attr('class', 'small material-icons blue-text')
-		.attr('id', 'discardButton')
-		.attr('title', languageManager.getButtonLabel('discardButton'))
-		.text('highlight_off')
-		.on('click', function(){
-			operatorManager.discardOperator();
-			console.log('tolgoo');
-			$('#pendingQuerySpan').empty();
-			$('#rowUserValue').remove();
-			$('#searchReusableResultCard').hide();
-
-			$('#operatorList').show();
-			$('#operatorsBox .card-title').hide();
-			$('#reusableResultList').hide();
-		});
-
-	discardButton.appendTo($('#pendingQuerySpan'));
-}
-
 function renderPendingQuery(){
-
 
 	$('#pendingQuerySpan').empty();
 

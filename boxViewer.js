@@ -62,10 +62,6 @@ function initBoxViewer(){
 	boxFiller = new BoxFiller();
 	mapCreator = new MapCreator();
 
-	$('#operatorsSpinner').hide();
-	$('#operatorsProgress').hide();
-	$('#operatorList').show();
-
 	hierarchyOnFlag = true;
 	$("#hierarchySpan").html('<i class="small material-icons white-text right" style="margin:0" onClick="hierarchyOff();">format_list_bulleted</i>');
 
@@ -124,15 +120,15 @@ function updateBoxesFromConcept(conceptUrl){
 	$("#searchConceptsBox").val('');
 	$("#searchPredicatesBox").val('');
 	
+	$('#conceptsListBox').hide();
 	$('#conceptsSpinner').show();
 	$('#conceptsProgress').show();
-	$('#conceptsListBox').hide();
-
+	
+	$("#directPredicatesList").hide();
+	$("#reversePredicatesList").hide();
 	$('#predicatesSpinner').show();
 	$('#directPredicatesProgress').show();
 	$('#reversePredicatesProgress').show();
-	$("#directPredicatesList").hide();
-	$("#reversePredicatesList").hide();
 
 	boxFiller.updateConceptsFromConcept(conceptUrl, conceptsLimit, renderConcept);
 	boxFiller.updatePredicatesFromConcept(conceptUrl, predicatesLimit, renderPredicates);
@@ -225,7 +221,6 @@ function renderConceptsList(roots, concepts){
 		}
 	
 	}
-
 }
 
 function renderConceptsHierarchy(roots, concepts){
@@ -344,15 +339,15 @@ function updateBoxesFromDirectPredicate(predicateUrl){
 	$("#searchConceptsBox").val('');
 	$("#searchPredicatesBox").val('');
 
+	$('#conceptsListBox').hide();
 	$('#conceptsSpinner').show();
 	$('#conceptsProgress').show();
-	$('#conceptsListBox').hide();
 
+	$("#directPredicatesList").hide();
+	$("#reversePredicatesList").hide();
 	$('#predicatesSpinner').show();
 	$('#directPredicatesProgress').show();
 	$('#reversePredicatesProgress').show();
-	$("#directPredicatesList").hide();
-	$("#reversePredicatesList").hide();
 
 	boxFiller.updateConceptsFromDirectPredicate(predicateUrl, conceptsLimit, renderConcept);
 	boxFiller.updatePredicatesFromDirectPredicate(predicateUrl, predicatesLimit, renderPredicates);
@@ -514,16 +509,16 @@ function updateBoxesFromSomething(predicateUrl){
 	$("#searchConceptsBox").val('');
 	$("#searchPredicatesBox").val('');
 
+	$('#conceptsListBox').hide();
 	$('#conceptsSpinner').show();
 	$('#conceptsProgress').show();
-	$('#conceptsListBox').hide();
 	
+	$("#directPredicatesList").hide();
+	$("#reversePredicatesList").hide();
 	$('#predicatesSpinner').show();
 	$('#directPredicatesProgress').show();
 	$('#reversePredicatesProgress').show();
-	$("#directPredicatesList").hide();
-	$("#reversePredicatesList").hide();
-
+	
 	boxFiller.updateConceptsFromSomething(predicateUrl, conceptsLimit, renderConcept);
 	boxFiller.updatePredicatesFromSomething(predicateUrl, predicatesLimit, renderPredicates);	
 }
@@ -555,12 +550,11 @@ function updateBoxesFromResult(resultUrl, resultDatatype, resultLang){
 	if($("#conceptsTab a").attr('class') != undefined && $("#conceptsTab a").attr('class').includes("active"))
 		$('ul#myTabs').tabs('select_tab', ($("#myTabs li:not(.disabled) a")[0].getAttribute('href')).substr(1));
 
-	
+	$("#directPredicatesList").hide();
+	$("#reversePredicatesList").hide();
 	$('#predicatesSpinner').show();	
 	$('#directPredicatesProgress').show();
 	$('#reversePredicatesProgress').show();
-	$("#directPredicatesList").hide();
-	$("#reversePredicatesList").hide();
 
 	boxFiller.updatePredicatesFromResult(resultUrl, resultDatatype, resultLang, predicatesLimit, renderPredicates);
 }
@@ -742,10 +736,10 @@ function fillHelp(){
 
 //delete highlighted element in natural language query
 function removeHighlightElements(keyToRemove){
-	$('#tableResultSpinner').show();
-	$('#resultsTable').hide();
-	$('#tableResultsProgress').show();
 	$('#resultsPreviewBadge').hide();
+	$('#resultsTable').hide();
+	$('#resultsSpinner').show();
+	$('#resultsProgress').show();
 
 	if(keyToRemove != 'undefined')
 		mapCreator.removeElement(keyToRemove);

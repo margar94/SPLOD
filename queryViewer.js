@@ -608,7 +608,7 @@ function renderFocus(){
 		$("#focus").html(" <span class='" + mapCreator.getNodeByKey(onFocus).type+"'>" + focusLabel + "</span>");
 	}else{
 		document.getElementById(encodeURIComponent(onFocus)).className +=" highlighted";
-		//it"s a node of the map
+		//it's a node of the map
 		//focus text
 		var number = queryLogicStructure[onFocus].index; 
 		var focusLabel = languageManager.getOrdinalNumber(number) + ' ' + queryLogicStructure[onFocus].verbalization.focus.join(' ');
@@ -621,9 +621,7 @@ function renderFocus(){
 		$('#removeButtonA').removeClass('disabled');
 	}
 
-	updateBoxes(queryLogicStructure[onFocus]);	
-
-		
+	updateBoxes(queryLogicStructure[onFocus]);		
 }
 
 function updateBoxes(focusNode){
@@ -683,7 +681,7 @@ function attachEvents(){
 			$("#focus").html(" <span class='" + mapCreator.getNodeByKey(onFocus).type+"'>" + focusLabel + "</span>");
 		}else{
 			document.getElementById(encodeURIComponent(onFocus)).className +=" highlighted";
-			//it"s a node of the map
+			//it's a node of the map
 			//focus text
 			var number = queryLogicStructure[onFocus].index; 
 			var focusLabel = languageManager.getOrdinalNumber(number) + ' ' + queryLogicStructure[onFocus].verbalization.focus.join(' ');
@@ -709,6 +707,10 @@ function attachEvents(){
 	$("#limitInput").keydown(function(e){
 		e.stopPropagation();
 		if(e.which == 13 || e.keyCode == 13) {
+			$('#resultsTable').hide();
+			$('#resultsPreviewBadge').hide();
+			$('#resultsSpinner').show();
+			$('#resultsProgress').show();
 	        mapCreator.changeResultLimit(e.target.value);
 	    }else if(!((e.keyCode > 95 && e.keyCode < 106)
 	      || (e.keyCode > 47 && e.keyCode < 58) 
@@ -723,16 +725,12 @@ function attachEvents(){
 
 	$("#limitInput").focusout(function(e){
 		e.stopPropagation();
+		$('#resultsTable').hide();
+		$('#resultsPreviewBadge').hide();
+		$('#resultsSpinner').show();
+		$('#resultsProgress').show();
 		mapCreator.changeResultLimit(e.target.value);
 	});
-
-	/*$("#limitInput").keydown(function(e){
-		e.stopPropagation();
-		if(e.which == 13 || e.keyCode == 13) {
-	        mapCreator.changeResultLimit(e.target.value);
-	    }
-		
-	});*/
 
 	$(".barred").click(function(e){
 		e.stopPropagation();

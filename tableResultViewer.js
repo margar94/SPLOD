@@ -9,10 +9,10 @@ function initTableResultViewer(){
 
 	resultsToConvert = {records:[], querySPARQL:""};
 
-	$('#tableResultSpinner').hide();
+	$('#resultsSpinner').hide();
 	$('#resultsPreviewBadge').text('0');
 	$('#resultsPreviewBadge').show();
-	$('#tableResultsProgress').hide();
+	$('#resultsProgress').hide();
 	$('#resultsTable').show();
 	$("#saveTable").addClass('disabled');
 
@@ -34,11 +34,12 @@ function initTableResultViewer(){
 function resetResultTable(){
 	$('#resultsTable').empty();
 	$('#previewTableResult').empty();
-	$('#tableResultSpinner').hide();
-	$('#resultsTable').show();
-	$('#tableResultsProgress').hide();
+	$('#resultsSpinner').hide();
+	$('#resultsProgress').hide();
 	$('#resultsPreviewBadge').text('0');
 	$('#resultsPreviewBadge').show();
+	$('#resultsTable').show();
+
 	$("#saveTable").addClass('disabled');
 }
 
@@ -235,8 +236,8 @@ function createTable(select, labelSelect, results){
 			$('.'+cachedFieldsToHide[index]).hide();
 	});
 
-	$('#tableResultSpinner').hide();
-	$('#tableResultsProgress').hide();
+	$('#resultsSpinner').hide();
+	$('#resultsProgress').hide();
 	$('#resultsTable').show();
 	
 	var resultPreviewNumber = results.length;

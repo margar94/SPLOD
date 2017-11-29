@@ -361,13 +361,17 @@ MapCreator.prototype.selectedOperator = function(pendingQuery){
 				var indexChildren = indexMap[resultValue];
 				var keyChildren = resultValue + "_" + indexChildren;
 
+				var relatedToValue = elementOnFocus;
+				if(MapCreator.prototype.isRefinement(elementOnFocus))
+					relatedToValue = MapCreator.prototype.getTopElement(elementOnFocus);
+
 				var newLogicChildren = {key: keyChildren, index: indexChildren,
 							   url: resultValue, label: resultValue, 
 							   type:'result', direction: false,
 							   verbalization: verbalizationChildren, 
 							   parent:key, children: [], datatype: resultDatatype,
 							   lang: resultLang,
-							   relatedTo: elementOnFocus};
+							   relatedTo: relatedToValue};
 
 				if(queryViewer == null)
 					queryViewer = new QueryViewer();

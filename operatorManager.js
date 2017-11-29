@@ -622,10 +622,12 @@ OperatorManager.prototype.changedReusableResult = function(result, fromInput){
 	resultsKey could be []
 */
 function cacheResultToChange(resultsKey){
+console.log(resultsKey);
 	for(var i=0; i<resultsKey.length; i++){
 		var resultNode = mapCreator.getNodeByKey(resultsKey[i]);
 		var operatorNode = mapCreator.getNodeByKey(resultNode.parent);
-
+console.log(resultNode);
+console.log(savedResult[resultNode.relatedTo]);
 		if(resultNode.datatype=='literal' && operatorNode.subtype == 'lang')
 			cachedResult[resultNode.key] = literalLang[resultNode.relatedTo];
 		else
