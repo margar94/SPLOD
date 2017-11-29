@@ -747,7 +747,7 @@ QueryExecutor.prototype.executeUserQuery = function(querySPARQL){
 			where += querySPARQL.where[index].content.join(' ')
 		});
 
-		query = " SELECT " + querySPARQL.select.join(' ') +
+		query = " SELECT DISTINCT " + querySPARQL.select.join(' ') +
 					" WHERE { " + 
 						" GRAPH " + graph + " { " +
 							where +
