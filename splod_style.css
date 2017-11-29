@@ -326,7 +326,7 @@ div#modalSparql, div#modalNaturalLanguage{
 	border-color: #757575;
 } 
 
-#myTabs li #tableResultSpinner .spinner-layer{
+#myTabs li #resultsSpinner .spinner-layer{
 	border-color: #01579b;
 } 
 
@@ -363,14 +363,14 @@ div#modalSparql, div#modalNaturalLanguage{
 	background-color: #bdbdbd;
 }
 
-#tableResultsProgress {
+#resultsProgress {
 	background-color: #aecee6;
     top: 3em;
     width:60%;
     margin:auto;
 }
 
-#tableResultsProgress .indeterminate{
+#resultsProgress .indeterminate{
 	background-color: #2196f3;
 }
    
