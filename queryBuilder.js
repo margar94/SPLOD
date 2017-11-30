@@ -7,6 +7,7 @@ var querySPARQL;
 var executor;
 
 var addNot;
+var tempReverseWhere = {};
 
 var QueryBuilder = function () {
 	if(QueryBuilder.prototype._singletonInstance){
@@ -80,6 +81,10 @@ function visitSPARQL(key){
 				nodeSelect.push(firstReverseChild.variable);
 				nodeLabelSelect.push(firstReverseChild.label);
 				nodeKeySelect.push(firstReverseChild.key);
+			}
+
+			if(!(node.children.length>1 && queryLogicStructure[node.children[1]].type=='operator' && queryLogicStructure[node.children[1]].subtype=='xor')){
+				nodeWhere = nodeWhere.concat([{relatedTo: [node.key], content:[node.variable+ ' a ?_.']}]);
 			}
 
 			for(var i=0; i<node.children.length; i++){ 
@@ -156,6 +161,7 @@ function visitSPARQL(key){
 				case 'xor':
 					for(var i = 0; i < node.children.length; i = i+2){
 						nodeWhere = nodeWhere.concat([{relatedTo: child, content:['{']}]);
+						nodeWhere = nodeWhere.concat([{relatedTo: [node.key], content:[node.variable+ ' a ?_.']}]);
 
 						for(var j=0; j<childWhere[i].length; j++)
 							nodeWhere = nodeWhere.concat([{relatedTo: childWhere[i][j].relatedTo.concat(child), 
@@ -197,7 +203,9 @@ function visitSPARQL(key){
 			}
 
 			//where management
-			nodeWhere.push({relatedTo:[node.key], content:[node.variable+' a'+' <'+node.url+'>.']});
+			if(!(node.children.length>1 && queryLogicStructure[node.children[1]].type=='operator' && queryLogicStructure[node.children[1]].subtype=='xor')){
+				nodeWhere.push({relatedTo:[node.key], content:[node.variable+' a'+' <'+node.url+'>.']});
+			}
 
 			for(var i=0; i<node.children.length; i++){ 
 				childQuery = visitSPARQL(node.children[i]);
@@ -267,6 +275,7 @@ function visitSPARQL(key){
 				case 'xor':
 					for(var i = 0; i < node.children.length; i = i+2){
 						nodeWhere = nodeWhere.concat([{relatedTo: child, content:['{']}]);
+						nodeWhere.push({relatedTo:[node.key], content:[node.variable+' a'+' <'+node.url+'>.']});
 
 						for(var j=0; j<childWhere[i].length; j++)
 							nodeWhere = nodeWhere.concat([{relatedTo: childWhere[i][j].relatedTo.concat(child), 
@@ -401,6 +410,7 @@ function visitSPARQL(key){
 				}
 				else{
 					nodeWhere = nodeWhere.concat([{relatedTo: [node.key, node.children[0]], content:[node.variable+ ' <'+node.url+'> '+ parentVariable+'.']}]);
+					tempReverseWhere = {relatedTo: [node.key, node.children[0]], content:[node.variable+ ' <'+node.url+'> '+ parentVariable+'.']};
 				}
 
 				//visit 'something' node
@@ -496,6 +506,8 @@ function visitSPARQL(key){
 					case 'xor':
 						for(var i = 0; i < node.children.length; i = i+2){
 							nodeWhere = nodeWhere.concat([{relatedTo: child, content:['{']}]);
+							nodeWhere = nodeWhere.concat([{relatedTo: tempReverseWhere.relatedTo.concat(child), 
+								content:tempReverseWhere.content}]);
 
 							for(var j=0; j<childWhere[i].length; j++)
 								nodeWhere = nodeWhere.concat([{relatedTo: childWhere[i][j].relatedTo.concat(child), 

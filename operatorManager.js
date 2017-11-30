@@ -534,8 +534,8 @@ function manageUpdateOperatorViewer(){
 			renderOperatorList([]);
 			return;
 		}else if(parentNode.type=='everything'){
+			operatorList.push({list:['optional'], datatype:null});
 			for(var i=0; i<parentNode.children.length; i=i+2){
-				operatorList.push({list:['optional'], datatype:null});
 				var childNode = mapCreator.getNodeByKey(parentNode.children[i]);
 				if(childNode.key!=node.key && !(childNode.type=='operator' && childNode.subtype =='not')){
 					operatorList.push({list:['not'], datatype:null});
