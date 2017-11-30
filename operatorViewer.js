@@ -55,6 +55,15 @@ function renderOperatorList(operators){
 		var datatype = datatypeOperators.datatype;
 		var datatypeOperatorList = datatypeOperators.list;
 
+		//datatype operator list title 
+		if(datatype != null){
+			var li = $("<li/>")
+				.attr('class', 'collection-item datatypeTitle')
+				.attr('disabled','disabled')
+				.html(languageManager.getDatatypeLabel(datatype))
+				.appendTo(operatorList);
+		}
+
 		for(var j = 0; j<datatypeOperatorList.length;j++){
 			var li = $("<li/>")
 			.attr('class', 'collection-item addToQuery')

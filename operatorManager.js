@@ -62,7 +62,7 @@ var OperatorManager = function () {
 		'date' : ['is date', 'before', 'after', 'range date'],
 		'time' : ['is date', 'before', 'after', 'range date'],
 		'dateTime' : ['is date', 'before', 'after', 'range date'],
-		'gday' : ['is date', 'before', 'after', 'range date'],
+		'gDay' : ['is date', 'before', 'after', 'range date'],
 		'gMonth' : ['is date', 'before', 'after', 'range date'],
 		'gMonthDay' : ['is date', 'before', 'after', 'range date'],
 		'gYear' : ['is date', 'before', 'after', 'range date'],

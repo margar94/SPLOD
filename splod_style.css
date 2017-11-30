@@ -612,6 +612,11 @@ div#operatorsBox .card-action{
 	background-color:#bdbdbd;
 }
 
+li.datatypeTitle{
+	color: white;
+	background-color:#bdbdbd !important;
+}
+
 #pendingQuerySpan .active{
 	color: #2196f3; 
 	font-weight: bold;
