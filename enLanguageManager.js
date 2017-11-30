@@ -16,7 +16,7 @@ enLanguageManager.prototype.getArticle = function(noun){
 }
 
 /*
-	Return verbalization object given a conceprLabel
+	Return verbalization object given a conceptLabel
 	Verbalization object's structure : 
 		verbalization = {
 			standard: [], // standard one
@@ -516,6 +516,36 @@ enLanguageManager.prototype.getOperatorLabelVerbalization = function(operator){
 	return label;
 
 }
+
+enLanguageManager.prototype.getDatatypeLabel = function(datatype){
+	var label;
+
+	switch(datatype){
+		case 'number' : 
+			label = 'Number operators'; break;
+		case 'string' : 
+		case 'literal' : 
+			label = 'String operators'; break;
+		case 'date' : 
+		case 'time' : 
+		case 'dateTime' : 
+		case 'gDay' : 
+		case 'gMonth' : 
+		case 'gMonthDay' : 
+		case 'gYear' : 
+		case 'gYearMonth' : 
+			label = 'Date operators'; break;
+		case 'uri' : 
+			label = 'Url operators'; break;
+		case 'boolean' : 
+			label = 'Boolean operators'; break;
+		case 'img' : 
+			label = 'Img operators'; break;
+	}
+
+	return label;
+}
+
 
 enLanguageManager.prototype.getUserInputHint = function(){	
 	return 'Insert your value: ';

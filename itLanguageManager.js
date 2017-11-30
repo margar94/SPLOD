@@ -573,6 +573,35 @@ itLanguageManager.prototype.getOperatorLabelVerbalization = function(operator){
 
 }
 
+itLanguageManager.prototype.getDatatypeLabel = function(datatype){
+	var label;
+
+	switch(datatype){
+		case 'number' : 
+			label = 'Operatori su numeri'; break;
+		case 'string' : 
+		case 'literal' : 
+			label = 'Operatori su stringhe'; break;
+		case 'date' : 
+		case 'time' : 
+		case 'dateTime' : 
+		case 'gDay' : 
+		case 'gMonth' : 
+		case 'gMonthDay' : 
+		case 'gYear' : 
+		case 'gYearMonth' : 
+			label = 'Operatori su date'; break;
+		case 'uri' : 
+			label = 'Operatori su url'; break;
+		case 'boolean' : 
+			label = 'Operatori su booleani'; break;
+		case 'img' : 
+			label = 'Operatori su immagini'; break;
+	}
+
+	return label;
+}
+
 itLanguageManager.prototype.getUserInputHint = function(){	
 	return 'Inserisci il tuo valore: ';
 }
