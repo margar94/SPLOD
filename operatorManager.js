@@ -135,6 +135,11 @@ OperatorManager.prototype.queryResult = function(select, labelSelect, keySelect,
 				cachedResult.url = result[field].url;
 			}
 
+			if('datatype' in result[field])
+				cachedResult.penninculo = '<'+result[field].datatype+'>';
+			else
+				cachedResult.penninculo = '';
+
 			var currentResultDatatype = '';
 
 			var arrayIndex = $.inArray('?'+field, select);
@@ -256,29 +261,29 @@ OperatorManager.prototype.selectedReusableResult = function(result, fromInput){
 		type = null;
 	}
 
-	var value = result[0];
+	var value = result[0].value;
 
 	if(fromInput){
 		switch(type){
 			case 'gYear':
-				value = result[0].split('-')[0];
+				value = value.split('-')[0];
 				break;
 			case 'gMonth':
-				value = result[0].split('-')[1];
+				value = value.split('-')[1];
 				break;
 			case 'gDay':
-				value = result[0].split('-')[2];
+				value = value.split('-')[2];
 				break;
 			case 'gMonthDay':
-				value = result[0].substring(5);
+				value = value.substring(5);
 				break;
 			case 'gYearMonth':
-				value = result[0].substring(0, 7);
+				value = value.substring(0, 7);
 				break;
 			case 'dateTime':
-				value = result[0] + 'T' + result[1];
+				value = value + 'T' + result[1].value;
 				break;
-			case 'img':
+			/*case 'img':
 			case 'uri':
 			case 'time':
 			case 'date':
@@ -286,16 +291,15 @@ OperatorManager.prototype.selectedReusableResult = function(result, fromInput){
 			case 'literal':
 			case 'boolean':
 			case 'number':
-			default:
 				value = result[0];
-				break;
+				break;*/
 		}
 	}
 
 	var lang = null;
 	if(value in resultLiteralLang)
 		lang = resultLiteralLang[value];
-	pendingQuery.push({value: value, datatype:type, lang:lang});
+	pendingQuery.push({value: value, penninculo: result[0].penninculo, datatype:type, lang:lang});
 
 	var isComplete = (parameterNumberOperator[operator.value]==pendingQuery.length);
 
@@ -571,28 +575,28 @@ OperatorManager.prototype.changedReusableResult = function(result, fromInput){
 
 	var type = onFocusNode.datatype;
 
-	var value = result[0];
+	var value = result[0].value;
 	if(fromInput){
 		switch(type){
 			case 'gYear':
-				value = result[0].split('-')[0];
+				value = value.split('-')[0];
 				break;
 			case 'gMonth':
-				value = result[0].split('-')[1];
+				value = value.split('-')[1];
 				break;
 			case 'gDay':
-				value = result[0].split('-')[2];
+				value = value.split('-')[2];
 				break;
 			case 'gMonthDay':
-				value = result[0].substring(5);
+				value = value.substring(5);
 				break;
 			case 'gYearMonth':
-				value = result[0].substring(0, 7);
+				value = value.substring(0, 7);
 				break;
 			case 'dateTime':
-				value = result[0] + 'T' + result[1];
+				value = value + 'T' + result[1];
 				break;
-			case 'img':
+			/*case 'img':
 			case 'uri':
 			case 'time':
 			case 'date':
@@ -602,7 +606,7 @@ OperatorManager.prototype.changedReusableResult = function(result, fromInput){
 			case 'number':
 			default:
 				value = result[0];
-				break;
+				break;*/
 		}
 	}
 
@@ -612,7 +616,7 @@ OperatorManager.prototype.changedReusableResult = function(result, fromInput){
 	var lang = null;
 	if(value in resultLiteralLang)
 		lang = resultLiteralLang[value];
-	var newKey = mapCreator.selectedResult({value: value, datatype:type, lang:lang});
+	var newKey = mapCreator.selectedResult({value: value, penninculo:result[0].penninculo, datatype:type, lang:lang});
 	cachedResult[newKey] = cachedResultList;
 
 }
@@ -622,12 +626,10 @@ OperatorManager.prototype.changedReusableResult = function(result, fromInput){
 	resultsKey could be []
 */
 function cacheResultToChange(resultsKey){
-console.log(resultsKey);
 	for(var i=0; i<resultsKey.length; i++){
 		var resultNode = mapCreator.getNodeByKey(resultsKey[i]);
 		var operatorNode = mapCreator.getNodeByKey(resultNode.parent);
-console.log(resultNode);
-console.log(savedResult[resultNode.relatedTo]);
+
 		if(resultNode.datatype=='literal' && operatorNode.subtype == 'lang')
 			cachedResult[resultNode.key] = literalLang[resultNode.relatedTo];
 		else

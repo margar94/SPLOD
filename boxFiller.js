@@ -136,15 +136,15 @@ BoxFiller.prototype.updatePredicatesFromSomething = function(predUrl, limit, cal
 }
 
 //result
-BoxFiller.prototype.updatePredicatesFromResult = function(resultUrl, resultDatatype, resultLang, limit, callback){	
+BoxFiller.prototype.updatePredicatesFromResult = function(resultUrl, resultDatatype, resultLang, resultPenninculo, limit, callback){	
 	var directData;
 	var reverseData;
 
-	var d1 = $.Deferred(executor.getDirectPredicatesFromResult(resultUrl, resultDatatype, resultLang, limit, function(data){
+	var d1 = $.Deferred(executor.getDirectPredicatesFromResult(resultUrl, resultDatatype, resultLang, resultPenninculo, limit, function(data){
 		directData = data;
 		d1.resolve();
 	}));
-	var d2 = $.Deferred(executor.getReversePredicatesFromResult(resultUrl, resultDatatype, resultLang, limit, function(data){
+	var d2 = $.Deferred(executor.getReversePredicatesFromResult(resultUrl, resultDatatype, resultLang, resultPenninculo, limit, function(data){
 		reverseData = data;
 		d2.resolve();
 	}));

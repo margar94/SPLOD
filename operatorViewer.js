@@ -127,9 +127,9 @@ function renderOperatorList(operators){
 function renderReusableResultListFromOperator(reusableResults){
 	var onClickButtonFunction = function(){
 					var values = [];
-					values.push($('#userValue_0')[0].value);
+					values.push({value:$('#userValue_0')[0].value, penninculo:''});
 					if($('#userValue_1')[0] != undefined)
-						values.push($('#userValue_1')[0].value);
+						values.push({value: $('#userValue_1')[0].value, penninculo:''});
 
 					if(operatorManager.selectedReusableResult(values, true)){
 						//$('#reusableResultList').hide();
@@ -151,7 +151,8 @@ function renderReusableResultListFromOperator(reusableResults){
 
 
 	var onClickLiFunction = function(){
-					if(operatorManager.selectedReusableResult([$(this).attr('meta-value')], false)){
+					var infoResult = {value: $(this).attr('meta-value'), penninculo : $(this).attr('meta-penninculo')};
+					if(operatorManager.selectedReusableResult([infoResult], false)){
 						//$('#reusableResultList').hide();
 						//$('#operatorList').show();
 						$('#pendingQuerySpan').empty();
@@ -176,9 +177,9 @@ function renderReusableResultListFromOperator(reusableResults){
 function renderReusableResultListFromResult(reusableResults){
 	var onClickButtonFunction = function(){
 					var values = [];
-					values.push($('#userValue_0')[0].value);
+					values.push({value:$('#userValue_0')[0].value, penninculo:''});
 					if($('#userValue_1')[0] != undefined)
-						values.push($('#userValue_1')[0].value);
+						values.push({value:$('#userValue_1')[0].value, penninculo:''});
 
 
 					$('#resultsTable').hide();
@@ -195,7 +196,7 @@ function renderReusableResultListFromResult(reusableResults){
 					$('#resultsPreviewBadge').hide();
 					$('#resultsSpinner').show();
 					$('#resultsProgress').show();
-					operatorManager.changedReusableResult([$(this).attr('meta-value')], false);
+					operatorManager.changedReusableResult([{value:$(this).attr('meta-value'), penninculo:$(this).attr('meta-penninculo')}], false);
 				}
 
 	$('#operatorsBox .card-title').text(languageManager.getBoxTitle('result'));
@@ -343,7 +344,8 @@ function renderReusableResultList(reusableResults, onClickButtonFunction, onClic
 		var li = $("<li/>")
 		.attr('class', 'collection-item addToQuery')
 		.attr('meta-label', element.value)
-		.attr('meta-value', element.value);
+		.attr('meta-value', element.value)
+		.attr('meta-penninculo', element.penninculo);
 
 		var span = $("<span/>")
 			.attr('class', 'liContent')

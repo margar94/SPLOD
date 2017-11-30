@@ -577,7 +577,7 @@ QueryExecutor.prototype.getReversePredicatesFromPredicate = function(predicate, 
    activeAjaxRequest.push(xhr);
 }
 
-QueryExecutor.prototype.getDirectPredicatesFromResult = function(url, datatype, lang, limit, callback) {
+QueryExecutor.prototype.getDirectPredicatesFromResult = function(url, datatype, lang, penninculo, limit, callback) {
 	var result;
 	switch(datatype){
 		case 'uri':
@@ -589,7 +589,10 @@ QueryExecutor.prototype.getDirectPredicatesFromResult = function(url, datatype, 
 			result = url;
 			break;
 		case 'string':
-			result = '"' + url.replace(/\"/g, '\\\"') + '"';
+			if(penninculo!='')
+				result = '"' + url.replace(/\"/g, '\\\"') + '"^^'+penninculo;
+			else
+				result = '"' + url.replace(/\"/g, '\\\"') + '"';
 			break;
 		case 'literal':
 			result = '"' + url.replace(/\"/g, '\\\"') + '"@'+lang;
@@ -602,7 +605,10 @@ QueryExecutor.prototype.getDirectPredicatesFromResult = function(url, datatype, 
 		case 'date':
 		case 'dateTime':
 		case 'time': 
-			result = 'xsd:'+datatype+'("'+url+'")';
+			if(penninculo!='')
+				result = '"'+url+'"^^'+penninculo;
+			else
+				result = '"'+url+'"';
 			break;
 	}
 
@@ -642,7 +648,7 @@ QueryExecutor.prototype.getDirectPredicatesFromResult = function(url, datatype, 
     activeAjaxRequest.push(xhr);
 }
 
-QueryExecutor.prototype.getReversePredicatesFromResult = function(url, datatype, lang, limit, callback) {
+QueryExecutor.prototype.getReversePredicatesFromResult = function(url, datatype, lang, penninculo, limit, callback) {
 	var result;
 	switch(datatype){
 		case 'uri':
@@ -654,7 +660,10 @@ QueryExecutor.prototype.getReversePredicatesFromResult = function(url, datatype,
 			result = url;
 			break;
 		case 'string':
-			result = '"' + url.replace(/\"/g, '\\\"') + '"';
+			if(penninculo!='')
+				result = '"' + url.replace(/\"/g, '\\\"') + '"^^'+penninculo;
+			else
+				result = '"' + url.replace(/\"/g, '\\\"') + '"';
 			break;
 		case 'literal':
 			result = '"' + url.replace(/\"/g, '\\\"') + '"@'+lang;
@@ -667,7 +676,10 @@ QueryExecutor.prototype.getReversePredicatesFromResult = function(url, datatype,
 		case 'date':
 		case 'dateTime':
 		case 'time': 
-			result = 'xsd:'+datatype+'("'+url+'")';
+			if(penninculo!='')
+				result = '"'+url+'"^^'+penninculo;
+			else
+				result = '"'+url+'"';
 			break;
 	}
 

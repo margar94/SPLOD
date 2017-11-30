@@ -652,7 +652,7 @@ function updateBoxes(focusNode){
 			updateBoxesFromOperator();
 			break;
 		case "result":
-			updateBoxesFromResult(focusNode.url, focusNode.datatype, focusNode.lang);
+			updateBoxesFromResult(focusNode.url, focusNode.datatype, focusNode.lang, focusNode.penninculo);
 			break;
 	}
 }

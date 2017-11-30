@@ -560,7 +560,7 @@ function updateBoxesFromOperator(){
 }
 
 //manage update boxes when focus is on an result
-function updateBoxesFromResult(resultUrl, resultDatatype, resultLang){
+function updateBoxesFromResult(resultUrl, resultDatatype, resultLang, resultPenninculo){
 	$("#searchConceptsBox").val('');
 	$("#searchPredicatesBox").val('');
 
@@ -575,7 +575,7 @@ function updateBoxesFromResult(resultUrl, resultDatatype, resultLang){
 	$('#directPredicatesProgress').show();
 	$('#reversePredicatesProgress').show();
 
-	boxFiller.updatePredicatesFromResult(resultUrl, resultDatatype, resultLang, predicatesLimit, renderPredicates);
+	boxFiller.updatePredicatesFromResult(resultUrl, resultDatatype, resultLang, resultPenninculo, predicatesLimit, renderPredicates);
 }
 
 //manage settings

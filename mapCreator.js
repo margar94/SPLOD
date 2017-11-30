@@ -371,6 +371,7 @@ MapCreator.prototype.selectedOperator = function(pendingQuery){
 			for(var i=1; i<pendingQuery.length; i++){
 				var resultValue = pendingQuery[i].value;
 				var resultDatatype = pendingQuery[i].datatype;
+				var resultPenninculo = pendingQuery[i].penninculo;
 				var resultLang = pendingQuery[i].lang;
 				var verbalizationChildren = languageManager.verbalizeResult(resultValue);
 
@@ -392,7 +393,8 @@ MapCreator.prototype.selectedOperator = function(pendingQuery){
 							   url: resultValue, label: resultValue, 
 							   type:'result', direction: false,
 							   verbalization: verbalizationChildren, 
-							   parent:key, children: [], datatype: resultDatatype,
+							   parent:key, children: [], 
+							   datatype: resultDatatype, penninculo: resultPenninculo,
 							   lang: resultLang,
 							   relatedTo: relatedToValue};
 
