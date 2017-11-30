@@ -58,10 +58,38 @@ var conceptsLimit;
 var predicatesLimit;
 
 function initBoxViewer(){
+
 	languageManager = new LanguageManager();
 	boxFiller = new BoxFiller();
 	mapCreator = new MapCreator();
 
+	initializeLabelsAndTitle();
+
+	conceptsLimit = 500;
+	predicatesLimit = 100;
+
+	fillConcepts();
+	fillPredicates();
+	fillSettings();
+	fillHelp();
+}
+
+function restartBoxViewer(){
+
+	languageManager = new LanguageManager();
+	boxFiller = new BoxFiller();
+	mapCreator = new MapCreator();
+
+	initializeLabelsAndTitle();
+
+	conceptsLimit = 500;
+	predicatesLimit = 100;
+
+	fillSettings();
+	fillHelp();
+}
+
+function initializeLabelsAndTitle(){
 	hierarchyOnFlag = true;
 	$("#hierarchySpan").html('<i class="small material-icons white-text right" style="margin:0" onClick="hierarchyOff();">format_list_bulleted</i>');
 
@@ -93,16 +121,7 @@ function initBoxViewer(){
 	$("#removeButtonA").attr('title', languageManager.getButtonLabel('removeFocus'));
 	$("#saveTable").attr('title', languageManager.getButtonLabel('saveTable'));
 	$("#openSparqlQuery").attr('title', languageManager.getButtonLabel('sparqlQuery'));
-
-	conceptsLimit = 500;
-	predicatesLimit = 100;
-
-	fillConcepts();
-	fillPredicates();
-	fillSettings();
-	fillHelp();
 }
-
 //get and render concepts
 function fillConcepts(){
 	$('#conceptsSpinner').show();

@@ -14,6 +14,17 @@ function initOperatorViewer(){
 
 }
 
+function restartOperatorViewer(){
+	operatorManager = new OperatorManager;
+	languageManager = new LanguageManager;
+
+	$('#operatorsSpinner').hide();
+	$('#operatorsProgress').hide();
+	$('#operatorList').show();
+
+	$("#operatorsTab").addClass('disabled');
+}
+
 function renderResult(select, labelSelect, results){
 	createTable(select, labelSelect, results);
 }

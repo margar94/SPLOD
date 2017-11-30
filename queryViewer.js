@@ -24,6 +24,10 @@ function initQueryViewer(){
 
 }
 
+function restartQueryViewer(){
+	languageManager = new LanguageManager();
+}
+
 var QueryViewer= function () {
 	if(QueryViewer.prototype._singletonInstance){
 		return QueryViewer.prototype._singletonInstance;

@@ -16,6 +16,7 @@ var queryViewer = null;
 var elementOnFocus;
 
 var MapCreator = function () {
+
 	if(MapCreator.prototype._singletonInstance){
 		return MapCreator.prototype._singletonInstance;
 	}
@@ -28,6 +29,28 @@ var MapCreator = function () {
 	MapCreator.prototype._singletonInstance = this;
  };
 
+function beginFromMap(root, map, focus){
+	//clean map
+	elementOnFocus = null;	
+	initializeMap();
+
+	//inizialize map 
+	rootQueryLogicMap = root;
+	queryLogicMap = map;
+	elementOnFocus = focus;
+
+	//eventuale cambiamento lingua label nella mappa
+
+	updateAndNotifyFocus(elementOnFocus);
+
+	if(queryVerbalizator == null)
+		queryVerbalizator = new QueryVerbalizator;
+	queryVerbalizator.updateQuery(rootQueryLogicMap, queryLogicMap, elementOnFocus);
+	
+	if(queryBuilder == null)
+		queryBuilder = new QueryBuilder;
+	queryBuilder.updateQuery(rootQueryLogicMap, queryLogicMap);
+}
 /*
 	Notify to the queryVerbalizator the selected concept.
 	url : concept's url
