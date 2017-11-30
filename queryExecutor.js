@@ -33,7 +33,10 @@ var QueryExecutor = function (selectedEndpoint, selectedGraph) {
 
 	if(!endpoint && !graph){
 		endpoint = "http://dbpedia.org/sparql";
+		//endpoint = "http://live.dbpedia.org/sparql";
+		//endpoint = "http://dbpedia-live.openlinksw.com/sparql";
 		graph = "<http://dbpedia.org>";
+		//graph = null;
 	}
 	else{
 		endpoint = selectedEndpoint;
@@ -83,16 +86,18 @@ QueryExecutor.prototype.getAllEntities = function(limit, callback) {
 	query = " prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
 				" prefix owl: <http://www.w3.org/2002/07/owl#> " +
 				" SELECT DISTINCT * " +
-				" WHERE { " + 
-					" GRAPH " + graph + " { " +
-						" {?subclass a owl:Class} UNION {?subclass a rdfs:Class} " + 
+				" WHERE { ";
+				if(graph) 
+					query += " GRAPH " + graph + " { ";
+						query += " {?subclass a owl:Class} UNION {?subclass a rdfs:Class} " + 
 						" OPTIONAL{?subclass rdfs:label ?label_subclass. " +
 							" FILTER (lang(?label_subclass) = '" + labelLang + "')} " +
 						" OPTIONAL{?subclass rdfs:subClassOf ?superclass. " +
 							" OPTIONAL {?superclass rdfs:label ?label_superclass. " +
-								" FILTER (lang(?label_superclass) = '" + labelLang + "')}}" +
-					" } " +
-				" } ";
+								" FILTER (lang(?label_superclass) = '" + labelLang + "')}}";
+					if(graph) 
+						query += " } ";
+				query += " } ";
 
 	if(limit)
 		query += "LIMIT " + limit;  
@@ -108,13 +113,15 @@ QueryExecutor.prototype.getAllEntities = function(limit, callback) {
 			query2 = " prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
 				" prefix owl: <http://www.w3.org/2002/07/owl#> " +
 				" SELECT ?class (count(?instance) as ?numberOfInstances)  " +
-				" WHERE { " + 
-					" GRAPH " + graph + " { " +
-						" ?instance a ?class . " +
+				" WHERE { ";
+				if(graph) 
+					query2 += " GRAPH " + graph + " { ";
+						query2 += " ?instance a ?class . " +
 						" {?class a owl:Class} UNION {?class a rdfs:Class} " +
-					" } " +
-				" } " +
-				" group by ?class ";
+					" } ";
+				if(graph)
+					query2 += " } ";
+				query2 += " group by ?class ";
 
 	
 		   	queryUrl2 = endpoint+"?query="+ encodeURIComponent(query2) +"&format=json";
@@ -173,14 +180,16 @@ QueryExecutor.prototype.getEntitySubclasses = function(url, limit, callback) {
 QueryExecutor.prototype.getConceptsFromDirectPredicate = function(predicate, limit, callback) {
 	query = " prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
 				" SELECT DISTINCT ?url ?label " +
-				" WHERE { " + 
-					" GRAPH " + graph + " { " +	
-						" ?o a ?url. " +
+				" WHERE { ";
+				if(graph) 
+					query += " GRAPH " + graph + " { ";	
+						query += " ?o a ?url. " +
 						" ?s  <"+predicate+"> ?o. " +
 						" OPTIONAL {?url rdfs:label ?label. " +
-						" FILTER (lang(?label) = '" + labelLang + "')} " +
-					" } " +
-				" } ";
+						" FILTER (lang(?label) = '" + labelLang + "')} ";
+					if(graph) 
+						query += " } ";
+				query += " } ";
 	if(limit)
 		query += "LIMIT " + limit;  
 	
@@ -217,14 +226,16 @@ QueryExecutor.prototype.getConceptsFromSomething = function(predicate, limit, ca
 	query = " prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
 				" prefix owl: <http://www.w3.org/2002/07/owl#> " +
 				" SELECT DISTINCT ?url ?label " +
-				" WHERE { " + 
-					" GRAPH " + graph + " { " +
-						" ?o a ?url. " +
+				" WHERE { ";
+				if(graph) 
+					query += " GRAPH " + graph + " { ";
+						query += " ?o a ?url. " +
 						" ?s  <"+predicate+"> ?o. " +
 						" OPTIONAL {?url rdfs:label ?label. " +
-						" FILTER (lang(?label) = '" + labelLang + "')} " +
-					" } " +
-				" } ";
+						" FILTER (lang(?label) = '" + labelLang + "')} ";
+					if(graph) 
+						query += " } ";
+				query += " } ";
 	if(limit)
 		query += "LIMIT " + limit;  
 	
@@ -275,9 +286,10 @@ QueryExecutor.prototype.getAllDirectPredicates = function(limit, callback) {
 		query = " prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> " + 
 			" prefix owl: <http://www.w3.org/2002/07/owl#> " +
 				" SELECT DISTINCT ?url ?label " +
-				" WHERE { " + 
-					" GRAPH " + graph + " { " +
-						" ?s ?url ?o. " +
+				" WHERE { ";
+					if(graph) 
+					query += " GRAPH " + graph + " { ";
+						query += " ?s ?url ?o. " +
 						" ?s a ?c. " +
 						" FILTER (?c = ?class){ " +
 							" SELECT ?class{ " +
@@ -288,9 +300,10 @@ QueryExecutor.prototype.getAllDirectPredicates = function(limit, callback) {
 							" LIMIT 1 " +
 						" } " +
 						" OPTIONAL {?url rdfs:label ?label. " +
-						" FILTER (lang(?label) = '" + labelLang + "')} " +
-					" } " +
-				" } ";
+						" FILTER (lang(?label) = '" + labelLang + "')} ";
+					if(graph) 
+						query += " } ";
+				query += " } ";
 					
 		if(limit)
 			query += "LIMIT " + limit;  
@@ -322,9 +335,10 @@ QueryExecutor.prototype.getAllReversePredicates = function(limit, callback) {
 	query = " prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> " + 
 		" prefix owl: <http://www.w3.org/2002/07/owl#> " +
 			" SELECT DISTINCT ?url ?label " +
-			" WHERE { " + 
-				" GRAPH " + graph + " { " +
-					" ?s ?url ?o. " +
+			" WHERE { ";
+				if(graph) 
+					query += " GRAPH " + graph + " { ";
+					query += " ?s ?url ?o. " +
 					" ?o a ?c. " +
 					" FILTER (?c = ?class){ " +
 						" SELECT ?class{ " +
@@ -335,9 +349,10 @@ QueryExecutor.prototype.getAllReversePredicates = function(limit, callback) {
 						" LIMIT 1 " +
 					" } " +
 					" OPTIONAL {?url rdfs:label ?label. " +
-					" FILTER (lang(?label) = '" + labelLang + "')} " +
-				" } " +
-			" } ";
+					" FILTER (lang(?label) = '" + labelLang + "')} ";
+				if(graph) 
+					query += " } ";
+			query += " } ";
 				
 	if(limit)
 		query += "LIMIT " + limit;  
@@ -373,16 +388,18 @@ QueryExecutor.prototype.getDirectPredicatesFromConcept = function(entity, limit,
 	query = " prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
 				" prefix owl: <http://www.w3.org/2002/07/owl#> " +
 				" SELECT DISTINCT ?url ?label " +
-				" WHERE { " + 
-					" GRAPH " + graph + " { " +
-						" ?s ?url ?s2. " +
+				" WHERE { ";
+					if(graph) 
+						query +=" GRAPH " + graph + " { ";
+						query += " ?s ?url ?s2. " +
 							"{ SELECT ?s {" +
 								" ?s a <"+entity+">. " +
 							" } LIMIT 20000 }" +
 						" OPTIONAL {?url rdfs:label ?label. " +
-						" FILTER (lang(?label) = '" + labelLang + "')} " +
-					" } " +
-				" } ";
+						" FILTER (lang(?label) = '" + labelLang + "')} ";
+					if(graph) 
+						query +=" } ";
+				query += " } ";
 	if(limit)
 		query += "LIMIT " + limit;  
 	
@@ -415,16 +432,18 @@ QueryExecutor.prototype.getReversePredicatesFromConcept = function(entity, limit
 	query = " prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
 				" prefix owl: <http://www.w3.org/2002/07/owl#> " +
 				" SELECT DISTINCT ?url ?label " +
-				" WHERE { " + 
-					" GRAPH " + graph + " { " +
-						" ?s2 ?url ?s. " +
+				" WHERE { ";
+					if(graph) 
+						query +=" GRAPH " + graph + " { ";
+						query += " ?s2 ?url ?s. " +
 							"{ SELECT ?s {" +
 								" ?s a <"+entity+">. " +
 							" } LIMIT 20000 }" +
 						" OPTIONAL {?url rdfs:label ?label. " +
-						" FILTER (lang(?label) = '" + labelLang + "')} " +
-					" } " +
-				" } ";
+						" FILTER (lang(?label) = '" + labelLang + "')} ";
+					if(graph) 
+						query +=" } ";
+				query += " } ";
 	if(limit)
 		query += "LIMIT " + limit;  
 	
@@ -471,9 +490,10 @@ QueryExecutor.prototype.getDirectPredicatesFromPredicate = function(predicate, l
 	query = " prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
 				" prefix owl: <http://www.w3.org/2002/07/owl#> " +
 				" SELECT DISTINCT ?url ?label " +
-				" WHERE { " + 
-					" GRAPH " + graph + " { " +
-						" ?o ?url ?s2. " +
+				" WHERE { ";
+					if(graph) 
+						query += " GRAPH " + graph + " { ";
+						query += " ?o ?url ?s2. " +
 						" FILTER (?o = ?obj){ " +
 							" SELECT ?obj{ " +
 								" ?s <"+predicate+"> ?obj. " +
@@ -482,9 +502,10 @@ QueryExecutor.prototype.getDirectPredicatesFromPredicate = function(predicate, l
 							" LIMIT 1 " +
 						" } " +
 						" OPTIONAL {?url rdfs:label ?label. " +
-						" FILTER (lang(?label) = '" + labelLang + "')} " +
-					" } " +
-				" } ";
+						" FILTER (lang(?label) = '" + labelLang + "')} ";
+					if(graph) 
+						query +=" } ";
+				query += " } ";
 	if(limit)
 		query += "LIMIT " + limit;  
 	
@@ -515,9 +536,10 @@ QueryExecutor.prototype.getReversePredicatesFromPredicate = function(predicate, 
 	query = " prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
 				" prefix owl: <http://www.w3.org/2002/07/owl#> " +
 				" SELECT DISTINCT ?url ?label " +
-				" WHERE { " + 
-					" GRAPH " + graph + " { " +
-						" ?s2 ?url ?o. " +
+				" WHERE { ";
+					if(graph) 
+						query += " GRAPH " + graph + " { ";
+						query += " ?s2 ?url ?o. " +
 						" FILTER (?o = ?obj){ " +
 							" SELECT ?obj{ " +
 								" ?s <"+predicate+"> ?obj. " +
@@ -526,9 +548,10 @@ QueryExecutor.prototype.getReversePredicatesFromPredicate = function(predicate, 
 							" LIMIT 1 " +
 						" } " +
 						" OPTIONAL {?url rdfs:label ?label. " +
-						" FILTER (lang(?label) = '" + labelLang + "')} " +
-					" } " +
-				" } ";
+						" FILTER (lang(?label) = '" + labelLang + "')} ";
+					if(graph) 
+						query += " } ";
+				query += " } ";
 	if(limit)
 		query += "LIMIT " + limit;  
 	
@@ -585,13 +608,15 @@ QueryExecutor.prototype.getDirectPredicatesFromResult = function(url, datatype, 
 
 	query = " prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
 				" SELECT DISTINCT ?url ?label " +
-				" WHERE { " + 
-					" GRAPH " + graph + " { " +
-						  result +" ?url ?o. " +
+				" WHERE { ";
+					if(graph) 
+						query +=" GRAPH " + graph + " { ";
+						query +=  result +" ?url ?o. " +
 						" OPTIONAL {?url rdfs:label ?label. " +
-						" FILTER (lang(?label) = '" + labelLang + "')} " +
-					" } " +
-				" } ";
+						" FILTER (lang(?label) = '" + labelLang + "')} ";
+					if(graph) 
+						query +=" } ";
+				query += " } ";
 	if(limit)
 		query += "LIMIT " + limit;  
 	
@@ -648,13 +673,15 @@ QueryExecutor.prototype.getReversePredicatesFromResult = function(url, datatype,
 
 	query = " prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
 				" SELECT DISTINCT ?url ?label " +
-				" WHERE { " + 
-					" GRAPH " + graph + " { " +
-						" ?o ?url "+result+". " +
+				" WHERE { ";
+					if(graph) 
+						query +=" GRAPH " + graph + " { ";
+						query += " ?o ?url "+result+". " +
 						" OPTIONAL {?url rdfs:label ?label. " +
-						" FILTER (lang(?label) = '" + labelLang + "')} " +
-					" } " +
-				" } ";
+						" FILTER (lang(?label) = '" + labelLang + "')} ";
+					if(graph) 
+						query +=" } ";
+				query += " } ";
 	if(limit)
 		query += "LIMIT " + limit;  
 	
@@ -688,11 +715,13 @@ QueryExecutor.prototype.getReversePredicatesFromResult = function(url, datatype,
 */
 QueryExecutor.prototype.getPredicateStats = function(pred, callback){
 	var query = " SELECT (COUNT(?o) AS ?number) " +
-		" WHERE { " + 
-			" GRAPH " + graph + " { " +
-				" ?s <"+pred+"> ?o . "+
-				"}" +
-			" } ";  
+		" WHERE { ";
+			if(graph) 
+				query +=" GRAPH " + graph + " { ";
+				query += " ?s <"+pred+"> ?o . ";
+				if(graph) 
+					query +="}";
+			query += " } ";  
 
    	queryUrl = endpoint+"?query="+ encodeURIComponent(query) +"&format=json";
     $.ajax({
@@ -715,11 +744,13 @@ QueryExecutor.prototype.getPredicateStats = function(pred, callback){
 */
 QueryExecutor.prototype.getConceptStats = function(concept, callback){
 	var query = " SELECT (COUNT(?s) AS ?number) " +
-		" WHERE { " + 
-			" GRAPH " + graph + " { " +
-				" ?s a <"+concept+"> . "+
-				"}" +
-			" } ";  
+		" WHERE { ";
+			if(graph) 
+				query +=" GRAPH " + graph + " { ";
+				query += " ?s a <"+concept+"> . ";
+				if(graph) 
+					query +="}";
+			query += " } ";  
 
    	queryUrl = endpoint+"?query="+ encodeURIComponent(query) +"&format=json";
     $.ajax({
@@ -748,11 +779,13 @@ QueryExecutor.prototype.executeUserQuery = function(querySPARQL){
 		});
 
 		query = " SELECT DISTINCT " + querySPARQL.select.join(' ') +
-					" WHERE { " + 
-						" GRAPH " + graph + " { " +
-							where +
-						" } " +
-					" } ";
+					" WHERE { "; 
+						if(graph) 
+							query +=" GRAPH " + graph + " { ";
+						query += where;
+						if(graph) 
+							query +=" } ";
+					query += " } ";
 		
 		query += "LIMIT " + resultLimit; 
 
