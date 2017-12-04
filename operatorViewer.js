@@ -65,25 +65,25 @@ function renderOperatorList(operators){
 		}
 
 		for(var j = 0; j<datatypeOperatorList.length;j++){
-			var html;
-			if(datatypeOperatorList[j] == 'repeat'){
-				//change with language  manager function
-				html = datatypeOperators.repeatParameters.join(' ');
-			}else{
-				html = languageManager.getOperatorLabelVerbalization(datatypeOperatorList[j]);
-			}
 
 			var li = $("<li/>")
 			.attr('class', 'collection-item addToQuery')
 			.attr('meta-value', datatypeOperatorList[j])
-			.attr('meta-datatype', datatype)
-			.html(html);
+			.attr('meta-datatype', datatype);
+
+			if(datatypeOperatorList[j] == 'repeat'){
+				//change with language  manager function
+				li.html(datatypeOperators.repeatParameters.join(' '))
+					.attr('meta-params', JSON.stringify(datatypeOperators.repeatParameters));
+			}else{
+				li.html(languageManager.getOperatorLabelVerbalization(datatypeOperatorList[j]));
+			}
 
 			li.appendTo(operatorList)
 				.on('click', function(){
 					var condition;
-					if(datatypeOperatorList[j] == 'repeat'){
-						condition = operatorManager.selectedRepeat(datatypeOperators.repeatParameters);
+					if($(this).attr('meta-value') == 'repeat'){
+						condition = operatorManager.selectedRepeat($(this).attr('meta-params'));
 					}
 					else{
 						condition = operatorManager.selectedOperator($(this).attr('meta-value'), $(this).attr('meta-datatype'));

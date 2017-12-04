@@ -330,7 +330,7 @@ OperatorManager.prototype.selectedOperator = function(operator, datatype){
 }
 
 OperatorManager.prototype.selectedRepeat = function(repeatParameters){ // operator and value to repeat
-	mapCreator.selectedRepeatOperator(repeatParameters);
+	mapCreator.selectedRepeatOperator($.parseJSON(repeatParameters));
 	return true;
 }
 

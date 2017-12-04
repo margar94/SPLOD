@@ -508,7 +508,7 @@ MapCreator.prototype.selectedOperator = function(pendingQuery){
 	return resultsKey;
 }
 
-MapCreator.prototype.manageRepeatOperator  = function(repeatParameters){
+MapCreator.prototype.selectedRepeatOperator  = function(repeatParameters){
 	console.log(repeatParameters[0]);
 	console.log(repeatParameters[1]);
 }
