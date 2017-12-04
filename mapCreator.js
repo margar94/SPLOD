@@ -508,6 +508,11 @@ MapCreator.prototype.selectedOperator = function(pendingQuery){
 	return resultsKey;
 }
 
+MapCreator.prototype.manageRepeatOperator  = function(repeatParameters){
+	console.log(repeatParameters[0]);
+	console.log(repeatParameters[1]);
+}
+
 MapCreator.prototype.selectedResult = function(result){
 	var elementOnFocusNode = queryLogicMap[elementOnFocus];
 
@@ -725,6 +730,28 @@ MapCreator.prototype.getTopElement = function(key){
 	}
 
 	return node.key;
+}
+
+MapCreator.prototype.getSiblingConjunctionByKey = function(key){
+	var conjunction=[];
+
+	var node = queryLogicMap[key];
+	if(node.parent !=null){
+		var parentNode =  queryLogicMap[node.parent];
+		if(parentNode.type=='operator' && (parentNode.subtype=='not' || parentNode.subtype=='optional'))
+			parentNode = queryLogicMap[parentNode.parent]; //it should not be NULL
+
+		if(parentNode.children.length>1)
+			conjunction.push(queryLogicMap[parentNode.children[1]].subtype);
+		else{
+			conjunction.push('and');
+			conjunction.push('or');
+		}
+	}else{
+		//gestione radice
+	}
+
+	return conjunction;
 }
 
 function initializeMap(){

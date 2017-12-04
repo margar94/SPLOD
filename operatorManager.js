@@ -32,6 +32,8 @@ var OperatorManager = function () {
 		'xor' : 1,
 		'not' : 1,
 		'optional' : 1,
+
+		//'repeat' : 1,
 		
 		'<' : 2,
 		'<=' : 2,
@@ -327,6 +329,11 @@ OperatorManager.prototype.selectedOperator = function(operator, datatype){
 	return isComplete;
 }
 
+OperatorManager.prototype.selectedRepeat = function(repeatParameters){ // operator and value to repeat
+	mapCreator.selectedRepeatOperator(repeatParameters);
+	return true;
+}
+
 OperatorManager.prototype.getResultToCompleteOperator = function(){
 	var operator = pendingQuery[0];
 	var operatorField = onFocusOperator;
@@ -505,6 +512,12 @@ function manageUpdateOperatorViewer(){
 	
 	var node = mapCreator.getNodeByKey(onFocusOperator);
 
+	if(node.type == 'everything' || node.type == 'concept' || node.type == 'predicate' || node.type == 'something' || node.type == 'result'){
+		var conjunctionList = mapCreator.getSiblingConjunctionByKey(node.key);
+		for(var i=0; i<conjunctionList.length; i++)
+			operatorList.push({list:['repeat'], datatype:null, repeatParameters: [conjunctionList[i], onFocusOperator]});
+	}
+
 	if(node.type=='result'){
 		var operatorNode = mapCreator.getNodeByKey(node.parent);
 		var operator = operatorNode.subtype;
@@ -533,9 +546,9 @@ function manageUpdateOperatorViewer(){
 	//concept or predicate that fired operator
 	if(node.type == 'predicate'){
 		var parentNode = mapCreator.getNodeByKey(node.parent);
-		
+
 		if(parentNode.type=='operator' && parentNode.subtype=='not'){
-			renderOperatorList([]);
+			renderOperatorList(operatorList);
 			return;
 		}else if(parentNode.type=='everything'){
 			operatorList.push({list:['optional'], datatype:null});

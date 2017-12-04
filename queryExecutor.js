@@ -165,11 +165,11 @@ QueryExecutor.prototype.getEntitySubclasses = function(url, limit, callback) {
 	if(url in language_classHierarchyMap[labelLang]){
 		submap = buildSubmapHierarchy(url, limit);
 
-		var childrenTemp = language_classHierarchyMap[labelLang][url].children;
+		/*var childrenTemp = language_classHierarchyMap[labelLang][url].children;
 		for(var i=0; i<childrenTemp.length; i++){
 			submap[childrenTemp[i]].parent = [];
 		}
-		delete submap[url];
+		delete submap[url];*/
 	}
 	callback(getMapRoots(submap), submap);
 }
@@ -942,8 +942,9 @@ function buildSubmapHierarchy(selectedClass, limit){
 	map[selectedClass].children = [];
 	map[selectedClass].parent = [];
 
-	var counter=0;
-		
+	//var counter=0;
+	var counter=1;
+
 	var stack = $.extend(true, [], language_classHierarchyMap[labelLang][selectedClass].children);
 	
 	var current;	

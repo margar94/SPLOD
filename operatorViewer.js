@@ -65,15 +65,31 @@ function renderOperatorList(operators){
 		}
 
 		for(var j = 0; j<datatypeOperatorList.length;j++){
+			var html;
+			if(datatypeOperatorList[j] == 'repeat'){
+				//change with language  manager function
+				html = datatypeOperators.repeatParameters.join(' ');
+			}else{
+				html = languageManager.getOperatorLabelVerbalization(datatypeOperatorList[j]);
+			}
+
 			var li = $("<li/>")
 			.attr('class', 'collection-item addToQuery')
 			.attr('meta-value', datatypeOperatorList[j])
 			.attr('meta-datatype', datatype)
-			.html(languageManager.getOperatorLabelVerbalization(datatypeOperatorList[j]));
+			.html(html);
 
 			li.appendTo(operatorList)
 				.on('click', function(){
-					if(!operatorManager.selectedOperator($(this).attr('meta-value'), $(this).attr('meta-datatype'))){
+					var condition;
+					if(datatypeOperatorList[j] == 'repeat'){
+						condition = operatorManager.selectedRepeat(datatypeOperators.repeatParameters);
+					}
+					else{
+						condition = operatorManager.selectedOperator($(this).attr('meta-value'), $(this).attr('meta-datatype'));
+					}
+					
+					if(!condition){
 						$("#operatorList").hide();
 						$('#operatorsSpinner').show();
 						$('#operatorsProgress').show();
