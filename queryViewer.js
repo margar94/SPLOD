@@ -428,10 +428,40 @@ function visitRenderer(key){
 				nodeQueryString += node.verbalization.current[verbalizationIndex];
 				nodeResultQuery += node.verbalization.current[verbalizationIndex++];
 
-				//it has only a something child
-				var temp = visitRenderer(node.children[0]);
-				nodeQueryString += temp.queryString;
-				nodeResultQuery += temp.resultString;
+				var addUl;
+				(node.children.length >= 2)?addUl = true : addUl = false;
+
+
+				//children
+				if(addUl){
+					nodeQueryString += '<ul>'; 
+					nodeResultQuery += '<ul>'; 
+				}
+
+				for(var i=0; i<node.children.length;i++){
+					if(addUl){
+						if(i==0 || (i%2)==1){
+							nodeQueryString += "<li>";
+							nodeResultQuery += "<li>";
+						}
+					}
+
+					var temp = visitRenderer(node.children[i]);
+					nodeQueryString += temp.queryString;
+					nodeResultQuery += temp.resultString;
+
+					if(addUl){
+						if(i==node.children.length-1 || (i%2)==0){
+							nodeQueryString += "</li>";
+							nodeResultQuery += "</li>";
+						}
+					}
+				}
+
+				if(addUl){
+					nodeQueryString += '</ul>'; 
+					nodeResultQuery += '</ul>';
+				}
 
 				nodeQueryString += '</span>';
 				nodeResultQuery += '</span>';
@@ -615,6 +645,9 @@ function renderFocus(){
 		//it's a node of the map
 		//focus text
 		var number = queryLogicStructure[onFocus].index; 
+		if('sameAs' in onFocusNode)
+			number = queryLogicStructure[onFocusNode.sameAs].index;
+
 		var focusLabel = languageManager.getOrdinalNumber(number) + ' ' + queryLogicStructure[onFocus].verbalization.focus.join(' ');
 		$("#focus").html(" <span class='" + mapCreator.getNodeByKey(onFocus).type+"'>" + focusLabel + "</span>");
 	}
@@ -688,6 +721,9 @@ function attachEvents(){
 			//it's a node of the map
 			//focus text
 			var number = queryLogicStructure[onFocus].index; 
+			if('sameAs' in onFocusNode)
+				number = queryLogicStructure[onFocusNode.sameAs].index;
+		
 			var focusLabel = languageManager.getOrdinalNumber(number) + ' ' + queryLogicStructure[onFocus].verbalization.focus.join(' ');
 			$("#focus").html(" <span class='" + mapCreator.getNodeByKey(onFocus).type+"'>" + focusLabel + "</span>");
 		}

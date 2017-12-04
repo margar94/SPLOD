@@ -40,7 +40,10 @@ function buildQuery(){
 function createAllVariable(){
 	for(key in queryLogicStructure){
 		var node = queryLogicStructure[key];
-		node.variable = "?"+createVariableFromLabel(node.label, node.index);
+		if('sameAs' in node) //sameAs variable 
+			node.variable = queryLogicStructure[node.sameAs].variable;
+		else
+			node.variable = "?"+createVariableFromLabel(node.label, node.index);
 	}
 }
 
@@ -70,17 +73,24 @@ function visitSPARQL(key){
 				}
 			}
 
-			if(firstReverseChild == null){
-				nodeSelect.push(node.variable);
-				nodeLabelSelect.push(node.label);
-				nodeKeySelect.push(node.key);
-			}
-			else{	
-				node.variable = firstReverseChild.variable;
+			if(!('sameAs' in node)){
+				if(firstReverseChild == null){
+					nodeSelect.push(node.variable);
+					nodeLabelSelect.push(node.label);
+					nodeKeySelect.push(node.key);
+				}
+				else{	
+					node.variable = firstReverseChild.variable;
 
-				nodeSelect.push(firstReverseChild.variable);
-				nodeLabelSelect.push(firstReverseChild.label);
-				nodeKeySelect.push(firstReverseChild.key);
+					nodeSelect.push(firstReverseChild.variable);
+					nodeLabelSelect.push(firstReverseChild.label);
+					nodeKeySelect.push(firstReverseChild.key);
+				}
+			}
+
+			//set variable 
+			if('sameAs' in node){
+				node.variable = queryLogicStructure[node.sameAs].variable;
 			}
 
 			if(!(node.children.length>1 && queryLogicStructure[node.children[1]].type=='operator' && queryLogicStructure[node.children[1]].subtype=='xor')){
@@ -178,28 +188,33 @@ function visitSPARQL(key){
 
 			break;
 		case 'concept' :
-			//eventually change of variable and select management
-			var parentNode = queryLogicStructure[node.parent];
-			if(parentNode!=undefined){
-				switch(parentNode.type){
-					case 'everything': 
-					case 'concept' : 
-							node.variable = parentNode.variable;
-						break;
-					case 'predicate':
-						if(parentNode.direction == 'direct'){
-							node.variable = parentNode.variable;
-						}else if(parentNode.direction == 'reverse'){
-							nodeSelect.push(node.variable);
-							nodeLabelSelect.push(node.label);
-							nodeKeySelect.push(node.key);
-						}
-						break; 
-				} 
+			//set variable 
+			if('sameAs' in node){
+				node.variable = queryLogicStructure[node.sameAs].variable;
 			}else{
-				nodeSelect.push(node.variable);
-				nodeLabelSelect.push(node.label);
-				nodeKeySelect.push(node.key);
+				//eventually change of variable and select management
+				var parentNode = queryLogicStructure[node.parent];
+				if(parentNode!=undefined){
+					switch(parentNode.type){
+						case 'everything': 
+						case 'concept' : 
+								node.variable = parentNode.variable;
+							break;
+						case 'predicate':
+							if(parentNode.direction == 'direct'){
+								node.variable = parentNode.variable;
+							}else if(parentNode.direction == 'reverse'){
+								nodeSelect.push(node.variable);
+								nodeLabelSelect.push(node.label);
+								nodeKeySelect.push(node.key);
+							}
+							break; 
+					} 
+				}else{
+					nodeSelect.push(node.variable);
+					nodeLabelSelect.push(node.label);
+					nodeKeySelect.push(node.key);
+				}
 			}
 
 			//where management
@@ -292,10 +307,16 @@ function visitSPARQL(key){
 			break;
 		case 'predicate' :
 			if(node.direction == 'direct'){
-				if(!addNot){
-					nodeSelect.push(node.variable);
-					nodeLabelSelect.push(node.label);
-					nodeKeySelect.push(node.key);
+
+				//set variable 
+				if('sameAs' in node){
+					node.variable = queryLogicStructure[node.sameAs].variable;
+				}else{
+					if(!addNot){
+						nodeSelect.push(node.variable);
+						nodeLabelSelect.push(node.label);
+						nodeKeySelect.push(node.key);
+					}
 				}
 
 				//where management
@@ -403,35 +424,125 @@ function visitSPARQL(key){
 			}else if(node.direction == 'reverse'){
 
 				var parentVariable = queryLogicStructure[node.parent].variable;
-				node.variable = queryLogicStructure[node.children[0]].variable;
 
-				if(addNot){
-					nodeWhere = nodeWhere.concat([{relatedTo: [node.parent, node.key, node.children[0]], content:['FILTER(!EXISTS{'+node.variable+ ' <'+node.url+'> '+ parentVariable+'.})']}]);
+				for(var i=0; i<node.children.length; i=i+2){
+				
+					node.variable = queryLogicStructure[node.children[i]].variable;
+
+					if(addNot){
+						nodeWhere = nodeWhere.concat([{relatedTo: [node.parent, node.key, node.children[i]], 
+							content:['FILTER(!EXISTS{'+node.variable+ ' <'+node.url+'> '+ parentVariable+'.})']}]);
+					}
+					else{
+						nodeWhere = nodeWhere.concat([{relatedTo: [node.key, node.children[i]], 
+							content:[node.variable+ ' <'+node.url+'> '+ parentVariable+'.']}]);
+						tempReverseWhere = {relatedTo: [node.key, node.children[i]], 
+							content:[node.variable+ ' <'+node.url+'> '+ parentVariable+'.']};
+					}
 				}
-				else{
-					nodeWhere = nodeWhere.concat([{relatedTo: [node.key, node.children[0]], content:[node.variable+ ' <'+node.url+'> '+ parentVariable+'.']}]);
-					tempReverseWhere = {relatedTo: [node.key, node.children[0]], content:[node.variable+ ' <'+node.url+'> '+ parentVariable+'.']};
+
+
+				for(var i=0; i<node.children.length; i++){ 
+					childQuery = visitSPARQL(node.children[i]); 
+
+					nodeSelect = nodeSelect.concat(childQuery.select);
+					nodeLabelSelect = nodeLabelSelect.concat(childQuery.labelSelect);
+					nodeKeySelect = nodeKeySelect.concat(childQuery.keySelect);
+
+					childWhere.push(childQuery.where);
 				}
 
-				//visit 'something' node
-				childQuery = visitSPARQL(node.children[0]); 
+				var sameLevelOperator = null;
+				if(node.children.length==1){
+					nodeWhere = nodeWhere.concat(childWhere[0]);
+				}else if(node.children.length > 1){
+					sameLevelOperator = queryLogicStructure[node.children[1]].subtype;
+				}
 
-				nodeSelect = nodeSelect.concat(childQuery.select);
-				nodeLabelSelect = nodeLabelSelect.concat(childQuery.labelSelect);
-				nodeKeySelect = nodeKeySelect.concat(childQuery.keySelect);
+				var child = [];
+				for(var i = 1; i<node.children.length; i = i+2)
+					child.push(node.children[i]);
 
-				nodeWhere = nodeWhere.concat(childQuery.where);
+				switch(sameLevelOperator){
+					case 'and':
+						for(var i = 0; i < node.children.length; i = i+2){
+							nodeWhere = nodeWhere.concat(childWhere[i]);
+						}
+						break;
+					case 'or':
+						var block = [];
+						for(var i=0; i<childWhere.length; i = i+2){
+							block.push(childWhere[i]);
+						}
+						
+						for(var z = 0; z < block.length; z++){
+
+							var fixedBlock = block.splice(0,1)[0];
+							nodeWhere = nodeWhere.concat([{relatedTo: child, content:['{']}]);
+
+							for(var t=0; t<fixedBlock.length; t++)
+								nodeWhere = nodeWhere.concat([{relatedTo: fixedBlock[t].relatedTo.concat(child), 
+									content:fixedBlock[t].content}]);
+
+							block.splice(block.length,0,fixedBlock);
+
+							for(var numberOfOptional = 0; numberOfOptional < block.length-1; numberOfOptional++){
+								var optionalBlock = block.splice(0,1)[0];
+								nodeWhere = nodeWhere.concat([{relatedTo: child, content:['OPTIONAL{']}]);
+
+								for(var t=0; t<optionalBlock.length; t++)
+									nodeWhere = nodeWhere.concat([{relatedTo: optionalBlock[t].relatedTo.concat(child),
+										content:optionalBlock[t].content}]);
+
+								nodeWhere = nodeWhere.concat([{relatedTo: child, content:['}']}]);
+
+								block.splice(block.length, 0, optionalBlock);
+							}
+
+							block.splice(block.length,0,(block.splice(0,1)[0]));
+
+							nodeWhere = nodeWhere.concat([{relatedTo: child, content:['}']}]);
+							if(z != block.length-1)
+								nodeWhere = nodeWhere.concat([{relatedTo: child, content:['UNION']}]);
+						}
+
+						break;
+					case 'xor':
+						for(var i = 0; i < node.children.length; i = i+2){
+							nodeWhere = nodeWhere.concat([{relatedTo: child, content:['{']}]);
+							//cosa fare??
+							//nodeWhere = nodeWhere.concat([{relatedTo: [node.key], content:[parentVariable+ ' <'+node.url+'> '+ node.variable+'.']}]);
+
+							for(var j=0; j<childWhere[i].length; j++)
+								nodeWhere = nodeWhere.concat([{relatedTo: childWhere[i][j].relatedTo.concat(child), 
+									content:childWhere[i][j].content}]);
+
+							if(i == node.children.length-1)
+								nodeWhere = nodeWhere.concat([{relatedTo: child, content:['}']}]);
+							else
+								nodeWhere = nodeWhere.concat([{relatedTo: child, content:['} UNION']}]);
+
+						}
+						break;
+					}
+					
+				}
 				
 				if(addNot){
 					addNot = false;
 				}
-
-			}
+			
 			break;
 		case 'something' : 
-			nodeSelect.push(node.variable);
-			nodeLabelSelect.push(node.label);
-			nodeKeySelect.push(node.key);
+
+			//set variable 
+			if('sameAs' in node){
+				node.variable = queryLogicStructure[node.sameAs].variable;
+			}else{
+				nodeSelect.push(node.variable);
+				nodeLabelSelect.push(node.label);
+				nodeKeySelect.push(node.key);
+			}
 
 			if(!addNot){
 				for(var i=0; i<node.children.length; i++){ 

@@ -76,7 +76,8 @@ MapCreator.prototype.selectedConcept = function(selectedUrl, selectedLabel) {
 						   url: selectedUrl, label: selectedLabel, 
 						   type:'concept', direction: false, 
 						   verbalization: verbalization, 
-						   parent:null, children: []};
+						   parent:null, children: [],
+						   mySameAsReferences : []};
 	queryLogicMap[key] = newLogicElement;
 
 	if(rootQueryLogicMap == null){ // selectedConcept is the query's subject 
@@ -174,7 +175,8 @@ MapCreator.prototype.selectedPredicate = function(selectedUrl, selectedLabel, pr
 						   url: selectedUrl, label: selectedLabel, 
 						   type:'predicate', direction: predicateDirection,
 						   verbalization: verbalization, 
-						   parent:null, children: []};
+						   parent:null, children: [],
+						   mySameAsReferences : []};
 	queryLogicMap[key] = newLogicElement;
 
 	if(rootQueryLogicMap == null){ // first element selected
@@ -196,7 +198,8 @@ MapCreator.prototype.selectedPredicate = function(selectedUrl, selectedLabel, pr
 							  type:'everything', direction:false,
 							  verbalization:verbalizationEverything,
 							  parent:null, children:[key],
-							  counterDirectPredicatesChildren: 1};
+							  counterDirectPredicatesChildren: 1, 
+							  mySameAsReferences : []};
 		queryLogicMap[everythingKey] = everythingElement;
 
 		rootQueryLogicMap = everythingKey;
@@ -263,7 +266,8 @@ MapCreator.prototype.selectedPredicate = function(selectedUrl, selectedLabel, pr
 							  url: 'something', label:'something', 
 							  type:'something', direction:false,
 							  verbalization:verbalization,
-							  parent:null, children:[]};
+							  parent:null, children:[],
+							  mySameAsReferences : []};
 		queryLogicMap[somethingKey] = somethingLogic;
 
 		queryLogicMap[key].children.push(somethingKey);	
@@ -396,7 +400,8 @@ MapCreator.prototype.selectedOperator = function(pendingQuery){
 							   parent:key, children: [], 
 							   datatype: resultDatatype, penninculo: resultPenninculo,
 							   lang: resultLang,
-							   relatedTo: relatedToValue};
+							   relatedTo: relatedToValue,
+							   mySameAsReferences : []};
 
 				if(queryViewer == null)
 					queryViewer = new QueryViewer();
@@ -509,8 +514,114 @@ MapCreator.prototype.selectedOperator = function(pendingQuery){
 }
 
 MapCreator.prototype.selectedRepeatOperator  = function(repeatParameters){
-	console.log(repeatParameters[0]);
-	console.log(repeatParameters[1]);
+	var operator = repeatParameters[0];
+	var keyToRepeat = repeatParameters[1];
+	var nodeToRepeat = queryLogicMap[keyToRepeat];
+
+	//manage who is the parent
+	var parent; 
+	if(nodeToRepeat.parent !=null){
+		parent = nodeToRepeat.parent;
+		if(queryLogicMap[parent].type == 'operator' && 
+			(queryLogicMap[parent].subtype == 'not' || queryLogicMap[parent].subtype == 'operator'))
+				parent = queryLogicMap[parent].parent;
+	}else{
+		//radice, gestire
+	}
+
+	//conjunction
+	var newOperatorVerbalization = languageManager.verbalizeOperator(operator);
+
+	if(!(operator in indexMap)){
+		indexMap[operator] = 1;
+	}
+	else{
+		indexMap[operator] += 1;
+	}
+
+	var newOperatorIndex = indexMap[operator];
+	var newOperatorKey = operator + "_" + newOperatorIndex;
+
+	var newOperatorLogicElement = {key: newOperatorKey, index: newOperatorIndex,
+						   url: operator, label: languageManager.getOperatorLabelVerbalization(operator), 
+						   type:'operator', subtype: operator, direction: false, 
+						   verbalization: newOperatorVerbalization, 
+						   parent:parent, children: []};
+	queryLogicMap[newOperatorKey] = newOperatorLogicElement;
+
+	//repeated node
+	if(!(nodeToRepeat.url in indexMap)){
+		indexMap[nodeToRepeat.url] = 1;
+	}
+	else{
+		indexMap[nodeToRepeat.url] += 1;
+	}
+
+	var index = indexMap[nodeToRepeat.url];
+	var key = nodeToRepeat.url + "_" + index;
+
+	var newLogicElement = {key: key, index: index,
+						   url: nodeToRepeat.url, label: nodeToRepeat.label, 
+						   type:nodeToRepeat.type, direction: nodeToRepeat.direction,
+						   verbalization: nodeToRepeat.verbalization, 
+						   parent:parent, children: [],
+						   mySameAsReferences : []};
+
+	if('sameAs' in nodeToRepeat)
+		newLogicElement['sameAs'] = nodeToRepeat['sameAs'];
+	else
+		newLogicElement['sameAs'] = keyToRepeat;
+
+	nodeToRepeat['mySameAsReferences'].push(key);
+
+	queryLogicMap[key] = newLogicElement;
+
+	if(nodeToRepeat.type == 'predicate' && nodeToRepeat.direction == 'reverse'){
+		// add something node to complete reverse predicate
+		var somethingVerbalization = languageManager.verbalizeSomething();
+
+		if(!indexMap.hasOwnProperty('something')){
+			indexMap['something'] = 1;
+		}
+		else{
+			indexMap['something'] += 1;
+		}
+
+		var somethingIndex = indexMap['something'];
+		var somethingKey = 'something' + "_" + somethingIndex;
+
+		var somethingLogic = {key: somethingKey, index: somethingIndex,
+							  //url: somethingKey, label:'thing', 
+							  url: 'something', label:'something', 
+							  type:'something', direction:false,
+							  verbalization:somethingVerbalization,
+							  parent:key, children:[],
+							  mySameAsReferences : []};
+		queryLogicMap[somethingKey] = somethingLogic;
+
+		queryLogicMap[key].children.push(somethingKey);	
+	}
+
+	if(parent!=null){
+		queryLogicMap[parent].children.push(newOperatorKey);
+		queryLogicMap[parent].children.push(key);
+	}else{
+		//gestione root
+	}
+
+console.log(queryLogicMap);
+
+	elementOnFocus = key;
+	updateAndNotifyFocus(elementOnFocus);
+
+	if(queryVerbalizator == null)
+		queryVerbalizator = new QueryVerbalizator;
+	queryVerbalizator.updateQuery(rootQueryLogicMap, queryLogicMap, elementOnFocus);
+	
+	if(queryBuilder == null)
+		queryBuilder = new QueryBuilder;
+	queryBuilder.updateQuery(rootQueryLogicMap, queryLogicMap);
+
 }
 
 MapCreator.prototype.selectedResult = function(result){
@@ -535,7 +646,8 @@ MapCreator.prototype.selectedResult = function(result){
 				   parent:elementOnFocusNode.parent, children: [], 
 				   datatype: result.datatype, lang: result.lang,
 				   relatedTo: elementOnFocusNode.relatedTo,
-				   cachedQuery: elementOnFocusNode.cachedQuery};
+				   cachedQuery: elementOnFocusNode.cachedQuery,
+				   mySameAsReferences : []};
 
 	queryLogicMap[key] = newLogicElement;
 
@@ -563,6 +675,8 @@ MapCreator.prototype.selectedResult = function(result){
 MapCreator.prototype.removeElement = function(key){
 	
 	var node = queryLogicMap[key];
+
+	updateSameAsReferences(node);
 
 	if(node.type=='operator')
 		removeOperator(node);
@@ -632,7 +746,9 @@ MapCreator.prototype.removeElement = function(key){
 
 	if(rootQueryLogicMap == key){
 		rootQueryLogicMap = null;
+		//TODO
 	}
+console.log(queryLogicMap);
 
 	updateAndNotifyFocus(elementOnFocus);
 
@@ -818,7 +934,8 @@ function substituteMeWithSomethingNode(key){
 							  url: 'something', label:'thing', 
 							  type:'something', direction:false,
 							  verbalization:somethingVerbalization,
-							  parent:node.parent, children:[]};
+							  parent:node.parent, children:[],
+							  mySameAsReferences : []};
 	queryLogicMap[somethingKey] = somethingLogic;
 
 	for(var i=0; i<node.children.length; i++){
@@ -997,4 +1114,24 @@ function removeOperator(node){
 function decreaseIndexIfIAmLast(node){
 	if(node.index == indexMap[node.url])
 		indexMap[node.url] = indexMap[node.url]-1;
+}
+
+function updateSameAsReferences(node){
+	//if I have sameAs, I have to update its references list
+	if('sameAs' in node){
+		var index = queryLogicMap[node.sameAs].mySameAsReferences.indexOf(node.key);
+		queryLogicMap[node.sameAs].mySameAsReferences.splice(index, 1);
+	}
+
+	if(node.mySameAsReferences.length!=0){
+		//if I am sameAs of something 
+		var newSameAsKey = node.mySameAsReferences[0];
+		var newSameAsNode = queryLogicMap[newSameAsKey];
+		delete newSameAsNode.sameAs;
+
+		newSameAsNode.mySameAsReferences = node.mySameAsReferences.splice(1,node.mySameAsReferences.length-1);
+		for(var i=0; i<newSameAsNode.mySameAsReferences.length; i++){
+			queryLogicMap[newSameAsNode.mySameAsReferences[i]].sameAs = newSameAsKey;
+		}
+	}
 }

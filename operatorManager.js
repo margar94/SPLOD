@@ -511,11 +511,14 @@ function manageUpdateOperatorViewer(){
 	}
 	
 	var node = mapCreator.getNodeByKey(onFocusOperator);
+	if('sameAs' in node){
+		node = mapCreator.getNodeByKey(node.sameAs);
+	}
 
 	if(node.type == 'everything' || node.type == 'concept' || node.type == 'predicate' || node.type == 'something' || node.type == 'result'){
 		var conjunctionList = mapCreator.getSiblingConjunctionByKey(node.key);
 		for(var i=0; i<conjunctionList.length; i++)
-			operatorList.push({list:['repeat'], datatype:null, repeatParameters: [conjunctionList[i], onFocusOperator]});
+			operatorList.push({list:['repeat'], datatype:null, repeatParameters: [conjunctionList[i], node.key]});
 	}
 
 	if(node.type=='result'){
@@ -565,18 +568,22 @@ function manageUpdateOperatorViewer(){
 		}
 	}
 
-	if(mapCreator.isRefinement(onFocusOperator)){
+	if(mapCreator.isRefinement(node.key)){
 		operatorList.push({list:['optional'], datatype:null});
 		operatorList.push({list:['not'], datatype:null});
-		onFocusOperator = mapCreator.getTopElement(onFocusOperator);
+
+		onFocusOperator = mapCreator.getTopElement(node.key);
+		node = mapCreator.getNodeByKey(onFocusOperator);
+
+		//TODO check if it has sameAs and eventually if its sameAs is a refinement and loop on it.
 	}
+
 	//from here onFocusOperator could be the concept or his ancestor
-	if(onFocusOperator in resultDatatype){
-		for(var i=0; i<resultDatatype[onFocusOperator].datatype.length; i++){
-			operatorList.push({list:operatorMap[resultDatatype[onFocusOperator].datatype[i]], datatype:resultDatatype[onFocusOperator].datatype[i]});
+	if(node.key in resultDatatype){
+		for(var i=0; i<resultDatatype[node.key].datatype.length; i++){
+			operatorList.push({list:operatorMap[resultDatatype[node.key].datatype[i]], datatype:resultDatatype[node.key].datatype[i]});
 		}
 	}	
-
 	renderOperatorList(operatorList);
 	return;
 	
