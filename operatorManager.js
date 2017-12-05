@@ -512,6 +512,7 @@ function manageUpdateOperatorViewer(){
 	
 	var node = mapCreator.getNodeByKey(onFocusOperator);
 	if('sameAs' in node){
+		onFocusOperator = node.sameAs;
 		node = mapCreator.getNodeByKey(node.sameAs);
 	}
 

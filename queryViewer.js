@@ -1,5 +1,5 @@
 var queryLogicStructure;
-var queryLogicStructureRoot;
+var queryLogicStructureRootList;
 var visitStack;
 var queryString;
 
@@ -35,6 +35,7 @@ var QueryViewer= function () {
 
 	mapCreator = new MapCreator();
 	queryLogicStructure = {}; 
+	queryLogicStructureRootList = [];
 	visitStack = [];
 
 	cachedResultQuery = {};
@@ -45,9 +46,9 @@ var QueryViewer= function () {
 	QueryViewer.prototype._singletonInstance = this;
 };
 
-QueryViewer.prototype.updateQuery = function(queryRoot, queryMap, focus){
+QueryViewer.prototype.updateQuery = function(queryRootList, queryMap, focus){
 	visitStack = [];
-	queryLogicStructureRoot = queryRoot;
+	queryLogicStructureRootList = queryRootList;
 	queryLogicStructure = queryMap;
 	onFocus = focus;
 	queryString = languageManager.getQueryInitialVerbalization();
@@ -57,7 +58,7 @@ QueryViewer.prototype.updateQuery = function(queryRoot, queryMap, focus){
 }
 
 function renderQuery(){ 
-	if(queryLogicStructureRoot != null){
+	if(queryLogicStructureRootList.length != 0){
 
 		queryString = languageManager.getQueryStartVerbalization();
 		resultQuery = languageManager.getQueryStartVerbalization();
@@ -75,9 +76,40 @@ function renderQuery(){
 		queryString += '</span>';
 		queryString += '</span>';
 
-		var temp = visitRenderer(queryLogicStructureRoot);
-		queryString += temp.queryString;
-		resultQuery += temp.resultString;
+		var addUl;
+		(queryLogicStructureRootList.length >= 2)?addUl = true : addUl = false;
+
+		//children
+		if(addUl){
+			queryString += '<ul>'; 
+			resultQuery += '<ul>'; 
+		}
+
+		for(var i=0; i<queryLogicStructureRootList.length;i++){
+			if(addUl){
+				if(i==0 || (i%2)==1){
+					queryString += "<li>";
+					resultQuery += "<li>";
+				}
+			}
+
+			var temp = visitRenderer(queryLogicStructureRootList[i]);
+			queryString += temp.queryString;
+			resultQuery += temp.resultString;
+
+			if(addUl){
+				if(i==queryLogicStructureRootList.length-1 || (i%2)==0){
+					queryString += "</li>";
+					resultQuery += "</li>";
+				}
+			}
+		}
+
+		if(addUl){
+			queryString += '</ul>'; 
+			resultQuery += '</ul>';
+		}
+		
 	}
 
 	$("#queryNaturalLanguage")[0].innerHTML = queryString;

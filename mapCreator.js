@@ -1,6 +1,6 @@
 // Map that contains all the information to build query in natural language and in SPARQL
 var queryLogicMap;
-var rootQueryLogicMap;
+var rootListQueryLogicMap;
 
 // Map that counts concepts and predicates occurences.
 var indexMap;
@@ -29,13 +29,13 @@ var MapCreator = function () {
 	MapCreator.prototype._singletonInstance = this;
  };
 
-function beginFromMap(root, map, focus){
+function beginFromMap(rootList, map, focus){
 	//clean map
 	elementOnFocus = null;	
 	initializeMap();
 
 	//inizialize map 
-	rootQueryLogicMap = root;
+	rootListQueryLogicMap = rootList;
 	queryLogicMap = map;
 	elementOnFocus = focus;
 
@@ -45,11 +45,11 @@ function beginFromMap(root, map, focus){
 
 	if(queryVerbalizator == null)
 		queryVerbalizator = new QueryVerbalizator;
-	queryVerbalizator.updateQuery(rootQueryLogicMap, queryLogicMap, elementOnFocus);
+	queryVerbalizator.updateQuery(rootListQueryLogicMap, queryLogicMap, elementOnFocus);
 	
 	if(queryBuilder == null)
 		queryBuilder = new QueryBuilder;
-	queryBuilder.updateQuery(rootQueryLogicMap, queryLogicMap);
+	queryBuilder.updateQuery(rootListQueryLogicMap, queryLogicMap);
 }
 /*
 	Notify to the queryVerbalizator the selected concept.
@@ -80,9 +80,9 @@ MapCreator.prototype.selectedConcept = function(selectedUrl, selectedLabel) {
 						   mySameAsReferences : []};
 	queryLogicMap[key] = newLogicElement;
 
-	if(rootQueryLogicMap == null){ // selectedConcept is the query's subject 
+	if(rootListQueryLogicMap.length==0){ // selectedConcept is the query's subject 
 		
-		rootQueryLogicMap = key;
+		rootListQueryLogicMap.push(key);
 
 	}else{
 
@@ -142,11 +142,11 @@ MapCreator.prototype.selectedConcept = function(selectedUrl, selectedLabel) {
 
 	if(queryVerbalizator == null)
 		queryVerbalizator = new QueryVerbalizator;
-	queryVerbalizator.updateQuery(rootQueryLogicMap, queryLogicMap, elementOnFocus);
+	queryVerbalizator.updateQuery(rootListQueryLogicMap, queryLogicMap, elementOnFocus);
 	
 	if(queryBuilder == null)
 		queryBuilder = new QueryBuilder;
-	queryBuilder.updateQuery(rootQueryLogicMap, queryLogicMap);
+	queryBuilder.updateQuery(rootListQueryLogicMap, queryLogicMap);
 }
 
 /*
@@ -179,7 +179,7 @@ MapCreator.prototype.selectedPredicate = function(selectedUrl, selectedLabel, pr
 						   mySameAsReferences : []};
 	queryLogicMap[key] = newLogicElement;
 
-	if(rootQueryLogicMap == null){ // first element selected
+	if(rootListQueryLogicMap.length==0){ // first element selected
 
 		// add predicate's subject -> everything
 		var verbalizationEverything = languageManager.verbalizeEverything();
@@ -202,7 +202,7 @@ MapCreator.prototype.selectedPredicate = function(selectedUrl, selectedLabel, pr
 							  mySameAsReferences : []};
 		queryLogicMap[everythingKey] = everythingElement;
 
-		rootQueryLogicMap = everythingKey;
+		rootListQueryLogicMap.push(everythingKey);
 		newLogicElement.parent = everythingKey;
 	
 	}else{ //there's a prec 
@@ -285,11 +285,11 @@ MapCreator.prototype.selectedPredicate = function(selectedUrl, selectedLabel, pr
 
 	if(queryVerbalizator == null)
 		queryVerbalizator = new QueryVerbalizator;
-	queryVerbalizator.updateQuery(rootQueryLogicMap, queryLogicMap, elementOnFocus);
+	queryVerbalizator.updateQuery(rootListQueryLogicMap, queryLogicMap, elementOnFocus);
 	
 	if(queryBuilder == null)
 		queryBuilder = new QueryBuilder;
-	queryBuilder.updateQuery(rootQueryLogicMap, queryLogicMap);
+	queryBuilder.updateQuery(rootListQueryLogicMap, queryLogicMap);
 
 	//console.log(queryLogicMap);
 }
@@ -504,11 +504,11 @@ MapCreator.prototype.selectedOperator = function(pendingQuery){
 
 	if(queryVerbalizator == null)
 		queryVerbalizator = new QueryVerbalizator;
-	queryVerbalizator.updateQuery(rootQueryLogicMap, queryLogicMap, elementOnFocus);
+	queryVerbalizator.updateQuery(rootListQueryLogicMap, queryLogicMap, elementOnFocus);
 	
 	if(queryBuilder == null)
 		queryBuilder = new QueryBuilder;
-	queryBuilder.updateQuery(rootQueryLogicMap, queryLogicMap);
+	queryBuilder.updateQuery(rootListQueryLogicMap, queryLogicMap);
 
 	return resultsKey;
 }
@@ -519,14 +519,11 @@ MapCreator.prototype.selectedRepeatOperator  = function(repeatParameters){
 	var nodeToRepeat = queryLogicMap[keyToRepeat];
 
 	//manage who is the parent
-	var parent; 
-	if(nodeToRepeat.parent !=null){
-		parent = nodeToRepeat.parent;
+	var parent = nodeToRepeat.parent; 
+	if(parent !=null){
 		if(queryLogicMap[parent].type == 'operator' && 
 			(queryLogicMap[parent].subtype == 'not' || queryLogicMap[parent].subtype == 'operator'))
 				parent = queryLogicMap[parent].parent;
-	}else{
-		//radice, gestire
 	}
 
 	//conjunction
@@ -606,7 +603,8 @@ MapCreator.prototype.selectedRepeatOperator  = function(repeatParameters){
 		queryLogicMap[parent].children.push(newOperatorKey);
 		queryLogicMap[parent].children.push(key);
 	}else{
-		//gestione root
+		rootListQueryLogicMap.push(newOperatorKey);
+		rootListQueryLogicMap.push(key);
 	}
 
 console.log(queryLogicMap);
@@ -616,11 +614,11 @@ console.log(queryLogicMap);
 
 	if(queryVerbalizator == null)
 		queryVerbalizator = new QueryVerbalizator;
-	queryVerbalizator.updateQuery(rootQueryLogicMap, queryLogicMap, elementOnFocus);
+	queryVerbalizator.updateQuery(rootListQueryLogicMap, queryLogicMap, elementOnFocus);
 	
 	if(queryBuilder == null)
 		queryBuilder = new QueryBuilder;
-	queryBuilder.updateQuery(rootQueryLogicMap, queryLogicMap);
+	queryBuilder.updateQuery(rootListQueryLogicMap, queryLogicMap);
 
 }
 
@@ -662,11 +660,11 @@ MapCreator.prototype.selectedResult = function(result){
 
 	if(queryVerbalizator == null)
 		queryVerbalizator = new QueryVerbalizator;
-	queryVerbalizator.updateQuery(rootQueryLogicMap, queryLogicMap, elementOnFocus);
+	queryVerbalizator.updateQuery(rootListQueryLogicMap, queryLogicMap, elementOnFocus);
 
 	if(queryBuilder == null)
 		queryBuilder = new QueryBuilder;
-	queryBuilder.updateQuery(rootQueryLogicMap, queryLogicMap);
+	queryBuilder.updateQuery(rootListQueryLogicMap, queryLogicMap);
 
 	return key;
 }
@@ -707,18 +705,27 @@ MapCreator.prototype.removeElement = function(key){
 				if(everythingNode.children.length==0){
 					decreaseIndexIfIAmLast(everythingNode);
 					delete queryLogicMap[everythingNode.key];
+					
+					var rootIndex = rootListQueryLogicMap.indexOf(everythingNode.key);
+					if(rootIndex==0){
+						rootListQueryLogicMap.splice(rootIndex, 2);
+					}else if(rootIndex>0){
+						rootListQueryLogicMap.splice(rootIndex-1, 2);
+					}
 
-					rootQueryLogicMap = null;
-					elementOnFocus = null;
-
-				}else if(everythingNode.children.length==1 && everythingNode.counterDirectPredicatesChildren==0){
+					if(rootListQueryLogicMap.length>0)
+						elementOnFocus = rootListQueryLogicMap[0];
+					else
+						elementOnFocus = null;
+	
+				}/*else if(everythingNode.children.length==1 && everythingNode.counterDirectPredicatesChildren==0){
 					decreaseIndexIfIAmLast(everythingNode);
 					delete queryLogicMap[everythingNode.key];
 
 					queryLogicMap[everythingNode.children[0]].parent = null;
 					rootQueryLogicMap = everythingNode.children[0];
 					elementOnFocus = everythingNode.children[0];
-				}else{
+				}*/else{
 					elementOnFocus = everythingNode.key;
 				}
 			}else if(queryLogicMap[node.parent].type == 'operator'){//should be 'not' or 'optional' 
@@ -744,9 +751,18 @@ MapCreator.prototype.removeElement = function(key){
 
 	}
 
-	if(rootQueryLogicMap == key){
-		rootQueryLogicMap = null;
-		//TODO
+	var rootIndex = rootListQueryLogicMap.indexOf(key);
+	if(rootIndex==0){
+		rootListQueryLogicMap.splice(rootIndex, 2);
+	}else if(rootIndex>0){
+		rootListQueryLogicMap.splice(rootIndex-1, 2);
+	}
+
+	if(node.parent==null){
+		if(rootListQueryLogicMap.length>0)
+			elementOnFocus = rootListQueryLogicMap[0];
+		else
+			elementOnFocus = null;
 	}
 console.log(queryLogicMap);
 
@@ -757,11 +773,11 @@ console.log(queryLogicMap);
 
 	if(queryVerbalizator == null)
 		queryVerbalizator = new QueryVerbalizator;
-	queryVerbalizator.updateQuery(rootQueryLogicMap, queryLogicMap, elementOnFocus);
+	queryVerbalizator.updateQuery(rootListQueryLogicMap, queryLogicMap, elementOnFocus);
 	
 	if(queryBuilder == null)
 		queryBuilder = new QueryBuilder;
-	queryBuilder.updateQuery(rootQueryLogicMap, queryLogicMap);	
+	queryBuilder.updateQuery(rootListQueryLogicMap, queryLogicMap);	
 }
 
 //update focus and notify operatorManager when USER change focus
@@ -786,7 +802,7 @@ MapCreator.prototype.changeResultLimit = function(resultLimitValue){
 	
 	if(queryBuilder == null)
 		queryBuilder = new QueryBuilder;
-	queryBuilder.updateQuery(rootQueryLogicMap, queryLogicMap);
+	queryBuilder.updateQuery(rootListQueryLogicMap, queryLogicMap);
 }
 
 MapCreator.prototype.langChanged = function(){
@@ -811,11 +827,11 @@ MapCreator.prototype.langChanged = function(){
 
 	if(queryVerbalizator == null)
 		queryVerbalizator = new QueryVerbalizator;
-	queryVerbalizator.updateQuery(rootQueryLogicMap, queryLogicMap, elementOnFocus);
+	queryVerbalizator.updateQuery(rootListQueryLogicMap, queryLogicMap, elementOnFocus);
 	
 	if(queryBuilder == null)
 		queryBuilder = new QueryBuilder;
-	queryBuilder.updateQuery(rootQueryLogicMap, queryLogicMap);
+	queryBuilder.updateQuery(rootListQueryLogicMap, queryLogicMap);
 }
 
 MapCreator.prototype.getNodeByKey = function(key){
@@ -862,9 +878,16 @@ MapCreator.prototype.getSiblingConjunctionByKey = function(key){
 		else{
 			conjunction.push('and');
 			conjunction.push('or');
+			conjunction.push('xor');
 		}
 	}else{
-		//gestione radice
+		if(rootListQueryLogicMap.length>1){
+			conjunction.push(queryLogicMap[rootListQueryLogicMap[1]].subtype);
+		}else{
+			conjunction.push('and');
+			conjunction.push('or');
+			conjunction.push('xor');
+		}
 	}
 
 	return conjunction;
@@ -872,7 +895,7 @@ MapCreator.prototype.getSiblingConjunctionByKey = function(key){
 
 function initializeMap(){
 	queryLogicMap = {};
- 	rootQueryLogicMap = null;
+ 	rootListQueryLogicMap = [];
 	indexMap = {};
 
 	if(tableResultManager == null)
@@ -1123,7 +1146,7 @@ function updateSameAsReferences(node){
 		queryLogicMap[node.sameAs].mySameAsReferences.splice(index, 1);
 	}
 
-	if(node.mySameAsReferences.length!=0){
+	if('mySameAsReferences' in node && node.mySameAsReferences.length!=0){
 		//if I am sameAs of something 
 		var newSameAsKey = node.mySameAsReferences[0];
 		var newSameAsNode = queryLogicMap[newSameAsKey];

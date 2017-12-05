@@ -1,5 +1,5 @@
 var queryLogicStructure;
-var queryLogicStructureRoot;
+var queryLogicStructureRootList;
 var visitStack;
 
 var queryViewer;
@@ -19,9 +19,9 @@ var QueryVerbalizator = function () {
 	QueryVerbalizator.prototype._singletonInstance = this;
 };
 
-QueryVerbalizator.prototype.updateQuery = function(queryRoot, queryMap, elementOnFocus){
+QueryVerbalizator.prototype.updateQuery = function(queryRootList, queryMap, elementOnFocus){
 	visitStack = [];
-	queryLogicStructureRoot = queryRoot;
+	queryLogicStructureRootList = queryRootList;
 	queryLogicStructure = queryMap;
 	keyElementOnFocus = elementOnFocus;
 	verbalizeQuery();
@@ -29,59 +29,63 @@ QueryVerbalizator.prototype.updateQuery = function(queryRoot, queryMap, elementO
 
 function verbalizeQuery(){
 	//visit query implicit tree 
-	if(queryLogicStructureRoot != null){
+	if(queryLogicStructureRootList.length != 0){
+		for(var rootListIndex = 0; rootListIndex<queryLogicStructureRootList.length; rootListIndex++){
+			var queryLogicStructureRoot = queryLogicStructureRootList[rootListIndex];
 
-		// complete map's info with predicatesCounter
-		if(queryLogicStructure[queryLogicStructureRoot].type=='concept' 
-			|| queryLogicStructure[queryLogicStructureRoot].type=='everything')
-			queryLogicStructure[queryLogicStructureRoot].predicatesCounter = 0;
-		else
-			queryLogicStructure[queryLogicStructureRoot].predicatesCounter = 1;
+			// complete map's info with predicatesCounter
+			if(queryLogicStructure[queryLogicStructureRoot].type=='concept' 
+				|| queryLogicStructure[queryLogicStructureRoot].type=='everything')
+				queryLogicStructure[queryLogicStructureRoot].predicatesCounter = 0;
+			else
+				queryLogicStructure[queryLogicStructureRoot].predicatesCounter = 1;
 
-		visitStack.push(queryLogicStructure[queryLogicStructureRoot]);
+			visitStack.push(queryLogicStructure[queryLogicStructureRoot]);
 
-		while(visitStack.length != 0){
-			var currentNode = visitStack.pop();
-			currentNode.verbalization.current = currentNode.verbalization.standard;
-			visitVerbalizator(currentNode);
+			while(visitStack.length != 0){
+				var currentNode = visitStack.pop();
+				currentNode.verbalization.current = currentNode.verbalization.standard;
+				visitVerbalizator(currentNode);
 
-			for(var i = currentNode.children.length-1; i>=0; i--){
-				//update predicatesCouter
-				var node = queryLogicStructure[currentNode.children[i]];
-				switch(node.type){
-					case 'concept':
-					case 'something':
-					case 'result': //same as concepts
+				for(var i = currentNode.children.length-1; i>=0; i--){
+					//update predicatesCouter
+					var node = queryLogicStructure[currentNode.children[i]];
+					switch(node.type){
+						case 'concept':
+						case 'something':
+						case 'result': //same as concepts
+							queryLogicStructure[currentNode.children[i]].predicatesCounter = 0;
+							break;
+						case 'predicate':
+							queryLogicStructure[currentNode.children[i]].predicatesCounter = queryLogicStructure[currentNode.key].predicatesCounter+1;
+							break;
+						case 'operator':
+							queryLogicStructure[currentNode.children[i]].predicatesCounter = queryLogicStructure[currentNode.key].predicatesCounter;
+							break;
+					}
+
+					if(currentNode.type == 'operator' 
+						&& (queryLogicStructure[node.parent].subtype == 'not' || queryLogicStructure[node.parent].subtype == 'optional'))
 						queryLogicStructure[currentNode.children[i]].predicatesCounter = 0;
-						break;
-					case 'predicate':
-						queryLogicStructure[currentNode.children[i]].predicatesCounter = queryLogicStructure[currentNode.key].predicatesCounter+1;
-						break;
-					case 'operator':
-						queryLogicStructure[currentNode.children[i]].predicatesCounter = queryLogicStructure[currentNode.key].predicatesCounter;
-						break;
+
+					visitStack.push(queryLogicStructure[currentNode.children[i]]);
+					
 				}
 
-				if(currentNode.type == 'operator' 
-					&& (queryLogicStructure[node.parent].subtype == 'not' || queryLogicStructure[node.parent].subtype == 'optional'))
-					queryLogicStructure[currentNode.children[i]].predicatesCounter = 0;
-
-				visitStack.push(queryLogicStructure[currentNode.children[i]]);
-				
 			}
-
 		}
-
 	}
 
-	queryViewer.updateQuery(queryLogicStructureRoot, queryLogicStructure, keyElementOnFocus);
+	queryViewer.updateQuery(queryLogicStructureRootList, queryLogicStructure, keyElementOnFocus);
 
 }
 
 function visitVerbalizator(node){
 
 	if(node.parent == null){
-		node.verbalization.current = node.verbalization.first;
+		if(node.type!='operator'){
+			node.verbalization.current = node.verbalization.first;
+		}
 		return;
 	}
 
