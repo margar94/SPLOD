@@ -4,15 +4,19 @@ var resultsToConvert;
 var labels;
 var datatypeInfo;
 
+var tableResultManager;
+
 function initTableResultViewer(){
 	cachedFieldsToHide = [];
 
 	resultsToConvert = {records:[], querySPARQL:""};
+	
+	tableResultManager = new TableResultManager();
 
-	$('#resultsSpinner').hide();
+	$('#tableResultsSpinner').hide();
 	$('#resultsPreviewBadge').text('0');
 	$('#resultsPreviewBadge').show();
-	$('#resultsProgress').hide();
+	$('#tableResultsProgress').hide();
 	$('#resultsTable').show();
 	$("#saveTable").addClass('disabled');
 
@@ -36,10 +40,10 @@ function restartTableResultViewer(){
 
 	resultsToConvert = {records:[], querySPARQL:""};
 
-	$('#resultsSpinner').hide();
+	$('#tableResultsSpinner').hide();
 	$('#resultsPreviewBadge').text('0');
 	$('#resultsPreviewBadge').show();
-	$('#resultsProgress').hide();
+	$('#tableResultsProgress').hide();
 	$('#resultsTable').show();
 	$("#saveTable").addClass('disabled');
 
@@ -61,13 +65,15 @@ function restartTableResultViewer(){
 function resetResultTable(){
 	$('#resultsTable').empty();
 	$('#previewTableResult').empty();
-	$('#resultsSpinner').hide();
-	$('#resultsProgress').hide();
+	$('#tableResultsSpinner').hide();
+	$('#tableResultsProgress').hide();
 	$('#resultsPreviewBadge').text('0');
 	$('#resultsPreviewBadge').show();
 	$('#resultsTable').show();
 
 	$("#saveTable").addClass('disabled');
+	$("#orderTable").addClass('disabled');
+	$("#visibleFieldsButton").addClass('disabled');
 }
 
 function resetFieldsList(){
@@ -75,11 +81,9 @@ function resetFieldsList(){
 }
 
 function renderResultTable(select, labelSelect, results){
-
 	labels = createTableLabel(select, labelSelect);
-	createFieldsSelectionList(labels);
-	createTable(select, labels, results);
-
+	createFieldsSelectionList();
+	createTable(select, results);
 }
 
 function createTableLabel(select, labelSelect){
@@ -96,32 +100,34 @@ function createTableLabel(select, labelSelect){
 	return labels;
 }
 
-function createFieldsSelectionList(labelSelect){
+function createFieldsSelectionList(){
 	var fieldsCollection = $('#fieldsCollection');
 	fieldsCollection.empty();
 
-	for(field in labelSelect){
+	var counter = 0;
+	for(field in labels){
+		counter++;
 		var li = $("<li/>")
 			.attr('class', 'collection-item withMargin')
 			.appendTo(fieldsCollection);
 
 		var fieldCheck = $("<input/>")
 			.attr('type', 'checkbox')
-			.attr('id', labelSelect[field].className)
+			.attr('id', labels[field].className)
 			.attr('name', 'visibleFields')
 			.appendTo(li)
 			.on('click', manageFields);
 
-		if(($.inArray(labelSelect[field].className,cachedFieldsToHide))<0)
+		if(($.inArray(labels[field].className,cachedFieldsToHide))<0)
 			fieldCheck.attr('checked', 'checked');
 
 		var label = $("<label/>")
-			.attr('for', labelSelect[field].className)
-			.html(labelSelect[field].label)
+			.attr('for', labels[field].className)
+			.html(labels[field].label)
 			.appendTo(li);
 
 	}
-
+	$('#fieldsCollection').css('margin-top', 24*counter+'px');
 }
 
 function manageFields(){
@@ -140,7 +146,7 @@ function manageFields(){
 
 }
 
-function createTable(select, labelSelect, results){
+function createTable(select, results){
 
 	var previewTable = $("#previewTableResult")
 	previewTable.empty();
@@ -152,10 +158,10 @@ function createTable(select, labelSelect, results){
 
 	var tr = $("<tr/>");
 	var previewTr = $("<tr/>");	
-	for(field in labelSelect){
+	for(field in labels){
 		var th = $("<th/>")
-			.attr('class', labelSelect[field].className)
-			.html(labelSelect[field].label)
+			.attr('class', labels[field].className)
+			.html(labels[field].label)
 			.appendTo(tr);
 
 		var previewTh = $("<th/>")
@@ -187,7 +193,7 @@ function createTable(select, labelSelect, results){
 			if(field in element){
 				var td = $("<td/>")
 					.text(element[field].value)
-					.attr('class', labelSelect[i].className)
+					.attr('class', labels[i].className)
 					.appendTo(tr);
 
 				var previewTd = $("<td/>")
@@ -263,18 +269,23 @@ function createTable(select, labelSelect, results){
 			$('.'+cachedFieldsToHide[index]).hide();
 	});
 
-	$('#resultsSpinner').hide();
-	$('#resultsProgress').hide();
+	$('#tableResultsSpinner').hide();
+	$('#tableResultsProgress').hide();
 	$('#resultsTable').show();
 	
 	var resultPreviewNumber = results.length;
 	/*if(resultPreviewNumber>=1000)
 		resultPreviewNumber = '999+';
 	*/
-	if(resultPreviewNumber == 0)
-		$("#saveTable").addClass('disabled');
-	else $("#saveTable").removeClass('disabled');
+	$("#visibleFieldsButton").removeClass('disabled');
 
+	if(resultPreviewNumber == 0){
+		$("#saveTable").addClass('disabled');
+		$("#orderTable").addClass('disabled');
+	}else{
+		$("#saveTable").removeClass('disabled');
+		$("#orderTable").removeClass('disabled');
+	}
 
 	$('#resultsPreviewBadge').text(resultPreviewNumber);
 	$('#resultsPreviewBadge').show();
@@ -378,4 +389,9 @@ function createJson(){
 	   data: jsonObj,      
 	   success: function() {} 
 	});*/
+}
+
+function orderTableResult(){
+ 	tableResultManager.orderAndRenderTable();
+ 	$("#orderTable").addClass('disabled');
 }

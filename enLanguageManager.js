@@ -602,6 +602,7 @@ enLanguageManager.prototype.getSelectTitle = function(select){
   case 'system lang': label = 'Select system language'; break;
   case 'num concepts': label = 'Change concept\'s number'; break;
   case 'num predicates': label = 'Change predicate\'s number'; break;
+  case 'default order table': label = 'Table results always ordered';break;
  }
 
  return label;

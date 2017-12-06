@@ -519,7 +519,7 @@ function manageUpdateOperatorViewer(){
 	if(node.type == 'everything' || node.type == 'concept' || node.type == 'predicate' || node.type == 'something' || node.type == 'result'){
 		var conjunctionList = mapCreator.getSiblingConjunctionByKey(node.key);
 		for(var i=0; i<conjunctionList.length; i++)
-			operatorList.push({list:['repeat'], datatype:null, repeatParameters: [conjunctionList[i], node.key]});
+			operatorList.push({list:['repeat'], datatype:null, repeatParameters: [conjunctionList[i], node.key, node.label]});
 	}
 
 	if(node.type=='result'){

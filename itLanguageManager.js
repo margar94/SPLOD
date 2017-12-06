@@ -647,6 +647,7 @@ itLanguageManager.prototype.getSelectTitle = function(select){
   case 'system lang': label = 'Scegli la lingua del sistema'; break;
   case 'num concepts': label = 'Cambia il numero di concetti restituiti'; break;
   case 'num predicates': label = 'Cambia il numero di predicati restituiti'; break;
+  case 'default order table': label = 'Tabella dei risultati sempre ordinata';break;
  }
 
  return label;

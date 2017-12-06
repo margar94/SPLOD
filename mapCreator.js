@@ -764,7 +764,6 @@ MapCreator.prototype.removeElement = function(key){
 		else
 			elementOnFocus = null;
 	}
-console.log(queryLogicMap);
 
 	updateAndNotifyFocus(elementOnFocus);
 

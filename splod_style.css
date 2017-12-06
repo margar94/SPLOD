@@ -464,11 +464,6 @@ div#modalSparql, div#modalNaturalLanguage{
 	display: none;
 }
 
-ul#fieldsCollection {
-	margin-top:0;
-	overflow:hidden;
-}
-
 #previewTableResult td, #previewTableResult th{
 	padding:0;
 }
@@ -658,12 +653,54 @@ li.operatorListSeparator{
 	background-color: #2196f3;
 }
 
+#moreTableSettings{
+	position:absolute;
+	/*left: 0.5em;*/
+    top: 0.5em;
+}
+
+.fixed-action-btn.horizontal ul{
+	width: 200px !important;
+	height: 40%;
+    position: absolute;
+    top: 20%;
+}
+
+ul#fieldsCollection {
+	overflow:hidden;
+	width: 6em;
+	/*il fit content non consente un posizionamento decente*/
+	height: fit-content !important;
+	/*top: 6em !important;*/
+	position: absolute!important;
+    /*margin-top: 2.1em;*/
+    /*left: -7em !important;*/
+
+}
+
+ul#fieldsCollection li {
+    display: block; 
+    margin: unset; 
+}
+/*
 #visibleFieldsButton{
 	background-color: #2196f3;
 	position:absolute;
 	left: 0.5em;
     top: 1em;
 }
+
+#orderTable{
+	position:absolute;
+	left: 3.5em;
+    top: 1em;
+}
+
+#collapseTable{
+	position:absolute;
+	left: 6.5em;
+    top: 1em;
+}*/
 
 img.imgResult {
 	height: 10px;
@@ -692,10 +729,6 @@ img.imgResult {
 }
 .scrollableTableContent td{
 	flex:1;
-}
-
-#fieldsCollection{
-	margin:2px;
 }
 
 /*Settings Box*/
@@ -765,3 +798,11 @@ div#helpBox{
     opacity: 0.3;
 }*/
 
+/*Endpoint selection*/
+#endpointSelectionNav{
+	background-color:#2196f3;
+}
+
+#endpointSelectionTitle{
+	margin-left:3em;
+}

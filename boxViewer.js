@@ -109,6 +109,8 @@ function initializeLabelsAndTitle(){
 	$("#systemLangSelectLabel").html(languageManager.getSelectTitle('system lang'));
 	$("#numConceptsLabel").html(languageManager.getSelectTitle('num concepts'));
 	$("#numPredicatesLabel").html(languageManager.getSelectTitle('num predicates'));
+	$("#defaultOrderTableLabel").html(languageManager.getSelectTitle('default order table'));
+
 
 	//search bars
 	placeholder="Search for a concept..."
@@ -197,7 +199,7 @@ function renderConceptsList(roots, concepts){
 				$('#operatorProgress').show();
 				$('#operatorList').hide();
 
-				$('#tableResultSpinner').show();
+				$('#tableResultsSpinner').show();
 				$('#tableResultsProgress').show();
 				$('#resultsTable').hide();
 				$('#resultsPreviewBadge').hide();
@@ -266,7 +268,7 @@ function iterativePreorderVisit(concept, concepts, toAppend, level){
 			$('#operatorList').hide();
 			$('#operatorsProgress').show();
 
-			$('#tableResultSpinner').show();
+			$('#tableResultsSpinner').show();
 			$('#resultsTable').hide();
 			$('#tableResultsProgress').show();
 			$('#resultsPreviewBadge').hide();
@@ -427,7 +429,7 @@ function renderDirectPredicates(directMap){
 				$('#operatorList').hide();
 				$('#operatorsProgress').show();
 
-				$('#tableResultSpinner').show();
+				$('#tableResultsSpinner').show();
 				$('#tableResultsProgress').show();
 				$('#resultTable').hide();
 				$('#resultsPreviewBadge').hide();
@@ -483,7 +485,7 @@ function renderReversePredicates(reverseArray){
 				$('#operatorList').hide();
 				$('#operatorsProgress').show();
 
-				$('#tableResultSpinner').show();
+				$('#tableResultsSpinner').show();
 				$('#resultsTable').hide();
 				$('#tableResultsProgress').show();
 				$('#resultsPreviewBadge').hide();
@@ -757,9 +759,15 @@ function fillHelp(){
 function removeHighlightElements(keyToRemove){
 	$('#resultsPreviewBadge').hide();
 	$('#resultsTable').hide();
-	$('#resultsSpinner').show();
-	$('#resultsProgress').show();
+	$('#tableResultsSpinner').show();
+	$('#tableResultsProgress').show();
 
 	if(keyToRemove != 'undefined')
 		mapCreator.removeElement(keyToRemove);
+}
+
+function setDefaultOrderTable(value){
+	if(value[0].checked)
+		toOrder = true;
+	else toOrder = false;
 }

@@ -164,7 +164,7 @@
 	           			<span id="resultsPreviewBadge" class="new badge" data-badge-caption 
 	           				onmouseenter="if(this.innerHTML != '0')$('#tableToast').show();" 
 	           				onmouseleave="$('#tableToast').hide()"></span>
-	           			<div id="resultsSpinner" class="preloader-wrapper mySpinner active">
+	           			<div id="tableResultsSpinner" class="preloader-wrapper mySpinner active">
 		          			<div class="spinner-layer spinner-blue-only">
 		            			<div class="circle-clipper left">
 		              				<div class="circle"></div>
@@ -329,10 +329,27 @@
 			        <!--start table result content-->
 			        <div id="tableResultBox" class="card no-padding">
 			            <div class="card-content no-padding">
-			            		<a id="visibleFieldsButton" href="#" class='dropdown-button btn-floating waves-effect waves-light blue right' data-activates='fieldsCollection'><i class="material-icons"">remove_red_eye</i></a>
-			            		<ul id="fieldsCollection" class="collection dropdown-content"></ul>
+
+			            	<div class="fixed-action-btn horizontal" id="moreTableSettings">
+						    <a class="btn-floating btn-large blue">
+						      <i class="large material-icons">more_vert</i>
+						    </a>
+						    <ul>
+						      <li>
+						      	<a id="visibleFieldsButton" 
+						      	class='dropdown-button btn-floating waves-effect waves-light blue' data-activates='fieldsCollection' ><i class="material-icons">remove_red_eye</i></a>
+						      </li>
+			            	  <li>
+			            		<a id="orderTable" class='dropdown-button btn-floating waves-effect waves-light blue' onclick="orderTableResult();"><i class="material-icons">sort_by_alpha</i></a>
+			            	  </li>
+			            	  <!--<li>
+			            		<a id="collapseTable" class='dropdown-button btn-floating waves-effect waves-light blue' onclick="collapseTableResult();" ><i class="material-icons">vertical_align_center</i></a>
+			            	  </li>-->
+			 				</ul>
+						  </div>		            		
+
 			              	<div class="row col s12 no-padding">
-			              		<div class="progress" id="resultsProgress">
+			              		<div class="progress" id="tableResultsProgress">
 								    <div class="indeterminate"></div>
 								</div>
 
@@ -342,6 +359,8 @@
 							</div>
 						</div>
 			        </div>
+			        <ul id="fieldsCollection" class="collection dropdown-content"></ul>
+			          
 			        <!--end table result content-->
 
 			        <!--start settings content-->
@@ -379,6 +398,11 @@
 					        </div>-->
 
 					       </div>
+					       <div class="row">
+			              	<div class="col s6 m6 l6">
+							    <input type="checkbox" id="defaultOrderTable" onChange="setDefaultOrderTable($(this))" />
+      							<label for="defaultOrderTable" id="defaultOrderTableLabel"></label>
+							</div>
 			            </div>
 			        </div>
 			        <!--end settings content-->

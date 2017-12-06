@@ -790,8 +790,8 @@ function attachEvents(){
 			
 			$('#resultsTable').hide();
 			$('#resultsPreviewBadge').hide();
-			$('#resultsSpinner').show();
-			$('#resultsProgress').show();
+			$('#tableResultsSpinner').show();
+			$('#tableResultsProgress').show();
 
 	        mapCreator.changeResultLimit(value);
 	    }else if(!((e.keyCode > 95 && e.keyCode < 106)
@@ -816,8 +816,8 @@ function attachEvents(){
 
 		$('#resultsTable').hide();
 		$('#resultsPreviewBadge').hide();
-		$('#resultsSpinner').show();
-		$('#resultsProgress').show();
+		$('#tableResultsSpinner').show();
+		$('#tableResultsProgress').show();
 		mapCreator.changeResultLimit(value);
 	});
 

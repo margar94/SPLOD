@@ -73,8 +73,9 @@ function renderOperatorList(operators){
 
 			if(datatypeOperatorList[j] == 'repeat'){
 				//change with language  manager function
-				li.html(datatypeOperators.repeatParameters.join(' '))
-					.attr('meta-params', JSON.stringify(datatypeOperators.repeatParameters));
+				var paramsString =JSON.stringify([datatypeOperators.repeatParameters[0],datatypeOperators.repeatParameters[1]]);
+				li.html(datatypeOperators.repeatParameters[0] + ' ' + datatypeOperators.repeatParameters[2])
+					.attr('meta-params', paramsString);
 			}else{
 				li.html(languageManager.getOperatorLabelVerbalization(datatypeOperatorList[j]));
 			}
@@ -104,8 +105,8 @@ function renderOperatorList(operators){
 
 						$("#resultsTable").hide();
 						$("#resultsPreviewBadge").hide();
-						$('#resultsSpinner').show();
-						$('#resultsProgress').show();
+						$('#tableResultsSpinner').show();
+						$('#tableResultsProgress').show();
 					}
 				});
 				if(j == datatypeOperatorList.length-1)
@@ -155,8 +156,8 @@ function renderReusableResultListFromOperator(reusableResults){
 						//$('#operatorsBox .card-title').hide();
 						$('#resultsTable').hide();
 						$('#resultsPreviewBadge').hide();
-						$('#resultsSpinner').show();
-						$('#resultsProgress').show();
+						$('#tableResultsSpinner').show();
+						$('#tableResultsProgress').show();
 
 					}else{
 						$('#rowUserValue input').val('');
@@ -200,8 +201,8 @@ function renderReusableResultListFromResult(reusableResults){
 
 					$('#resultsTable').hide();
 					$('#resultsPreviewBadge').hide();
-					$('#resultsSpinner').show();
-					$('#resultsProgress').show();
+					$('#tableResultsSpinner').show();
+					$('#tableResultsProgress').show();
 
 					operatorManager.changedReusableResult(values, true);
 				}
@@ -210,8 +211,8 @@ function renderReusableResultListFromResult(reusableResults){
 	var onClickLiFunction = function(){
 					$('#resultsTable').hide();
 					$('#resultsPreviewBadge').hide();
-					$('#resultsSpinner').show();
-					$('#resultsProgress').show();
+					$('#tableResultsSpinner').show();
+					$('#tableResultsProgress').show();
 					operatorManager.changedReusableResult([{value:$(this).attr('meta-value'), penninculo:$(this).attr('meta-penninculo')}], false);
 				}
 
