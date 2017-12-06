@@ -63,6 +63,10 @@ function buildQuery(){
 			sameLevelOperator = queryLogicStructure[queryLogicStructureRootList[1]].subtype;
 		}
 
+		var child = [];
+		for(var i = 1; i<queryLogicStructureRootList.length; i = i+2)
+			child.push(queryLogicStructureRootList[i]);
+
 		switch(sameLevelOperator){
 			case 'and':
 
@@ -72,7 +76,7 @@ function buildQuery(){
 							content: childWhere[i][j].content}]);
 				}
 				break;
-			case 'or':
+			/*case 'or':
 				var block = [];
 				for(var i=0; i<childWhere.length; i = i+2){
 					block.push(childWhere[i]);
@@ -109,18 +113,19 @@ function buildQuery(){
 				}
 
 				break;
-			case 'xor':
+			*/
+			case 'or':
 				for(var i = 0; i < childWhere.length; i = i+2){
-					nodeWhere = nodeWhere.concat([{relatedTo: [], content:['{']}]);
+					nodeWhere = nodeWhere.concat([{relatedTo: child, content:['{']}]);
 
 					for(var j=0; j<childWhere[i].length; j++)
 						nodeWhere = nodeWhere.concat([{relatedTo: childWhere[i][j].relatedTo, 
 							content:childWhere[i][j].content}]);
 
 					if(i == childWhere.length-1)
-						nodeWhere = nodeWhere.concat([{relatedTo: [], content:['}']}]);
+						nodeWhere = nodeWhere.concat([{relatedTo: child, content:['}']}]);
 					else
-						nodeWhere = nodeWhere.concat([{relatedTo: [], content:['} UNION']}]);
+						nodeWhere = nodeWhere.concat([{relatedTo: child, content:['} UNION']}]);
 
 				}
 				break;
@@ -206,14 +211,14 @@ function visitSPARQL(key){
 			if(node.children.length==1){
 
 				for(var j=0; j<childWhere[0].length; j++)
-					nodeWhere = nodeWhere.concat([{relatedTo: childWhere[0][j].relatedTo.concat(node.key), 
+					nodeWhere = nodeWhere.concat([{relatedTo: childWhere[0][j].relatedTo, 
 						content: childWhere[0][j].content}]);
 
 			}else if(node.children.length>1){
 				sameLevelOperator = queryLogicStructure[node.children[1]].subtype;
 			}
 
-			var child = [node.key];
+			var child = [];
 			for(var i = 1; i<node.children.length; i = i+2)
 				child.push(node.children[i]);
 
@@ -226,7 +231,7 @@ function visitSPARQL(key){
 								content: childWhere[i][j].content}]);
 					}
 					break;
-				case 'or':
+				/*case 'or':
 					var block = [];
 					for(var i=0; i<childWhere.length; i = i+2){
 						block.push(childWhere[i]);
@@ -263,13 +268,14 @@ function visitSPARQL(key){
 					}
 
 					break;
-				case 'xor':
+				*/
+				case 'or':
 					for(var i = 0; i < node.children.length; i = i+2){
 						nodeWhere = nodeWhere.concat([{relatedTo: child, content:['{']}]);
 						nodeWhere = nodeWhere.concat([{relatedTo: [node.key], content:[node.variable+ ' a ?_.']}]);
 
 						for(var j=0; j<childWhere[i].length; j++)
-							nodeWhere = nodeWhere.concat([{relatedTo: childWhere[i][j].relatedTo.concat(child), 
+							nodeWhere = nodeWhere.concat([{relatedTo: childWhere[i][j].relatedTo, 
 								content:childWhere[i][j].content}]);
 
 						if(i == node.children.length-1)
@@ -344,7 +350,7 @@ function visitSPARQL(key){
 						nodeWhere = nodeWhere.concat(childWhere[i]);
 					}
 					break;
-				case 'or':
+				/*case 'or':
 					var block = [];
 					for(var i=0; i<childWhere.length; i = i+2){
 						block.push(childWhere[i]);
@@ -382,13 +388,14 @@ function visitSPARQL(key){
 					}
 
 					break;
-				case 'xor':
+				*/
+				case 'or':
 					for(var i = 0; i < node.children.length; i = i+2){
 						nodeWhere = nodeWhere.concat([{relatedTo: child, content:['{']}]);
 						nodeWhere.push({relatedTo:[node.key], content:[node.variable+' a'+' <'+node.url+'>.']});
 
 						for(var j=0; j<childWhere[i].length; j++)
-							nodeWhere = nodeWhere.concat([{relatedTo: childWhere[i][j].relatedTo.concat(child), 
+							nodeWhere = nodeWhere.concat([{relatedTo: childWhere[i][j].relatedTo, 
 								content:childWhere[i][j].content}]);
 
 						if(i == node.children.length-1)
@@ -454,7 +461,7 @@ function visitSPARQL(key){
 								nodeWhere = nodeWhere.concat(childWhere[i]);
 							}
 							break;
-						case 'or':
+						/*case 'or':
 							var block = [];
 							for(var i=0; i<childWhere.length; i = i+2){
 								block.push(childWhere[i]);
@@ -492,13 +499,14 @@ function visitSPARQL(key){
 							}
 
 							break;
-						case 'xor':
+						*/
+						case 'or':
 							for(var i = 0; i < node.children.length; i = i+2){
 								nodeWhere = nodeWhere.concat([{relatedTo: child, content:['{']}]);
 								nodeWhere = nodeWhere.concat([{relatedTo: [node.key], content:[parentVariable+ ' <'+node.url+'> '+ node.variable+'.']}]);
 
 								for(var j=0; j<childWhere[i].length; j++)
-									nodeWhere = nodeWhere.concat([{relatedTo: childWhere[i][j].relatedTo.concat(child), 
+									nodeWhere = nodeWhere.concat([{relatedTo: childWhere[i][j].relatedTo, 
 										content:childWhere[i][j].content}]);
 
 								if(i == node.children.length-1)
@@ -564,7 +572,7 @@ function visitSPARQL(key){
 							nodeWhere = nodeWhere.concat(childWhere[i]);
 						}
 						break;
-					case 'or':
+					/*case 'or':
 						var block = [];
 						for(var i=0; i<childWhere.length; i = i+2){
 							block.push(childWhere[i]);
@@ -602,14 +610,15 @@ function visitSPARQL(key){
 						}
 
 						break;
-					case 'xor':
+					*/
+					case 'or':
 						for(var i = 0; i < node.children.length; i = i+2){
 							nodeWhere = nodeWhere.concat([{relatedTo: child, content:['{']}]);
 							//cosa fare??
 							//nodeWhere = nodeWhere.concat([{relatedTo: [node.key], content:[parentVariable+ ' <'+node.url+'> '+ node.variable+'.']}]);
 
 							for(var j=0; j<childWhere[i].length; j++)
-								nodeWhere = nodeWhere.concat([{relatedTo: childWhere[i][j].relatedTo.concat(child), 
+								nodeWhere = nodeWhere.concat([{relatedTo: childWhere[i][j].relatedTo, 
 									content:childWhere[i][j].content}]);
 
 							if(i == node.children.length-1)
@@ -659,7 +668,7 @@ function visitSPARQL(key){
 					sameLevelOperator = queryLogicStructure[node.children[1]].subtype;
 				}
 
-				var child = [node.key];
+				var child = [];
 				for(var i = 1; i<node.children.length; i = i+2)
 					child.push(node.children[i]);
 
@@ -671,7 +680,7 @@ function visitSPARQL(key){
 									content: childWhere[i][j].content}]);
 						}
 						break;
-					case 'or':
+					/*case 'or':
 						var block = [];
 						for(var i=0; i<childWhere.length; i = i+2){
 							block.push(childWhere[i]);
@@ -709,14 +718,15 @@ function visitSPARQL(key){
 						}
 
 						break;
-					case 'xor':
+					*/
+					case 'or':
 						for(var i = 0; i < node.children.length; i = i+2){
 							nodeWhere = nodeWhere.concat([{relatedTo: child, content:['{']}]);
-							nodeWhere = nodeWhere.concat([{relatedTo: tempReverseWhere.relatedTo.concat(child), 
+							nodeWhere = nodeWhere.concat([{relatedTo: tempReverseWhere.relatedTo.concat(node.key), 
 								content:tempReverseWhere.content}]);
 
 							for(var j=0; j<childWhere[i].length; j++)
-								nodeWhere = nodeWhere.concat([{relatedTo: childWhere[i][j].relatedTo.concat(child), 
+								nodeWhere = nodeWhere.concat([{relatedTo: childWhere[i][j].relatedTo, 
 									content:childWhere[i][j].content}]);
 
 							if(i == node.children.length-1)
@@ -1156,9 +1166,10 @@ function visitSPARQL(key){
 
 					break;
 
-				case 'or':
+				/*case 'or':
 					break;
-				case 'xor':
+				*/
+				case 'or':
 					break;
 				case 'and':
 					break;
@@ -1239,7 +1250,7 @@ function visitSPARQL(key){
 						nodeWhere = nodeWhere.concat(childWhere[i]);
 					}
 					break;
-				case 'or':
+				/*case 'or':
 					var block = [];
 					for(var i=0; i<childWhere.length; i = i+2){
 						block.push(childWhere[i]);
@@ -1277,12 +1288,13 @@ function visitSPARQL(key){
 					}
 
 					break;
-				case 'xor':
+				*/
+				case 'or':
 					for(var i = 0; i < node.children.length; i = i+2){
 						nodeWhere = nodeWhere.concat([{relatedTo: child, content:['{']}]);
 
 						for(var j=0; j<childWhere[i].length; j++)
-							nodeWhere = nodeWhere.concat([{relatedTo: childWhere[i][j].relatedTo.concat(child), 
+							nodeWhere = nodeWhere.concat([{relatedTo: childWhere[i][j].relatedTo, 
 								content:childWhere[i][j].content}]);
 
 						if(i == node.children.length-1)

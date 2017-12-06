@@ -458,8 +458,8 @@ MapCreator.prototype.selectedOperator = function(pendingQuery){
 			break;
 
 		case 'and': 
-		case 'or': 
-		case 'xor':
+		//case 'or': 
+		case 'or':
 
 			var elementOnFocusNode = queryLogicMap[elementOnFocus];
 			var elementOnFocusOperatorSiblings = [];
@@ -877,20 +877,34 @@ MapCreator.prototype.getSiblingConjunctionByKey = function(key){
 			conjunction.push(queryLogicMap[parentNode.children[1]].subtype);
 		else{
 			conjunction.push('and');
+			//conjunction.push('or');
 			conjunction.push('or');
-			conjunction.push('xor');
 		}
 	}else{
 		if(rootListQueryLogicMap.length>1){
 			conjunction.push(queryLogicMap[rootListQueryLogicMap[1]].subtype);
 		}else{
 			conjunction.push('and');
+			//conjunction.push('or');
 			conjunction.push('or');
-			conjunction.push('xor');
 		}
 	}
 
 	return conjunction;
+}
+
+MapCreator.prototype.getConjunctionKeysByConjunction = function(key){
+	var conjunction=[];
+
+	var node = queryLogicMap[key];
+	if(node.parent !=null){
+		conjunction = queryLogicMap[node.parent].children;
+	}else{
+		conjunction = rootListQueryLogicMap;
+	}
+
+	return conjunction;
+
 }
 
 function initializeMap(){
@@ -1125,8 +1139,8 @@ function removeOperator(node){
 			updateAndNotifyFocus(conjunctionKey);
 
 			break;*/
+			//case 'or':
 			case 'or':
-			case 'xor':
 			case 'and':
 				break;
 

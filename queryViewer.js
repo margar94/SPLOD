@@ -663,14 +663,15 @@ function renderFocus(){
 	//onfocus != null
 	var onFocusNode = mapCreator.getNodeByKey(onFocus);
 
-	if(onFocusNode.type == 'operator' && (onFocusNode.subtype == 'and' || onFocusNode.subtype == 'or' ||onFocusNode.subtype == 'xor' )){
-		var siblings = mapCreator.getNodeByKey(onFocusNode.parent).children;
+	//if(onFocusNode.type == 'operator' && (onFocusNode.subtype == 'and' || onFocusNode.subtype == 'or' ||onFocusNode.subtype == 'xor' )){
+	if(onFocusNode.type == 'operator' && (onFocusNode.subtype == 'and' || onFocusNode.subtype == 'or' )){
+		var siblings = mapCreator.getConjunctionKeysByConjunction(onFocus);
 
 		for(var i = 1; i < siblings.length; i = i+2){
 			document.getElementById(encodeURIComponent(siblings[i])).className +=" highlighted";
 		}
 		
-		var focusLabel = queryLogicStructure[onFocus].verbalization.focus.join(' ');
+		var focusLabel = queryLogicStructure[onFocus].label;
 		$("#focus").html(" <span class='" + mapCreator.getNodeByKey(onFocus).type+"'>" + focusLabel + "</span>");
 	}else{
 		document.getElementById(encodeURIComponent(onFocus)).className +=" highlighted";
@@ -680,7 +681,7 @@ function renderFocus(){
 		if('sameAs' in onFocusNode)
 			number = queryLogicStructure[onFocusNode.sameAs].index;
 
-		var focusLabel = languageManager.getOrdinalNumber(number) + ' ' + queryLogicStructure[onFocus].verbalization.focus.join(' ');
+		var focusLabel = languageManager.getOrdinalNumber(number) + ' ' + queryLogicStructure[onFocus].label;
 		$("#focus").html(" <span class='" + mapCreator.getNodeByKey(onFocus).type+"'>" + focusLabel + "</span>");
 	}
 
@@ -739,14 +740,16 @@ function attachEvents(){
 
 		var onFocusNode = mapCreator.getNodeByKey(onFocus);
 
-		if(onFocusNode.type == 'operator' && (onFocusNode.subtype == 'and' || onFocusNode.subtype == 'or' ||onFocusNode.subtype == 'xor' )){
-			var siblings = mapCreator.getNodeByKey(onFocusNode.parent).children;
+		//if(onFocusNode.type == 'operator' && (onFocusNode.subtype == 'and' || onFocusNode.subtype == 'or' ||onFocusNode.subtype == 'xor' )){
+		if(onFocusNode.type == 'operator' && (onFocusNode.subtype == 'and' || onFocusNode.subtype == 'or')){
+
+			var siblings = mapCreator.getConjunctionKeysByConjunction(onFocus);
 
 			for(var i = 1; i < siblings.length; i = i+2){
 				document.getElementById(encodeURIComponent(siblings[i])).className +=" highlighted";
 			}
 			
-			var focusLabel = queryLogicStructure[onFocus].verbalization.focus.join(' ');
+			var focusLabel = queryLogicStructure[onFocus].label;
 			$("#focus").html(" <span class='" + mapCreator.getNodeByKey(onFocus).type+"'>" + focusLabel + "</span>");
 		}else{
 			document.getElementById(encodeURIComponent(onFocus)).className +=" highlighted";
@@ -756,7 +759,7 @@ function attachEvents(){
 			if('sameAs' in onFocusNode)
 				number = queryLogicStructure[onFocusNode.sameAs].index;
 		
-			var focusLabel = languageManager.getOrdinalNumber(number) + ' ' + queryLogicStructure[onFocus].verbalization.focus.join(' ');
+			var focusLabel = languageManager.getOrdinalNumber(number) + ' ' + queryLogicStructure[onFocus].label;
 			$("#focus").html(" <span class='" + mapCreator.getNodeByKey(onFocus).type+"'>" + focusLabel + "</span>");
 		}
 
@@ -837,13 +840,20 @@ function showUserQueryBox(){
 	$('#sparqlVsNl #limit').html(resultLimit+" ");
 	$("#sparqlVsNl #limit").addClass("focusable");
 	$("#sparqlVsNl .focusable").click(function(e){
+
 		e.stopPropagation();
 		$("#sparqlVsNl .highlighted").removeClass("highlighted");
 
-		var onFocusNode = mapCreator.getNodeByKey(decodeURIComponent($(this).attr("id")));
+		var id = decodeURIComponent($(this).attr("id"));
+		var onFocusNode = null;
+		if(id!='limit')
+			onFocusNode = mapCreator.getNodeByKey(id);
 
-		if(onFocusNode.type == 'operator' && (onFocusNode.subtype == 'and' || onFocusNode.subtype == 'or' ||onFocusNode.subtype == 'xor' )){
-			var siblings = mapCreator.getNodeByKey(onFocusNode.parent).children;
+		//if(onFocusNode.type == 'operator' && (onFocusNode.subtype == 'and' || onFocusNode.subtype == 'or' ||onFocusNode.subtype == 'xor' )){
+		if(onFocusNode!=null && 
+			onFocusNode.type == 'operator' && (onFocusNode.subtype == 'and' || onFocusNode.subtype == 'or' )){
+			
+			var siblings = mapCreator.getConjunctionKeysByConjunction(id);
 
 			for(var i = 1; i < siblings.length; i = i+2){
 				document.querySelector('#sparqlVsNl #'+encodeURIComponent(siblings[i])).className +=" highlighted";
@@ -852,7 +862,8 @@ function showUserQueryBox(){
 			$("#modalSparql .SPARQLhighlighted").removeClass("SPARQLhighlighted");
 			
 			for(var i = 1; i < siblings.length; i = i+2){
-				$("#modalSparql span[meta-relatedto~='"+document.querySelector('#sparqlVsNl #'+encodeURIComponent(siblings[i])).getAttribute("meta-focusReference")+"']").addClass("SPARQLhighlighted");
+				$("#modalSparql span[meta-relatedto~='"+document.querySelector('#sparqlVsNl #'+encodeURIComponent(siblings[i])).
+					getAttribute("meta-focusReference")+"']").addClass("SPARQLhighlighted");
 			}
 		}else{
 			$(this).addClass("highlighted");
@@ -862,7 +873,7 @@ function showUserQueryBox(){
 		}
 
 
-		});
+	});
 
 	$('#sparqlVsNl').modal('open');
 }

@@ -28,8 +28,8 @@ var OperatorManager = function () {
 
 	parameterNumberOperator = {
 		'and' : 1, 
+		//'or' : 1, or che aggrega tuple, che chiamavamo or inclusivo
 		'or' : 1,
-		'xor' : 1,
 		'not' : 1,
 		'optional' : 1,
 
@@ -76,9 +76,9 @@ var OperatorManager = function () {
 
 		'img' : [],
 
-		'and' : ['or', 'xor'],
-		'or' : ['and', 'xor'],
-		'xor' : ['and', 'or'],
+		'and' : ['or'],
+		//'or' : ['and', 'xor'],
+		'or' : ['and'],
 
 		'<' : ['not', 'optional'],
 		'<=' : ['not', 'optional'],

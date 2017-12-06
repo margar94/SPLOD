@@ -36,7 +36,6 @@ itLanguageManager.prototype.verbalizeConcept = function(conceptLabel){
 		optional: [],
 		truncated: [],
 		first: [],
-		focus: [],
 		current: []};
 
 	verbalization.standard.push(itLanguageManager.prototype.getArticle(conceptLabel) + ' ');
@@ -67,8 +66,6 @@ itLanguageManager.prototype.verbalizeConcept = function(conceptLabel){
 	verbalization.first.push(conceptLabel + ' ');
 	verbalization.first.push('');
 
-	verbalization.focus.push(conceptLabel);
-
 	verbalization.current = verbalization.standard;
 
 	return verbalization;
@@ -83,7 +80,6 @@ itLanguageManager.prototype.verbalizePredicate = function(predicateLabel, predic
 		negated: [],
 		optional: [],
 		first: [],
-		focus: [],
 		current: []};
 
 
@@ -119,7 +115,6 @@ itLanguageManager.prototype.verbalizePredicate = function(predicateLabel, predic
 			verbalization.first.push(predicateLabel + ' ');
 			verbalization.first.push('');
 
-			verbalization.focus.push(predicateLabel);
 		}else{
 			verbalization.standard.push('che ha ' + itLanguageManager.prototype.getArticle(predicateLabel) + ' ');
 			verbalization.standard.push(predicateLabel + ' ');
@@ -150,7 +145,6 @@ itLanguageManager.prototype.verbalizePredicate = function(predicateLabel, predic
 			verbalization.first.push(predicateLabel + ' ');
 			verbalization.first.push('');
 
-			verbalization.focus.push(predicateLabel);
 		}
 
 	}else if(predicateDirection == 'reverse'){
@@ -188,8 +182,6 @@ itLanguageManager.prototype.verbalizePredicate = function(predicateLabel, predic
 			verbalization.first.push(predicateLabel + ' ');
 			verbalization.first.push(postLabel);
 
-			verbalization.focus.push(predicateLabel);
-
 		}else{
 			verbalization.standard.push('che &egrave; ');
 			verbalization.standard.push(predicateLabel + ' ');
@@ -218,8 +210,6 @@ itLanguageManager.prototype.verbalizePredicate = function(predicateLabel, predic
 			verbalization.first.push(' che &egrave; ');
 			verbalization.first.push(predicateLabel + ' ');
 			verbalization.first.push(postLabel);
-
-			verbalization.focus.push(predicateLabel);
 		}
 	}
 	
@@ -233,7 +223,6 @@ itLanguageManager.prototype.verbalizeSomething = function(){
 
 	verbalization = {
 		standard: ['qualcosa '],
-		focus: ['qualcosa'],
 		current: ['qualcosa ']};
 
 	return verbalization;
@@ -245,7 +234,6 @@ itLanguageManager.prototype.verbalizeEverything = function(){
 	verbalization = {
 		standard: [' tutto ci&ograve; '],
 		first: [' tutto ci&ograve; '],
-		focus: [' tutto ci&ograve; '],
 		current: [' tutto ci&ograve; ']};
 
 	return verbalization;
@@ -281,8 +269,7 @@ itLanguageManager.prototype.verbalizeOperator = function(operator){
 		standard: ['che ', operator+' ', ''],
 		truncated: ['', operator+' ', ''],
 		negated: ['che ', 'non ', '&egrave; ', operator+' ', ''],
-		optional : ['che &egrave; ', 'opzionalmente ','', operator+' ', ''],
-		focus: []};
+		optional : ['che &egrave; ', 'opzionalmente ','', operator+' ', '']};
 
 	verbalization.current = verbalization.standard;
 
@@ -292,7 +279,6 @@ itLanguageManager.prototype.verbalizeOperator = function(operator){
 			verbalization.truncated = ['','minore ','di '];
 			verbalization.negated = ['che ', 'non ', '&egrave; ', 'minore ','di '];
 			verbalization.optional = ['che &egrave; ', 'opzionalmente ', '', 'minore ','di '];
-			verbalization.focus = ['minore'];
 			verbalization.current = verbalization.standard;
 			break;
 		case '<=':
@@ -300,7 +286,6 @@ itLanguageManager.prototype.verbalizeOperator = function(operator){
 			verbalization.truncated = ['','minore o uguale ','di '];
 			verbalization.negated = ['che ', 'non ', '&egrave; ','minore o uguale ','di '];
 			verbalization.optional = ['che &egrave; ', 'opzionalmente ', '','minore o uguale ','di '];
-			verbalization.focus = ['minore o uguale'];
 			verbalization.current = verbalization.standard;
 			break;
 		case '>':
@@ -308,7 +293,6 @@ itLanguageManager.prototype.verbalizeOperator = function(operator){
 			verbalization.truncated = ['','maggiore ','di '];
 			verbalization.negated = ['che ', 'non ', '&egrave; ','maggiore ','di '];
 			verbalization.optional = ['che &egrave; ', 'opzionalmente ', '', 'maggiore ','di '];
-			verbalization.focus = ['maggiore'];
 			verbalization.current = verbalization.standard;
 			break;
 		case '>=':
@@ -316,7 +300,6 @@ itLanguageManager.prototype.verbalizeOperator = function(operator){
 			verbalization.truncated = ['','maggiore o uguale ','di '];
 			verbalization.negated = ['che ', 'non ', '&egrave; ', 'maggiore o uguale ','di '];
 			verbalization.optional = ['che &egrave; ', 'opzionalmente ', '', 'maggiore o uguale ','di '];
-			verbalization.focus = ['maggiore o uguale'];
 			verbalization.current = verbalization.standard;
 			break;
 		case '=':
@@ -324,7 +307,6 @@ itLanguageManager.prototype.verbalizeOperator = function(operator){
 			verbalization.truncated = ['','uguale ','a '];
 			verbalization.negated = ['che ', 'non ', '&egrave; ', 'uguale ','a '];
 			verbalization.optional = ['che &egrave; ', 'opzionalmente ', '', 'uguale ','a '];
-			verbalization.focus = ['uguale'];
 			verbalization.current = verbalization.standard;
 			break;
 		case 'is string':
@@ -332,7 +314,6 @@ itLanguageManager.prototype.verbalizeOperator = function(operator){
 			verbalization.truncated = ['','uguale ','a '];
 			verbalization.negated = ['che ', 'non ', '&egrave; ', 'uguale ','a '];
 			verbalization.optional = ['che &egrave; ', 'opzionalmente ', '', 'uguale ','a '];
-			verbalization.focus = ['&egrave;'];
 			verbalization.current = verbalization.standard;
 			break;
 		case 'is url':
@@ -340,7 +321,6 @@ itLanguageManager.prototype.verbalizeOperator = function(operator){
 			verbalization.truncated = ['','uguale ','a '];
 			verbalization.negated = ['che ', 'non ', '&egrave; ', 'uguale ','a '];
 			verbalization.optional = ['che &egrave; ', 'opzionalmente ', '', 'uguale ','a '];
-			verbalization.focus = ['&egrave;'];
 			verbalization.current = verbalization.standard;
 			break;
 		case 'is date':
@@ -348,7 +328,6 @@ itLanguageManager.prototype.verbalizeOperator = function(operator){
 			verbalization.truncated = ['','',''];
 			verbalization.negated = ['che ', 'non ', '&egrave; ', 'uguale ', 'a '];
 			verbalization.optional = ['che &egrave; ', 'opzionalmente ', '', 'uguale ', 'a '];
-			verbalization.focus = ['&egrave;'];
 			verbalization.current = verbalization.standard;
 			break;
 		case 'range':
@@ -356,7 +335,6 @@ itLanguageManager.prototype.verbalizeOperator = function(operator){
 			verbalization.truncated = ['','tra ',''];
 			verbalization.negated = ['che ', 'non ', '&egrave; ', 'tra ',''];
 			verbalization.optional = ['che &egrave; ', 'opzionalmente ', '', 'tra ',''];
-			verbalization.focus = ['tra'];
 			verbalization.current = verbalization.standard;
 			break;
 		case 'range date':
@@ -364,39 +342,33 @@ itLanguageManager.prototype.verbalizeOperator = function(operator){
 			verbalization.truncated = ['','tra ',''];
 			verbalization.negated = ['che ', 'non ', '&egrave; ', 'tra ',''];
 			verbalization.optional = ['che &egrave; ', 'opzionalmente ', '', 'tra ',''];
-			verbalization.focus = ['tra'];
 			verbalization.current = verbalization.standard;
 			break;
 		case 'and':	
 			verbalization.standard = ['e '];
-			verbalization.focus = ['e'];
 			verbalization.current = verbalization.standard;
 			break;
-		case 'or':	
+		/*case 'or':	
 			verbalization.standard = ['o (inclusivo) '];
-			verbalization.focus = ['o (inclusivo)'];
 			verbalization.current = verbalization.standard;
 			break;
-		case 'xor':	
-			verbalization.standard = ['o (esclusivo) '];
-			verbalization.focus = ['o (esclusivo)'];
+		*/
+		case 'or':	
+			verbalization.standard = ['o '];
 			verbalization.current = verbalization.standard;
 			break;
 		case 'not':
 			verbalization.standard = ['non '];
-			verbalization.focus = ['non'];
 			verbalization.current = verbalization.standard;
 			break;
 		case 'optional':
 			verbalization.standard = ['opzionalmente '];
-			verbalization.focus = ['opzionalmente'];
 			verbalization.current = verbalization.standard;
 			break;
 		case 'lang':
 			verbalization.standard = ['che &egrave; ','in lingua ',''];
 			verbalization.negated = ['che ', 'non ', '&egrave; ', 'in lingua ',''];
 			verbalization.optional = ['che &egrave; ','opzionalmente ', '', 'in lingua ',''];
-			verbalization.focus = ['in lingua'];
 			verbalization.current = verbalization.standard;
 			break;
 
@@ -405,7 +377,6 @@ itLanguageManager.prototype.verbalizeOperator = function(operator){
 			verbalization.truncated = ['','precedente ','a '];
 			verbalization.negated = ['che ', 'non ', '&egrave; ', 'precedente ','a '];
 			verbalization.optional = ['che &egrave; ', 'opzionalmente ', '', 'precedente ','a '];
-			verbalization.focus = ['precedente'];
 			verbalization.current = verbalization.standard;
 			break;
 		case 'after':
@@ -413,17 +384,13 @@ itLanguageManager.prototype.verbalizeOperator = function(operator){
 			verbalization.truncated = ['','successiva ','a '];
 			verbalization.negated = ['che ', 'non ', '&egrave; ', 'successiva ','a '];
 			verbalization.optional = ['che &egrave; ', 'opzionalmente ', '', 'suffessiva ','a '];
-			verbalization.focus = ['successiva'];
 			verbalization.current = verbalization.standard;
 			break;
 		case 'starts with':
-			verbalization.focus = ['inizia'];
 			break;
 		case 'ends with':
-			verbalization.focus = ['finisce'];
 			break;
 		case 'contains':
-			verbalization.focus = ['contiene'];
 			break;
 
 	}
@@ -440,8 +407,7 @@ itLanguageManager.prototype.verbalizeResult = function(result){
 
 	var verbalization = {
 		standard: [result+' '],
-		current: [result+' '],
-		focus: [result]};
+		current: [result+' ']};
 
 	return verbalization;
 
@@ -507,11 +473,12 @@ itLanguageManager.prototype.getOperatorLabelVerbalization = function(operator){
 		case 'and': 
 			label = 'e ';
 			break;
-		case 'or': 
+		/*case 'or': 
 			label = 'o (inclusivo) ';
 			break;
-		case 'xor': 
-			label = 'o (esclusivo) ';
+		*/
+		case 'or': 
+			label = 'o ';
 			break;
 		case 'not': 
 			label = 'non ';
