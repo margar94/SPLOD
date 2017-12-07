@@ -392,6 +392,8 @@ function createJson(){
 }
 
 function orderTableResult(){
+	$('#resultsPreviewBadge').hide();
+	$('#tableResultsSpinner').show();
  	tableResultManager.orderAndRenderTable();
  	$("#orderTable").addClass('disabled');
 }

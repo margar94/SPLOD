@@ -363,14 +363,14 @@ div#modalSparql, div#modalNaturalLanguage{
 	background-color: #bdbdbd;
 }
 
-#resultsProgress {
+#tableResultsProgress {
 	background-color: #aecee6;
     top: 3em;
     width:60%;
     margin:auto;
 }
 
-#resultsProgress .indeterminate{
+#tableResultsProgress .indeterminate{
 	background-color: #2196f3;
 }
    
