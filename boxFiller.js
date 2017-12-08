@@ -10,6 +10,7 @@ var BoxFiller= function () {
 	}
 	
 	executor = new QueryExecutor(); 
+	executor = executor._singletonInstance;
 
 	BoxFiller.prototype._singletonInstance = this;
 };
