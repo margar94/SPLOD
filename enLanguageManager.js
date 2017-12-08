@@ -523,6 +523,19 @@ enLanguageManager.prototype.getDatatypeLabel = function(datatype){
 	return label;
 }
 
+enLanguageManager.prototype.getReusableResultListTitle = function(position){
+	var label;
+
+	switch(position){
+		case 0 : 
+			label = 'Initial results'; break;
+		case 1 : 
+			label = 'Updated results'; break;
+	}
+
+	return label;
+}
+
 
 enLanguageManager.prototype.getUserInputHint = function(){	
 	return 'Insert your value: ';

@@ -361,7 +361,7 @@ function renderReusableResultList(reusableResults, onClickButtonFunction, onClic
 	for(var resultsIndex = 0; resultsIndex<reusableResults.results.length; resultsIndex++){
 
 		var li = $("<li/>")
-		.attr('class', 'collection-item withMargin datatypeTitle')
+		.attr('class', 'collection-item withMargin reusableResultTitle')
 		.appendTo(reusableResultList)
 		.on('click', function(e){
 			e.stopPropagation();
@@ -379,16 +379,10 @@ function renderReusableResultList(reusableResults, onClickButtonFunction, onClic
 			.attr('class', 'tiny material-icons grey-text expandIcon')
 			.html('expand_more')
 			.appendTo(li);
-		
-		var html;
-		if(resultsIndex==0)
-			html = 'old results';
-		else
-			html = 'new results';
 
 		var span = $("<span/>")
 			.attr('class', 'liContent')
-			.html(html)
+			.html(languageManager.getReusableResultListTitle(resultsIndex))
 			.css('margin-left', '0.5em')
 			.appendTo(li);
 		

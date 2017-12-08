@@ -612,6 +612,17 @@ li.datatypeTitle{
 	background-color:#bdbdbd !important;
 }
 
+li.reusableResultTitle{
+	color: white !important;
+	background-color:#bdbdbd !important;
+	text-transform: uppercase; 
+	cursor: pointer;
+}
+
+li.reusableResultTitle i{
+	color: white;
+}
+
 #pendingQuerySpan .active{
 	color: #2196f3; 
 	font-weight: bold;

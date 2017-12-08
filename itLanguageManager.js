@@ -569,6 +569,19 @@ itLanguageManager.prototype.getDatatypeLabel = function(datatype){
 	return label;
 }
 
+itLanguageManager.prototype.getReusableResultListTitle = function(position){
+	var label;
+
+	switch(position){
+		case 0 : 
+			label = 'Risultati iniziali'; break;
+		case 1 : 
+			label = 'Risultati aggiornati'; break;
+	}
+
+	return label;
+}
+
 itLanguageManager.prototype.getUserInputHint = function(){	
 	return 'Inserisci il tuo valore: ';
 }
