@@ -355,35 +355,82 @@ function renderReusableResultList(reusableResults, onClickButtonFunction, onClic
 
 	}
 
-	$.each(reusableResults.results, function(index){
-		var element = reusableResults.results[index];
+	var collapsibleBody;
+	var expandableIcon;
+
+	for(var resultsIndex = 0; resultsIndex<reusableResults.results.length; resultsIndex++){
 
 		var li = $("<li/>")
-		.attr('class', 'collection-item addToQuery')
-		.attr('meta-label', element.value)
-		.attr('meta-value', element.value)
-		.attr('meta-penninculo', element.penninculo);
+		.attr('class', 'collection-item withMargin datatypeTitle')
+		.appendTo(reusableResultList)
+		.on('click', function(e){
+			e.stopPropagation();
+			if($(this).next().is(':visible')){
+				$(this).next().hide();
+				$(this).children()[0].innerHTML = 'expand_more';
+			}
+			else{
+				$(this).next().show();
+				$(this).children()[0].innerHTML = 'expand_less';
+			}
+		});
+
+		expandableIcon = $("<i/>")
+			.attr('class', 'tiny material-icons grey-text expandIcon')
+			.html('expand_more')
+			.appendTo(li);
+		
+		var html;
+		if(resultsIndex==0)
+			html = 'old results';
+		else
+			html = 'new results';
 
 		var span = $("<span/>")
 			.attr('class', 'liContent')
-			.text(element.value)
+			.html(html)
+			.css('margin-left', '0.5em')
 			.appendTo(li);
+		
+		collapsibleBody = $("<div/>")
+			.attr('class', 'myCollapsibleBody')
+			.appendTo(reusableResultList);
 
-		if('url' in element){
-			li.attr('meta-url', element.url)
-				.attr('meta-value', element.url)
-				.attr('title', element.url);
-		}
+		collapsibleBody.hide();
 
-		var badge = $("<span/>")
-			.attr('class', 'new badge')
-			.attr('data-badge-caption', '')
-			.text(element.occurrences)
-			.appendTo(li);
+		$.each(reusableResults.results[resultsIndex], function(index){
+			var element = reusableResults.results[resultsIndex][index];
 
-		li.appendTo(reusableResultList)
-			.on('click', onClickLiFunction);
-	});
+			var li = $("<li/>")
+			.attr('class', 'collection-item addToQuery')
+			.attr('meta-label', element.value)
+			.attr('meta-value', element.value)
+			.attr('meta-penninculo', element.penninculo);
+
+			var span = $("<span/>")
+				.attr('class', 'liContent')
+				.text(element.value)
+				.appendTo(li);
+
+			if('url' in element){
+				li.attr('meta-url', element.url)
+					.attr('meta-value', element.url)
+					.attr('title', element.url);
+			}
+
+			var badge = $("<span/>")
+				.attr('class', 'new badge')
+				.attr('data-badge-caption', '')
+				.text(element.occurrences)
+				.appendTo(li);
+
+			li.appendTo(collapsibleBody)
+				.on('click', onClickLiFunction);
+		});
+	}
+
+	collapsibleBody.show();
+	expandableIcon.html('expand_less');
 
 	$('#operatorsSpinner').hide();
 	$('#operatorsProgress').hide();
