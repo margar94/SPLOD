@@ -51,8 +51,17 @@
 		$("#av_toolbar_regdiv").remove();
 		$("#av_toolbar_iframe").remove();
 
-
-
+	  var connection = new XMLHttpRequest();
+	  connection.open("GET", "sparqlEndpointList.xml", true);
+	  connection.setRequestHeader("Content-Type", "text/xml");
+	  connection.onreadystatechange = function(e) {
+		  if (this.readyState == 4 && this.status == 200) {
+		    var xml = this.responseXML;
+		    var endpointList = xml.getElementsByTagName('endpoint');
+		    console.log(endpointList);
+		    }
+		  };
+	  connection.send(null);
 
 	</script>
 

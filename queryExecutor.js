@@ -15,3 +15,7 @@ var QueryExecutor = function () {
 
 	QueryExecutor.prototype._singletonInstance = new (eval(systemQueryExecutor+''))(systemEndpoint, systemGraph);
 };
+
+
+//funzione negli executor specifici che cambia la label di default e chiede per le label degli elemnti gia inseriti
+//OGNI funzione deve controllare che sta restituendo le label nella lingua giusta (accede a mamma di traduzione) 

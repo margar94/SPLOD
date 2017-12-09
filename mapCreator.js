@@ -804,7 +804,7 @@ MapCreator.prototype.changeResultLimit = function(resultLimitValue){
 	queryBuilder.updateQuery(rootListQueryLogicMap, queryLogicMap);
 }
 
-MapCreator.prototype.langChanged = function(){
+MapCreator.prototype.systemLangChanged = function(){
 	for(key in queryLogicMap){
 		var element = queryLogicMap[key];
 		switch(element.type){
@@ -820,6 +820,27 @@ MapCreator.prototype.langChanged = function(){
 				element.verbalization = eval('languageManager.verbalize'+tempType)(element.label);
 				break;
 		}		
+	}
+
+	updateAndNotifyFocus(elementOnFocus);
+
+	if(queryVerbalizator == null)
+		queryVerbalizator = new QueryVerbalizator;
+	queryVerbalizator.updateQuery(rootListQueryLogicMap, queryLogicMap, elementOnFocus);
+	
+	if(queryBuilder == null)
+		queryBuilder = new QueryBuilder;
+	queryBuilder.updateQuery(rootListQueryLogicMap, queryLogicMap);
+}
+
+MapCreator.prototype.labelLangChanged = function(){
+	
+	//chiamata a executor per tradurre elementi nella mappa creta fino a quel momento
+	//set della nuova label nell'executor (anche in un unica chiamata)
+	
+	//set delle nuove label
+	for(key in queryLogicMap){
+		var element = queryLogicMap[key];
 	}
 
 	updateAndNotifyFocus(elementOnFocus);

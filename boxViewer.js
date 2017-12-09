@@ -635,6 +635,8 @@ function changeLabelLanguage(){
 	initQueryViewer();
 	initOperatorViewer();
 	initTableResultViewer();
+
+	mapCreator.labelLangChanged();
 }
 
 function setLimit(type){
@@ -652,7 +654,7 @@ function changeSystemLanguage(){
 	initOperatorViewer();
 	initTableResultViewer();
 
-	mapCreator.langChanged();
+	mapCreator.systemLangChanged();
 }
 
 function hierarchyOff(){
@@ -747,11 +749,8 @@ function fillHelp(){
 			}
 			
 		}*/
-
 		li.appendTo(helpUl);
-
 	}
-
 	$('.carousel.carousel-slider').carousel({fullWidth: true});
 }
 

@@ -379,7 +379,7 @@ function createJson(){
 	
 	var jsonObj = JSON.stringify(resultsToConvert);
 
-	document.dispatchEvent(new CustomEvent("event_name", {"detail": jsonObj}));
+	document.dispatchEvent(new CustomEvent("splodEvent", {"detail": jsonObj}));
 
 	
 	/* 

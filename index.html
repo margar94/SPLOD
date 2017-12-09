@@ -32,11 +32,6 @@
 		<link href="Materialize/css/materialize.min.css" rel="stylesheet">
 		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 		<link href="splod_style.css" rel="stylesheet">
-<style>
-	body{
-		margin-top: 0 !important;
-	}
-</style>
 	</head>
 	<body>
 	 <div id="controlet">	
@@ -408,34 +403,32 @@
 							</div>
 			            </div>
 			        </div>
-			        <!--end settings content-->
-
-			         <!--start help content-->
-			        <div id="helpBox" class="card">
-			            <div class="card-content ">
-			              <div class="row">
-
-			              	<ul id="helpUl" class="collapsible" data-collapsible="accordion">
-							    <!--<li>
-							      <div class="collapsible-header"><i class="material-icons">filter_drama</i>First</div>
-							      <div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
-							    </li>
-							    <li>
-							      <div class="collapsible-header"><i class="material-icons">place</i>Second</div>
-							      <div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
-							    </li>
-							    <li>
-							      <div class="collapsible-header"><i class="material-icons">whatshot</i>Third</div>
-							      <div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
-							    </li>-->
-							  </ul>
-
-					       </div>
-			            </div>
-			        </div>
-			        <!--end help content-->
-
 				</div>
+				<!--end settings content-->
+				<!--start help content-->
+		        <div id="helpBox" class="card">
+		            <div class="card-content ">
+		              <div class="row">
+
+		              	<ul id="helpUl" class="collapsible" data-collapsible="accordion">
+						    <!--<li>
+						      <div class="collapsible-header"><i class="material-icons">filter_drama</i>First</div>
+						      <div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+						    </li>
+						    <li>
+						      <div class="collapsible-header"><i class="material-icons">place</i>Second</div>
+						      <div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+						    </li>
+						    <li>
+						      <div class="collapsible-header"><i class="material-icons">whatshot</i>Third</div>
+						      <div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+						    </li>-->
+						  </ul>
+
+				       </div>
+		            </div>
+		        </div>
+		        <!--end help content-->
 	      	</div>
 			<!--end right content-->
 
@@ -471,7 +464,7 @@
 		    	endingTop: '5%'
 		    });
 
-		    document.addEventListener("event_name", function (e) {
+		    document.addEventListener("splodEvent", function (e) {
 				var obj = (e.detail);
 				restartBoxViewer();
 				restartQueryViewer();
