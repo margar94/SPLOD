@@ -251,69 +251,52 @@ dbpediaLike.prototype.getConceptsFromSomething = function(predicate, limit, call
 }
 
 //predicates
-/*
-	SELECT DISTINCT ?property
-	WHERE
-	{ 
-		?s ?property ?o. 
-		?o a ?c.
-		FILTER (?c = ?class){
-			SELECT ?class{
-				?class a owl:Class; rdfs:subClassOf ?super.
-			}
-			GROUP BY ?class
-			LIMIT 1
-		}
-		OPTIONAL {?property rdfs:label ?label. 
-		FILTER (lang(?label) = 'en')}
-	}
-*/
 dbpediaLike.prototype.getAllDirectPredicates = function(limit, callback) {
 
-		query = " prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> " + 
-			" prefix owl: <http://www.w3.org/2002/07/owl#> " +
-				" SELECT DISTINCT ?url ?label " +
-				" WHERE { ";
-					if(graph) 
-					query += " GRAPH " + graph + " { ";
-						query += " ?s ?url ?o. " +
-						" ?s a ?c. " +
-						" FILTER (?c = ?class){ " +
-							" SELECT ?class{ " +
-								" {?class a owl:Class}UNION {?class a rdfs:Class} "+
-								//" ?class rdfs:subClassOf ?super. " +
-							" } " +
-							" GROUP BY ?class " +
-							" LIMIT 1 " +
+	query = " prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> " + 
+		" prefix owl: <http://www.w3.org/2002/07/owl#> " +
+			" SELECT DISTINCT ?url ?label " +
+			" WHERE { ";
+				if(graph) 
+				query += " GRAPH " + graph + " { ";
+					query += " ?s ?url ?o. " +
+					" ?s a ?c. " +
+					" FILTER (?c = ?class){ " +
+						" SELECT ?class{ " +
+							" {?class a owl:Class}UNION {?class a rdfs:Class} "+
+							//" ?class rdfs:subClassOf ?super. " +
 						" } " +
-						" OPTIONAL {?url rdfs:label ?label. " +
-						" FILTER (lang(?label) = '" + labelLang + "')} ";
-					if(graph) 
-						query += " } ";
-				query += " } ";
-					
-		if(limit)
-			query += "LIMIT " + limit;  
-		
-	   	queryUrl = endpoint+"?query="+ encodeURIComponent(query) +"&format=json";
-	     var xhr = $.ajax({
-	        url: queryUrl,
-	     	method:'post',
-	        success: function( data ) {
-	        	//it builds map with url, label and stats
-	        	var arrayData = data.results.bindings;
-	        	callback(manageResultMap(arrayData));
-	        },
-	        error: function(jqXHR, textStatus, errorThrown){
-	        	console.log(textStatus);
-	        	callback({});
-	        },
-	        complete: function(jqXHR){
-					var index = $.inArray(jqXHR, activeAjaxRequest);
-		        	if(index != -1)
-		        		activeAjaxRequest.splice(index, 1);
-				}
-		    });	
+						" GROUP BY ?class " +
+						" LIMIT 1 " +
+					" } " +
+					" OPTIONAL {?url rdfs:label ?label. " +
+					" FILTER (lang(?label) = '" + labelLang + "')} ";
+				if(graph) 
+					query += " } ";
+			query += " } ";
+				
+	if(limit)
+		query += "LIMIT " + limit;  
+	
+   	queryUrl = endpoint+"?query="+ encodeURIComponent(query) +"&format=json";
+     var xhr = $.ajax({
+        url: queryUrl,
+     	method:'post',
+        success: function( data ) {
+        	//it builds map with url, label and stats
+        	var arrayData = data.results.bindings;
+        	callback(manageResultMap(arrayData));
+        },
+        error: function(jqXHR, textStatus, errorThrown){
+        	console.log(textStatus);
+        	callback({});
+        },
+        complete: function(jqXHR){
+			var index = $.inArray(jqXHR, activeAjaxRequest);
+        	if(index != -1)
+        		activeAjaxRequest.splice(index, 1);
+		}
+	});	
 	     
     activeAjaxRequest.push(xhr);
 }
@@ -358,11 +341,11 @@ dbpediaLike.prototype.getAllReversePredicates = function(limit, callback) {
         	callback({});
         },
    		complete: function(jqXHR){
-					var index = $.inArray(jqXHR, activeAjaxRequest);
-		        	if(index != -1)
-		        		activeAjaxRequest.splice(index, 1);
-				}
-		    });	
+			var index = $.inArray(jqXHR, activeAjaxRequest);
+        	if(index != -1)
+        		activeAjaxRequest.splice(index, 1);
+		}
+    });	
 
     activeAjaxRequest.push(xhr);	
 }
@@ -457,22 +440,6 @@ dbpediaLike.prototype.getReversePredicatesFromConcept = function(entity, limit, 
     activeAjaxRequest.push(xhr);
 }
 
-/*
-	Tested query 
-		prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
-		prefix owl: <http://www.w3.org/2002/07/owl#> 
-		SELECT DISTINCT ?url ?label
-		WHERE { 
-		GRAPH <http://dbpedia.org> { 
-		?s <http://dbpedia.org/property/author> ?o  .
-		?o ?url ?s2.
-		?url rdfs:label ?label. 
-		FILTER (lang(?label) = 'en') 
-				
-		}}LIMIT 100
-
-	This function get all direct entity's predicates.
-*/
 dbpediaLike.prototype.getDirectPredicatesFromPredicate = function(predicate, limit, callback) {
 	query = " prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
 				" prefix owl: <http://www.w3.org/2002/07/owl#> " +
@@ -615,23 +582,23 @@ dbpediaLike.prototype.getDirectPredicatesFromResult = function(url, datatype, la
 	
    	queryUrl = endpoint+"?query="+ encodeURIComponent(query) +"&format=json";
     var xhr = $.ajax({
-		        url: queryUrl,
-		        method:'post',
-		        success: function( data, textStatus, jqXHR ) {
-					//it builds map with url, label and stats
-					var arrayData = data.results.bindings;
-			        callback(manageResultMap(arrayData));
-		        },
-				error: function(jqXHR, textStatus, errorThrown){
-					console.log(textStatus);
-					//callback([]);
-				},
-				complete: function(jqXHR){
-					var index = $.inArray(jqXHR, activeAjaxRequest);
-		        	if(index != -1)
-		        		activeAjaxRequest.splice(index, 1);
-				}
-		    });	
+        url: queryUrl,
+        method:'post',
+        success: function( data, textStatus, jqXHR ) {
+			//it builds map with url, label and stats
+			var arrayData = data.results.bindings;
+	        callback(manageResultMap(arrayData));
+        },
+		error: function(jqXHR, textStatus, errorThrown){
+			console.log(textStatus);
+			//callback([]);
+		},
+		complete: function(jqXHR){
+			var index = $.inArray(jqXHR, activeAjaxRequest);
+        	if(index != -1)
+        		activeAjaxRequest.splice(index, 1);
+		}
+    });	
     activeAjaxRequest.push(xhr);
 }
 
@@ -686,23 +653,23 @@ dbpediaLike.prototype.getReversePredicatesFromResult = function(url, datatype, l
 	
    	queryUrl = endpoint+"?query="+ encodeURIComponent(query) +"&format=json";
     var xhr = $.ajax({
-		        url: queryUrl,
-		        method:'post',
-		        success: function( data, textStatus, jqXHR ) {
-		        	//it builds map with url, label and stats
-					var arrayData = data.results.bindings;
-			        callback(manageResultMap(arrayData));
-		        },
-				error: function(jqXHR, textStatus, errorThrown){
-					console.log(textStatus);
-					//callback([]);
-				},
-				complete: function(jqXHR){
-					var index = $.inArray(jqXHR, activeAjaxRequest);
-		        	if(index != -1)
-		        		activeAjaxRequest.splice(index, 1);
-				}
-		    });	
+        url: queryUrl,
+        method:'post',
+        success: function( data, textStatus, jqXHR ) {
+        	//it builds map with url, label and stats
+			var arrayData = data.results.bindings;
+	        callback(manageResultMap(arrayData));
+        },
+		error: function(jqXHR, textStatus, errorThrown){
+			console.log(textStatus);
+			//callback([]);
+		},
+		complete: function(jqXHR){
+			var index = $.inArray(jqXHR, activeAjaxRequest);
+        	if(index != -1)
+        		activeAjaxRequest.splice(index, 1);
+		}
+    });	
 
     activeAjaxRequest.push(xhr);
 }
@@ -816,7 +783,6 @@ dbpediaLike.prototype.executeUserQuery = function(querySPARQL){
 	    });
 	    userAjaxRequest=xhr;
 	}
-	
 }
 
 dbpediaLike.prototype.getUserQuery = function(){

@@ -1,4 +1,4 @@
-var systemLang = 'en';
+var systemLang = 'it';
 
 var LanguageManager = function (lang) {
 	if(lang && systemLang != lang){

@@ -1,4 +1,8 @@
+
+
 function createLabel(url){
+	var languageManager = new LanguageManager();
+
 	var label = '';
 
 	var splittedParts = url.split('/')
@@ -8,6 +12,11 @@ function createLabel(url){
 	label = splittedParts[splittedParts.length-1];	
 
 	label = label.replace(/\_/g, " ");
+
+	if(label in languageManager.labels)
+		label = languageManager.labels[label];
+	else
+		console.log(label);
 
 	return label;
 }
