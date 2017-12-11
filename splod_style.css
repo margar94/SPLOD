@@ -3,14 +3,6 @@ body {
 	font-family: 'Roboto', sans-serif;
 }
 
-#controlet{
-    
-}
-
-.card-action {
-    padding: 5px 10px !important;
-}
-
 .new, .badge{
 	background-color: #2196f3 !important;
 }
@@ -22,7 +14,6 @@ body {
 .no-padding{
 	padding:0 !important;
 }
-
 
 .searchBarPositioning{
 	display:inline-block;
@@ -75,14 +66,7 @@ body {
     left: calc((100vw/6)*4 + 2em);
 }
 
-
-
 /*Cursor*/
-
-div .card-action i{
-	cursor: pointer;
-}
-
 .addToQuery:hover{
 	font-weight: bold;
 	cursor:pointer;
@@ -113,7 +97,6 @@ span.mySearch {
 	transform: translateY(-4px) scale(0.8);
 }
 
-
 .flex {
     display:flex;
 }
@@ -139,8 +122,6 @@ span.mySearch {
 #querySparql.card-content{
 	overflow:auto;
 }
-
-
 
 /*Natural language query*/
 
@@ -506,10 +487,6 @@ div#conceptsListBox {
     /*background-color:#f5f5f5; */
 }
 
-div#conceptsBox .card-action{
-	background-color:#1de9ae;
-}
-
 #conceptsBox .card-title{
 	color: #69f0ae;
 }
@@ -581,17 +558,11 @@ div#predicatesListBox {
 	color: #e91e63;
 }
 
-div#predicatesBox .card-action{
-	background-color:#e91e63;
-}
-
 i.predicateInfo{
 	color: #e91e63;
 	cursor: pointer;
 	z-index:1;
 }
-
-
 
 /*Operators box*/
 div#operatorsBox{
@@ -606,10 +577,6 @@ div#contentOperatorBox{
 
 #operatorsBox .card-title{
 	color: #bdbdbd;
-}
-
-div#operatorsBox .card-action{
-	background-color:#bdbdbd;
 }
 
 li.datatypeTitle{
@@ -663,10 +630,6 @@ li.operatorListSeparator{
 	margin-top: 0;
 	margin-bottom:0;
     height: calc(100vh - 15.5em);
-}
-
-#tableResultBox .card-action{
-	background-color: #2196f3;
 }
 
 #moreTableSettings{
@@ -754,10 +717,6 @@ div#settingsBox{
     height: calc(100vh - 15.5em);
 }
 
-#settingsBox .card-action{
-	background-color: #2196f3;
-}
-
 #settingsBox .row{
 	margin-bottom: 0 !important;
     display: flex;
@@ -774,10 +733,6 @@ div#helpBox{
 	margin:0;
 	overflow: auto;
     height: calc(100vh - 15.5em);
-}
-
-#helpBox .card-action{
-	background-color: #2196f3;
 }
 
 #helpBox .carousel-slider{
