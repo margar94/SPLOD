@@ -652,7 +652,7 @@ itLanguageManager.prototype.getHintOperatorManager = function(about){
 	return hint;
 }
 */
-itLanguageManager.prototype.getSelectTitle = function(select){
+itLanguageManager.prototype.getFieldTitle = function(select){
  var label; 
 
  switch(select){
@@ -661,6 +661,7 @@ itLanguageManager.prototype.getSelectTitle = function(select){
   case 'num concepts': label = 'Cambia il numero di concetti restituiti'; break;
   case 'num predicates': label = 'Cambia il numero di predicati restituiti'; break;
   case 'default order table': label = 'Tabella dei risultati sempre ordinata';break;
+  case 'selected endpoint': label = 'Endpoint selezionato: ';break;
  }
 
  return label;

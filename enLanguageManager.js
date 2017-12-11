@@ -607,7 +607,7 @@ enLanguageManager.prototype.getHintOperatorManager = function(about){
 	return hint;
 }
 
-enLanguageManager.prototype.getSelectTitle = function(select){
+enLanguageManager.prototype.getFieldTitle = function(select){
  var label; 
 
  switch(select){
@@ -616,6 +616,8 @@ enLanguageManager.prototype.getSelectTitle = function(select){
   case 'num concepts': label = 'Change concept\'s number'; break;
   case 'num predicates': label = 'Change predicate\'s number'; break;
   case 'default order table': label = 'Table results always ordered';break;
+  case 'selected endpoint': label = 'Selected endpoint: ';break;
+
  }
 
  return label;
