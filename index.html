@@ -1,38 +1,4 @@
 <HTML>
-	 <head>
-        <script src="jquery.js"></script>
-        
-        <script src="queryExecutor.js"></script>
-        <script src="dbpediaLike.js"></script>
-        <script src="livedbpediaLike.js"></script>
-        <script src="utilQueryExecutor.js"></script>
-
-        <script src="tableResultManager.js"></script>
-		<script src="operatorManager.js"></script>			
-		<script src="queryVerbalizator.js"></script>
-		<script src="queryBuilder.js"></script>
-		<script src="mapCreator.js"></script>
-		<script src="boxFiller.js"></script>
-
-		<script src="boxViewer.js"></script>
-		<script src="queryViewer.js"></script>
-		<script src="operatorViewer.js"></script>
-		<script src="tableResultViewer.js"></script>
-
-		<script src="utilLogicLayer.js"></script>
-		<script src="utilPresentationLayer.js"></script>
-
-		<script src="languageManager.js"></script>
-		<script src="enLanguageManager.js"></script>
-		<script src="itLanguageManager.js"></script>
-
-		<script src="Materialize/js/materialize.min.js"></script>
-		<link href="Materialize/fonts/roboto/Roboto-Regular.woff" rel="application/x-font-woff">	
-		<link href="Materialize/fonts/roboto/Roboto-Regular.woff2" rel="application/x-font-woff">		
-		<link href="Materialize/css/materialize.min.css" rel="stylesheet">
-		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-		<link href="splod_style.css" rel="stylesheet">
-	</head>
 	<body>
 	 <div id="controlet">	
 		<!--<div class="container">-->
@@ -79,23 +45,12 @@
 			      <div id="modalNaturalLanguage" class="col s5"></div>
 			      <div id="modalSparql" class="col s7"></div>
 			    </div>
-			  </div>
-		     <!--end query sparql box--> 
-
+			</div>
+		    <!--end query sparql box--> 
 	    </div>
 	    <!--end first row-->
 
-	    <!-- RISULTATI RIUTILIZZABILI
-	    <div class="row">
-	    	<div id="hintBox" class="col s12 m12 l12"> 
-		     <div class="card">
-		      <div id="hintBoxContent" class="card-content">
-		      </div>
-		     </div>
-		    </div>
-	    </div>-->
-
-	    <!--start third row-->
+	    <!--start second row-->
 		<div class="row">
 
 			<!--start navBar-->
@@ -205,7 +160,7 @@
 			</div>
 			<!--end navBar-->
 		   
-		   <!--start right content-->
+		   <!--start content-->
 		    <div class="col s12 m12 l12">
 		        <div class="col s12 m12 l12 no-padding">
 
@@ -364,74 +319,74 @@
 			        <!--start settings content-->
 			        <div id="settingsBox" class="card">
 			            <div class="card-content ">
-			              <div class="row">
+			              	<div class="row">
 
-			              	<div class="input-field col s3 m3 l3">
-							    <select id="labelLangSelect" onChange="changeLabelLanguage()">
-							    </select>
-							    <label id="labelLangSelectLabel"></label>
-							</div>
+				              	<div class="input-field col s3 m3 l3">
+								    <select id="labelLangSelect" onChange="changeLabelLanguage()">
+								    </select>
+								    <label id="labelLangSelectLabel"></label>
+								</div>
 
-							<div class="input-field col s3 m3 l3">
-							    <select id="systemLangSelect" onChange="changeSystemLanguage()">
-							    </select>
-							    <label id="systemLangSelectLabel"></label>
-							</div>
-			          	   
+								<div class="input-field col s3 m3 l3">
+								    <select id="systemLangSelect" onChange="changeSystemLanguage()">
+								    </select>
+								    <label id="systemLangSelectLabel"></label>
+								</div>
+				          	   
 
-					        <div class="input-field col s6 m3 l3">
-					          <input id="numConcepts" type="number" min="1" onChange="setLimit('concept')">
-					          <label for="numConcepts" id ="numConceptsLabel"></label>
-					        </div>
-					        <!--<div class="col s1">
-					          <i class="small material-icons blue-text" onClick="setLimit('concept')">check_circle</i>
-					        </div>-->
+						        <div class="input-field col s6 m3 l3">
+						          <input id="numConcepts" type="number" min="1" onChange="setLimit('concept')">
+						          <label for="numConcepts" id ="numConceptsLabel"></label>
+						        </div>
+						        <!--<div class="col s1">
+						          <i class="small material-icons blue-text" onClick="setLimit('concept')">check_circle</i>
+						        </div>-->
 
-					        <div class="input-field col s6 m3 l3">
-					          <input id="numPredicates" type="number" min="1" onChange="setLimit('predicate')">
-					          <label for="numPredicates" id="numPredicatesLabel"></label>
-					         </div>
-					        <!--<div class="col s1">  
-					          <i class="small material-icons blue-text" onClick="setLimit('predicate')">check_circle</i>
-					        </div>-->
+						        <div class="input-field col s6 m3 l3">
+						          <input id="numPredicates" type="number" min="1" onChange="setLimit('predicate')">
+						          <label for="numPredicates" id="numPredicatesLabel"></label>
+						        </div>
+						        <!--<div class="col s1">  
+						          <i class="small material-icons blue-text" onClick="setLimit('predicate')">check_circle</i>
+						        </div>-->
 
 					       </div>
 					       <div class="row">
-			              	<div class="col s6 m6 l6">
-							    <input type="checkbox" id="defaultOrderTable" onChange="setDefaultOrderTable($(this))" />
-      							<label for="defaultOrderTable" id="defaultOrderTableLabel"></label>
-							</div>
+				              	<div class="col s6 m6 l6">
+								    <input type="checkbox" id="defaultOrderTable" onChange="setDefaultOrderTable($(this))" />
+	      							<label for="defaultOrderTable" id="defaultOrderTableLabel"></label>
+								</div>
+			            	</div>
+			        	</div>
+					</div>
+					<!--end settings content-->
+					<!--start help content-->
+			        <div id="helpBox" class="card">
+			            <div class="card-content ">
+			              <div class="row">
+
+			              	<ul id="helpUl" class="collapsible" data-collapsible="accordion">
+							    <!--<li>
+							      <div class="collapsible-header"><i class="material-icons">filter_drama</i>First</div>
+							      <div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+							    </li>
+							    <li>
+							      <div class="collapsible-header"><i class="material-icons">place</i>Second</div>
+							      <div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+							    </li>
+							    <li>
+							      <div class="collapsible-header"><i class="material-icons">whatshot</i>Third</div>
+							      <div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+							    </li>-->
+							  </ul>
+
+					       </div>
 			            </div>
 			        </div>
-				</div>
-				<!--end settings content-->
-				<!--start help content-->
-		        <div id="helpBox" class="card">
-		            <div class="card-content ">
-		              <div class="row">
-
-		              	<ul id="helpUl" class="collapsible" data-collapsible="accordion">
-						    <!--<li>
-						      <div class="collapsible-header"><i class="material-icons">filter_drama</i>First</div>
-						      <div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
-						    </li>
-						    <li>
-						      <div class="collapsible-header"><i class="material-icons">place</i>Second</div>
-						      <div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
-						    </li>
-						    <li>
-						      <div class="collapsible-header"><i class="material-icons">whatshot</i>Third</div>
-						      <div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
-						    </li>-->
-						  </ul>
-
-				       </div>
-		            </div>
-		        </div>
-		        <!--end help content-->
-	      	</div>
-			<!--end right content-->
-
+		        	<!--end help content-->
+	      		</div>
+				<!--end content-->
+			</div>
 	    </div>
 	   	<!--end second row-->
 	   	

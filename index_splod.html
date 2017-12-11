@@ -1,0 +1,288 @@
+<HTML>
+	 <head>
+        <script src="jquery.js"></script>
+        
+        <script src="queryExecutor.js"></script>
+        <script src="dbpediaLike.js"></script>
+        <script src="livedbpediaLike.js"></script>
+        <script src="utilQueryExecutor.js"></script>
+
+        <script src="tableResultManager.js"></script>
+		<script src="operatorManager.js"></script>			
+		<script src="queryVerbalizator.js"></script>
+		<script src="queryBuilder.js"></script>
+		<script src="mapCreator.js"></script>
+		<script src="boxFiller.js"></script>
+
+		<script src="boxViewer.js"></script>
+		<script src="queryViewer.js"></script>
+		<script src="operatorViewer.js"></script>
+		<script src="tableResultViewer.js"></script>
+
+		<script src="utilLogicLayer.js"></script>
+		<script src="utilPresentationLayer.js"></script>
+
+		<script src="languageManager.js"></script>
+		<!--<script src="enLanguageManager.js"></script>
+		<script src="itLanguageManager.js"></script>-->
+
+		<script src="Materialize/js/materialize.min.js"></script>
+		<link href="Materialize/fonts/roboto/Roboto-Regular.woff" rel="application/x-font-woff">	
+		<link href="Materialize/fonts/roboto/Roboto-Regular.woff2" rel="application/x-font-woff">		
+		<link href="Materialize/css/materialize.min.css" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+		<link href="splod_style.css" rel="stylesheet">
+
+		<script src="endpointList.txt"></script>
+	</head>
+	<body>
+	 <div id="controlet">	
+		<!--<div class="container">-->
+		<div class="row flex" id="firstrow">
+			<nav id="endpointSelectionNav">
+			    <div class="nav-wrapper">
+			      <span id="endpointSelectionTitle"></span><span id="selectedEndpoint"></span>
+			      <ul class="right">
+			      	<li id="endpointSelected" onClick="setupSystem(event)">
+			      			<i class="material-icons">arrow_forward</i>
+			      	</li>
+			      </ul>
+			    </div>
+			  </nav>
+	    </div>
+	    <div class="row flex" >
+	    	<div class="col s12 m12 l12">
+	    		<div class="col s12 m12 l12 no-padding">
+			    	<div id="endpointListBox" class="">
+						<ul id="endpointList" class="collection"></ul>
+					</div>
+
+					<div id="settingsListBox" class="">
+						<ul id="settingsList" class="collection"></ul>
+					</div>
+				</div>
+			</div>
+	    </div>
+	 </div>
+
+	 <div id="settingsCollapsibleContent" class="card" style="display:none">
+        <div class="card-content ">
+          	<div class="row">
+	         	
+	          	<div class="input-field col s6 m6 l6">
+	          		<span id="labelLangSelectLabel" class="label"></span>
+				    <select id="labelLangSelect" onChange="changeStartLabelLanguage()">
+				    </select>
+				</div>
+			
+				<div class="input-field col s6 m6 l6">
+					<span id="systemLangSelectLabel" class="label"></span>
+				    <select id="systemLangSelect" onChange="changeStartSystemLanguage()">
+				    </select>
+				</div>
+
+			</div>
+
+			<div class="row">
+
+		        <div class="input-field col s6 m6 l6">
+		        	<span id ="numConceptsLabel" class="label"></span>
+		          	<input id="numConcepts" type="number" min="1" onChange="setStartLimit('concept')">
+		        </div>
+	   		
+		   		
+		        <div class="input-field col s6 m6 l6">
+		        	<span id="numPredicatesLabel" class="label"></span>
+		          	<input id="numPredicates" type="number" min="1" onChange="setStartLimit('predicate')">
+		         </div>
+
+	        </div>
+
+	        <div class="row">
+	          	<div class="col s12 m12 l12 label">
+				    <input type="checkbox" id="defaultOrderTable" onChange="setDefaultOrderTable($(this))" />
+				    <label for="defaultOrderTable" id="defaultOrderTableLabel"></label>	
+				</div>
+        	</div>
+        </div>
+    </div>
+
+	</body>
+
+	<script>
+
+		//import all languageManager
+        $.ajax({
+            url: './languageManager/',
+            async : false,
+            success: function (data) {
+               var doc = $(document.body);
+               //List all xml file names in the page
+               $(data).find('a').each(function () {
+               		if(this.href.indexOf("LanguageManager.js")>=0){
+             			$('<script/>').attr('src', 'languageManager/'+this.innerHTML).appendTo(doc);
+
+             			var splitted = this.href.split("/");
+             			splitted = splitted[splitted.length-1];
+             			systemLangList.push({langCode : splitted.split("LanguageManager.js")[0]});
+               		}
+               });
+             }     
+        });
+        
+		
+		$("#av_toolbar_regdiv").remove();
+		$("#av_toolbar_iframe").remove();
+
+		var languageManager;
+
+		var selectedEndpointName = 'DBPEDIA';
+
+		$(document).ready(function() {
+			languageManager = new LanguageManager();
+			languageManager = languageManager._singletonInstance;
+
+			$('#endpointSelectionTitle').html(languageManager.getFieldTitle('selected endpoint'));
+			$('#selectedEndpoint').html(selectedEndpointName);
+
+			fillStartSettings();
+
+		    $.ajax({
+		        type: "GET",
+		        url: "endpointList.xml",
+		        dataType: "xml",
+		        success: function(data) {processData(data);}
+		     });
+		});
+
+		function processData(data) {
+		    var endpointsName = $(data).find('endpoint_name');
+		    var endpointsDescription = $(data).find('endpoint_description');
+		    var endpoints = $(data).find('endpoint');
+		    var graphs = $(data).find('graph');
+		    var queryExecutors = $(data).find('query_executor');
+		    
+		    var expandableIcon;
+		    var collapsibleBody;
+
+		    var ul = $('#endpointList');
+		    for(var i=0; i<endpointsName.length; i++){
+		    	var li = $("<li/>")
+					.attr('class', 'collection-item withMargin endpointLi')
+					.attr('meta-queryExecutor', queryExecutors[i].textContent)
+					.attr('meta-endpoint', endpoints[i].textContent)
+					.attr('meta-graph', graphs[i].textContent)
+					.attr('meta-endpointName', endpointsName[i].textContent)
+					.appendTo(ul)
+					.on('click', function(e){
+						var graph = $(this).attr('meta-graph');
+						if(graph != 'null')
+							graph = '<'+graph+'>';
+						else
+							graph = null;
+						systemGraph = graph;
+						systemEndpoint = $(this).attr('meta-endpoint');
+						systemQueryExecutor = $(this).attr('meta-queryExecutor');
+
+						$('#selectedEndpoint').html($(this).attr('meta-endpointName'));
+					});
+
+				expandableIcon = $("<i/>")
+					.attr('class', 'tiny material-icons grey-text expandIcon')
+					.html('expand_more')
+					.appendTo(li)
+					.on('click', function(e){
+						e.stopPropagation();
+						if($(this).parent().next().is(':visible')){
+							$(this).parent().next().hide();
+							$(this)[0].innerHTML = 'expand_more';
+						}
+						else{
+							$(this).parent().next().show();
+							$(this)[0].innerHTML = 'expand_less';
+						}
+					});
+
+				var span = $("<span/>")
+					.attr('class', 'liContent')
+					.html(endpointsName[i].textContent)
+					.css('margin-left', '0.5em')
+					.appendTo(li);
+					
+				collapsibleBody = $("<li/>")
+					.attr('class', 'collection-item myCollapsibleBody')
+					.html(endpointsDescription[i].textContent)
+					.appendTo(ul);
+
+				collapsibleBody.hide();
+		    }
+		}
+
+		function fillStartSettings(){
+			var settingsUl = $('#settingsList');
+
+			var li = $("<li/>")
+				.attr('class', 'collection-item settingsLi')
+				.appendTo(settingsUl)
+				.on('click', function(e){
+					e.stopPropagation();
+					if($(this).next().is(':visible')){
+						$(this).next().hide();
+						$(this).children()[0].innerHTML = 'expand_more';
+					}
+					else{
+						$(this).next().show();
+						$(this).children()[0].innerHTML = 'expand_less';
+					}
+				});
+
+			var expandableIcon = $("<i/>")
+				.attr('class', 'tiny material-icons grey-text expandIcon')
+				.html('expand_more')
+				.appendTo(li);
+
+			var span = $("<span/>")
+				.attr('class', 'liContent')
+				.html(languageManager.getTabTitle('settings'))
+				.css('margin-left', '0.5em')
+				.appendTo(li);
+				
+			var collapsibleBody = $("#settingsCollapsibleContent");
+
+			collapsibleBody.appendTo(settingsUl);
+
+			collapsibleBody.hide();
+
+			$("#labelLangSelectLabel").html(languageManager.getFieldTitle('label lang'));
+			$("#systemLangSelectLabel").html(languageManager.getFieldTitle('system lang'));
+			$("#numConceptsLabel").html(languageManager.getFieldTitle('num concepts'));
+			$("#numPredicatesLabel").html(languageManager.getFieldTitle('num predicates'));
+			$("#defaultOrderTableLabel").html(languageManager.getFieldTitle('default order table'));
+
+			fillLabelLang();
+			fillSystemLang();
+			fillNumberOfConceptsAndPredicates();
+		}
+
+		function changeStartLabelLanguage(){
+			labelLang = $('#labelLangSelect').find(":selected").val();
+		}
+
+		function setStartLimit(type){
+			if(type == 'concept')
+				conceptsLimit = $('#numConcepts').val();
+			else if(type == 'predicate')
+				predicatesLimit = $('#numPredicates').val();
+		}
+
+		function changeStartSystemLanguage(){
+			languageManager = new LanguageManager($('#systemLangSelect').find(":selected").val());
+		}
+
+		function setupSystem(e){
+			$('body').load("index.html");
+		}
+
+	</script>
+
+</HTML>

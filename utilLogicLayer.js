@@ -11,3 +11,19 @@ function createLabel(url){
 
 	return label;
 }
+
+function createLongerLabel(url, number){
+	var label = '';
+
+	var splittedParts = url.split('/')
+	for(var i=number; i>=0; i--){
+		label += splittedParts[splittedParts.length-1-i];
+		if(i!=0)
+			label += '-';
+	}
+
+	label = label.replace(/\#/g, "-");
+	label = label.replace(/\_/g, "-");
+
+	return label;
+}

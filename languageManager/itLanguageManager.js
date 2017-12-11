@@ -1,5 +1,5 @@
 var itLanguageManager = function () {
-if(itLanguageManager.prototype._singletonInstance){
+	if(itLanguageManager.prototype._singletonInstance){
 		return itLanguageManager.prototype._singletonInstance;
 	}
 

@@ -138,12 +138,25 @@ function buildQuery(){
 }
 
 function createAllVariable(){
+	var variables = {};
+	var tempVariable;
 	for(key in queryLogicStructure){
 		var node = queryLogicStructure[key];
 		if('sameAs' in node) //sameAs variable 
 			node.variable = queryLogicStructure[node.sameAs].variable;
-		else
-			node.variable = "?"+createVariableFromLabel(node.label, node.index);
+		else{
+			tempVariable = "?"+createVariableFromLabel(node.label, node.index);
+
+			var tempLabel = node.label;
+			var tentativeNumber = 1;
+			while(tempVariable in variables){
+				tempLabel = createLongerLabel(node.url, tentativeNumber++);
+				tempVariable = "?"+createVariableFromLabel(tempLabel, node.index);
+			}
+
+			node.variable = tempVariable;
+			variables[node.variable] = '';
+		}
 	}
 }
 
