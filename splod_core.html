@@ -321,38 +321,40 @@
 			            <div class="card-content ">
 			              	<div class="row">
 
-				              	<div class="input-field col s3 m3 l3">
+				              	<div class="input-field col s6 m6 l6">
+				              		<span id="labelLangSelectLabel" class="label"></span>
 								    <select id="labelLangSelect" onChange="changeLabelLanguage()">
 								    </select>
-								    <label id="labelLangSelectLabel"></label>
+								    
 								</div>
 
-								<div class="input-field col s3 m3 l3">
+								<div class="input-field col s6 m6 l6">
+									<span id="systemLangSelectLabel" class="label"></span>
 								    <select id="systemLangSelect" onChange="changeSystemLanguage()">
 								    </select>
-								    <label id="systemLangSelectLabel"></label>
 								</div>
-				          	   
+				          	
+				          	</div>
+				          	<div class="row">
 
-						        <div class="input-field col s6 m3 l3">
-						          <input id="numConcepts" type="number" min="1" onChange="setLimit('concept')">
-						          <label for="numConcepts" id ="numConceptsLabel"></label>
+						        <div class="input-field col s6 m6 l6">
+						        	<span id ="numConceptsLabel" class="label"></span>
+						          	<input id="numConcepts" type="number" min="1" onChange="setLimit('concept')">
 						        </div>
 						        <!--<div class="col s1">
 						          <i class="small material-icons blue-text" onClick="setLimit('concept')">check_circle</i>
 						        </div>-->
 
-						        <div class="input-field col s6 m3 l3">
-						          <input id="numPredicates" type="number" min="1" onChange="setLimit('predicate')">
-						          <label for="numPredicates" id="numPredicatesLabel"></label>
+						        <div class="input-field col s6 m6 l6">
+						        	<span id="numPredicatesLabel" class="label"></span>
+						        	<input id="numPredicates" type="number" min="1" onChange="setLimit('predicate')">
 						        </div>
 						        <!--<div class="col s1">  
 						          <i class="small material-icons blue-text" onClick="setLimit('predicate')">check_circle</i>
 						        </div>-->
-
 					       </div>
 					       <div class="row">
-				              	<div class="col s6 m6 l6">
+				              	<div class="col s12 m12 l12">
 								    <input type="checkbox" id="defaultOrderTable" onChange="setDefaultOrderTable($(this))" />
 	      							<label for="defaultOrderTable" id="defaultOrderTableLabel"></label>
 								</div>
