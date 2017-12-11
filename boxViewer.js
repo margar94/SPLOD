@@ -54,8 +54,8 @@ var labelLangList = [{langCode : 'ar'},
 var systemLangList = [{langCode : 'en'},
 					  {langCode : 'it'}];
 
-var conceptsLimit;
-var predicatesLimit;
+var conceptsLimit = 500;
+var predicatesLimit = 100;
 
 function initBoxViewer(){
 
@@ -64,9 +64,6 @@ function initBoxViewer(){
 	mapCreator = new MapCreator();
 
 	initializeLabelsAndTitle();
-
-	conceptsLimit = 500;
-	predicatesLimit = 100;
 
 	fillConcepts();
 	fillPredicates();
@@ -81,9 +78,6 @@ function restartBoxViewer(){
 	mapCreator = new MapCreator();
 
 	initializeLabelsAndTitle();
-
-	conceptsLimit = 500;
-	predicatesLimit = 100;
 
 	fillSettings();
 	fillHelp();
@@ -105,11 +99,11 @@ function initializeLabelsAndTitle(){
 	//$("#hintBox").hide();
 
 	//settings
-	$("#labelLangSelectLabel").html(languageManager.getSelectTitle('label lang'));
-	$("#systemLangSelectLabel").html(languageManager.getSelectTitle('system lang'));
-	$("#numConceptsLabel").html(languageManager.getSelectTitle('num concepts'));
-	$("#numPredicatesLabel").html(languageManager.getSelectTitle('num predicates'));
-	$("#defaultOrderTableLabel").html(languageManager.getSelectTitle('default order table'));
+	$("#labelLangSelectLabel").html(languageManager.getFieldTitle('label lang'));
+	$("#systemLangSelectLabel").html(languageManager.getFieldTitle('system lang'));
+	$("#numConceptsLabel").html(languageManager.getFieldTitle('num concepts'));
+	$("#numPredicatesLabel").html(languageManager.getFieldTitle('num predicates'));
+	$("#defaultOrderTableLabel").html(languageManager.getFieldTitle('default order table'));
 
 
 	//search bars
@@ -329,11 +323,11 @@ function iterativePreorderVisit(concept, concepts, toAppend, level){
 			e.stopPropagation();
 			if($(this).parent().next().is(':visible')){
 				$(this).parent().next().hide();
-				expandableIcon.html('expand_more');
+				$(this)[0].innerHTML = 'expand_more';
 			}
 			else{
 				$(this).parent().next().show();
-				expandableIcon.html('expand_less');
+				$(this)[0].innerHTML = 'expand_less';
 			}
 		});
 
