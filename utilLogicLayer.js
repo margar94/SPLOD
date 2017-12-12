@@ -13,8 +13,9 @@ function createLabel(url){
 
 	label = label.replace(/\_/g, " ");
 
-	if(label in languageManager.labels)
-		label = languageManager.labels[label];
+	var tempLabel = label.toLowerCase();
+	if(tempLabel in languageManager.labels)
+		label = languageManager.labels[tempLabel];
 	else
 		console.log(label);
 
