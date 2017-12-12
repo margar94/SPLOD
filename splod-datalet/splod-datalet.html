@@ -1,0 +1,41 @@
+<dom-module name="splod-datalet">
+    <template>
+    
+        //index
+
+
+    </template>
+    
+    //tutti import
+
+    <script>    
+
+        Polymer({
+            is : 'splod-datalet',
+            ready: function(){
+               $('ul.tabs').tabs({onShow: function(tab) {
+                if(tab[0].id == "predicatesBox"){
+                    $('ul#predicatesTabBox').tabs();
+
+                    if($('#direct ul li').length == 0){
+                        $('ul#predicatesTabBox').tabs('select_tab', 'reverse');
+                    }else{
+                        $('ul#predicatesTabBox').tabs('select_tab', 'direct');
+                    }
+                }}
+            });
+
+            $('.modal').modal({
+                startingTop: '5%',
+                endingTop: '5%'
+            });
+
+            initBoxViewer();
+            initQueryViewer();
+            initOperatorViewer();
+            initTableResultViewer();
+        });
+            
+        });
+    </script>
+</dom-module>
