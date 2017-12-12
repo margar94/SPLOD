@@ -1339,5 +1339,32 @@ function createVariableFromLabel(label, index){
 
 }
 
+QueryBuilder.prototype.getMapElementsLabel = function(queryLogicMap, callback){
+	var associatedVariable = {};
+	var counter = 1;
+	var tempQuery = {select:[], where: []};
+	for(field in queryLogicMap){
+		tempQuery.select.push('?'+counter);
+		tempQuery.where.push('OPTIONAL{<'+queryLogicMap[field].url+'> rdfs:label ?'+counter+'.FILTER (lang(?'+counter+') = "' + labelLang + '")}');
+		associatedVariable[counter++] = field;
+	}
+
+	executor.executeMapElementsLabelQuery(
+		tempQuery,
+		function(data){
+			for(variable in associatedVariable){
+				if(variable in data){
+					queryLogicMap[associatedVariable[variable]].label = data[variable].value;
+				}else{
+					queryLogicMap[associatedVariable[variable]].label = createLabel(queryLogicMap[associatedVariable[variable]].url);
+				}
+			}
+			//console.log(data);
+			callback(queryLogicMap);
+		});
+
+
+}
+
 
 

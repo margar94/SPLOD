@@ -16,6 +16,7 @@ var language_classHierarchyMapRoots;
 
 var activeAjaxRequest;
 var userAjaxRequest;
+var langAjaxRequest;
 
 var resultLimit;
 var defaultResultLimit = 100;
@@ -252,7 +253,6 @@ dbpediaLike.prototype.getConceptsFromSomething = function(predicate, limit, call
 
 //predicates
 dbpediaLike.prototype.getAllDirectPredicates = function(limit, callback) {
-
 	query = " prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> " + 
 		" prefix owl: <http://www.w3.org/2002/07/owl#> " +
 			" SELECT DISTINCT ?url ?label " +
@@ -787,4 +787,31 @@ dbpediaLike.prototype.executeUserQuery = function(querySPARQL){
 
 dbpediaLike.prototype.getUserQuery = function(){
 	return cachedUserQuery;
+}
+
+dbpediaLike.prototype.executeMapElementsLabelQuery = function(querySPARQL, callback){
+	query = " SELECT DISTINCT " + querySPARQL.select.join(' ') +
+				" WHERE { "; 
+					if(graph) 
+						query +=" GRAPH " + graph + " { ";
+					query += querySPARQL.where.join(' ');
+					if(graph) 
+						query +=" } ";
+				query += " } ";
+
+	queryUrl = endpoint+"?query="+ encodeURIComponent(query) +"&format=json";
+    var xhr = $.ajax({
+        url: queryUrl,
+        method:'post',
+        success: function( data, textStatus, jqXHR ) {
+	        	userAjaxRequest = null;
+	        	callback(data.results.bindings[0]);
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+	        	userAjaxRequest = null;
+	        	console.log(textStatus);
+        }
+    });
+    langAjaxRequest=xhr;
+
 }

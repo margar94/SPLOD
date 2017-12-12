@@ -625,12 +625,15 @@ function fillNumberOfConceptsAndPredicates(){
 }
 
 function changeLabelLanguage(){
+	if(langAjaxRequest != null)
+		langAjaxRequest.abort();
+
 	labelLang = $('#labelLangSelect').find(":selected").val();
 	
-	initBoxViewer();
-	initQueryViewer();
-	initOperatorViewer();
-	initTableResultViewer();
+	restartBoxViewer();
+	restartQueryViewer();
+	restartOperatorViewer();
+	restartTableResultViewer();
 
 	mapCreator.labelLangChanged();
 }

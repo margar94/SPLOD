@@ -136,7 +136,7 @@ MapCreator.prototype.selectedConcept = function(selectedUrl, selectedLabel) {
 		}
 
 	} 
-		//console.log(queryLogicMap);
+		console.log(queryLogicMap);
 
 	updateAndNotifyFocus(key);	
 
@@ -837,21 +837,35 @@ MapCreator.prototype.labelLangChanged = function(){
 	
 	//chiamata a executor per tradurre elementi nella mappa creta fino a quel momento
 	//set della nuova label nell'executor (anche in un unica chiamata)
-	
-	//set delle nuove label
-	for(key in queryLogicMap){
-		var element = queryLogicMap[key];
-	}
 
-	updateAndNotifyFocus(elementOnFocus);
+	/*
+	select distinct ?a ?b where {
+		OPTIONAL{<http://dbpedia.org/ontology/Game> rdfs:label ?a.
+		FILTER (lang(?a) = 'en')
+		}
+		OPTIONAL{<http://www.w3.org/2000/01/rdf-schema#seeAlso> rdfs:label ?b
+		FILTER (lang(?b) = 'en')}
 
-	if(queryVerbalizator == null)
-		queryVerbalizator = new QueryVerbalizator;
-	queryVerbalizator.updateQuery(rootListQueryLogicMap, queryLogicMap, elementOnFocus);
-	
+		} LIMIT 100
+	*/
 	if(queryBuilder == null)
 		queryBuilder = new QueryBuilder;
-	queryBuilder.updateQuery(rootListQueryLogicMap, queryLogicMap);
+
+	queryBuilder.getMapElementsLabel(
+		queryLogicMap,
+		function(newMap){//set delle nuove label
+			queryLogicMap = newMap;
+
+			updateAndNotifyFocus(elementOnFocus);
+
+			if(queryVerbalizator == null)
+				queryVerbalizator = new QueryVerbalizator;
+			queryVerbalizator.updateQuery(rootListQueryLogicMap, queryLogicMap, elementOnFocus);
+			
+			if(queryBuilder == null)
+				queryBuilder = new QueryBuilder;
+			queryBuilder.updateQuery(rootListQueryLogicMap, queryLogicMap);
+		});
 }
 
 MapCreator.prototype.getNodeByKey = function(key){
