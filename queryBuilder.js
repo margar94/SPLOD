@@ -145,14 +145,14 @@ function createAllVariable(){
 		if('sameAs' in node) //sameAs variable 
 			node.variable = queryLogicStructure[node.sameAs].variable;
 		else{
-			tempVariable = "?"+createVariableFromLabel(node.label, node.index);
+			//tempVariable = "?"+createVariableFromLabel(node.label, node.index);
 
-			var tempLabel = node.label;
-			var tentativeNumber = 1;
-			while(tempVariable in variables){
+			//var tempLabel = node.label;
+			var tentativeNumber = 0;
+			do{
 				tempLabel = createLongerLabel(node.url, tentativeNumber++);
 				tempVariable = "?"+createVariableFromLabel(tempLabel, node.index);
-			}
+			}while(tempVariable in variables)
 
 			node.variable = tempVariable;
 			variables[node.variable] = '';
@@ -1334,7 +1334,9 @@ function visitSPARQL(key){
 }
 
 function createVariableFromLabel(label, index){
-	return label.replace( /[\s \- \' \\ \/ \^ \$ \* \+ \? \. \( \) \| \{ \} \[ \] \! \@ \# \% \^ \& \= \; \: \" \, \< \> ]/g, "") + "_" + index;
+	//return label.replace( /[\s \- \' \\ \/ \^ \$ \* \+ \? \. \( \) \| \{ \} \[ \] \! \@ \# \% \^ \& \= \; \: \" \, \< \>]/g, "") + "_" + index;
+	return label.replace( /\W/g, "") + "_" + index;
+
 }
 
 
