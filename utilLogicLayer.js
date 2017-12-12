@@ -17,7 +17,7 @@ function createLabel(url){
 	if(tempLabel in languageManager.labels)
 		label = languageManager.labels[tempLabel];
 	else
-		console.log(label);
+		//console.log(label);
 
 	return label;
 }

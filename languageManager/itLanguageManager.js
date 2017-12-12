@@ -48,27 +48,27 @@ itLanguageManager.prototype.verbalizeConcept = function(conceptLabel){
 		first: [],
 		current: []};
 
-	verbalization.standard.push(itLanguageManager.prototype.getArticle(conceptLabel) + ' ');
+	verbalization.standard.push('');
 	verbalization.standard.push(conceptLabel + ' ');
 	verbalization.standard.push('');
 
-	verbalization.modified.push('che &egrave; ' + itLanguageManager.prototype.getArticle(conceptLabel) + ' ');
+	verbalization.modified.push('che &egrave; ');
 	verbalization.modified.push(conceptLabel + ' ');
 	verbalization.modified.push('');
 
 	verbalization.negated.push('che ');
 	verbalization.negated.push('non ');
-	verbalization.negated.push('&egrave; ' + itLanguageManager.prototype.getArticle(conceptLabel) + ' ');
+	verbalization.negated.push('&egrave; ');
 	verbalization.negated.push(conceptLabel + ' ');
 	verbalization.negated.push('');	
 
 	verbalization.optional.push('che &egrave; ');
 	verbalization.optional.push('opzionalmente ');
-	verbalization.optional.push(itLanguageManager.prototype.getArticle(conceptLabel) + ' ');
+	verbalization.optional.push('');
 	verbalization.optional.push(conceptLabel + ' ');
 	verbalization.optional.push('');
 
-	verbalization.truncated.push('&egrave; ' + itLanguageManager.prototype.getArticle(conceptLabel) + ' ');
+	verbalization.truncated.push('&egrave; ');
 	verbalization.truncated.push(conceptLabel + ' ');
 	verbalization.truncated.push('');
 
@@ -126,27 +126,27 @@ itLanguageManager.prototype.verbalizePredicate = function(predicateLabel, predic
 			verbalization.first.push('');
 
 		}else{
-			verbalization.standard.push('che ha ' + itLanguageManager.prototype.getArticle(predicateLabel) + ' ');
+			verbalization.standard.push('che ha ');
 			verbalization.standard.push(predicateLabel + ' ');
 			verbalization.standard.push('');
-//MODIFICARE?
-			verbalization.modified.push('il cui ');
+
+			verbalization.modified.push(itLanguageManager.prototype.getArticle(predicateLabel)+' cui ');
 			verbalization.modified.push(predicateLabel + ' ');
 			verbalization.modified.push('');
 
 			verbalization.negated.push('che ');
 			verbalization.negated.push('non ');
-			verbalization.negated.push('ha ' + itLanguageManager.prototype.getArticle(predicateLabel) + ' ');
+			verbalization.negated.push('ha ');
 			verbalization.negated.push(predicateLabel + ' ');
 			verbalization.negated.push('');
 
 			verbalization.optional.push('che ha ');
 			verbalization.optional.push('opzionalmente ');
-			verbalization.optional.push(itLanguageManager.prototype.getArticle(predicateLabel) + ' ');
+			verbalization.optional.push('');
 			verbalization.optional.push(predicateLabel + ' ');
 			verbalization.optional.push('');
 
-			verbalization.truncated.push('ha ' + itLanguageManager.prototype.getArticle(predicateLabel) + ' ');
+			verbalization.truncated.push('ha ');
 			verbalization.truncated.push(predicateLabel + ' ');
 			verbalization.truncated.push('');
 
@@ -634,7 +634,7 @@ itLanguageManager.prototype.getButtonLabel = function(button){
 
 
 itLanguageManager.prototype.startsWithVerb = function(predicateLabel, direction){
-	return false;
+	return predicateLabel.startsWith('ha')||predicateLabel.startsWith('è');
 }
 
 
@@ -644,7 +644,7 @@ itLanguageManager.prototype.getPredicateVerbalization = function(predicateLabel,
 	if(itLanguageManager.prototype.startsWithVerb(predicateLabel, direction))
 		label = 'che '+ predicateLabel;
 	else if(direction == 'direct')
-		label =	'che ha '+ itLanguageManager.prototype.getArticle(predicateLabel) + ' ' + predicateLabel; 
+		label =	'che ha ' + predicateLabel; 
 	else
 		label =	'che &egrave; ' + predicateLabel; 
 	
@@ -1204,10 +1204,10 @@ itLanguageManager.prototype.labels = {
 //default : m, s
 itLanguageManager.prototype.labelsinfo = {
 		'etichetta' : ['f', 's'],
-		'lingua' : ['f', 's'],,
+		'lingua' : ['f', 's'],
 		'diritti' : ['m', 'p'],
 		'descrizione' : ['f', 's'],
-		'squadra' : ['f', 's'],,
+		'squadra' : ['f', 's'],
 		'didascalia' : ['f', 's'],
 		'miniatura' : ['f', 's'],
 		'breve descrizione' : ['f', 's'],
