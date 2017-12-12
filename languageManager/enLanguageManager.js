@@ -657,3 +657,5 @@ enLanguageManager.prototype.getHelpGuide = function(){
 enLanguageManager.prototype.getOperatorFieldVerbalization = function(cardinalNumber){
 	return enLanguageManager.prototype.getOrdinalNumber(cardinalNumber) + ' field';
 }
+
+enLanguageManager.prototype.labels = {};
