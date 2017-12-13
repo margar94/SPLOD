@@ -692,7 +692,7 @@ itLanguageManager.prototype.getHelpGuide = function(){
 	var headers = [];
 
 	var overviewObj = {title : 'Overview', content : []};
-	overviewObj.content.push('<b>SPLOD</b> ti aiuter&agrave; a usare i LOD (Linked Open Data) e a creare una tabella che potrai usare nei passi successivi.<br>In questa guida troverai degli esempi mostrati passo passo pre creare la tua prima richiesta. EXAMPLE');
+	overviewObj.content.push('<b>SPLOD</b> ti aiuter&agrave; a usare i LOD (Linked Open Data) e a creare una tabella che potrai usare nei passi successivi.<br>In questa guida troverai degli esempi mostrati passo passo per creare la tua prima richiesta. EXAMPLE');
 	headers.push(overviewObj);
 
 	var boxesObj = {title : 'A cosa hai accesso premendo sui tab dei concetti, predicati, operatori, tabella dei risultati e impostazioni?', content : []};

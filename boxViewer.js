@@ -753,6 +753,7 @@ function fillHelp(){
 		li.appendTo(helpUl);
 	}
 	$('.carousel.carousel-slider').carousel({fullWidth: true});
+    $('.collapsible').collapsible();
 }
 
 //delete highlighted element in natural language query

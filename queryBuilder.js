@@ -1223,6 +1223,11 @@ function createVariableFromLabel(label, index){
 }
 
 QueryBuilder.prototype.getMapElementsLabel = function(queryLogicMap, callback){
+	if(Object.keys(queryLogicMap).length == 0){
+		callback(queryLogicMap);
+		return;
+	}
+
 	var associatedVariable = {};
 	var counter = 1;
 	var tempQuery = {select:[], where: []};
