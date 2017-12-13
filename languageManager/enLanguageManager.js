@@ -84,7 +84,7 @@ enLanguageManager.prototype.verbalizePredicate = function(predicateLabel, predic
 
 	if(predicateDirection == 'direct'){
 
-		if(enLanguageManager.prototype.startsWithVerb(predicateLabel)){
+		if(enLanguageManager.prototype.startsWithVerb(predicateLabel, predicateDirection)){
 			verbalization.standard.push('that ');
 			verbalization.standard.push(predicateLabel + ' ');
 			verbalization.standard.push('');
@@ -146,10 +146,10 @@ enLanguageManager.prototype.verbalizePredicate = function(predicateLabel, predic
 
 	}else if(predicateDirection == 'reverse'){
 		var postLabel = 'of ';
-		if(enLanguageManager.prototype.endsWithPreposition(predicateLabel))
+		if(enLanguageManager.prototype.endsWithPreposition(predicateLabel, predicateDirection))
 			postLabel = ' ';
 
-		if(enLanguageManager.prototype.startsWithVerb(predicateLabel)){
+		if(enLanguageManager.prototype.startsWithVerb(predicateLabel, predicateDirection)){
 
 			verbalization.standard.push('that ');
 			verbalization.standard.push(predicateLabel + ' ');
@@ -223,6 +223,18 @@ enLanguageManager.prototype.verbalizeSomething = function(){
 		current: ['something ']};
 
 	return verbalization;
+
+}
+
+enLanguageManager.prototype.getSomethingLabelVerbalization = function(){
+
+	return 'something ';
+
+}
+
+enLanguageManager.prototype.getEverythingLabelVerbalization = function(){
+
+	return 'thing  ';
 
 }
 

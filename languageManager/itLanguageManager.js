@@ -95,7 +95,7 @@ itLanguageManager.prototype.verbalizePredicate = function(predicateLabel, predic
 
 	if(predicateDirection == 'direct'){
 
-		if(itLanguageManager.prototype.startsWithVerb(predicateLabel)){
+		if(itLanguageManager.prototype.startsWithVerb(predicateLabel, predicateDirection)){
 			verbalization.standard.push('che ');
 			verbalization.standard.push(predicateLabel + ' ');
 			verbalization.standard.push('');
@@ -159,10 +159,10 @@ itLanguageManager.prototype.verbalizePredicate = function(predicateLabel, predic
 
 	}else if(predicateDirection == 'reverse'){
 		var postLabel = 'di ';
-		if(itLanguageManager.prototype.endsWithPreposition(predicateLabel))
+		if(itLanguageManager.prototype.endsWithPreposition(predicateLabel, predicateDirection))
 			postLabel = ' ';
 
-		if(itLanguageManager.prototype.startsWithVerb(predicateLabel)){
+		if(itLanguageManager.prototype.startsWithVerb(predicateLabel, predicateDirection)){
 
 			verbalization.standard.push('che ');
 			verbalization.standard.push(predicateLabel + ' ');
@@ -239,6 +239,12 @@ itLanguageManager.prototype.verbalizeSomething = function(){
 
 }
 
+itLanguageManager.prototype.getSomethingLabelVerbalization = function(){
+
+	return 'qualcosa ';
+
+}
+
 itLanguageManager.prototype.verbalizeEverything = function(){
 
 	verbalization = {
@@ -247,6 +253,12 @@ itLanguageManager.prototype.verbalizeEverything = function(){
 		current: [' tutto ci&ograve; ']};
 
 	return verbalization;
+
+}
+
+itLanguageManager.prototype.getEverythingLabelVerbalization = function(){
+
+	return 'tutto ci&ograve;  ';
 
 }
 
