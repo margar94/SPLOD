@@ -592,7 +592,7 @@ li.reusableResultTitle{
 }
 
 li.reusableResultTitle i{
-	color: white;
+	color: white !important;
 }
 
 #pendingQuerySpan .active{

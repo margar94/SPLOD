@@ -764,6 +764,9 @@ function attachEvents(){
 		}
 
 		$("#operatorsSpinner").show();
+		$('#operatorsProgress').show();
+		$('#operatorList').hide();
+		$('#reusableResultList').hide();
 
 		mapCreator.changeFocus(onFocus);
 

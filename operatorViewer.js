@@ -158,7 +158,13 @@ function renderReusableResultListFromOperator(reusableResults){
 						$('#resultsPreviewBadge').hide();
 						$('#tableResultsSpinner').show();
 						$('#tableResultsProgress').show();
-
+						
+						$('#operatorsSpinner').show();
+						$('#operatorsProgress').show();
+						$('#reusableResultList').hide();
+						$('#rowUserValue').remove();
+						$('#searchReusableResultCard').hide();
+						$('#operatorsBox .card-title').hide();
 					}else{
 						$('#rowUserValue input').val('');
 						renderPendingQuery();
@@ -179,6 +185,14 @@ function renderReusableResultListFromOperator(reusableResults){
 						$('#resultsTable').hide();
 						$('#resultSpinner').show();
 						$('#resultsProgress').show();
+
+						$('#operatorsSpinner').show();
+						$('#operatorsProgress').show();
+						$('#reusableResultList').hide();
+						$('#rowUserValue').remove();
+						$('#searchReusableResultCard').hide();
+						$('#operatorsBox .card-title').hide();
+
 					}else{
 						$('#rowUserValue input').val('');
 						renderPendingQuery();
@@ -203,6 +217,13 @@ function renderReusableResultListFromResult(reusableResults){
 					$('#resultsPreviewBadge').hide();
 					$('#tableResultsSpinner').show();
 					$('#tableResultsProgress').show();
+					
+					$('#operatorsSpinner').show();
+					$('#operatorsProgress').show();
+					$('#reusableResultList').hide();
+					$('#rowUserValue').remove();
+					$('#searchReusableResultCard').hide();
+					$('#operatorsBox .card-title').hide();
 
 					operatorManager.changedReusableResult(values, true);
 				}
@@ -213,6 +234,14 @@ function renderReusableResultListFromResult(reusableResults){
 					$('#resultsPreviewBadge').hide();
 					$('#tableResultsSpinner').show();
 					$('#tableResultsProgress').show();
+					
+					$('#operatorsSpinner').show();
+					$('#operatorsProgress').show();
+					$('#reusableResultList').hide();
+					$('#rowUserValue').remove();
+					$('#searchReusableResultCard').hide();
+					$('#operatorsBox .card-title').hide();
+
 					operatorManager.changedReusableResult([{value:$(this).attr('meta-value'), penninculo:$(this).attr('meta-penninculo')}], false);
 				}
 
@@ -411,7 +440,7 @@ function renderReusableResultList(reusableResults, onClickButtonFunction, onClic
 					.attr('meta-value', element.url)
 					.attr('title', element.url);
 			}
-
+//alert(element.occurrences);
 			var badge = $("<span/>")
 				.attr('class', 'new badge')
 				.attr('data-badge-caption', '')

@@ -267,11 +267,13 @@ OperatorManager.prototype.queryResult = function(select, labelSelect, keySelect,
 
 	});
 
+	sortAndAggregateResults(keySelect);
+	saveDatatype(keySelect, resultDatatype);
+
 	if(changedFocus)
 		manageUpdateOperatorViewer();
 	
-	sortAndAggregateResults(select, keySelect, results);
-	saveDatatype(keySelect, resultDatatype);
+	
 }
 
 //user selects a operator to filter elementOnFocus
@@ -500,8 +502,7 @@ function getTypeByOperator(operatorField, operator, datatype){
 	return type;
 }
 
-function sortAndAggregateResults(select, keySelect, results){
-
+function sortAndAggregateResults(keySelect){
 	for(field in savedResult){
 		for(datatype in savedResult[field]){
 			sort(savedResult[field][datatype], datatype);
@@ -603,7 +604,6 @@ function manageUpdateOperatorViewer(){
 		} 
 		
 		var type = getTypeByOperator(operatorField, operator, node.datatype);
-
 		renderReusableResultListFromResult({type:type, results:[oldresults,newresults], cachedQuery: node.cachedQuery});
 		return;
 	}

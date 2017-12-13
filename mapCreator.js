@@ -639,7 +639,8 @@ MapCreator.prototype.selectedResult = function(result){
 				   type:'result', direction: false,
 				   verbalization: verbalization, 
 				   parent:elementOnFocusNode.parent, children: [], 
-				   datatype: result.datatype, lang: result.lang,
+				   datatype: result.datatype, penninculo: result.penninculo, 
+				   lang: result.lang,
 				   relatedTo: elementOnFocusNode.relatedTo,
 				   cachedQuery: elementOnFocusNode.cachedQuery,
 				   mySameAsReferences : []};
