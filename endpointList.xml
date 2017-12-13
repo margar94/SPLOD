@@ -22,7 +22,10 @@
 
 	<endpoint_item>
 		<endpoint_name>National library of Chile</endpoint_name>
-		<endpoint_description> </endpoint_description>
+		<endpoint_description>
+			La Biblioteca del Congreso Nacional de Chile, en su interés permanente de mejorar sus procesos y servicios al Congreso y a los ciudadanos, inició su proyecto de Web Semántica con el fin de incorporar innovación en su acervo y poner nuevas herramientas a disposición de la comunidad.
+			En los inicios del proyecto Linked Open Data de la Biblioteca del Congreso Nacional de Chile trabajó el grupo de investigación WESO de la Universidad de Oviedo, obteniendo como resultado una implementación preliminar, un método de desarrollo y una arquitectura que puede ser replicada en otros espacios similares, y que ha sido publicada en la conferencia internacional I-Semantics 2011.
+		</endpoint_description>
 		<query_executor>dbpediaLike</query_executor>
 		<endpoint>http://datos.bcn.cl/sparql</endpoint>
 		<graph>null</graph>
@@ -30,7 +33,10 @@
 
 	<endpoint_item>
 		<endpoint_name>Live DBPEDIA</endpoint_name>
-		<endpoint_description> </endpoint_description>
+		<endpoint_description>
+			DBpedia is Wikipedia content represented as a Semantic Web. The original DBpedia representation was generated from a static dump of WIkipedia content, in a process that took roughly 6 months from Wikipedia dump to DBpedia publication. To update DBpedia, new Wikipedia dumps have been taken periodically (roughly every 6-12 months) since then and processed in the same way. DBpedia content has thus always been 6-18 months behind updates applied to WIkipedia content.
+			As the use of DBpedia, and the dynamism of Wikipedia content, have increased, the need for DBpedia to update constantly by processing the Wikipedia "firehose" changelog became apparent. DBpedia-Live is the current fruit of that effort.
+		</endpoint_description>
 		<query_executor>livedbpediaLike</query_executor>
 		<endpoint>http://live.dbpedia.org/sparql</endpoint>
 		<graph>null</graph>
