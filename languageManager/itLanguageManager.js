@@ -276,7 +276,7 @@ itLanguageManager.prototype.getOrdinalNumber = function(cardinalNumber){
 }
 
 itLanguageManager.prototype.endsWithPreposition = function(label){
-	var preposition = ["da", "di"]; 
+	var preposition = ["da", "di", "a", "anche", "per"]; 
 	for(var i=0; i<preposition.length; i++){
 		if(label.endsWith(preposition[i]))
 			return true;

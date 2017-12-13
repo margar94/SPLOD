@@ -272,8 +272,6 @@ OperatorManager.prototype.queryResult = function(select, labelSelect, keySelect,
 
 	if(changedFocus)
 		manageUpdateOperatorViewer();
-	
-	
 }
 
 //user selects a operator to filter elementOnFocus
@@ -583,10 +581,19 @@ function manageUpdateOperatorViewer(){
 		node = mapCreator.getNodeByKey(node.sameAs);
 	}
 
-	if(node.type == 'everything' || node.type == 'concept' || node.type == 'predicate' || node.type == 'something' || node.type == 'result'){
+	if(node.type == 'everything' || node.type == 'predicate'){
 		var conjunctionList = mapCreator.getSiblingConjunctionByKey(node.key);
 		for(var i=0; i<conjunctionList.length; i++)
 			operatorList.push({list:['repeat'], datatype:null, repeatParameters: [conjunctionList[i], node.key, node.label]});
+	}
+
+	if(node.type == 'concept'){
+		var parentNode = mapCreator.getNodeByKey(node.parent);
+		if(parentNode!=undefined && !(parentNode.type=='predicate' && parentNode.direction=='reverse')){
+			var conjunctionList = mapCreator.getSiblingConjunctionByKey(node.key);
+			for(var i=0; i<conjunctionList.length; i++)
+				operatorList.push({list:['repeat'], datatype:null, repeatParameters: [conjunctionList[i], node.key, node.label]});
+		}
 	}
 
 	if(node.type=='result'){
