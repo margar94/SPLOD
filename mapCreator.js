@@ -136,7 +136,6 @@ MapCreator.prototype.selectedConcept = function(selectedUrl, selectedLabel) {
 		}
 
 	} 
-		console.log(queryLogicMap);
 
 	updateAndNotifyFocus(key);	
 
@@ -194,7 +193,7 @@ MapCreator.prototype.selectedPredicate = function(selectedUrl, selectedLabel, pr
 		var everythingIndex = indexMap['everything'];
 
 		var everythingElement = {key: everythingKey, index: everythingIndex,
-							  url: 'everything', label:'thing', 
+							  url: 'everything', label:languageManager.getEverythingLabelVerbalization(),
 							  type:'everything', direction:false,
 							  verbalization:verbalizationEverything,
 							  parent:null, children:[key],
@@ -263,7 +262,7 @@ MapCreator.prototype.selectedPredicate = function(selectedUrl, selectedLabel, pr
 
 		var somethingLogic = {key: somethingKey, index: somethingIndex,
 							  //url: somethingKey, label:'thing', 
-							  url: 'something', label:'something', 
+							  url: 'something', label:languageManager.getSomethingLabelVerbalization(), 
 							  type:'something', direction:false,
 							  verbalization:verbalization,
 							  parent:null, children:[],
@@ -589,7 +588,7 @@ MapCreator.prototype.selectedRepeatOperator  = function(repeatParameters){
 
 		var somethingLogic = {key: somethingKey, index: somethingIndex,
 							  //url: somethingKey, label:'thing', 
-							  url: 'something', label:'something', 
+							  url: 'something', label:languageManager.getSomethingLabelVerbalization(), 
 							  type:'something', direction:false,
 							  verbalization:somethingVerbalization,
 							  parent:key, children:[],
@@ -606,8 +605,6 @@ MapCreator.prototype.selectedRepeatOperator  = function(repeatParameters){
 		rootListQueryLogicMap.push(newOperatorKey);
 		rootListQueryLogicMap.push(key);
 	}
-
-console.log(queryLogicMap);
 
 	elementOnFocus = key;
 	updateAndNotifyFocus(elementOnFocus);
@@ -805,49 +802,62 @@ MapCreator.prototype.changeResultLimit = function(resultLimitValue){
 }
 
 MapCreator.prototype.systemLangChanged = function(){
-	for(key in queryLogicMap){
-		var element = queryLogicMap[key];
-		switch(element.type){
-			case 'predicate':
-				element.verbalization = languageManager.verbalizePredicate(element.label, element.direction);
-				break;
-			case 'concept':
-			case 'operator':
-			case 'result':
-			case 'everything':
-			case 'something':
-				var tempType = element.type.charAt(0).toUpperCase() + element.type.slice(1);
-				element.verbalization = eval('languageManager.verbalize'+tempType)(element.label);
-				break;
-		}		
-	}
 
-	updateAndNotifyFocus(elementOnFocus);
-
-	if(queryVerbalizator == null)
-		queryVerbalizator = new QueryVerbalizator;
-	queryVerbalizator.updateQuery(rootListQueryLogicMap, queryLogicMap, elementOnFocus);
-	
 	if(queryBuilder == null)
 		queryBuilder = new QueryBuilder;
-	queryBuilder.updateQuery(rootListQueryLogicMap, queryLogicMap);
+
+	queryBuilder.getMapElementsLabel(
+		queryLogicMap,
+		function(newMap){//set delle nuove label
+			queryLogicMap = newMap;
+
+			for(key in queryLogicMap){
+				var element = queryLogicMap[key];
+				switch(element.type){
+					case 'predicate':
+						//change verbalization. label will be changed by querybuilder
+						element.verbalization = languageManager.verbalizePredicate(element.label, element.direction);
+						break;
+					case 'concept':
+						//change verbalization. label will be changed by querybuilder
+						element.verbalization = languageManager.verbalizeConcept(element.label);
+						break;
+					case 'result':
+						//change only verbalization
+						element.verbalization = languageManager.verbalizeResult(element.label);
+						break;
+					case 'everything':
+					case 'something':
+						var tempType = element.type.charAt(0).toUpperCase() + element.type.slice(1);
+						element.label = eval('languageManager.get'+tempType+'LabelVerbalization')();
+						element.verbalization = eval('languageManager.verbalize'+tempType)(element.label);
+						break;
+					case 'operator':
+						element.label = languageManager.getOperatorLabelVerbalization(element.subtype);
+						element.verbalization = languageManager.verbalizeOperator(element.subtype);
+						break;
+
+				}		
+			}
+
+			updateAndNotifyFocus(elementOnFocus);
+
+			if(queryVerbalizator == null)
+				queryVerbalizator = new QueryVerbalizator;
+			queryVerbalizator.updateQuery(rootListQueryLogicMap, queryLogicMap, elementOnFocus);
+			
+			if(queryBuilder == null)
+				queryBuilder = new QueryBuilder;
+			queryBuilder.updateQuery(rootListQueryLogicMap, queryLogicMap);
+		});
 }
 
+/*
 MapCreator.prototype.labelLangChanged = function(){
 	
 	//chiamata a executor per tradurre elementi nella mappa creta fino a quel momento
 	//set della nuova label nell'executor (anche in un unica chiamata)
 
-	/*
-	select distinct ?a ?b where {
-		OPTIONAL{<http://dbpedia.org/ontology/Game> rdfs:label ?a.
-		FILTER (lang(?a) = 'en')
-		}
-		OPTIONAL{<http://www.w3.org/2000/01/rdf-schema#seeAlso> rdfs:label ?b
-		FILTER (lang(?b) = 'en')}
-
-		} LIMIT 100
-	*/
 	if(queryBuilder == null)
 		queryBuilder = new QueryBuilder;
 
@@ -866,7 +876,7 @@ MapCreator.prototype.labelLangChanged = function(){
 				queryBuilder = new QueryBuilder;
 			queryBuilder.updateQuery(rootListQueryLogicMap, queryLogicMap);
 		});
-}
+}*/
 
 MapCreator.prototype.getNodeByKey = function(key){
 	return queryLogicMap[key];
@@ -1002,7 +1012,7 @@ function substituteMeWithSomethingNode(key){
 	// to remove all node.children element
 	// new element in logic map
 	var somethingLogic = {key: somethingKey, index: somethingIndex,
-							  url: 'something', label:'thing', 
+							  url: 'something', label:languageManager.getSomethingLabelVerbalization(),
 							  type:'something', direction:false,
 							  verbalization:somethingVerbalization,
 							  parent:node.parent, children:[],

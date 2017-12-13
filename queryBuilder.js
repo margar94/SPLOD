@@ -1343,10 +1343,15 @@ QueryBuilder.prototype.getMapElementsLabel = function(queryLogicMap, callback){
 	var associatedVariable = {};
 	var counter = 1;
 	var tempQuery = {select:[], where: []};
+
+	var mapElement;
 	for(field in queryLogicMap){
-		tempQuery.select.push('?'+counter);
-		tempQuery.where.push('OPTIONAL{<'+queryLogicMap[field].url+'> rdfs:label ?'+counter+'.FILTER (lang(?'+counter+') = "' + labelLang + '")}');
-		associatedVariable[counter++] = field;
+		mapElement=queryLogicMap[field];
+		if(mapElement.type=='concept' || mapElement.type=='predicate'){
+			tempQuery.select.push('?'+counter);
+			tempQuery.where.push('OPTIONAL{<'+queryLogicMap[field].url+'> rdfs:label ?'+counter+'.FILTER (lang(?'+counter+') = "' + systemLang + '")}');
+			associatedVariable[counter++] = field;
+		}
 	}
 
 	executor.executeMapElementsLabelQuery(

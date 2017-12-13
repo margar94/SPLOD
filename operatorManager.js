@@ -313,7 +313,6 @@ OperatorManager.prototype.getResultToCompleteOperator = function(){
 	}
 	var type = getTypeByOperator(operatorField, operator.value, operator.datatype);
 
-console.log(oldresults);
 	return {type:type, results: [oldresults, newresults]};
 }
 
@@ -604,7 +603,6 @@ function manageUpdateOperatorViewer(){
 		} 
 		
 		var type = getTypeByOperator(operatorField, operator, node.datatype);
-	console.log(newresults);
 
 		renderReusableResultListFromResult({type:type, results:[oldresults,newresults], cachedQuery: node.cachedQuery});
 		return;

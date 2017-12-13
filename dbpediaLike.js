@@ -3,7 +3,7 @@ var graph;
 var query, query2; 
 var queryUrl, queryUrl2;
 
-var labelLang = 'en';
+//var systemLang = 'en';
 
 var operatorManager;
 var tableResultManager;
@@ -57,19 +57,19 @@ var dbpediaLike = function (selectedEndpoint, selectedGraph) {
 
 //concepts
 dbpediaLike.prototype.getAllEntities = function(limit, callback) {
-	if(labelLang in language_classHierarchyMap){
-		if(!limit || Object.keys(language_classHierarchyMap[labelLang]).length<=limit){
-			callback(language_classHierarchyMapRoots[labelLang], language_classHierarchyMap[labelLang]);
+	if(systemLang in language_classHierarchyMap){
+		if(!limit || Object.keys(language_classHierarchyMap[systemLang]).length<=limit){
+			callback(language_classHierarchyMapRoots[systemLang], language_classHierarchyMap[systemLang]);
 			return;
-		}else{ // if(Object.keys(language_classHierarchyMap[labelLang]).length>limit)
-			var map = cut(language_classHierarchyMap[labelLang], limit);
+		}else{ // if(Object.keys(language_classHierarchyMap[systemLang]).length>limit)
+			var map = cut(language_classHierarchyMap[systemLang], limit);
 			var roots = getMapRoots(map);
 			callback(roots, map);
 			return;
 		}
 	} 
 
-	language_classHierarchyMap[labelLang] = {};
+	language_classHierarchyMap[systemLang] = {};
 
 	query = " prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
 				" prefix owl: <http://www.w3.org/2002/07/owl#> " +
@@ -79,10 +79,10 @@ dbpediaLike.prototype.getAllEntities = function(limit, callback) {
 					query += " GRAPH " + graph + " { ";
 						query += " {?subclass a owl:Class} UNION {?subclass a rdfs:Class} " + 
 						" OPTIONAL{?subclass rdfs:label ?label_subclass. " +
-							" FILTER (lang(?label_subclass) = '" + labelLang + "')} " +
+							" FILTER (lang(?label_subclass) = '" + systemLang + "')} " +
 						" OPTIONAL{?subclass rdfs:subClassOf ?superclass. " +
 							" OPTIONAL {?superclass rdfs:label ?label_superclass. " +
-								" FILTER (lang(?label_superclass) = '" + labelLang + "')}}";
+								" FILTER (lang(?label_superclass) = '" + systemLang + "')}}";
 					if(graph) 
 						query += " } ";
 				query += " } ";
@@ -119,15 +119,15 @@ dbpediaLike.prototype.getAllEntities = function(limit, callback) {
 		        success: function( data ) {
 		        	var arrayData = data.results.bindings;
 		        	//it removes unused concepts
-		        	language_classHierarchyMap[labelLang] = addInstancesOccurenceClassHierarchy(arrayData, language_classHierarchyMap[labelLang]);
-		        	language_classHierarchyMap[labelLang] = cleanMap(language_classHierarchyMap[labelLang]);
-		        	var mapRoots = getMapRoots(language_classHierarchyMap[labelLang]);
-		        	language_classHierarchyMapRoots[labelLang] = mapRoots;
-					callback(language_classHierarchyMapRoots[labelLang], language_classHierarchyMap[labelLang]);
+		        	language_classHierarchyMap[systemLang] = addInstancesOccurenceClassHierarchy(arrayData, language_classHierarchyMap[systemLang]);
+		        	language_classHierarchyMap[systemLang] = cleanMap(language_classHierarchyMap[systemLang]);
+		        	var mapRoots = getMapRoots(language_classHierarchyMap[systemLang]);
+		        	language_classHierarchyMapRoots[systemLang] = mapRoots;
+					callback(language_classHierarchyMapRoots[systemLang], language_classHierarchyMap[systemLang]);
 		        },
 		        error: function(jqXHR, textStatus, errorThrown){
 		        	console.log(textStatus);
-		        	delete language_classHierarchyMapRoots[labelLang];
+		        	delete language_classHierarchyMapRoots[systemLang];
 		        },
 				complete: function(){
 					var index = $.inArray(jqXHR, activeAjaxRequest);
@@ -150,10 +150,10 @@ dbpediaLike.prototype.getAllEntities = function(limit, callback) {
 */
 dbpediaLike.prototype.getEntitySubclasses = function(url, limit, callback) {
 	var submap={};
-	if(url in language_classHierarchyMap[labelLang]){
+	if(url in language_classHierarchyMap[systemLang]){
 		submap = buildSubmapHierarchy(url, limit);
 
-		/*var childrenTemp = language_classHierarchyMap[labelLang][url].children;
+		/*var childrenTemp = language_classHierarchyMap[systemLang][url].children;
 		for(var i=0; i<childrenTemp.length; i++){
 			submap[childrenTemp[i]].parent = [];
 		}
@@ -174,7 +174,7 @@ dbpediaLike.prototype.getConceptsFromDirectPredicate = function(predicate, limit
 						query += " ?o a ?url. " +
 						" ?s  <"+predicate+"> ?o. " +
 						" OPTIONAL {?url rdfs:label ?label. " +
-						" FILTER (lang(?label) = '" + labelLang + "')} ";
+						" FILTER (lang(?label) = '" + systemLang + "')} ";
 					if(graph) 
 						query += " } ";
 				query += " } ";
@@ -220,7 +220,7 @@ dbpediaLike.prototype.getConceptsFromSomething = function(predicate, limit, call
 						query += " ?o a ?url. " +
 						" ?s  <"+predicate+"> ?o. " +
 						" OPTIONAL {?url rdfs:label ?label. " +
-						" FILTER (lang(?label) = '" + labelLang + "')} ";
+						" FILTER (lang(?label) = '" + systemLang + "')} ";
 					if(graph) 
 						query += " } ";
 				query += " } ";
@@ -270,7 +270,7 @@ dbpediaLike.prototype.getAllDirectPredicates = function(limit, callback) {
 						" LIMIT 1 " +
 					" } " +
 					" OPTIONAL {?url rdfs:label ?label. " +
-					" FILTER (lang(?label) = '" + labelLang + "')} ";
+					" FILTER (lang(?label) = '" + systemLang + "')} ";
 				if(graph) 
 					query += " } ";
 			query += " } ";
@@ -319,7 +319,7 @@ dbpediaLike.prototype.getAllReversePredicates = function(limit, callback) {
 						" LIMIT 1 " +
 					" } " +
 					" OPTIONAL {?url rdfs:label ?label. " +
-					" FILTER (lang(?label) = '" + labelLang + "')} ";
+					" FILTER (lang(?label) = '" + systemLang + "')} ";
 				if(graph) 
 					query += " } ";
 			query += " } ";
@@ -366,7 +366,7 @@ dbpediaLike.prototype.getDirectPredicatesFromConcept = function(entity, limit, c
 								" ?s a <"+entity+">. " +
 							" } LIMIT 20000 }" +
 						" OPTIONAL {?url rdfs:label ?label. " +
-						" FILTER (lang(?label) = '" + labelLang + "')} ";
+						" FILTER (lang(?label) = '" + systemLang + "')} ";
 					if(graph) 
 						query +=" } ";
 				query += " } ";
@@ -410,7 +410,7 @@ dbpediaLike.prototype.getReversePredicatesFromConcept = function(entity, limit, 
 								" ?s a <"+entity+">. " +
 							" } LIMIT 20000 }" +
 						" OPTIONAL {?url rdfs:label ?label. " +
-						" FILTER (lang(?label) = '" + labelLang + "')} ";
+						" FILTER (lang(?label) = '" + systemLang + "')} ";
 					if(graph) 
 						query +=" } ";
 				query += " } ";
@@ -456,7 +456,7 @@ dbpediaLike.prototype.getDirectPredicatesFromPredicate = function(predicate, lim
 							" LIMIT 1 " +
 						" } " +
 						" OPTIONAL {?url rdfs:label ?label. " +
-						" FILTER (lang(?label) = '" + labelLang + "')} ";
+						" FILTER (lang(?label) = '" + systemLang + "')} ";
 					if(graph) 
 						query +=" } ";
 				query += " } ";
@@ -502,7 +502,7 @@ dbpediaLike.prototype.getReversePredicatesFromPredicate = function(predicate, li
 							" LIMIT 1 " +
 						" } " +
 						" OPTIONAL {?url rdfs:label ?label. " +
-						" FILTER (lang(?label) = '" + labelLang + "')} ";
+						" FILTER (lang(?label) = '" + systemLang + "')} ";
 					if(graph) 
 						query += " } ";
 				query += " } ";
@@ -573,7 +573,7 @@ dbpediaLike.prototype.getDirectPredicatesFromResult = function(url, datatype, la
 						query +=" GRAPH " + graph + " { ";
 						query +=  result +" ?url ?o. " +
 						" OPTIONAL {?url rdfs:label ?label. " +
-						" FILTER (lang(?label) = '" + labelLang + "')} ";
+						" FILTER (lang(?label) = '" + systemLang + "')} ";
 					if(graph) 
 						query +=" } ";
 				query += " } ";
@@ -644,7 +644,7 @@ dbpediaLike.prototype.getReversePredicatesFromResult = function(url, datatype, l
 						query +=" GRAPH " + graph + " { ";
 						query += " ?o ?url "+result+". " +
 						" OPTIONAL {?url rdfs:label ?label. " +
-						" FILTER (lang(?label) = '" + labelLang + "')} ";
+						" FILTER (lang(?label) = '" + systemLang + "')} ";
 					if(graph) 
 						query +=" } ";
 				query += " } ";

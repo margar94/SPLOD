@@ -18,7 +18,7 @@ var lastRootMap;
 	BIND (lang(?label) AS ?lang)
 	}ORDER BY ?lang
 */
-var labelLangList = [{langCode : 'ar'}, 
+/*var labelLangList = [{langCode : 'ar'}, 
 					 {langCode : 'be'},
 					 {langCode : 'bg'},
 					 {langCode : 'bn'},
@@ -50,7 +50,7 @@ var labelLangList = [{langCode : 'ar'},
 					 {langCode : 'sr'},
 					 {langCode : 'tr'},
 					 {langCode : 'zh'}];
-
+*/
 /*var systemLangList = [{langCode : 'en'},
 					  {langCode : 'it'}];*/
 
@@ -101,7 +101,7 @@ function initializeLabelsAndTitle(){
 	//$("#hintBox").hide();
 
 	//settings
-	$("#labelLangSelectLabel").html(languageManager.getFieldTitle('label lang'));
+	//$("#labelLangSelectLabel").html(languageManager.getFieldTitle('label lang'));
 	$("#systemLangSelectLabel").html(languageManager.getFieldTitle('system lang'));
 	$("#numConceptsLabel").html(languageManager.getFieldTitle('num concepts'));
 	$("#numPredicatesLabel").html(languageManager.getFieldTitle('num predicates'));
@@ -578,11 +578,12 @@ function updateBoxesFromResult(resultUrl, resultDatatype, resultLang, resultPenn
 
 //manage settings
 function fillSettings(){
-	fillLabelLang();
+	//fillLabelLang();
 	fillSystemLang();
 	fillNumberOfConceptsAndPredicates();
 }
 
+/*
 function fillLabelLang(){
 	var labelLangSelect = $('#labelLangSelect');
 	labelLangSelect.empty();
@@ -599,7 +600,7 @@ function fillLabelLang(){
 
 	$('#labelLangSelect').material_select();
 }
-
+*/
 function fillSystemLang(){
 	var systemLangSelect = $('#systemLangSelect');
 	systemLangSelect.empty();
@@ -624,6 +625,7 @@ function fillNumberOfConceptsAndPredicates(){
 		$('#numPredicates').attr('placeholder', predicatesLimit);
 }
 
+/*
 function changeLabelLanguage(){
 	if(langAjaxRequest != null)
 		langAjaxRequest.abort();
@@ -636,7 +638,7 @@ function changeLabelLanguage(){
 	restartTableResultViewer();
 
 	mapCreator.labelLangChanged();
-}
+}*/
 
 function setLimit(type){
 	if(type == 'concept')
@@ -648,10 +650,10 @@ function setLimit(type){
 function changeSystemLanguage(){
 	languageManager = new LanguageManager($('#systemLangSelect').find(":selected").val());
 //salvare mappa e farne un clean delle verbalizzazioni per non perdere lo stato attuale
-	initBoxViewer();
-	initQueryViewer();
-	initOperatorViewer();
-	initTableResultViewer();
+	restartBoxViewer();
+	restartQueryViewer();
+	restartOperatorViewer();
+	restartTableResultViewer();
 
 	mapCreator.systemLangChanged();
 }

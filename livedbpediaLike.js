@@ -7,7 +7,7 @@ var graph;
 var query, query2; 
 var queryUrl, queryUrl2;
 
-var labelLang = 'en';
+var labelLang = 'it';
 
 var operatorManager;
 var tableResultManager;

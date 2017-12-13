@@ -16,8 +16,8 @@ function createLabel(url){
 	var tempLabel = label.toLowerCase();
 	if(tempLabel in languageManager.labels)
 		label = languageManager.labels[tempLabel];
-	else
-		//console.log(label);
+	/*else
+		console.log(label);*/
 
 	return label;
 }
