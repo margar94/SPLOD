@@ -173,7 +173,7 @@ function visitSPARQL(key){
 	var nodeQuery = {};
 	var childQuery = {};
 
-	//console.log(node);
+	//'console.log'(node);
 
 	switch(node.type){
 		case 'everything' : 

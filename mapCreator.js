@@ -392,6 +392,9 @@ MapCreator.prototype.selectedOperator = function(pendingQuery){
 				if(MapCreator.prototype.isRefinement(elementOnFocus))
 					relatedToValue = MapCreator.prototype.getTopElement(elementOnFocus);
 
+				if('sameAs' in queryLogicMap[relatedToValue])
+					relatedToValue = queryLogicMap[relatedToValue].sameAs;
+
 				var newLogicChildren = {key: keyChildren, index: indexChildren,
 							   url: resultValue, label: resultValue, 
 							   type:'result', direction: false,
@@ -559,7 +562,7 @@ MapCreator.prototype.selectedRepeatOperator  = function(repeatParameters){
 	var newLogicElement = {key: key, index: index,
 						   url: nodeToRepeat.url, label: nodeToRepeat.label, 
 						   type:nodeToRepeat.type, direction: nodeToRepeat.direction,
-						   verbalization: nodeToRepeat.verbalization, 
+						   verbalization: $.extend(true, {}, nodeToRepeat.verbalization), 
 						   parent:parent, children: [],
 						   mySameAsReferences : []};
 

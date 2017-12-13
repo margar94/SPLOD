@@ -126,10 +126,10 @@ function visitVerbalizator(node){
 	}
 
 	//stronger rule
-	if(queryLogicStructure[node.parent].type == 'operator'){
-		if(queryLogicStructure[node.parent].subtype == 'not'){
+	if(parentNode.type == 'operator'){
+		if(parentNode.subtype == 'not'){
 			node.verbalization.current = node.verbalization.negated;
-		}else if(queryLogicStructure[node.parent].subtype == 'optional'){
+		}else if(parentNode.subtype == 'optional'){
 			node.verbalization.current = node.verbalization.optional;
 		}
 	}

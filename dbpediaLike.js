@@ -153,11 +153,13 @@ dbpediaLike.prototype.getEntitySubclasses = function(url, limit, callback) {
 	if(url in language_classHierarchyMap[systemLang]){
 		submap = buildSubmapHierarchy(url, limit);
 
-		/*var childrenTemp = language_classHierarchyMap[systemLang][url].children;
+		var childrenTemp = language_classHierarchyMap[systemLang][url].children;
 		for(var i=0; i<childrenTemp.length; i++){
-			submap[childrenTemp[i]].parent = [];
+			if(childrenTemp[i] in submap){
+				submap[childrenTemp[i]].parent = [];
+			}
 		}
-		delete submap[url];*/
+		delete submap[url];
 	}
 	callback(getMapRoots(submap), submap);
 }

@@ -25,7 +25,7 @@ function manageClassHierarchy(data){
 		element = arrayData[index];
 
 		if('superclass' in element){
-			if(!(element.superclass.value in language_classHierarchyMap[labelLang])){
+			if(!(element.superclass.value in language_classHierarchyMap[systemLang])){
 			
 				label = element.label_superclass;
 				if(label == undefined)
@@ -33,16 +33,16 @@ function manageClassHierarchy(data){
 				else 
 					label = element.label_superclass.value;
 
-				language_classHierarchyMap[labelLang][element.superclass.value] = {url:element.superclass.value, label: label, children : [], parent:[], numberOfInstances:0};
+				language_classHierarchyMap[systemLang][element.superclass.value] = {url:element.superclass.value, label: label, children : [], parent:[], numberOfInstances:0};
 			}
 
-			language_classHierarchyMap[labelLang][element.superclass.value].children.push(element.subclass.value);
+			language_classHierarchyMap[systemLang][element.superclass.value].children.push(element.subclass.value);
 			parent = element.superclass.value;
 		}else{
 			parent = null;
 		}
 
-		if(!(element.subclass.value in language_classHierarchyMap[labelLang])){
+		if(!(element.subclass.value in language_classHierarchyMap[systemLang])){
 
 			var subclass_label = element.label_subclass;
 			if(subclass_label == undefined)
@@ -50,18 +50,18 @@ function manageClassHierarchy(data){
 			else 
 				subclass_label = element.label_subclass.value;
 
-			language_classHierarchyMap[labelLang][element.subclass.value] = {url:element.subclass.value, label: subclass_label, children : [], numberOfInstances:0, parent: []};
+			language_classHierarchyMap[systemLang][element.subclass.value] = {url:element.subclass.value, label: subclass_label, children : [], numberOfInstances:0, parent: []};
 
 		}
 
 		if(parent)
-			language_classHierarchyMap[labelLang][element.subclass.value].parent.push(parent);
+			language_classHierarchyMap[systemLang][element.subclass.value].parent.push(parent);
 
 	});
 }
 
 function cut(originalMap, limit){
-	var stack = $.extend(true, [], language_classHierarchyMapRoots[labelLang]); 
+	var stack = $.extend(true, [], language_classHierarchyMapRoots[systemLang]); 
 
 	var map = {};
 	var current;
@@ -94,36 +94,38 @@ function cut(originalMap, limit){
 
 function buildSubmapHierarchy(selectedClass, limit){
 	var map = {};
-	if(!(selectedClass in language_classHierarchyMap[labelLang])){
+	if(!(selectedClass in language_classHierarchyMap[systemLang])){
 		map[selectedClass] = {url:selectedClass, label: createLabel(selectedClass), children : [], parent:[], numberOfInstances:0};
 		return map;
 	}
 
-	map[selectedClass] = $.extend(true, {}, language_classHierarchyMap[labelLang][selectedClass]);
-	map[selectedClass].children = [];
+	map[selectedClass] = $.extend(true, {}, language_classHierarchyMap[systemLang][selectedClass]);
+	//map[selectedClass].children = [];
 	map[selectedClass].parent = [];
 
-	//var counter=0;
-	var counter=1;
+	var counter=0;
 
-	var stack = $.extend(true, [], language_classHierarchyMap[labelLang][selectedClass].children);
+	var stack = $.extend(true, [], language_classHierarchyMap[systemLang][selectedClass].children);
 	
 	var current;	
 	while(stack.length!=0){
 
 		//limit could be false
-		if(counter == limit)
+		if(counter == limit){
+			/*console.log(limit);
+			console.log(map);*/
 			return map;
+		}
 
 		current = stack.pop();
 
 		if(!(current in map)){
-			map[current] = $.extend(true, {}, language_classHierarchyMap[labelLang][current]);
+			map[current] = $.extend(true, {}, language_classHierarchyMap[systemLang][current]);
 			map[current].children = [];
 			
 			counter++;
 		
-			stack = language_classHierarchyMap[labelLang][current].children.concat(stack);
+			stack = language_classHierarchyMap[systemLang][current].children.concat(stack);
 		}
 
 		for(var i=0; i<map[current].parent.length; i++){
@@ -150,8 +152,8 @@ function getResultMap(arrayData){
 			label = element.url.value;
 
 		//it doesn't clone map entry, but it clone entry status
-		if(element.url.value in language_classHierarchyMap[labelLang]){
-			map[element.url.value] = $.extend(true, {}, language_classHierarchyMap[labelLang][element.url.value]);
+		if(element.url.value in language_classHierarchyMap[systemLang]){
+			map[element.url.value] = $.extend(true, {}, language_classHierarchyMap[systemLang][element.url.value]);
 			map[element.url.value].children = [];
 			map[element.url.value].numberOfInstances = 0;
 		}else{

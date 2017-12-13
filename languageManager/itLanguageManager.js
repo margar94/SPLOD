@@ -276,12 +276,11 @@ itLanguageManager.prototype.getOrdinalNumber = function(cardinalNumber){
 }
 
 itLanguageManager.prototype.endsWithPreposition = function(label){
-	/*var preposition = ["On", "For", "From", "A", "Of", "As", "By", 
-		" by", " on", " for", "\sfrom", "\sa", "\sof", "\sas"]; 
+	var preposition = ["da", "di"]; 
 	for(var i=0; i<preposition.length; i++){
 		if(label.endsWith(preposition[i]))
 			return true;
-	}*/
+	}
 	return false;
 }
 
