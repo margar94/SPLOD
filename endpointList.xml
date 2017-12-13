@@ -2,7 +2,9 @@
 <endpoint_list>
 	<endpoint_item>
 		<endpoint_name>DBPEDIA</endpoint_name>
-		<endpoint_description>ksdfbsjzfd</endpoint_description>
+		<endpoint_description>
+			DBpedia (from "DB" for "database") is a project aiming to extract structured content from the information created in the Wikipedia project. This structured information is made available on the World Wide Web. DBpedia allows users to semantically query relationships and properties of Wikipedia resources, including links to other related datasets. Tim Berners-Lee described DBpedia as one of the most famous parts of the decentralized Linked Data effort.
+		</endpoint_description>
 		<query_executor>dbpediaLike</query_executor>
 		<endpoint>http://dbpedia.org/sparql</endpoint>
 		<graph>http://dbpedia.org</graph>
@@ -10,7 +12,9 @@
 
 	<endpoint_item>
 		<endpoint_name>PERSEE</endpoint_name>
-		<endpoint_description>sdnfasz.,cd</endpoint_description>
+		<endpoint_description>
+			À Persée, nous avons des articles, des illustrations, des collections, des auteurs… qui ont tous été décrits sous forme de triplets. Toutes les informations concernant chacun de ces “objets” sont stockées dans le triplestore de Persée et sont désormais interrogeables. Les schémas suivants montrent quelles informations sont disponibles pour chaque sorte d’entité et comment elles sont reliées entre elles.
+		</endpoint_description>
 		<query_executor>dbpediaLike</query_executor>
 		<endpoint>http://data.persee.fr/sparql</endpoint>
 		<graph>null</graph>
@@ -18,15 +22,15 @@
 
 	<endpoint_item>
 		<endpoint_name>National library of Chile</endpoint_name>
-		<endpoint_description>sdkfnskd,</endpoint_description>
+		<endpoint_description> </endpoint_description>
 		<query_executor>dbpediaLike</query_executor>
 		<endpoint>http://datos.bcn.cl/sparql</endpoint>
 		<graph>null</graph>
 	</endpoint_item>
 
 	<endpoint_item>
-		<endpoint_name>live dbpedia</endpoint_name>
-		<endpoint_description>sdlfksfd</endpoint_description>
+		<endpoint_name>Live DBPEDIA</endpoint_name>
+		<endpoint_description> </endpoint_description>
 		<query_executor>livedbpediaLike</query_executor>
 		<endpoint>http://live.dbpedia.org/sparql</endpoint>
 		<graph>null</graph>
