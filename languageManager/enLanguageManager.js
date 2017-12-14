@@ -394,6 +394,27 @@ enLanguageManager.prototype.verbalizeOperator = function(operator){
 			verbalization.optional = ['that is ', 'optionally ', '', 'before ',''];
 			verbalization.current = verbalization.standard;
 			break;
+		case 'starts with':
+			verbalization.standard = ['that ','starts with ',''];
+			verbalization.truncated = ['','starts with ',''];
+			verbalization.negated = ['that ', 'not ', '', 'starts with ',''];
+			verbalization.optional = ['that ', 'optionally ', '', 'starts with ',''];
+			verbalization.current = verbalization.standard;
+			break;
+		case 'contains':
+			verbalization.standard = ['that ','contains ',''];
+			verbalization.truncated = ['','contains ',''];
+			verbalization.negated = ['that ', 'not ', '', 'contains ',''];
+			verbalization.optional = ['that ', 'optionally ', '', 'contains ',''];
+			verbalization.current = verbalization.standard;
+			break;
+		case 'ends with':
+			verbalization.standard = ['that ','ends with ',''];
+			verbalization.truncated = ['','ends with ',''];
+			verbalization.negated = ['that ', 'not ', '', 'ends with ',''];
+			verbalization.optional = ['that ', 'optionally ', '', 'ends with ',''];
+			verbalization.current = verbalization.standard;
+			break;
 	}
 
 	return verbalization;

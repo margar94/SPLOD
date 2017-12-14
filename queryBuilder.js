@@ -211,7 +211,7 @@ function visitSPARQL(key){
 				node.variable = queryLogicStructure[node.sameAs].variable;
 			}
 
-			if(!(node.children.length>1 && queryLogicStructure[node.children[1]].type=='operator' && queryLogicStructure[node.children[1]].subtype=='xor')){
+			if(!(node.children.length>1 && queryLogicStructure[node.children[1]].type=='operator' && queryLogicStructure[node.children[1]].subtype=='or')){
 				nodeWhere = nodeWhere.concat([{relatedTo: [node.key], content:[node.variable+ ' a ?_.']}]);
 			}
 
@@ -341,7 +341,7 @@ function visitSPARQL(key){
 			//where management
 
 			if(!addNot){
-				if(!(node.children.length>1 && queryLogicStructure[node.children[1]].type=='operator' && queryLogicStructure[node.children[1]].subtype=='xor')){
+				if(!(node.children.length>1 && queryLogicStructure[node.children[1]].type=='operator' && queryLogicStructure[node.children[1]].subtype=='or')){
 					nodeWhere.push({relatedTo:[node.key], content:[node.variable+' a'+' <'+node.url+'>.']});
 				}
 			}else{
@@ -438,7 +438,7 @@ function visitSPARQL(key){
 					nodeWhere = nodeWhere.concat([{relatedTo: [node.parent, node.key], content:['FILTER(!EXISTS{'+parentVariable+ ' <'+node.url+'> '+ node.variable+'.'+'})']}]);	
 				}
 				else{
-					if(!(node.children.length>1 && queryLogicStructure[node.children[1]].type=='operator' && queryLogicStructure[node.children[1]].subtype=='xor')){
+					if(!(node.children.length>1 && queryLogicStructure[node.children[1]].type=='operator' && queryLogicStructure[node.children[1]].subtype=='or')){
 						nodeWhere = nodeWhere.concat([{relatedTo: [node.key], content:[parentVariable+ ' <'+node.url+'> '+ node.variable+'.']}]);
 					}
 				}
@@ -570,7 +570,7 @@ function visitSPARQL(key){
 					nodeLabelSelect = nodeLabelSelect.concat(childQuery.labelSelect);
 					nodeKeySelect = nodeKeySelect.concat(childQuery.keySelect);
 
-					childWhere.push(childQuery.where);
+					nodeWhere = nodeWhere.concat(childQuery.where);
 
 					addNot = false;
 				}

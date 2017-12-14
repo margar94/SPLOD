@@ -425,10 +425,10 @@ function renderDirectPredicates(directMap){
 				$('#operatorList').hide();
 				$('#operatorsProgress').show();
 
+				$('#resultsTable').hide();
+				$('#resultsPreviewBadge').hide();
 				$('#tableResultsSpinner').show();
 				$('#tableResultsProgress').show();
-				$('#resultTable').hide();
-				$('#resultsPreviewBadge').hide();
 				mapCreator.selectedPredicate($(this).find('.liContent').attr('meta-url'), $(this).find('.liContent').attr('meta-label'), $(this).find('.liContent').attr('meta-predicateDirection'));
 			});
 

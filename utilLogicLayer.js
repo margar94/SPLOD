@@ -25,6 +25,8 @@ function createLabel(url){
 function createLongerLabel(url, number){
 	var label = '';
 
+	url = url.replace(/\#/g, "/");
+
 	var splittedParts = url.split('/')
 	for(var i=number; i>=0; i--){
 		label += splittedParts[splittedParts.length-1-i];
@@ -32,7 +34,7 @@ function createLongerLabel(url, number){
 			label += '-';
 	}
 
-	label = label.replace(/\#/g, "-");
+	//label = label.replace(/\#/g, "-");
 	label = label.replace(/\_/g, "-");
 
 	return label;
