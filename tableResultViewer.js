@@ -374,12 +374,12 @@ function createJson(){
 
 	resultsToConvert.map = queryLogicMap;
 	resultsToConvert.focus = elementOnFocus;
-	resultsToConvert.root = rootQueryLogicMap;
+	resultsToConvert.root = rootListQueryLogicMap;
 
 	
 	var jsonObj = JSON.stringify(resultsToConvert);
 
-	document.dispatchEvent(new CustomEvent("splodEvent", {"detail": jsonObj}));
+	window.dispatchEvent(new CustomEvent("splodEvent", {"detail": jsonObj}));
 
 	
 	/* 
