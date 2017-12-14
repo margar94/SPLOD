@@ -56,7 +56,7 @@ function renderOperatorList(operators){
 		var datatypeOperatorList = datatypeOperators.list;
 
 		//datatype operator list title 
-		if(datatype != null){
+		if(datatype != null && datatypeOperatorList.length > 0){
 			var li = $("<li/>")
 				.attr('class', 'collection-item datatypeTitle')
 				.attr('disabled','disabled')
