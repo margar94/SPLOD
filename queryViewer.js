@@ -492,9 +492,8 @@ function visitRenderer(key){
 						nodeQueryString += '</span>';
 
 						//post Not/Optional
-						nodeQueryString += node.verbalization.current[verbalizationIndex];
+						nodeQueryString += node.verbalization.current[verbalizationIndex++];
 					}
-
 					//content
 					nodeQueryString += '<span id="'+encodeURIComponent(node.key)+'" class="focusable operator" meta-removeReference="'+encodeURIComponent(node.key)+'" meta-focusReference="'+encodeURIComponent(node.key)+'">';
 					nodeQueryString += node.verbalization.current[verbalizationIndex++];
