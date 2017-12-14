@@ -404,14 +404,29 @@ itLanguageManager.prototype.verbalizeOperator = function(operator){
 			verbalization.standard = ['che &egrave; ','successiva ','a '];
 			verbalization.truncated = ['','successiva ','a '];
 			verbalization.negated = ['che ', 'non ', '&egrave; ', 'successiva ','a '];
-			verbalization.optional = ['che &egrave; ', 'opzionalmente ', '', 'suffessiva ','a '];
+			verbalization.optional = ['che &egrave; ', 'opzionalmente ', '', 'successiva ','a '];
 			verbalization.current = verbalization.standard;
 			break;
 		case 'starts with':
+			verbalization.standard = ['che ','inizia ','per '];
+			verbalization.truncated = ['','inizia ','per '];
+			verbalization.negated = ['che ', 'non ', '', 'inizia ','per '];
+			verbalization.optional = ['che ', 'opzionalmente ', '', 'inizia ','per '];
+			verbalization.current = verbalization.standard;
 			break;
 		case 'ends with':
+			verbalization.standard = ['che ','termina ','con '];
+			verbalization.truncated = ['','termina ','con '];
+			verbalization.negated = ['che ', 'non ', '', 'termina ','con '];
+			verbalization.optional = ['che ', 'opzionalmente ', '', 'termina ','con '];
+			verbalization.current = verbalization.standard;
 			break;
 		case 'contains':
+			verbalization.standard = ['che ','contiene ',''];
+			verbalization.truncated = ['','contiene ',''];
+			verbalization.negated = ['che ', 'non ', '', 'contiene ',''];
+			verbalization.optional = ['che ', 'opzionalmente ', '', 'contiene ',''];
+			verbalization.current = verbalization.standard;
 			break;
 
 	}
