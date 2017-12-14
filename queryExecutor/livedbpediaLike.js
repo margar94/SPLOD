@@ -151,18 +151,38 @@ livedbpediaLike.prototype.getAllEntities = function(limit, callback) {
 */
 livedbpediaLike.prototype.getEntitySubclasses = function(url, limit, callback) {
 	var submap={};
-	if(url in language_classHierarchyMap[systemLang]){
-		submap = buildSubmapHierarchy(url, limit);
+	if(systemLang in language_classHierarchyMap){
 
-		var childrenTemp = language_classHierarchyMap[systemLang][url].children;
-		for(var i=0; i<childrenTemp.length; i++){
-			if(childrenTemp[i] in submap){
-				submap[childrenTemp[i]].parent = [];
+		if(url in language_classHierarchyMap[systemLang]){
+			submap = buildSubmapHierarchy(url, limit);
+
+			var childrenTemp = language_classHierarchyMap[systemLang][url].children;
+			for(var i=0; i<childrenTemp.length; i++){
+				if(childrenTemp[i] in submap){
+					submap[childrenTemp[i]].parent = [];
+				}
 			}
+			delete submap[url];
 		}
-		delete submap[url];
+		callback(getMapRoots(submap), submap);
+
+	}else{
+		dbpediaLike.prototype.getAllEntities(limit, 
+			function(roots, map){
+				if(url in language_classHierarchyMap[systemLang]){
+					submap = buildSubmapHierarchy(url, limit);
+
+					var childrenTemp = language_classHierarchyMap[systemLang][url].children;
+					for(var i=0; i<childrenTemp.length; i++){
+						if(childrenTemp[i] in submap){
+							submap[childrenTemp[i]].parent = [];
+						}
+					}
+					delete submap[url];
+				}
+				callback(getMapRoots(submap), submap);
+		});
 	}
-	callback(getMapRoots(submap), submap);
 }
 
 /*
