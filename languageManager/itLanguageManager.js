@@ -276,7 +276,7 @@ itLanguageManager.prototype.getOrdinalNumber = function(cardinalNumber){
 }
 
 itLanguageManager.prototype.endsWithPreposition = function(label){
-	var preposition = ["da", "di", "a", "anche", "per"]; 
+	var preposition = [" da", " di", " a", " anche", " per"]; 
 	for(var i=0; i<preposition.length; i++){
 		if(label.endsWith(preposition[i]))
 			return true;
@@ -645,7 +645,7 @@ itLanguageManager.prototype.getButtonLabel = function(button){
 
 
 itLanguageManager.prototype.startsWithVerb = function(predicateLabel, direction){
-	return predicateLabel.startsWith('ha')||predicateLabel.startsWith('è');
+	return predicateLabel.startsWith('ha ')||predicateLabel.startsWith('è ');
 }
 
 

@@ -479,7 +479,7 @@ div#modalSparql, div#modalNaturalLanguage{
 div#conceptsBox{
 	margin:0;
     overflow: auto;
-    height: calc(100vh - 15.5em);
+    height: calc(100vh - 16.5em);
 }
 
 div#conceptsListBox {
@@ -538,7 +538,7 @@ i.conceptInfo{
 div#predicatesBox{
 	margin:0;
 	overflow: auto;
-    height: calc(100vh - 15.5em);
+    height: calc(100vh - 16.5em);
 }
 
 div#predicatesListBox {
@@ -568,7 +568,7 @@ i.predicateInfo{
 div#operatorsBox{
 	margin:0;
 	overflow: auto;
-    height: calc(100vh - 15.5em);
+    height: calc(100vh - 16.5em);
 }
 
 div#contentOperatorBox{
@@ -626,10 +626,10 @@ li.operatorListSeparator{
 /*Table results*/
 
 #tableResultBox{
-	overflow: auto;
+	overflow: hidden;
 	margin-top: 0;
 	margin-bottom:0;
-    height: calc(100vh - 15.5em);
+    height: calc(100vh - 16.5em);
 }
 
 #moreTableSettings{
@@ -714,7 +714,7 @@ img.imgResult {
 div#settingsBox{
 	margin:0;
 	overflow: auto;
-    height: calc(100vh - 15.5em);
+    height: calc(100vh - 16.5em);
 }
 
 #settingsBox .label{
@@ -726,7 +726,7 @@ div#settingsBox{
 div#helpBox{
 	margin:0;
 	overflow: auto;
-    height: calc(100vh - 15.5em);
+    height: calc(100vh - 16.5em);
 }
 
 #helpBox .carousel-slider{
