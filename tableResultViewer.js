@@ -260,7 +260,7 @@ function createTable(select, results){
 	previewTbody.appendTo(previewTable);
 
 	resultsToConvert.records = recordsObj;
-	addFieldsToJSON();
+	//addFieldsToJSON();
 
 	$.each(cachedFieldsToHide, function(index){
 		if($.inArray("?"+cachedFieldsToHide[index], select)<0)
@@ -370,25 +370,15 @@ function createJson(){
 		else
 			query += cachedUserQuery[index] + " ";
 	});
+console.log(resultsToConvert.records);
 	resultsToConvert.querySPARQL = query;
+	resultsToConvert.queryNaturalLanguage = $('#queryNaturalLanguage')[0].textContent;
 
-	resultsToConvert.map = queryLogicMap;
-	resultsToConvert.focus = elementOnFocus;
-	resultsToConvert.root = rootListQueryLogicMap;
+	resultsToConvert.map = {map: queryLogicMap, focus: elementOnFocus, roots: rootListQueryLogicMap};
 
-	
 	var jsonObj = JSON.stringify(resultsToConvert);
 
 	window.dispatchEvent(new CustomEvent("splodEvent", {"detail": jsonObj}));
-
-	
-	/* 
-	$.ajax({
-	   type: "POST",
-	   url: "buildJson.php", 
-	   data: jsonObj,      
-	   success: function() {} 
-	});*/
 }
 
 function orderTableResult(){

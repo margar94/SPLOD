@@ -110,8 +110,11 @@
 
 	<script>
 
+		$("#av_toolbar_regdiv").remove();
+		$("#av_toolbar_iframe").remove();
+
 		//import all languageManager
-        $.ajax({
+       /* $.ajax({
             url: './languageManager/',
             async : false,
             success: function (data) {
@@ -127,14 +130,26 @@
                		}
                });
              }     
-        });
+        });*/
+
+        $.ajax({
+	     url: "languageManagerList.xml",
+	     dataType: "xml",
+	     async : false,
+	     success: function(data) {
+			      var languageManagers = $(data).find('language_manager');
+
+			      var doc = $(document.body);
+			      for(var i=0; i<languageManagers.length; i++){
+				       	$('<script/>').attr('src', 'languageManager/'+languageManagers[i].textContent+'.js').appendTo(doc);
+				       	var languageManagerName = languageManagers[i].textContent.trim();
+				       	systemLangList.push({langCode : languageManagerName.split("LanguageManager")[0]});
+			      }
+		     }
+	     });
         
-		
-		$("#av_toolbar_regdiv").remove();
-		$("#av_toolbar_iframe").remove();
 
 		var languageManager;
-
 		var selectedEndpointName = 'DBPEDIA';
 
 		$(document).ready(function() {

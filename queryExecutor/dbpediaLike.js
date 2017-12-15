@@ -240,7 +240,7 @@ dbpediaLike.prototype.getConceptsFromSomething = function(predicate, limit, call
 				" WHERE { ";
 				if(graph) 
 					query += " GRAPH " + graph + " { ";
-						query += " ?o a ?url. " +
+						query += " ?s a ?url. " +
 						" ?s  <"+predicate+"> ?o. " +
 						" OPTIONAL {?url rdfs:label ?label. " +
 						" FILTER (lang(?label) = '" + systemLang + "')} ";
