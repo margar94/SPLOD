@@ -370,15 +370,27 @@ function createJson(){
 		else
 			query += cachedUserQuery[index] + " ";
 	});
-console.log(resultsToConvert.records);
+
 	resultsToConvert.querySPARQL = query;
 	resultsToConvert.queryNaturalLanguage = $('#queryNaturalLanguage')[0].textContent;
 
-	resultsToConvert.map = {map: queryLogicMap, focus: elementOnFocus, roots: rootListQueryLogicMap};
+	resultsToConvert.map = {
+		map: queryLogicMap, 
+		focus: elementOnFocus, 
+		roots: rootListQueryLogicMap
+	};
 
-	var jsonObj = JSON.stringify(resultsToConvert);
+	resultsToConvert.queryExecutor = {
+		endpoint: systemEndpoint,
+		graph: systemGraph,
+		executor: systemQueryExecutor
+	};
 
-	window.dispatchEvent(new CustomEvent("splodEvent", {"detail": jsonObj}));
+	resultsToConvert.systemLanguage = systemLang;
+
+	//var jsonObj = JSON.stringify(resultsToConvert);
+
+	window.dispatchEvent(new CustomEvent("splodEvent", {"detail": resultsToConvert}));
 }
 
 function orderTableResult(){
