@@ -706,28 +706,28 @@ itLanguageManager.prototype.getFieldTitle = function(select){
 itLanguageManager.prototype.getHelpGuide = function(){
 	var headers = [];
 
-	var overviewObj = {title : 'Overview', content : []};
-	overviewObj.content.push('<b>SPLOD</b> ti aiuter&agrave; a usare i LOD (Linked Open Data) e a creare una tabella che potrai usare nei passi successivi.<br>In questa guida troverai degli esempi mostrati passo passo per creare la tua prima richiesta. EXAMPLE');
+	var overviewObj = {title : 'Panoramica', content : []};
+	overviewObj.content.push('<b>SPLOD</b> ti aiuter&agrave; a usare i LOD (Linked Open Data) e a visualizzare i risultati in formato tabellare. Non &egrave; necessario conoscere SPARQL o la struttura dei dati sottostanti per usarlo: SPLOD nasconderà la complessità sottostante e ti guiderà attraverso il contenuto dei box e continui feedback.');
 	headers.push(overviewObj);
 
-	var boxesObj = {title : 'A cosa hai accesso premendo sui tab dei concetti, predicati, operatori, tabella dei risultati e impostazioni?', content : []};
-	boxesObj.content.push('<b>Il tab dei concetti</b> contiene tutti i concetti <i>dichiarati</i> e accessibili dall\'endpoint che hai selezionato al primo passo. I concetti sono i <i>subject</i> o gli <i>object</i> nei dati in formato RDF. IMG');
-	boxesObj.content.push('<b>Il tab dei predicati</b> contiene tutti i predicati <i>usati</i> e accessibilidall\'endpoint che hai selezionato al primo passo.IMG con dir e rev pred');
-	boxesObj.content.push('<b>Il tab degli operatori</b> ti fornisce la possibilit&agrave; di filtrare i dati.');
-	boxesObj.content.push('<b>Il tab della tabella dei risultati</b> ti mostra i risultati della query in formato tabellare e una piccola anteprima sorvolando il numero di righe ottenute. Puoi nascondere alcune colonne restituite per visualizzare al meglio solo i campi che ti interessano.');
-	boxesObj.content.push('<b>Il tab delle impostazioni</b> ti fornisce la possibilit&agrave; di <ul><li>cambiare il numero di concetti mostrati,</li><li>cambiare il numero di predicati mostrati,</li><li>cambiare la lingua del sistema,</li><li>cambiare la lingua dei dati restituiti (non colo dei risultati della query, ma anche dei dati contenuti nel resto dell\'interfaccia, se le label sono disponibili nella lingua scelta).</li></ul>');
+	var boxesObj = {title : 'Cosa c\'&egrave; in ogni box?', content : []};
+	boxesObj.content.push('<b>Il tab dei concetti</b> contiene, inizialmente, tutti i concetti <i>dichiarati</i> e accessibili dall\'endpoint che hai selezionato al primo passo. Dalla prima interazione, SPLOD recuperer&agrave; tutti i concetti usati, forse addirittura uscendo dall\'endpoint selezionato se lui &egrave; connesso a altri vocabolari o viceversa. Chiamiamo <b>concetti</b> le classi connesse a <i>subject</i> o <i>object</i> nei dati in formato RDF. <img width="100%" src="img/it_concept.png"/>');
+	boxesObj.content.push('<b>Il tab dei predicati</b> contiene tutti i predicati <i>usati</i> e accessibili dall\'endpoint che hai selezionato al primo passo. Nell\'immagine puoi vedere il predicato <i>dbo:birthPlace</i> usato in un caso come predicato diretto e nell\'altro come predicato inverso, dipende dalla posizione dell\'elemento a cui sei interessato: se appare come subject, il predicato &egrave; diretto, altrimento &egrave; inverso. <img width="100%" src="img/it_predicate.png"/>');
+	boxesObj.content.push('<b>Il tab degli operatori</b> ti fornisce la possibilit&agrave; di filtrare i dati o applicare operatori a livello di query. Gli operatori dipendono dal datatype dell\'elemento su cui &egrave; posto il focus. Se l\'operatore deve essere completato da uno o pi&ugrave; risultati, tu li troverai in questo stesso box dopo aver selezionato l\'operatore.');
+	boxesObj.content.push('<b>Il tab della tabella dei risultati</b> ti mostra i risultati della query in formato tabellare. Tu puoi nascondere dei campi o ordinare la tabella. Sorvolando sul badge del numero di elementi nella tabella, puoi vedere una sua anteprima.');
+	boxesObj.content.push('<b>Il tab delle impostazioni</b> ti fornisce la possibilit&agrave; di <ul><li>cambiare il numero di concetti mostrati,</li><li>cambiare il numero di predicati mostrati,</li><li>cambiare la lingua del sistema,</li><li>chiedere risultati sempre ordinati.</li></ul>');
 	headers.push(boxesObj);
 
 	var queryNLObj = {title : 'Query in linguaggio naturale', content : []};
-	queryNLObj.content.push('<b>spLOD</b> cerca di verbalizzare le tue interazioni creando la stessa richiesta che avresti posto tu ad un\'altra ppresona.<br>I colori ti guideranno a una piacevole comprensione della richiesta.<br>IMG EXAMPLE<br>ATTENZIONE: se vedi della parole barrate forse le tue interazioni non hanno prodotto una richiesta valida.<br>IMG EXAMPLE<br>');
+	queryNLObj.content.push('<b>SPLOD</b> cerca di verbalizzare le tue interazioni creando la stessa richiesta che avresti posto tu ad un\'altra persona.<br>I colori ti guideranno a una piacevole comprensione della richiesta.<br><img width="100%" src="img/it_NLquery.png"/><br>ATTENZIONE: se vedi della parole barrate forse le tue interazioni non hanno prodotto una richiesta valida. Ad esempio le query nell\' esempio sono diverse: la prima significa "Dammi gli scienziati senza luogo di nascita", la seconda "Dammi gli scienziati che non sono nati a Barlino".<br><img width="100%" src="img/it_not.png"/><br>');
 	headers.push(queryNLObj);
 
 	var focusObj = {title : 'Focus : come funziona', content : []};
-	focusObj.content.push('In funzione dell\'elemento in focus <b>spLOD</b> riempir&agrave; tutti i campi e costruir&agrave; la tua richiesta.<br>In funzione delle tue interazioni il focus verr&agrave; aggiornato.<br>In qualsiasi momento potrai cambiare l\'elemento in focus.');
+	focusObj.content.push('In funzione dell\'elemento evidenziato, <b>SPLOD</b> riempir&agrave; tutti i campi e costruir&agrave; la tua richiesta.<br>In funzione delle tue interazioni il focus verr&agrave; aggiornato.<br>In qualsiasi momento potrai cambiare l\'elemento in focus.');
 	headers.push(focusObj);
 
 	var querySPARQLObj = {title : 'Query SPARQL', content : []};
-	querySPARQLObj.content.push('<b>SPARQL</b> &egrave; il linguaggio standard per le query semantiche sui LOD.<br>In funzione delle tue interazioni <b>spLOD</b> costruir&agrave; automaticamente la query.<br>Puoi imparare qualcosa di pi&ugrave; su SPARQL aprendo la visualizzazione con query affiancate.<br>Cambiando il focus il sistema sottolineer&agrave; la corrispettiva parte nella query.');
+	querySPARQLObj.content.push('<b>SPARQL</b> &egrave; il linguaggio standard per le query semantiche sui LOD.<br>In funzione delle tue interazioni <b>SPLOD</b> costruir&agrave; automaticamente la tua query.<br>Puoi imparare qualcosa di pi&ugrave; su SPARQL aprendo la visualizzazione con query affiancate.<br>Cambiando il focus il sistema sottolineer&agrave; la corrispettiva parte nella query.');
 	headers.push(querySPARQLObj);
 
 	return headers;

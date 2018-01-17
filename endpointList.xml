@@ -42,4 +42,49 @@
 		<graph>null</graph>
 	</endpoint_item>
 
+	<endpoint_item>
+		<endpoint_name>Beni culturali</endpoint_name>
+		<endpoint_description>
+			dati.beniculturali.it è la piattaforma in cui il MiBACT pubblica il proprio patrimonio informativo secondo la logica dei linked open data (LOD).
+			I primi LOD pubblicati rappresentano il frutto di un processo di cooperazione tra gli Istituti centrali e le Direzioni generali del Mibact e collegano tra loro dataset provenienti da fonti diverse: banca dati dei Luoghi della cultura; anagrafiche di Archivi e Biblioteche; banca dati del Catalogo dei beni culturali; altre banche dati documentali e fotografiche.
+			Tutti i dataset in formato open data e linked open data del MiBACT sono descritti nella pagina del Catalogo, sulla base delle specifiche dell’Agenzia per l’Italia Digitale (AGID).
+		</endpoint_description>
+		<query_executor>dbpediaLike</query_executor>
+		<endpoint>http://dati.beniculturali.it/sparql</endpoint>
+		<graph>null</graph>
+	</endpoint_item>
+	
+	<!--
+	<endpoint_item>
+		<endpoint_name>Lavanderia a gettoni</endpoint_name>
+		<endpoint_description>
+			...
+		</endpoint_description>
+		<query_executor>dbpediaLike</query_executor>
+		<endpoint>http://lodlaundromat.org/sparql/</endpoint>
+		<graph>null</graph>
+	</endpoint_item>-->
+
+	<endpoint_item>
+		<endpoint_name>Cultura Italia</endpoint_name>
+		<endpoint_description>
+			Il progetto pilota dati.culturaitalia.it contiene set di open data aggregati in CulturaItalia e rilasciati dai partner del progetto con licenza CC0 1.0 Universal Public Domain Dedication.
+			Attualmente dati.culturaitalia.it rende accessibili i dati di: Accademia S. Cecilia, Progetto ArtPast, Digibess, ICCU, Internet Culturale, Michael Italia, Polo Museale Fiorentino, Regione Marche e Anagrafe delle Biblioteche Italiane (i set sono descritti all'interno della pagina fonte dati), oltre al Thesaurus PICO.
+		</endpoint_description>
+		<query_executor>dbpediaLike</query_executor>
+		<endpoint>http://dati.culturaitalia.it/sparql/</endpoint>
+		<graph>null</graph>
+	</endpoint_item>
+
+	<endpoint_item>
+		<endpoint_name>OpenLink Software</endpoint_name>
+		<endpoint_description>
+			OpenLink Software is an acclaimed technology innovator and leading vendor of industry standards compliant data access, integration, and management technology.
+			Our data access drivers for Linked Data, ODBC, JDBC, ADO.NET, OLE DB and XMLA, ensure that your data assets are yours to exploit, in whatever manner best supports the agility of your organization.
+		</endpoint_description>
+		<query_executor>dbpediaLike</query_executor>
+		<endpoint>http://lod.openlinksw.com/sparql/</endpoint>
+		<graph>null</graph>
+	</endpoint_item>
+
 </endpoint_list>

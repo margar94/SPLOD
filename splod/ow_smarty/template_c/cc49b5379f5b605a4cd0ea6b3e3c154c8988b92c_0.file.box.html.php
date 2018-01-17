@@ -1,11 +1,11 @@
 <?php
-/* Smarty version 3.1.29, created on 2017-12-14 06:05:34
+/* Smarty version 3.1.29, created on 2018-01-17 02:10:21
   from "C:\Users\Utente\Documents\GitHub\SPLOD\splod\ow_system_plugins\base\decorators\box.html" */
 
 if ($_smarty_tpl->smarty->ext->_validateCompiled->decodeProperties($_smarty_tpl, array (
   'has_nocache_code' => false,
   'version' => '3.1.29',
-  'unifunc' => 'content_5a32852ebc7fc9_80785397',
+  'unifunc' => 'content_5a5f210d3f9f47_33266434',
   'file_dependency' => 
   array (
     'cc49b5379f5b605a4cd0ea6b3e3c154c8988b92c' => 
@@ -19,7 +19,7 @@ if ($_smarty_tpl->smarty->ext->_validateCompiled->decodeProperties($_smarty_tpl,
   array (
   ),
 ),false)) {
-function content_5a32852ebc7fc9_80785397 ($_smarty_tpl) {
+function content_5a5f210d3f9f47_33266434 ($_smarty_tpl) {
 if (!is_callable('smarty_function_decorator')) require_once 'C:\\Users\\Utente\\Documents\\GitHub\\SPLOD\\splod\\ow_smarty\\plugin\\function.decorator.php';
 if ($_smarty_tpl->tpl_vars['data']->value['capEnabled']) {?>
 <div class="ow_box_cap<?php echo $_smarty_tpl->tpl_vars['data']->value['capAddClass'];?>

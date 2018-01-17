@@ -1,11 +1,11 @@
 <?php
-/* Smarty version 3.1.29, created on 2017-12-14 06:05:34
+/* Smarty version 3.1.29, created on 2018-01-17 02:10:21
   from "C:\Users\Utente\Documents\GitHub\SPLOD\splod\ow_themes\simplicity\master_pages\general.html" */
 
 if ($_smarty_tpl->smarty->ext->_validateCompiled->decodeProperties($_smarty_tpl, array (
   'has_nocache_code' => false,
   'version' => '3.1.29',
-  'unifunc' => 'content_5a32852ecaa8f8_22179136',
+  'unifunc' => 'content_5a5f210d4b5775_98857712',
   'file_dependency' => 
   array (
     '688cc08e2fc73b93396a2a80f0fb5d17b70ade17' => 
@@ -19,7 +19,7 @@ if ($_smarty_tpl->smarty->ext->_validateCompiled->decodeProperties($_smarty_tpl,
   array (
   ),
 ),false)) {
-function content_5a32852ecaa8f8_22179136 ($_smarty_tpl) {
+function content_5a5f210d4b5775_98857712 ($_smarty_tpl) {
 if (!is_callable('smarty_function_component')) require_once 'C:\\Users\\Utente\\Documents\\GitHub\\SPLOD\\splod\\ow_smarty\\plugin\\function.component.php';
 if (!is_callable('smarty_function_add_content')) require_once 'C:\\Users\\Utente\\Documents\\GitHub\\SPLOD\\splod\\ow_smarty\\plugin\\function.add_content.php';
 if (!is_callable('smarty_function_text')) require_once 'C:\\Users\\Utente\\Documents\\GitHub\\SPLOD\\splod\\ow_smarty\\plugin\\function.text.php';

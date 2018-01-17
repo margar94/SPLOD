@@ -1,11 +1,11 @@
 <?php
-/* Smarty version 3.1.29, created on 2017-12-14 06:05:34
+/* Smarty version 3.1.29, created on 2018-01-17 02:10:21
   from "C:\Users\Utente\Documents\GitHub\SPLOD\splod\ow_system_plugins\base\views\components\drag_and_drop_entity_panel.html" */
 
 if ($_smarty_tpl->smarty->ext->_validateCompiled->decodeProperties($_smarty_tpl, array (
   'has_nocache_code' => false,
   'version' => '3.1.29',
-  'unifunc' => 'content_5a32852e989bb8_22873566',
+  'unifunc' => 'content_5a5f210d1f64c0_26333797',
   'file_dependency' => 
   array (
     'd7c3f51daf136621bd5d777ceff93e0e3f920b48' => 
@@ -19,7 +19,7 @@ if ($_smarty_tpl->smarty->ext->_validateCompiled->decodeProperties($_smarty_tpl,
   array (
   ),
 ),false)) {
-function content_5a32852e989bb8_22873566 ($_smarty_tpl) {
+function content_5a5f210d1f64c0_26333797 ($_smarty_tpl) {
 if (!is_callable('smarty_block_script')) require_once 'C:\\Users\\Utente\\Documents\\GitHub\\SPLOD\\splod\\ow_smarty\\plugin\\block.script.php';
 if (!is_callable('smarty_block_style')) require_once 'C:\\Users\\Utente\\Documents\\GitHub\\SPLOD\\splod\\ow_smarty\\plugin\\block.style.php';
 if (!is_callable('smarty_function_add_content')) require_once 'C:\\Users\\Utente\\Documents\\GitHub\\SPLOD\\splod\\ow_smarty\\plugin\\function.add_content.php';

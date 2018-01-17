@@ -649,7 +649,7 @@ function setLimit(type){
 
 function changeSystemLanguage(){
 	languageManager = new LanguageManager($('#systemLangSelect').find(":selected").val());
-//salvare mappa e farne un clean delle verbalizzazioni per non perdere lo stato attuale
+	//salvare mappa e farne un clean delle verbalizzazioni per non perdere lo stato attuale
 	restartBoxViewer();
 	restartQueryViewer();
 	restartOperatorViewer();
@@ -694,65 +694,40 @@ function fillHelp(){
 			.html(helpContent[i].title)
 			.appendTo(li);
 
-		var contentDiv = $('<div/>')
-			.attr('class', 'collapsible-body')
-			.appendTo(li);
+		if(helpContent[i].content.length == 1){	
+			var contentDiv = $('<div/>')
+				.attr('class', 'collapsible-body')
+				.html('<p>'+helpContent[i].content[0]+'</p>')
+				.appendTo(li);
+		}else{
+			var contentDiv = $('<div/>')
+				.attr('class', 'collapsible-body')
+				.appendTo(li);
 
-		var carouselDiv = $('<div/>')
-			.attr('class', 'carousel carousel-slider myCarousel-'+i)
-			//.attr('data-indicators', 'true')
-			.appendTo(contentDiv);
-
-			
-
-		for(var j = 0; j < helpContent[i].content.length; j++){
-			var contentCarouselDiv = $('<div/>')
-				.attr('class', 'carousel-item')
-				.html('<p>'+helpContent[i].content[j]+'</p>')
-				.appendTo(carouselDiv);
-		}
-
-		if(helpContent[i].content.length != 1){
-
-			var leftArrow = $('<div/>')
-					.attr('class', 'carousel-fixed-item left-align ')
-					.html('<i class="material-icons">chevron_left</i>')
-					.attr('meta-carousel-index', i)
-					.on('click', function(e){
-						$('.myCarousel-'+$(this).attr('meta-carousel-index')).carousel('prev');})
-					.appendTo(carouselDiv);
-
-			var rightArrow = $('<div/>')
-					.attr('class', 'carousel-fixed-item right-align')
-					.html('<i class="material-icons">chevron_right</i>')
-					.attr('meta-carousel-index', i)
-					.on('click', function(e){
-						$('.myCarousel-'+$(this).attr('meta-carousel-index')).carousel('next');})
-					.appendTo(carouselDiv);	
-		}
-		/*if(helpContent[i].content.length != 1){
-
-			var ulPag = $('<ul/>')
-				.attr('class', 'pagination')
-				//.html('<li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>')
+			var innerUl = $('<ul/>')
+				.attr('class', 'collapsible')
 				.appendTo(contentDiv);
 
 			for(var j = 0; j < helpContent[i].content.length; j++){
-				var liPag = $('<li/>')
-					.attr('class', 'waves-effect')
-					.appendTo(ulPag);
-				var a = $('<a/>')
-					.text(j+1)
-					.appendTo(liPag);
+				var innerLi = $('<li/>');
 
-				if(j==0)
-					liPag.attr('class', 'active')
+				var contentInnerHeader = $('<div/>')
+					.attr('class', 'collapsible-header')
+					.html(helpContent[i].title + " - " + (j+1))
+					.appendTo(innerLi);
+
+				var contentInnerDiv = $('<div/>')
+					.attr('class', 'collapsible-body')
+					.html('<p>'+helpContent[i].content[j]+'</p>')
+					.appendTo(innerLi);
+
+				innerLi.appendTo(innerUl);
+				
 			}
-			
-		}*/
+		}
+		
 		li.appendTo(helpUl);
 	}
-	$('.carousel.carousel-slider').carousel({fullWidth: true});
     $('.collapsible').collapsible();
 }
 

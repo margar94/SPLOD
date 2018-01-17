@@ -459,7 +459,7 @@ enLanguageManager.prototype.getTabTitle = function(tabType){
 		case 'concept' : title = 'Concepts'; break;
 		case 'predicate' : title = 'Predicates'; break;
 		case 'operator' : title = 'Operators'; break;
-		case 'table result' : title = 'Table result'; break;
+		case 'table result' : title = 'Results table'; break;
 		case 'settings' : title = 'Settings'; break;
 		case 'direct predicate' : title = 'Direct'; break;
 		case 'reverse predicate' : title = 'Reverse'; break;
@@ -603,7 +603,7 @@ enLanguageManager.prototype.getButtonLabel = function(button){
 			label = 'Compare query in natural language with SPARQL query';
 			break;
 		case 'saveTable':
-			label = 'Save result table';
+			label = 'Save results table';
 			break;
 	}
 
@@ -648,7 +648,7 @@ enLanguageManager.prototype.getFieldTitle = function(select){
   case 'system lang': label = 'Select system language'; break;
   case 'num concepts': label = 'Change concept\'s number'; break;
   case 'num predicates': label = 'Change predicate\'s number'; break;
-  case 'default order table': label = 'Table results always ordered';break;
+  case 'default order table': label = 'Results table always ordered';break;
   case 'selected endpoint': label = 'Selected endpoint: ';break;
 
  }
@@ -660,27 +660,27 @@ enLanguageManager.prototype.getHelpGuide = function(){
 	var headers = [];
 
 	var overviewObj = {title : 'Overview', content : []};
-	overviewObj.content.push('<b>spLOD</b> will help you to use LOD (linked open data) and create a table that you can use in next steps.<br>You can see some example explained step by step to create your first request.INSERT EXAMPLE');
+	overviewObj.content.push('<b>SPLOD</b> will help you to manage LODs (linked open data) in RDF format and create a results table.  It is not necessary to know SPARQL or the underlying data structure: SPLOD will hide techinacal challenges and complexity for you and will guide you from the content of the boxes to continous feedbacks.');
 	headers.push(overviewObj);
 
-	var boxesObj = {title : 'Boxes content : concepts, predicates, operators, table result, settings', content : []};
-	boxesObj.content.push('<b>Tab of concepts</b> contains all concepts <i>declared</i> in the endpoint that you selected in the first step. Concepts are <i>subject</i> or <i>object</i> in RDF data.IMG');
-	boxesObj.content.push('<b>Tab of predicates</b> contains all predicates <i>used</i> in the endpoint that you selected in the first step.IMG with direct and reverse predicate');
-	boxesObj.content.push('<b>Tab of operators</b> gives you the possibility to filter data or apply some operation to query structure such as change of retrieved results number.');
-	boxesObj.content.push('<b>Tab of table result</b> shows you query result. You can hide some fields. You can see results preview in the tab.');
-	boxesObj.content.push('<b>Tab of settings</b> gives you the possibility to <ul><li>change how many concepts do you want to see,</li><li>change how many predicates do you want to see,</li><li>change system\'s language,</li><li>change retrieved data language (not only results data, but also boxes content, if data labels are available in your language).</li></ul>');
+	var boxesObj = {title : 'What is in each box?', content : []};
+	boxesObj.content.push('<b>In the concept tab</b> there are, at the beginning, all the <i>declared</i> concepts in the endpoint selected in the first step. From you first interactions, SPLOD will retrieve all the <i>used</i> concepts, perhaps coming out of the selected endpoint, if your endpoint is connected to other vocubaluries or the opposite. We call <b>concepts</b> the classes related to each <i>subjects</i> or <i>objects</i> in RDF data.<img width="100%" src="img/en_concept.png"/>');
+	boxesObj.content.push('<b>In the predicate tab</b> there are all <i>used</i> predicates in the endpoint selected in the first step. In the image you can see the predicate <i>dbo:birthPlace</i> used in one case as direct predicate, in the other as <i>reverse predicate</i>, it depends on the position of the element you are interested in: if it is used as subject, the predicate is direct, otherwise it is reversed.<img width="100%" src="img/en_predicate.png"/>');
+	boxesObj.content.push('<b>The operator tab</b> contains all the tools to filter data or apply some operations to query structure. The operators are related to the datatype of the element on focus. If the operator needs to be completed through one or more results, you will find them in this box after seleting the operator.');
+	boxesObj.content.push('<b>The results table tab</b> shows you the results of the user query in tabular format. You can hide some fields or sort them. You can see a results preview by flying over the badge.<img width="100%" src="img/en_resultsTable.png"/>');
+	boxesObj.content.push('<b>The settings tab</b> gives you the possibility to <ul><li>change the number of concepts you want to see,</li><li>change the number of predicates you want to see,</li><li>change the language of the system,</li><li>ask for always sorted results.</li></ul>');
 	headers.push(boxesObj);
 
-	var queryNLObj = {title : 'Query Natural Language', content : []};
-	queryNLObj.content.push('<b>spLOD</b> tries to verbalize your interactions creating the same request that hopefully you would ask to another person.<br>The colors will guide you to a friendly understanding of the request.<br>IMG EXAMPLE<br>Be careful with the barred words!<br>IMG EXAMPLE<br>');
+	var queryNLObj = {title : 'Query in Natural Language', content : []};
+	queryNLObj.content.push('<b>SPLOD</b> tries to verbalize your interactions creating the same request that, hopefully, you would ask to another person.<br>Colors will guide you to a friendly understanding of the request.<br><img width="100%" src="img/en_NLquery.png"/><br>Pay attention to the barred words: the queries in the example are different, one means \'Give me  the scientist without birth place\', the other means \'Give me  the scientist who was not born in Berlin.\'<br><img width="100%" src="img/en_not.png"/><br>');
 	headers.push(queryNLObj);
 
 	var focusObj = {title : 'Focus : how it works', content : []};
-	focusObj.content.push('According to the element on focus <b>spLOD</b> will fill all boxes and build your request.<br>By your interaction the focus will be updated.<br>But you can still change it whenever you want.');
+	focusObj.content.push('Based on the element on focus <b>SPLOD</b> will fill in all the boxes and build your request.<br>From your interactions the focus will be updated.<br>But you can still change it whenever you want.');
 	headers.push(focusObj);
 
 	var querySPARQLObj = {title : 'Query SPARQL', content : []};
-	querySPARQLObj.content.push('<b>SPARQL</b> is the standard semantic query language used to retrieve LOD.<br>According to your interactions <b>spLOD</b> will automatically build the query.<br>You can learn about SPARQL thanks to the side by side boxes.<br>By changing the focus the system will highlight the related section in the query.');
+	querySPARQLObj.content.push('<b>SPARQL</b> is the standard semantic query language used to retrieve LODs.<br>Based on your interactions <b>SPLOD</b> will automatically build your query.<br>You can learn SPARQL syntax thanks to the boxes side by side.<br>By changing the focus the system will highlight the related section in the query.');
 	headers.push(querySPARQLObj);
 
 	return headers;

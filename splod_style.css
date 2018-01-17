@@ -730,7 +730,8 @@ div#helpBox{
 }
 
 #helpBox .carousel-slider{
-	height: 190px !important;
+	height: 15em !important;
+    overflow-y: auto;
 }
 
 #helpBox .carousel-item{
@@ -760,7 +761,7 @@ div#helpBox{
 	padding-left:9%;
 	padding-right:9%;
 	width: 100%;
-	height: 10em;
+	height: 40em;
 }
 
 /*

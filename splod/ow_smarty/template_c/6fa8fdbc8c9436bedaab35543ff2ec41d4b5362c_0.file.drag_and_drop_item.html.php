@@ -1,11 +1,11 @@
 <?php
-/* Smarty version 3.1.29, created on 2017-12-14 06:05:34
+/* Smarty version 3.1.29, created on 2018-01-17 02:10:21
   from "C:\Users\Utente\Documents\GitHub\SPLOD\splod\ow_system_plugins\base\views\components\drag_and_drop_item.html" */
 
 if ($_smarty_tpl->smarty->ext->_validateCompiled->decodeProperties($_smarty_tpl, array (
   'has_nocache_code' => false,
   'version' => '3.1.29',
-  'unifunc' => 'content_5a32852eb8d635_09293954',
+  'unifunc' => 'content_5a5f210d3c72b2_23273782',
   'file_dependency' => 
   array (
     '6fa8fdbc8c9436bedaab35543ff2ec41d4b5362c' => 
@@ -19,7 +19,7 @@ if ($_smarty_tpl->smarty->ext->_validateCompiled->decodeProperties($_smarty_tpl,
   array (
   ),
 ),false)) {
-function content_5a32852eb8d635_09293954 ($_smarty_tpl) {
+function content_5a5f210d3c72b2_23273782 ($_smarty_tpl) {
 if (!is_callable('smarty_block_block_decorator')) require_once 'C:\\Users\\Utente\\Documents\\GitHub\\SPLOD\\splod\\ow_smarty\\plugin\\block.block_decorator.php';
 ?>
 <div class="ow_dnd_widget <?php echo $_smarty_tpl->tpl_vars['box']->value['uniqName'];?>

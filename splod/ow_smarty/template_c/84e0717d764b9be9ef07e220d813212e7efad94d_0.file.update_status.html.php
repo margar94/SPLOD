@@ -1,11 +1,11 @@
 <?php
-/* Smarty version 3.1.29, created on 2017-12-14 06:05:34
+/* Smarty version 3.1.29, created on 2018-01-17 02:10:21
   from "C:\Users\Utente\Documents\GitHub\SPLOD\splod\ow_plugins\ode\views\components\update_status.html" */
 
 if ($_smarty_tpl->smarty->ext->_validateCompiled->decodeProperties($_smarty_tpl, array (
   'has_nocache_code' => false,
   'version' => '3.1.29',
-  'unifunc' => 'content_5a32852eaf5096_53999766',
+  'unifunc' => 'content_5a5f210d351f96_53487591',
   'file_dependency' => 
   array (
     '84e0717d764b9be9ef07e220d813212e7efad94d' => 
@@ -19,7 +19,7 @@ if ($_smarty_tpl->smarty->ext->_validateCompiled->decodeProperties($_smarty_tpl,
   array (
   ),
 ),false)) {
-function content_5a32852eaf5096_53999766 ($_smarty_tpl) {
+function content_5a5f210d351f96_53487591 ($_smarty_tpl) {
 if (!is_callable('smarty_block_style')) require_once 'C:\\Users\\Utente\\Documents\\GitHub\\SPLOD\\splod\\ow_smarty\\plugin\\block.style.php';
 if (!is_callable('smarty_block_form')) require_once 'C:\\Users\\Utente\\Documents\\GitHub\\SPLOD\\splod\\ow_smarty\\plugin\\block.form.php';
 if (!is_callable('smarty_function_input')) require_once 'C:\\Users\\Utente\\Documents\\GitHub\\SPLOD\\splod\\ow_smarty\\plugin\\function.input.php';
