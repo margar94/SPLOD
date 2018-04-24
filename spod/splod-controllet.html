@@ -1,0 +1,758 @@
+<HTML>
+	 <head>
+		<script src="splodjs/jquery.js"></script>
+        <script src="splodjs/Materialize/js/materialize.min.js"></script>
+
+        <script src="splodjs/queryExecutor.js"></script>
+        <script src="splodjs/queryExecutor/dbpediaLike.js"></script>
+        <script src="splodjs/queryExecutor/livedbpediaLike.js"></script>
+        <script src="splodjs/utilQueryExecutor.js"></script>
+
+        <script src="splodjs/tableResultManager.js"></script>
+		<script src="splodjs/operatorManager.js"></script>			
+		<script src="splodjs/queryVerbalizator.js"></script>
+		<script src="splodjs/queryBuilder.js"></script>
+		<script src="splodjs/mapCreator.js"></script>
+		<script src="splodjs/boxFiller.js"></script>
+
+		<script src="splodjs/boxViewer.js"></script>
+		<script src="splodjs/queryViewer.js"></script>
+		<script src="splodjs/operatorViewer.js"></script>
+		<script src="splodjs/tableResultViewer.js"></script>
+
+		<script src="splodjs/utilLogicLayer.js"></script>
+		<script src="splodjs/utilPresentationLayer.js"></script>
+
+		<script src="splodjs/languageManager.js"></script>
+
+		<link href="splodjs/Materialize/fonts/roboto/Roboto-Regular.woff" rel="application/x-font-woff">	
+		<link href="splodjs/Materialize/fonts/roboto/Roboto-Regular.woff2" rel="application/x-font-woff">		
+		<link href="splodjs/Materialize/css/materialize.css" rel="stylesheet">
+
+		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+	</head>
+
+	<body>
+		<div id="content-splod-controllet" style="width:100%; height:100%;">	
+			<!--<div class="container">-->
+			<div id="endpointSelectionContent">
+				<div class="row flex" id="firstrow">
+					<nav id="endpointSelectionNav">
+						<div class="nav-wrapper">
+						  <span id="endpointSelectionTitle"></span><span id="selectedEndpoint"></span>
+							<ul class="right">
+								<li id="endpointSelected" onClick="setupSystem(event)">
+									<i class="material-icons">arrow_forward</i>
+								</li>
+							</ul>
+						</div>
+					</nav>
+				</div>
+				<div class="row flex" >
+					<div class="col s12 m12 l12">
+						<div class="col s12 m12 l12 no-padding">
+							<div id="endpointListBox" class="">
+								<ul id="endpointList" class="collection"></ul>
+							</div>
+
+							<div id="settingsListBox" class="">
+								<ul id="settingsList" class="collection"></ul>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+			</div>
+			
+			
+			<div id="settingsCollapsibleContent" class="card" style="display:none">
+				<div class="card-content ">
+					<div class="row">
+						
+						<!--<div class="input-field col s6 m6 l6">
+							<span id="labelLangSelectLabel" class="label"></span>
+							<select id="labelLangSelect" onChange="changeStartLabelLanguage()">
+							</select>
+						</div>-->
+					
+						<div class="input-field col s6 m6 l6">
+							<span id="startSystemLangSelectLabel" class="label"></span>
+							<select id="startSystemLangSelect" onChange="changeStartSystemLanguage()">
+							</select>
+						</div>
+
+					</div>
+
+					<div class="row">
+
+						<div class="input-field col s6 m6 l6">
+							<span id ="startNumConceptsLabel" class="label"></span>
+							<input id="startNumConcepts" type="number" min="1" onChange="setStartLimit('concept')">
+						</div>
+					
+						
+						<div class="input-field col s6 m6 l6">
+							<span id="startNumPredicatesLabel" class="label"></span>
+							<input id="startNumPredicates" type="number" min="1" onChange="setStartLimit('predicate')">
+						 </div>
+
+					</div>
+
+					<div class="row">
+						<div class="col s12 m12 l12 label">
+							<input type="checkbox" id="startDefaultOrderTable" onChange="setDefaultOrderTable($(this))" />
+							<label for="startDefaultOrderTable" id="startDefaultOrderTableLabel"></label>	
+						</div>
+					</div>
+				</div>
+			</div>
+		
+			<div id="splodCore" style="display:none">	
+			
+				<!--<div class="container">-->
+				<div class="row flex" id="firstrow">
+					<!--end query natural language box--> 
+				    <div id="queryBox" class="col s12 flex"> 
+				     <div class="card">
+				      <div id="queryNaturalLanguage" class="card-content">
+				      </div>
+				      <div id="queryNaturalLanguageFocus" class="card-action valign-wrapper firstrowAction">
+
+				       <span class="col s12"> 
+				       		<span id="focusLabel"> </span> 
+				       		<span id="focus"></span>
+				       </span>
+
+				      <!-- <span class="col s1 " >
+							<i class="small material-icons right" id="removeButton" 
+			                   title="Remove all the highlighted"
+			                   onmouseover="highlightElementsToRemove();" 
+			                   onmouseleave="removeHighlightElementsToRemove();" 
+			                   onclick="removeHighlightElements(decodeURIComponent($('.highlighted').attr('meta-removereference')))">highlight_off</i>
+						</span>-->
+		                  
+				      </div>
+				     </div>
+				    </div>
+				    <!--buttons-->
+				    <a class="btn-floating waves-effect waves-light blue" id="openSparqlQuery"><i class="material-icons"  onclick="showUserQueryBox();">compare</i></a>
+
+				    <a class="btn-floating waves-effect waves-light blue" id="saveTable"><i class="material-icons" onclick="createJson()">save</i></a>
+					
+					<!--
+						<a class="btn-floating waves-effect waves-light blue" id="secondStep"><i class="material-icons" on-click="allowSecondStep">arrow_forward</i></a>
+					-->
+				    <a class="btn-floating waves-effect waves-light red darken-1" id="removeButtonA"><i class="small material-icons right" id="removeButton" 
+			                   onmouseover="highlightElementsToRemove();" 
+			                   onmouseleave="removeHighlightElementsToRemove();" 
+			                   onclick="removeHighlightElements(decodeURIComponent($('.highlighted').attr('meta-removereference')))">clear</i></a>
+
+				    <!--end buttons-->
+				    <!--end query natural language box--> 
+
+				    <!--start query sparql box--> 
+				    <div id="sparqlVsNl" class="modal s12">
+					    <div class="modal-content">
+					      <div id="modalNaturalLanguage" class="col s5"></div>
+					      <div id="modalSparql" class="col s7"></div>
+					    </div>
+						<div class="modal-footer">
+							<a class="modal-action modal-close waves-effect waves-green btn-flat">x</a>
+						</div>
+					</div>
+				    <!--end query sparql box--> 
+			    </div>
+			    <!--end first row-->
+
+			    <!--start second row-->
+				<div class="row">
+
+					<!--start navBar-->
+					<div class="col s12 m12 l12" id="navBar">
+				      <ul id="myTabs" class="tabs tabs-fixed-width black-text">
+				   		<!--start concepts-->
+				        <li class="tab" id="conceptsTab">	
+				        	<a href="#conceptsBox">
+				        		<span id="conceptsTabTitle" class="myTabTitle"></span> 
+					        	<div id="conceptsSpinner" class="preloader-wrapper mySpinner active">
+								    <div class="spinner-layer spinner-blue-only">
+								      <div class="circle-clipper left">
+								        <div class="circle"></div>
+								      </div><div class="gap-patch">
+								        <div class="circle"></div>
+								      </div><div class="circle-clipper right">
+								        <div class="circle"></div>
+								      </div>
+								    </div>
+								</div>
+							</a>
+				        </li>
+				        <!--end concepts-->
+				        <!--start predicates-->
+				        <li class="tab" id="predicatesTab">
+				        	<a href="#predicatesBox">
+				        		<span id="predicatesTabTitle" class="myTabTitle"></span>
+				        		<div id="predicatesSpinner" class="preloader-wrapper mySpinner active">
+								    <div class="spinner-layer spinner-blue-only">
+								      <div class="circle-clipper left">
+								        <div class="circle"></div>
+								      </div><div class="gap-patch">
+								        <div class="circle"></div>
+								      </div><div class="circle-clipper right">
+								        <div class="circle"></div>
+								      </div>
+								    </div>
+								</div>
+				        	</a>
+				        </li>
+				        <!--end predicates-->
+				        <!--start operators-->
+				        <li class="tab" id="operatorsTab">
+				        	<a href="#operatorsBox">
+				        		<span id="operatorsTabTitle" class="myTabTitle"></span>
+				        		<div id="operatorsSpinner" class="preloader-wrapper mySpinner active">
+								    <div class="spinner-layer spinner-blue-only">
+								      <div class="circle-clipper left">
+								        <div class="circle"></div>
+								      </div><div class="gap-patch">
+								        <div class="circle"></div>
+								      </div><div class="circle-clipper right">
+								        <div class="circle"></div>
+								      </div>
+								    </div>
+								</div>
+				        	</a>
+				        </li>
+				        <!--end operators-->
+				        <!--start result table-->
+				        <li class="tab" id="tableResultTab">
+			           		<a href="#tableResultBox">
+			           			<span id="tableResultTabTitle" class="myTabTitle"></span>
+			           			<span id="resultsPreviewBadge" class="new badge" data-badge-caption 
+			           				onmouseenter="if(this.innerHTML != '0')$('#tableToast').show();" 
+			           				onmouseleave="$('#tableToast').hide()"></span>
+			           			<div id="tableResultsSpinner" class="preloader-wrapper mySpinner active">
+				          			<div class="spinner-layer spinner-blue-only">
+				            			<div class="circle-clipper left">
+				              				<div class="circle"></div>
+				            			</div>
+					            		<div class="gap-patch">
+					              			<div class="circle"></div>
+					            		</div>
+					            		<div class="circle-clipper right">
+					              			<div class="circle"></div>
+					            		</div>
+					          		</div>
+				      			</div>
+			           		</a>
+				    	</li>
+				        <!--end result table-->
+
+				        <!--start settings-->
+				        <li class="tab" id="settingsTab">
+				        	<a href="#settingsBox">
+				        		<span id="settingsTabTitle" class="myTabTitle"></span>
+				     		</a>
+				        </li>
+				        <!--end settings-->
+				        
+				        <!--start help-->
+				        <li class="tab" id="helpTab">
+				        	<a href="#helpBox">
+				        		<span id="helpTabTitle" class="myTabTitle"></span>
+				     		</a>
+				        </li>
+				        <!--end help-->
+				      </ul>
+				    </div>
+
+				    <div id="tableToast" class="col s12 m12 l12" style="display:none">
+					
+						<table id="previewTableResult">
+						</table>
+					
+					</div>
+					<!--end navBar-->
+				   
+				   <!--start content-->
+				    <div class="col s12 m12 l12">
+				        <div class="col s12 m12 l12 no-padding">
+
+				        	<!--start concepts content-->
+				        	<div id="conceptsBox" class="card">
+					            <div class="card-content ">
+					              	
+				              		<a id="hierarchySpan" class='dropdown-button btn-floating waves-effect waves-light right'><i class="material-icons"">list</i></a>
+				              		<!--search-->
+				              	  	<div class="card searchBarPositioning col s6 m6 l6">
+			            				<div class=" valign-wrapper ">
+						            		<span class="input-field col s10 m10 l10 mySearch">
+								              	<input type="search" id="searchConceptsBox" 
+													onkeyup="filter('searchConceptsBox', 'conceptsList')" >
+											</span>
+											<span class="col s2 m2 l2 right">
+												<i class="material-icons"> search</i>
+											</span>
+										</div>
+								  	</div>
+								  	<!--end search-->
+
+								  	<div class="progress" id="conceptsProgress">
+									    <div class="indeterminate"></div>
+									</div>
+								 
+								 	<!--Concepts list-->
+									<div id="conceptsListBox">
+										<ul id="conceptsList" class="collection"></ul>
+									</div>
+									<!--end concepts list-->
+					            </div>
+					        </div>
+					        <!--end concepts content-->
+
+					        <!--start predicates content-->
+					        <div id="predicatesBox" class="card">
+					            <div class="card-content ">
+					              	<!--search-->
+				              	  	<div class="card searchBarPositioning col s6 m6 l6">
+			            				<div class=" valign-wrapper ">
+			            					<span class="input-field col s11 m11 l11 mySearch">
+								              	<input type="search" id="searchPredicatesBox" 
+													onkeyup="filter('searchPredicatesBox', 'directPredicatesList');filter('searchPredicatesBox', 'reversePredicatesList');" >
+											</span>
+											<span class="col s2 m2 l2 right">
+												<i class="material-icons"> search</i>
+											</span>
+										</div>
+								  	</div>
+					              	<!--end search-->
+								  	<ul class="tabs tabs-fixed-width" id="predicatesTabBox">
+								  		<li class="tab">
+								  			<a class="active" href="#direct">
+								  				<span id="directPredicateTabTitle"></span>
+								  			</a>
+								  		</li>
+						        		<li class="tab">
+						        			<a href="#reverse">
+						        				<span id="reversePredicateTabTitle">
+						        				</span>
+						        			</a>
+						        		</li>
+								  	</ul>
+								</div>
+								<!--direct predicate-->
+					            <div id="direct">
+					            	<div class="progress" id="directPredicatesProgress">
+									    <div class="indeterminate"></div>
+									</div>
+
+							      	<div id="predicatesListBox">
+							      		<ul id="directPredicatesList" class="collection"></ul>
+							      	</div> 
+							    </div>
+							    <!--reverse predicate-->
+							    <div id="reverse">
+							    	<div class="progress" id="reversePredicatesProgress">
+									    <div class="indeterminate"></div>
+									</div>
+
+							      	<div id="predicatesListBox">
+							      		<ul id="reversePredicatesList" class="collection"></ul>
+							      	</div>
+							    </div>
+					        </div>
+					        <!--end predicates content-->
+
+							<!--start operators content-->
+							<div id="operatorsBox" class="card">
+					            <div class="card-content">
+					              <span class="card-title col s6 m6 l6"></span>
+					              <span class="col s6 m6 l6" id="pendingQuerySpan"></span>
+					              <!--search-->
+				              	  	<div class="card col s6 m6 l6" id="searchReusableResultCard">
+			            				<div class=" valign-wrapper ">
+			            					<span class="input-field col s11 m11 l11 mySearch">
+							              		<input type="search" id="searchReusableResultBox" 
+													onkeyup="filter('searchReusableResultBox', 'reusableResultList')">
+											</span>
+											<span class="col s2 m2 l2 right">
+												<i class="material-icons"> search</i>
+											</span>
+										</div>
+								  	</div>
+								  	<!--end search-->
+					              <div id="contentOperatorBox">
+									  <div class="progress" id="operatorsProgress">
+										  <div class="indeterminate"></div>
+									  </div>
+
+						              <ul id="operatorList" class="collection"></ul>
+						              <ul id="reusableResultList" class="collection"></ul>
+						          </div>
+					            </div>
+					        </div>
+					        <!--end operators content-->
+
+					        <!--start table result content-->
+					        <div id="tableResultBox" class="card no-padding">
+					            <div class="card-content no-padding">
+
+					            	<div class="fixed-action-btn horizontal" id="moreTableSettings">
+								    <a class="btn-floating btn-large blue">
+								      <i class="large material-icons">more_vert</i>
+								    </a>
+								    <ul>
+								      <li>
+								      	<a id="visibleFieldsButton" 
+								      	class='dropdown-button btn-floating waves-effect waves-light blue' data-activates='fieldsCollection' ><i class="material-icons">remove_red_eye</i></a>
+								      </li>
+					            	  <li>
+					            		<a id="orderTable" class='dropdown-button btn-floating waves-effect waves-light blue' onclick="orderTableResult();"><i class="material-icons">sort_by_alpha</i></a>
+					            	  </li>
+					            	  <!--<li>
+					            		<a id="collapseTable" class='dropdown-button btn-floating waves-effect waves-light blue' onclick="collapseTableResult();" ><i class="material-icons">vertical_align_center</i></a>
+					            	  </li>-->
+					 				</ul>
+								  </div>		            		
+
+					              	<div class="row col s12 no-padding">
+					              		<div class="progress" id="tableResultsProgress">
+										    <div class="indeterminate"></div>
+										</div>
+
+										<div id="resultsTableBox" class=" col s12 m12 l12 scrollableTableContent no-padding">
+											<table id="resultsTable" class="striped centered"></table>
+										</div>
+									</div>
+								</div>
+					        </div>
+					        <ul id="fieldsCollection" class="collection dropdown-content"></ul>
+					          
+					        <!--end table result content-->
+
+					        <!--start settings content-->
+					        <div id="settingsBox" class="card">
+					            <div class="card-content ">
+					              	<div class="row">
+
+						              	<!--<div class="input-field col s6 m6 l6">
+						              		<span id="labelLangSelectLabel" class="label"></span>
+										    <select id="labelLangSelect" onChange="changeLabelLanguage()">
+										    </select>
+										    
+										</div>-->
+
+										<div class="input-field col s6 m6 l6">
+											<span id="systemLangSelectLabel" class="label"></span>
+										    <select id="systemLangSelect" onChange="changeSystemLanguage()">
+										    </select>
+										</div>
+						          	
+						          	</div>
+						          	<div class="row">
+
+								        <div class="input-field col s6 m6 l6">
+								        	<span id ="numConceptsLabel" class="label"></span>
+								          	<input id="numConcepts" type="number" min="1" onChange="setLimit('concept')">
+								        </div>
+								        <!--<div class="col s1">
+								          <i class="small material-icons blue-text" onClick="setLimit('concept')">check_circle</i>
+								        </div>-->
+
+								        <div class="input-field col s6 m6 l6">
+								        	<span id="numPredicatesLabel" class="label"></span>
+								        	<input id="numPredicates" type="number" min="1" onChange="setLimit('predicate')">
+								        </div>
+								        <!--<div class="col s1">  
+								          <i class="small material-icons blue-text" onClick="setLimit('predicate')">check_circle</i>
+								        </div>-->
+							       </div>
+							       <div class="row">
+						              	<div class="col s12 m12 l12">
+										    <input type="checkbox" id="defaultOrderTable" onChange="setDefaultOrderTable($(this))" />
+			      							<label for="defaultOrderTable" id="defaultOrderTableLabel"></label>
+										</div>
+					            	</div>
+					        	</div>
+							</div>
+							<!--end settings content-->
+							<!--start help content-->
+					        <div id="helpBox" class="card">
+					            <div class="card-content ">
+					              <div class="row">
+
+					              	<ul id="helpUl" class="collapsible" data-collapsible="accordion">
+									    <!--<li>
+									      <div class="collapsible-header"><i class="material-icons">filter_drama</i>First</div>
+									      <div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+									    </li>
+									    <li>
+									      <div class="collapsible-header"><i class="material-icons">place</i>Second</div>
+									      <div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+									    </li>
+									    <li>
+									      <div class="collapsible-header"><i class="material-icons">whatshot</i>Third</div>
+									      <div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+									    </li>-->
+									  </ul>
+
+							       </div>
+					            </div>
+					        </div>
+				        	<!--end help content-->
+			      		</div>
+						<!--end content-->
+					</div>
+			    </div>
+			   	<!--end second row-->
+		   	
+		 	</div>
+			<!--end splod core-->
+		</div> 
+
+	</body>
+    
+    <script> 
+
+		$.ajax({
+	     url: "splodjs/languageManagerList.xml",
+	     dataType: "xml",
+	     async : false,
+	     success: function(data) {
+			      var languageManagers = $(data).find('language_manager');
+
+			      var doc = $(document.body);
+			      for(var i=0; i<languageManagers.length; i++){
+				       	$('<script/>').attr('src', 'splodjs/languageManager/'+languageManagers[i].textContent+'.js').appendTo(doc);
+				       	var languageManagerName = languageManagers[i].textContent.trim();
+				       	systemLangList.push({langCode : languageManagerName.split("LanguageManager")[0]});
+			      }
+		     }
+	     });
+        
+
+		var languageManager;
+		var selectedEndpointName = 'DBPEDIA';
+
+		$(document).ready(function() {
+			languageManager = new LanguageManager();
+			languageManager = languageManager._singletonInstance;
+
+			$('#endpointSelectionTitle').html(languageManager.getFieldTitle('selected endpoint'));
+			$('#selectedEndpoint').html(selectedEndpointName);
+
+			fillStartSettings();
+
+		    $.ajax({
+		        type: "GET",
+		        url: "splodjs/endpointList.xml",
+		        dataType: "xml",
+		        success: function(data) {processData(data);}
+		     });
+
+		});
+
+		function processData(data) {
+		    var endpointsName = $(data).find('endpoint_name');
+		    var endpointsDescription = $(data).find('endpoint_description');
+		    var endpoints = $(data).find('endpoint');
+		    var graphs = $(data).find('graph');
+		    var queryExecutors = $(data).find('query_executor');
+		    
+		    var expandableIcon;
+		    var collapsibleBody;
+
+		    var ul = $('#endpointList');
+		    for(var i=0; i<endpointsName.length; i++){
+		    	var li = $("<li/>")
+					.attr('class', 'collection-item withMargin endpointLi')
+					.attr('meta-queryExecutor', queryExecutors[i].textContent)
+					.attr('meta-endpoint', endpoints[i].textContent)
+					.attr('meta-graph', graphs[i].textContent)
+					.attr('meta-endpointName', endpointsName[i].textContent)
+					.appendTo(ul)
+					.on('click', function(e){
+						var graph = $(this).attr('meta-graph');
+						if(graph != 'null')
+							graph = '<'+graph+'>';
+						else
+							graph = null;
+						systemGraph = graph;
+						systemEndpoint = $(this).attr('meta-endpoint');
+						systemQueryExecutor = $(this).attr('meta-queryExecutor');
+
+						$('#selectedEndpoint').html($(this).attr('meta-endpointName'));
+					});
+
+				expandableIcon = $("<i/>")
+					.attr('class', 'tiny material-icons grey-text expandIcon')
+					.html('expand_more')
+					.appendTo(li)
+					.on('click', function(e){
+						e.stopPropagation();
+						if($(this).parent().next().is(':visible')){
+							$(this).parent().next().hide();
+							$(this)[0].innerHTML = 'expand_more';
+						}
+						else{
+							$(this).parent().next().show();
+							$(this)[0].innerHTML = 'expand_less';
+						}
+					});
+
+				var span = $("<span/>")
+					.attr('class', 'liContent')
+					.html(endpointsName[i].textContent)
+					.css('margin-left', '0.5em')
+					.appendTo(li);
+					
+				collapsibleBody = $("<li/>")
+					.attr('class', 'collection-item myCollapsibleBody')
+					.html(endpointsDescription[i].textContent)
+					.appendTo(ul);
+
+				collapsibleBody.hide();
+		    }
+		}
+
+		function fillStartSettings(){
+			var settingsUl = $('#settingsList');
+
+			var li = $("<li/>")
+				.attr('class', 'collection-item settingsLi')
+				.appendTo(settingsUl)
+				.on('click', function(e){
+					e.stopPropagation();
+					if($(this).next().is(':visible')){
+						$(this).next().hide();
+						$(this).children()[0].innerHTML = 'expand_more';
+					}
+					else{
+						$(this).next().show();
+						$(this).children()[0].innerHTML = 'expand_less';
+					}
+				});
+
+			var expandableIcon = $("<i/>")
+				.attr('class', 'tiny material-icons grey-text expandIcon')
+				.html('expand_more')
+				.appendTo(li);
+
+			var span = $("<span/>")
+				.attr('class', 'liContent')
+				.html(languageManager.getTabTitle('settings'))
+				.css('margin-left', '0.5em')
+				.appendTo(li);
+				
+			var collapsibleBody = $("#settingsCollapsibleContent");
+
+			collapsibleBody.appendTo(settingsUl);
+
+			collapsibleBody.hide();
+
+			$("#startSystemLangSelectLabel").html(languageManager.getFieldTitle('system lang'));
+			$("#startNumConceptsLabel").html(languageManager.getFieldTitle('num concepts'));
+			$("#startNumPredicatesLabel").html(languageManager.getFieldTitle('num predicates'));
+			$("#startDefaultOrderTableLabel").html(languageManager.getFieldTitle('default order table'));
+
+			fillStartSystemLang();
+			fillStartNumberOfConceptsAndPredicates();
+		}
+	
+		function fillStartSystemLang(){
+			var systemLangSelect = $('#startSystemLangSelect');
+			systemLangSelect.empty();
+
+			$.each(systemLangList, function(langKey){
+				var lang = systemLangList[langKey];
+				var option = $("<option/>")
+					.attr('value', lang.langCode)
+					.text(lang.langCode)
+					.appendTo(systemLangSelect);
+			});
+
+			$('#startSystemLangSelect option[value="'+systemLang+'"]').attr('selected', 'selected');
+
+			$('#startSystemLangSelect').material_select();
+		}
+
+		function fillStartNumberOfConceptsAndPredicates(){
+			if(conceptsLimit)
+				$('#startNumConcepts').attr('placeholder', conceptsLimit);
+			if(predicatesLimit)
+				$('#startNumPredicates').attr('placeholder', predicatesLimit);
+		}
+		
+
+
+
+
+		function changeStartLabelLanguage(){
+			labelLang = $('#labelLangSelect').find(":selected").val();
+		}
+
+		function setStartLimit(type){
+			if(type == 'concept')
+				conceptsLimit = $('#numConcepts').val();
+			else if(type == 'predicate')
+				predicatesLimit = $('#numPredicates').val();
+		}
+
+		function changeStartSystemLanguage(){
+			languageManager = new LanguageManager($('#startSystemLangSelect').find(":selected").val());
+		}
+
+		/*function setupSystem(e){
+			$('body').load("splod_core.html");
+		}*/
+
+		function setupInModify(){
+			/*
+			languageManager = new LanguageManager(lang);
+			systemGraph = graph;
+			systemEndpoint = end;
+			systemQueryExecutor = exe
+			
+			restartBoxViewer();
+			restartQueryViewer();
+			restartOperatorViewer();
+			restartTableResultViewer();
+
+			beginFromMap(obj.root, obj.map, obj.focus);
+			*/
+		}
+
+
+
+
+		function setupSystem(e){
+			$('#endpointSelectionContent').css('display','none');
+			$('#splodCore').css('display', 'block');
+			
+			$('ul.tabs').tabs({onShow: function(tab) {
+		    	if(tab[0].id == "predicatesBox"){
+		    		$('ul#predicatesTabBox').tabs();
+
+		    		if($('#direct ul li').length == 0){
+						$('ul#predicatesTabBox').tabs('select_tab', 'reverse');
+					}else{
+						$('ul#predicatesTabBox').tabs('select_tab', 'direct');
+					}
+		    	}}
+		    });
+
+		    $('.modal').modal({
+		    	startingTop: '5%',
+		    	endingTop: '5%'
+		    });
+			
+			initBoxViewer();
+			initQueryViewer();
+			initOperatorViewer();
+			initTableResultViewer();
+			
+			
+		}
+    </script>
+</HTML>
